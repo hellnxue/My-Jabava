@@ -1,0 +1,142 @@
+{
+	"list" : [{
+			"className" : "俄文",
+			"createDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 15,
+				"minutes" : 19,
+				"month" : 11,
+				"seconds" : 2,
+				"time" : 1449213542000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"createUserId" : 22,
+			"createUserName" : "公司系统管理员",
+			"isCertificate" : 0,
+			"lastModifyDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 15,
+				"minutes" : 19,
+				"month" : 11,
+				"seconds" : 18,
+				"time" : 1449213558000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"lastModifyUserId" : 22,
+			"lastModifyUserName" : "公司系统管理员",
+			"memo" : "",
+			"oldExpireDate" : null,
+			"personId" : 1145,
+			"serviceExpireDate" : {
+				"date" : 31,
+				"day" : 4,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1451491200000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"trainCost" : 0,
+			"trainEndDate" : {
+				"date" : 25,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1450972800000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"trainHour" : 0,
+			"trainId" : 1,
+			"trainOrganization" : "",
+			"trainStartDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449158400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			}
+		}, {
+			"className" : "dddd",
+			"createDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 16,
+				"minutes" : 5,
+				"month" : 11,
+				"seconds" : 12,
+				"time" : 1449216312000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"createUserId" : 22,
+			"createUserName" : "公司系统管理员",
+			"isCertificate" : 0,
+			"lastModifyDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 16,
+				"minutes" : 5,
+				"month" : 11,
+				"seconds" : 31,
+				"time" : 1449216331000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"lastModifyUserId" : 22,
+			"lastModifyUserName" : "公司系统管理员",
+			"memo" : "",
+			"oldExpireDate" : null,
+			"personId" : 1145,
+			"serviceExpireDate" : {
+				"date" : 10,
+				"day" : 4,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449676800000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"trainCost" : 0,
+			"trainEndDate" : {
+				"date" : 8,
+				"day" : 2,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449504000000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"trainHour" : 0,
+			"trainId" : 2,
+			"trainOrganization" : "",
+			"trainStartDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449158400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			}
+		}
+	]
+}

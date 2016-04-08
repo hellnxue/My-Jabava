@@ -1,0 +1,118 @@
+{
+	"list" : [{
+			"createDate" : {
+				"date" : 27,
+				"day" : 0,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 10,
+				"seconds" : 0,
+				"time" : 438710400000,
+				"timezoneOffset" : -480,
+				"year" : 83
+			},
+			"createUserId" : 22,
+			"createUserName" : "公司系统管理员",
+			"degree" : "",
+			"degreeCountry" : "",
+			"degreeDate" : null,
+			"degreeShcool" : "",
+			"education" : "初中",
+			"educationCertificate" : "",
+			"educationId" : 11,
+			"educationType" : "",
+			"entranceDate" : {
+				"date" : 14,
+				"day" : 1,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1450022400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"graduateDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449158400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"graduateSchool" : "222",
+			"lastModifyDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 16,
+				"minutes" : 2,
+				"month" : 11,
+				"seconds" : 43,
+				"time" : 1449216163000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"lastModifyUserId" : 22,
+			"lastModifyUserName" : "公司系统管理员",
+			"learnType" : "全日制",
+			"major" : "",
+			"personId" : 1145,
+			"schoolTime" : 3
+		}, {
+			"createDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 15,
+				"minutes" : 57,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449215820000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"createUserId" : 22,
+			"createUserName" : "公司系统管理员",
+			"degree" : "",
+			"degreeCountry" : "",
+			"degreeDate" : null,
+			"degreeShcool" : "",
+			"education" : "初中",
+			"educationCertificate" : "",
+			"educationId" : 12,
+			"educationType" : "",
+			"entranceDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449158400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"graduateDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449158400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"graduateSchool" : "的撒",
+			"lastModifyDate" : null,
+			"lastModifyUserId" : 0,
+			"lastModifyUserName" : "",
+			"learnType" : "全日制",
+			"major" : "",
+			"personId" : 1145,
+			"schoolTime" : 3
+		}
+	]
+}

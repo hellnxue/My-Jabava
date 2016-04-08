@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jabava.dao.manage.EhrPersonFieldMapper" >
+  <resultMap id="BaseResultMap" type="com.jabava.pojo.manage.EhrPersonField" >
+    <id column="field_id" property="fieldId" jdbcType="INTEGER" />
+    <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="field_desc" property="fieldDesc" jdbcType="VARCHAR" />
+    <result column="field_type" property="fieldType" jdbcType="TINYINT" />
+    <result column="relate_sql" property="relateSql" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    field_id, field_name, field_desc, field_type, relate_sql
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehr_person_field
+    where field_id = #{fieldId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ehr_person_field
+    where field_id = #{fieldId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jabava.pojo.manage.EhrPersonField" >
+    insert into ehr_person_field (field_id, field_name, field_desc, 
+      field_type, relate_sql)
+    values (#{fieldId,jdbcType=INTEGER}, #{fieldName,jdbcType=VARCHAR}, #{fieldDesc,jdbcType=VARCHAR}, 
+      #{fieldType,jdbcType=TINYINT}, #{relateSql,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jabava.pojo.manage.EhrPersonField" >
+    insert into ehr_person_field
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fieldId != null" >
+        field_id,
+      </if>
+      <if test="fieldName != null" >
+        field_name,
+      </if>
+      <if test="fieldDesc != null" >
+        field_desc,
+      </if>
+      <if test="fieldType != null" >
+        field_type,
+      </if>
+      <if test="relateSql != null" >
+        relate_sql,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fieldId != null" >
+        #{fieldId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldDesc != null" >
+        #{fieldDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        #{fieldType,jdbcType=TINYINT},
+      </if>
+      <if test="relateSql != null" >
+        #{relateSql,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jabava.pojo.manage.EhrPersonField" >
+    update ehr_person_field
+    <set >
+      <if test="fieldName != null" >
+        field_name = #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldDesc != null" >
+        field_desc = #{fieldDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        field_type = #{fieldType,jdbcType=TINYINT},
+      </if>
+      <if test="relateSql != null" >
+        relate_sql = #{relateSql,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where field_id = #{fieldId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.manage.EhrPersonField" >
+    update ehr_person_field
+    set field_name = #{fieldName,jdbcType=VARCHAR},
+      field_desc = #{fieldDesc,jdbcType=VARCHAR},
+      field_type = #{fieldType,jdbcType=TINYINT},
+      relate_sql = #{relateSql,jdbcType=VARCHAR}
+    where field_id = #{fieldId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jabava.dao.manage.EhrPersonFieldFixvalueMapper" >
+  <resultMap id="BaseResultMap" type="com.jabava.pojo.manage.EhrPersonFieldFixvalue" >
+    <id column="person_field_fixvalue_id" property="personFieldFixvalueId" jdbcType="BIGINT" />
+    <result column="field_id" property="fieldId" jdbcType="INTEGER" />
+    <result column="field_key" property="fieldKey" jdbcType="VARCHAR" />
+    <result column="field_value" property="fieldValue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    person_field_fixvalue_id, field_id, field_key, field_value
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehr_person_field_fixvalue
+    where person_field_fixvalue_id = #{personFieldFixvalueId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ehr_person_field_fixvalue
+    where person_field_fixvalue_id = #{personFieldFixvalueId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jabava.pojo.manage.EhrPersonFieldFixvalue" >
+    insert into ehr_person_field_fixvalue (person_field_fixvalue_id, field_id, field_key, 
+      field_value)
+    values (#{personFieldFixvalueId,jdbcType=BIGINT}, #{fieldId,jdbcType=INTEGER}, #{fieldKey,jdbcType=VARCHAR}, 
+      #{fieldValue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jabava.pojo.manage.EhrPersonFieldFixvalue" >
+    insert into ehr_person_field_fixvalue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="personFieldFixvalueId != null" >
+        person_field_fixvalue_id,
+      </if>
+      <if test="fieldId != null" >
+        field_id,
+      </if>
+      <if test="fieldKey != null" >
+        field_key,
+      </if>
+      <if test="fieldValue != null" >
+        field_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="personFieldFixvalueId != null" >
+        #{personFieldFixvalueId,jdbcType=BIGINT},
+      </if>
+      <if test="fieldId != null" >
+        #{fieldId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldKey != null" >
+        #{fieldKey,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldValue != null" >
+        #{fieldValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jabava.pojo.manage.EhrPersonFieldFixvalue" >
+    update ehr_person_field_fixvalue
+    <set >
+      <if test="fieldId != null" >
+        field_id = #{fieldId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldKey != null" >
+        field_key = #{fieldKey,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldValue != null" >
+        field_value = #{fieldValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where person_field_fixvalue_id = #{personFieldFixvalueId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.manage.EhrPersonFieldFixvalue" >
+    update ehr_person_field_fixvalue
+    set field_id = #{fieldId,jdbcType=INTEGER},
+      field_key = #{fieldKey,jdbcType=VARCHAR},
+      field_value = #{fieldValue,jdbcType=VARCHAR}
+    where person_field_fixvalue_id = #{personFieldFixvalueId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,112 @@
+﻿{
+"data" : [{
+		"companyId" : 8,
+		"contactEmp" : "联系人   ：",
+		"id" : 35,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-EHR-20160108-0004",
+		"remark" : "联系人   ：",
+		"state" : 0,
+		"telephoneNumber" : "联系人   ："
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "Bill",
+		"contractName" : "MicroSoft合同",
+		"id" : 31,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-EHR-20151208-0002",
+		"pactName" : "MicroSoft协议",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "111"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "Hi好",
+		"contractName" : "小百度合同",
+		"id" : 29,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151207-0001",
+		"pactName" : "小百度协议",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "122"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "张三",
+		"contractName" : "广渠路11号",
+		"id" : 26,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-EHR-20151201-0001",
+		"pactName" : "广渠路11号协议",
+		"remark" : "备注123",
+		"state" : 0,
+		"telephoneNumber" : "132693293455"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "地方 ",
+		"contractName" : "发光飞碟",
+		"id" : 25,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151201-0001",
+		"pactName" : "广告法规",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "5344325"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "小明",
+		"contractName" : "方法",
+		"id" : 24,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151130-0004",
+		"pactName" : "功夫大使馆",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "13312341234"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "小明",
+		"contractName" : "反而地方",
+		"id" : 23,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151130-0003",
+		"pactName" : "防守打法",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "13312341234"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "小明",
+		"contractName" : "合同123",
+		"id" : 22,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151130-0002",
+		"pactName" : "第三代",
+		"remark" : "地方的人",
+		"state" : 0,
+		"telephoneNumber" : "132434324"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "小丽",
+		"contractName" : "合同343",
+		"id" : 21,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151130-0001",
+		"pactName" : "百度人才协议",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "13312341234"
+	}, {
+		"companyId" : 8,
+		"contactEmp" : "联系人111",
+		"contractName" : "合同名称111",
+		"id" : 20,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-HP-20151126-0001",
+		"pactName" : "协议名称111",
+		"remark" : "备注111",
+		"state" : 0,
+		"telephoneNumber" : "电话111"
+	}
+	]
+}

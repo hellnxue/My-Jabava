@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<plugins>
+		<!-- 郑长山，2016年1月11日13:40:35，mybatis分页拦截器 -->
+		<plugin interceptor="com.jabava.interceptor.PageInterceptor"></plugin>
+	</plugins>
+</configuration>

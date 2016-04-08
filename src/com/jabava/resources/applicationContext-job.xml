@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 定时任务: 更新协议 -->
+	<bean id="importProcotolJob" class="com.jabava.task.ImportProcotolTask" />
+	<bean id="importProcotolJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importProcotolJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importProcotolJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importProcotolJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/1 * * * ?</value>
+		</property>
+	</bean>
+<!-- 定时任务: 获取订单 -->
+	<bean id="importOrderJob" class="com.jabava.task.ImportOrderTask" />
+	<bean id="importOrderJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importOrderJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importOrderJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importOrderJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/1 * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 定制抓取账单 -->
+	<bean id="importBillTask" class="com.jabava.task.ImportBillTask" />
+	<bean id="importBillTaskFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importBillTask" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importBillTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importBillTaskFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/3 * * * ?</value>
+		</property>
+	</bean>
+
+	
+	<!-- 定时任务: 收款  -->
+	<bean id="importReceiptOwnedJob" class="com.jabava.task.ImportReceiptOwnedTask" />
+	<bean id="importReceiptOwnedJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importReceiptOwnedJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importReceiptOwnedJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importReceiptOwnedJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/4 * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 定时任务: 获取社保公积金 -->
+	<bean id="importPolicyPackageJob" class="com.jabava.task.ImportPolicyPackageTask" />
+	<bean id="importPolicyPackageJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importPolicyPackageJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importPolicyPackageJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importPolicyPackageJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/4 * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 定时任务: 获取工资信息 -->
+	<bean id="importSalaryInfoJob" class="com.jabava.task.ImportSalaryInfoTask" />
+	<bean id="importSalaryInfoJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importSalaryInfoJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importSalaryInfoJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importSalaryInfoJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/5 * * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 配置调度工厂 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+			   <!--  <ref local="importOrderJobTrigger" />
+				<ref local="importSalaryInfoJobTrigger" />
+				<ref local="importBillTaskTrigger" />				
+				<ref local="importReceiptOwnedJobTrigger" />
+				<ref local="importProcotolJobTrigger" />
+				<ref local="importPolicyPackageJobTrigger" />  -->  
+			</list>
+		</property>
+	</bean>
+</beans>

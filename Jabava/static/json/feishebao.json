@@ -1,0 +1,22 @@
+{
+"data" : [{
+		"billStartMonth" : "201406",
+		"quotationName": "报价单名称",
+		"prodName": "险种",
+		"billTemplateId" : 15,
+		"createDate" : 1403107200000,
+		"createUserId" : 780216,
+		"isDeleted" : 0,
+		"itemId" : 2260,
+		"itemType" : "0",
+		"offerId" : 8,
+		"ordNsbRecId" : 11316,
+		"orderRecordId" : 5301,
+		"paymentEndMonth" : "201406",
+		"paymentStartMonth" : "201406",
+		"sum" : 35.00000,
+		"updateDate" : 1403107200000,
+		"updateUserId" : 780216
+	}
+]
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<global-method-security access-decision-manager-ref="accessDecisionManager" />
+	<http pattern="/static/**" security="none" />
+	<http pattern="/welcome.jsp" security="none" />
+	<http pattern="/to_register" security="none" />
+	<http pattern="/register" security="none" />
+	<http pattern="/checkMobile" security="none" />
+    <http pattern="/common/error" security="none" />
+	<http pattern="/api/**" security="none" />
+    
+	<!--http pattern="/nosec/**" security="none" />
+	<http pattern="/nosecAjax/**" security="none" />
+	<http pattern="/nosecAction/**" security="none" /-->
+	<http auto-config="false" entry-point-ref="casEntryPoint" servlet-api-provision="true"
+		access-decision-manager-ref="accessDecisionManager">
+		<intercept-url pattern="/**" access="ROLE_LOGIN" />
+		<custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER" />
+		<!-- <custom-filter position="FORM_LOGIN_FILTER" ref="casFilter" /> -->
+		<custom-filter ref="singleLogoutFilter" before="CAS_FILTER" />
+		<custom-filter position="CAS_FILTER" ref="casFilter" />
+		
+		<!--custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" /-->
+	</http>
+
+	<beans:bean id="sessionAuthenticationStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<beans:property name="maximumSessions" value="1" />
+	</beans:bean>
+
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	
+	<!--beans:bean id="concurrencyFilter"  
+        class="org.springframework.security.web.session.ConcurrentSessionFilter">  
+        <beans:property name="sessionRegistry" ref="sessionRegistry" />  
+        <beans:property name="expiredUrl" value="/session-expired.htm" />  
+    </beans:bean-->
+
+	<!--beans:bean id="casEntryPoint" class="org.springframework.security.cas.web.CasAuthenticationEntryPoint"-->
+	<beans:bean id="casEntryPoint" class="com.ezhiyang.core.web.JabavaCasAuthenticationEntryPoint">
+		<beans:property name="loginUrl" value="${sso.loginUrl}" />
+		<!--beans:property name="loginUrl" value="http://sso.ezhiyang.com/cas-server/login?type=hrhelper" />
+		<beans:property name="loginUrl" value="http://sso.ezhiyang.com/cas-server/login?type=Jabava" /-->
+		<beans:property name="serviceProperties" ref="serviceProperties" />
+	</beans:bean>
+	<beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
+		<beans:property name="service" value="${sso.reUrl}" />
+		<!--beans:property name="service" value="http://172.16.1.8:8080/Jabava/j_spring_cas_security_check" /-->
+		<beans:property name="sendRenew" value="false" />
+	</beans:bean>
+
+	<!-- cas 认证失败控制器 -->  
+    <beans:bean id="authenticationFailureHandler"  
+        class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">  
+        <beans:property name="defaultFailureUrl" value="/j_spring_cas_security_logout" />  
+    </beans:bean>
+    <!-- cas 认证成功控制器 -->
+	<beans:bean id="authenticationSuccessHandler" class="com.ezhiyang.common.handler.SingleAuthenticationSuccessHandler" />
+	<beans:bean id="casFilter" class="org.springframework.security.cas.web.CasAuthenticationFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+		<beans:property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+		
+		<!--beans:property name="sessionAuthenticationStrategy" ref="sessionAuthenticationStrategy" /-->
+	</beans:bean>
+	
+	<!--beans:bean id="multipleAuthenticationFailureHandler"
+                class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
+        <beans:property name="exceptionMappings">
+            <beans:map>
+                <beans:entry key="com.template.security.exception.EmailNotFoundException"
+                             value="/forend/login?error=1"/>
+                <beans:entry key="com.template.security.exception.PhoneNotFoundException"
+                             value="/forend/login?error=2"/>
+                <beans:entry key="org.springframework.security.core.userdetails.UsernameNotFoundException"
+                             value="/backend/login?error=1"/>
+                <beans:entry key="com.template.security.exception.CaptchaWrongException"
+                             value="/backend/login?error=2"/>
+            </beans:map>
+        </beans:property>
+    </beans:bean-->
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="casAuthenticationProvider" />
+	</authentication-manager>
+
+	<!--beans:bean id="userDetailsManager" class="com.zy.common.filter.security.UserDetailsManager" />
+ 	<beans:bean id="casAuthenticationUserDetailsService" class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+ 		<beans:property name="userDetailsService">
+ 			<beans:ref bean="userDetailsManager" />
+ 		</beans:property>
+ 	</beans:bean-->
+
+	<beans:bean id="jabava.authenticationUserDetailsService" class="com.ezhiyang.core.service.impl.JabavaCasUserDetailsService">
+		<beans:property name="centerUserService" ref="dubbo.centerUserService"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="allowIfAllAbstainDecisions" value="false" />
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="com.ezhiyang.common.filter.security.DynamicRoleVoter" />
+				<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+		<beans:property name="authenticationUserDetailsService" ref="jabava.authenticationUserDetailsService" />
+		<beans:property name="serviceProperties" ref="serviceProperties" />
+		<beans:property name="ticketValidator">
+			<beans:bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<beans:constructor-arg index="0" value="${sso.service}" />
+				<!--beans:constructor-arg index="0" value="http://sso.ezhiyang.com/cas-server" /-->
+			</beans:bean>
+		</beans:property>
+		<beans:property name="key" value="an_id_for_this_auth_provider_only" />
+	</beans:bean>
+
+	<!-- 注销客户端 -->
+	<beans:bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter" />
+
+	<!-- 注销服务器端 -->
+	<beans:bean id="requestSingleLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg value="${sso.logoutUrl}" />
+		<!--beans:constructor-arg value="http://sso.ezhiyang.com/cas-server/logout" /-->
+		<beans:constructor-arg>
+			<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/j_spring_cas_security_logout" />
+	</beans:bean>
+</beans:beans>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jabava.dao.manage.EhrFunctionPointMapper" >
+  <resultMap id="BaseResultMap" type="com.jabava.pojo.manage.EhrFunctionPoint" >
+    <id column="function_point_code" property="functionPointCode" jdbcType="INTEGER" />
+    <result column="function_point_name" property="functionPointName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    function_point_code, function_point_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ehr_function_point
+    where function_point_code = #{functionPointCode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ehr_function_point
+    where function_point_code = #{functionPointCode,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jabava.pojo.manage.EhrFunctionPoint" >
+    insert into ehr_function_point (function_point_code, function_point_name
+      )
+    values (#{functionPointCode,jdbcType=INTEGER}, #{functionPointName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jabava.pojo.manage.EhrFunctionPoint" >
+    insert into ehr_function_point
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="functionPointCode != null" >
+        function_point_code,
+      </if>
+      <if test="functionPointName != null" >
+        function_point_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="functionPointCode != null" >
+        #{functionPointCode,jdbcType=INTEGER},
+      </if>
+      <if test="functionPointName != null" >
+        #{functionPointName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jabava.pojo.manage.EhrFunctionPoint" >
+    update ehr_function_point
+    <set >
+      <if test="functionPointName != null" >
+        function_point_name = #{functionPointName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where function_point_code = #{functionPointCode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.manage.EhrFunctionPoint" >
+    update ehr_function_point
+    set function_point_name = #{functionPointName,jdbcType=VARCHAR}
+    where function_point_code = #{functionPointCode,jdbcType=INTEGER}
+  </update>
+</mapper>

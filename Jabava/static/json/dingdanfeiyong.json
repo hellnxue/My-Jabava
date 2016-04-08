@@ -1,0 +1,224 @@
+{
+"data" : [{
+		"billMonth" : "201406",
+		"companyBase" : 2314.00000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2314.00000,
+		"individualRatio" : 0.020000,
+		"paySum" : 258.26000,
+		"paymentMonth" : "201406",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201407",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 232.03000,
+		"paymentMonth" : "201407",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201408",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 232.03000,
+		"paymentMonth" : "201408",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201409",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 232.03000,
+		"paymentMonth" : "201409",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201410",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 232.03000,
+		"paymentMonth" : "201410",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 , 
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201411",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201412",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201501",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201502",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 2578.20000,
+		"companyRatio" : 0.070000,
+		"individualBase" : 2578.20000,
+		"individualRatio" : 0.020000,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201503",
+		"prodName" : "医疗保险",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201406",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 35.00000,
+		"paymentMonth" : "201406",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201407",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 35.00000,
+		"paymentMonth" : "201407",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201408",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 35.00000,
+		"paymentMonth" : "201408",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201409",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 35.00000,
+		"paymentMonth" : "201409",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201410",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 35.00000,
+		"paymentMonth" : "201410",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201411",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201412",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201501",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201502",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}, {
+		"billMonth" : "201411",
+		"companyBase" : 0,
+		"companyRatio" : 0,
+		"individualBase" : 0,
+		"individualRatio" : 0,
+		"paySum" : 0.00000,
+		"paymentMonth" : "201503",
+		"prodName" : "代理服务费ServiceFee",
+		"ifPrepay":1 ,
+		"frequency":"每月收"
+	}
+]
+}

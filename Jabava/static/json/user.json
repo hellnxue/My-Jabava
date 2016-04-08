@@ -1,0 +1,11 @@
+{
+  "id":"1",
+  "companyname":"测试公司",
+  "email":"stone@sss.com",
+  "type":"普通用户",
+  "status":"有效",
+  "iflocked":"未锁定",
+  "updateby":"管理员",
+  "updatedate":"2015-11-11 11:11:11",
+  "operation":""
+}

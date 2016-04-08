@@ -1,0 +1,124 @@
+@charset "utf-8";
+/*计算器*/
+div,body,dl,dt,dd,table,tr,td,li,ul{ margin:0; padding:0;}
+.boxs{ border-radius:20px; box-shadow: 0 0 10px #ccc;box-sizing: content-box; width: 990px; z-index: 1001; }
+.panel-heading span{ font-size:16px; font-weight:bold}
+.sty{ margin:0; padding:0;}
+.heigt{ height:32px;}
+.zinav{ width:266px;}
+/*.lr{ overflow:hidden; }*/
+.left{ float:left;}
+.right{ float:left;}
+.form-width{ width:448px;}
+/*省份 城市*/
+.nodisplay{ height:500px;}
+.select_city_con_wrap div.actived {
+    display: block;
+}
+.select_city_con {
+    display: none;
+    overflow: hidden;
+    padding: 0px 15px;
+}
+.select_city_con dl {
+    overflow: hidden;
+    width: 100%;
+}
+.select_city_con dt {
+    display: inline-block;
+    float: left;
+    font-weight: 700;
+    line-height: 2;
+    margin-right: 10px;
+    text-align: right;
+    width: 28px;
+}
+.select_city_con dd {
+    display: inline;
+    float: left;
+    margin-left: 0;
+}
+.dw{ width:198px;}
+
+/*户籍性质*/
+.widh{ width:268px;}
+/*是否缴纳*/
+.status{ height:20px; margin-top:-15px;}
+.yes{ background:url(../img/4.png) no-repeat 36px -14px; height:30px;}
+.yes_1{ background:url(../img/4.png) no-repeat 76px -14px; height:30px;}
+.yes_2{ background:url(../img/4.png) no-repeat 11px -14px; height:30px;}
+
+.js{ margin-left:116px; font-weight:normal; font-size:11px;}
+.jss{ margin-left:115px; font-weight:normal; font-size:11px;}
+.bcjs{margin-left:114px; font-weight:normal; font-size:11px;}
+.bljs{margin-left:96px; font-weight:normal; font-size:11px;}
+.bljss{margin-left:103px; font-weight:normal; font-size:11px;}
+
+.gjjin{ margin-right:20px; font-size:11px;}
+.noweight{ font-weight:normal;}
+/*缴纳比例*/
+.noback{ background:#fff; width:10px;}
+.jsfw{font-weight:normal; font-size:11px;}
+/*右边*/
+.nosg{ font-size:16px; padding-left:33px;}
+.right{ padding-left:15px;}
+table{ border:0; border:1px solid #ccc; width:545px; min-height:100px; text-align: center;}
+.calculator_result_table thead tr td {
+    background-color: #e7e7e7;
+    height: 30px;
+}
+td, th {
+    border: 1px solid #ddd;
+}
+.calculator_result_table tfoot td .total {
+    color: #f60;
+    font-size: 22px;
+}
+.calculator_result_table .total-company, .calculator_result_table .total-personal {
+    color: #f60;
+    font-size: 16px;
+}
+.calculator_result_table tbody tr, .calculator_result_table tbody tr td {
+    height: 34px;
+}
+/*省份 城市*/
+.star{ border:1px solid #ccc; width:268px; margin-left:150px; background:#fff; position:absolute; top:103px; z-index:999;}
+.star span{ display:inline-table; width:132px; text-align:center; cursor:pointer;  height:36px; line-height:36px; border-bottom:1px solid #ccc;}
+.star .bor{ color:#f00; border-top:2px solid #f00; border-bottom:none}
+.star span:hover{/*border-top:2px solid #f00; border-bottom:none*/}
+.select_city_con a {display: inline-block;  line-height: 2;  outline: 0 none;  padding: 0 6px; text-decoration: none; white-space: nowrap;float:left;}
+.select_city_con a:hover{ /*color:#EB6100; color:#fff;*/}
+.current{ background:#f00; color:#fff;}
+.province{border-right:1px solid #ccc; border-bottom:1px solid #ccc; /*margin-top:5px;*/}
+.city{border-left:1px solid #ccc;}
+.prty,.stly{ margin-top:5px;}
+
+
+
+
+
+
+
+/*户籍*/
+/*int-select{ width:200px; height:40px;}
+ul li cite select{ width:336px; height:34px; font-size:16px; color:#c0bfbe; padding-left:14px;  border:1px solid #ccc; background:transparent; -webkit-background:transparent; -moz-background:transparent; -o-background:transparent; border-radius:4px;}
+ul li cite{ width:316px; height:36px; float:left; background:#fff url(../img/xiala_2.png) no-repeat right; overflow:hidden;}*/
+
+.address{ width:200px; border:1px solid #ccc; background:#fff; border-radius:3px; position:absolute; left:30px; top:40px; background:url(../img/2.png) no-repeat right center; overflow:hidden;}
+/*.address ul{ list-style:none; }
+.address ul li{ line-height:24px;}
+.address ul li a{display:inline-table; width:268px;}
+.address ul li a:hover{ background:#ccc; }*/
+
+
+select{display: none;}
+.select_box{font-family: "宋体"; font-size: 12px;color: #999999;/*width: 178px;*/line-height:32px;/*margin: 50px auto;*/}
+.select_showbox{border: 1px solid #E4E5E7;height:32px;padding-left: 5px;background:#fff url(../img/2.png) no-repeat center right; border-radius:3px;}
+.select_option{border: 1px solid #b0a296;border-top: none;display: none; background:#fff; border:none; border:1px solid #E4E5E7; position:absolute; z-index:9999; width:269px;}
+.select_option li{padding-left: 5px; list-style:none;}
+.select_option li.selected{color: #999;}
+.select_option li.hover{background:#3B82C4; color: #fff;}
+
+
+
+

@@ -1,0 +1,103 @@
+{
+		"recordsFiltered" : 8,
+		"data" : [{
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2012-05-04 23:12",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "",
+				"roleId" : 11,
+				"roleName" : "系统管理员"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2015-12-01 17:29",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "",
+				"roleId" : 12,
+				"roleName" : "普通用户"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2015-12-02 11:05",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "",
+				"roleId" : 16,
+				"roleName" : "测试"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2015-12-07 15:51",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "测试一下",
+				"roleId" : 18,
+				"roleName" : "测试123"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2015-12-08 09:40",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "",
+				"roleId" : 20,
+				"roleName" : "1111"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2015-12-30 16:59",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "他只能修改信息公告",
+				"roleId" : 21,
+				"roleName" : "信息公告管理员"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2016-01-07 19:35",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "qqqq",
+				"roleId" : 22,
+				"roleName" : "1212"
+			}, {
+				"companyId" : 0,
+				"createDate" : null,
+				"createUserId" : 0,
+				"createUserName" : "",
+				"lastModifyDate" : null,
+				"lastModifyDate1" : "2016-01-07 20:12",
+				"lastModifyUserId" : 0,
+				"lastModifyUserName" : "公司系统管理员",
+				"memo" : "111111",
+				"roleId" : 23,
+				"roleName" : "22323"
+			}
+		],
+		"recordsTotal" : 8
+	}
+

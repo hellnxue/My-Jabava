@@ -1,0 +1,9 @@
+﻿{
+            "baseDataId": 610,
+			"baseDataType": 2,
+			"baseDataTypeName":"团队",
+			"baseDataCode":"reliziyuan",
+			"baseDataName":"人力资源部",
+			"memo":"这是备注",
+			"isValid": 1
+}

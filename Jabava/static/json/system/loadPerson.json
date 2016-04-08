@@ -1,0 +1,34 @@
+[
+        {
+            "personId": 1,
+			"jobNumber": "R10003",
+			"employeeName":"裘米佳",
+			"organizationId": 156,
+			"org":"人力资源部",
+			"postId": 620,
+			"post": "公共事务经理",
+			"mobile": 12233334567,
+			"phone": 62223456,
+			"email":"qiumijia@163.com",
+			"certType": 0,
+			"certId": 520112198311271721,
+			"keyPerson": 1,
+			"rankId": 733
+			},
+			   {
+            "personId": 2,
+			"jobNumber": "R10012",
+			"employeeName":"赛娜",
+			"organizationId": 151,
+			"org":"法务部",
+			"postId": 621,
+			"post": "法务顾问",
+			"mobile": 12233334567,
+			"phone": 62223456,
+			"email": "qiumijia@163.com",
+			"certType": 0,
+			"certId": 150102198406230146,
+			"keyPerson": 1,
+			"rankId": 733
+       }
+]

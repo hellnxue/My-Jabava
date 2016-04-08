@@ -1,0 +1,19 @@
+﻿{
+    "draw":1,
+    "recordsTotal": 30,
+    "recordsFiltered": 10,
+    "data": [
+        {
+            "sysLogId":14420,
+			"userName": "公司系统管理员",
+			"operateInfo": "新增角色,名称为 普通用户",
+			"operateDate1": "2012-05-04 23:05:00"
+        },
+        {
+             "sysLogId": 4210,
+			 "userName": "公司系统管理员",
+			 "operateInfo": "修改用户,修改后名称为 王丽娜",
+			 "operateDate1": "2012-05-26 09:05:00"
+        }
+]
+}

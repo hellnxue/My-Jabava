@@ -1,0 +1,179 @@
+{
+	"listField" : [{
+			"fieldDesc" : "工作地",
+			"fieldId" : 1,
+			"fieldName" : "work_location",
+			"fieldType" : 5,
+			"fieldValueList" : [],
+			"relateSql" : "select base_data_id as  field_key,base_data_name as  field_value from ehr_base_data where is_valid=1 and base_data_type=5"
+		}, {
+			"fieldDesc" : "发薪地",
+			"fieldId" : 2,
+			"fieldName" : "payroll_location",
+			"fieldType" : 5,
+			"fieldValueList" : [],
+			"relateSql" : "select base_data_id as  field_key,base_data_name as  field_value from ehr_base_data where is_valid=1 and base_data_type=5"
+		}, {
+			"fieldDesc" : "部门",
+			"fieldId" : 3,
+			"fieldName" : "organization_id",
+			"fieldType" : 2,
+			"fieldValueList" : [],
+			"relateSql" : ""
+		}
+	],
+	"fieldValue" : [["597", "北京", "0"], ["598", "上海", "0"], ["599", "深圳", "0"], ["600", "广州", "0"], ["601", "杭州", "0"], ["737", "111111", "0"]],
+	"listPower" : [{
+			"fieldId" : 3,
+			"fieldType" : 1,
+			"fieldValue" : "333",
+			"ftype" : 2,
+			"functionPointCode" : 2,
+			"operateType" : 5,
+			"personField" : {
+				"fieldDesc" : "部门",
+				"fieldId" : 3,
+				"fieldName" : "organization_id",
+				"fieldType" : 2,
+				"fieldValueList" : [],
+				"relateSql" : ""
+			},
+			"powerValueList" : [],
+			"seqNo" : 1,
+			"userId" : 73,
+			"userPersonPowerId" : 30
+		}, {
+			"fieldId" : 3,
+			"fieldType" : 1,
+			"fieldValue" : "说的是谁",
+			"ftype" : 2,
+			"functionPointCode" : 1,
+			"operateType" : 2,
+			"personField" : {
+				"fieldDesc" : "部门",
+				"fieldId" : 3,
+				"fieldName" : "organization_id",
+				"fieldType" : 2,
+				"fieldValueList" : [],
+				"relateSql" : ""
+			},
+			"powerValueList" : [],
+			"seqNo" : 2,
+			"userId" : 73,
+			"userPersonPowerId" : 31
+		}
+	],
+	"user" : {
+		"buttonMap" : {},
+		"company" : {
+			"companyAddress" : "",
+			"companyCode" : "000001",
+			"companyFax" : "",
+			"companyId" : 8,
+			"companyName" : "百度人才",
+			"companyShortName" : "",
+			"companyTelephone" : "",
+			"companyType" : 2,
+			"contactor" : "",
+			"contactorTelephone" : "",
+			"createDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 23,
+				"minutes" : 4,
+				"month" : 4,
+				"seconds" : 27,
+				"time" : 1336143867000,
+				"timezoneOffset" : -480,
+				"year" : 112
+			},
+			"createUserId" : 7,
+			"createUserName" : "管理员",
+			"employeeQuantity" : 0,
+			"finishDate" : null,
+			"lastModifyDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 23,
+				"minutes" : 4,
+				"month" : 4,
+				"seconds" : 27,
+				"time" : 1336143867000,
+				"timezoneOffset" : -480,
+				"year" : 112
+			},
+			"lastModifyUserId" : 7,
+			"lastModifyUserName" : "管理员",
+			"license" : "",
+			"memo" : "",
+			"parentId" : 1,
+			"principal" : "",
+			"startDate" : null,
+			"useEhr" : 1
+		},
+		"companyCode" : "",
+		"companyId" : 8,
+		"companyName" : "",
+		"createDate" : {
+			"date" : 30,
+			"day" : 3,
+			"hours" : 17,
+			"minutes" : 3,
+			"month" : 11,
+			"seconds" : 39,
+			"time" : 1451466219000,
+			"timezoneOffset" : -480,
+			"year" : 115
+		},
+		"createUserId" : 22,
+		"createUserName" : "公司系统管理员",
+		"failtureTime" : 0,
+		"isLocked" : 0,
+		"isValid" : 1,
+		"lastChangePasswordDate" : {
+			"date" : 30,
+			"day" : 3,
+			"hours" : 17,
+			"minutes" : 3,
+			"month" : 11,
+			"seconds" : 39,
+			"time" : 1451466219000,
+			"timezoneOffset" : -480,
+			"year" : 115
+		},
+		"lastModifyDate" : {
+			"date" : 30,
+			"day" : 3,
+			"hours" : 17,
+			"minutes" : 3,
+			"month" : 11,
+			"seconds" : 39,
+			"time" : 1451466219000,
+			"timezoneOffset" : -480,
+			"year" : 115
+		},
+		"lastModifyUserId" : 22,
+		"lastModifyUserName" : "公司系统管理员",
+		"loginTime" : 0,
+		"mailAddress" : "zhenyu.liu@ezhiyang.com",
+		"memo" : "",
+		"mobile" : "13811111111",
+		"modifyDate" : "",
+		"password" : "j84o11",
+		"sex" : 2,
+		"telephone" : "",
+		"userCode" : "1111",
+		"userDistinguish" : "",
+		"userId" : 73,
+		"userName" : "刘振宇叔叔",
+		"userType" : 2
+	},
+	"listFunctionPoint" : [{
+			"functionPointCode" : 1,
+			"functionPointName" : "默认"
+		}, {
+			"functionPointCode" : 2,
+			"functionPointName" : "社保"
+		}
+	]
+}

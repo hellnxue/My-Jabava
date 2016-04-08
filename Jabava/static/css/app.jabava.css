@@ -1,0 +1,131 @@
+/*employee nav*/
+.board {
+  margin: 0 auto;
+  padding:0 51px;
+  background: #fafafa url(../img/board_bg.jpg);
+  background-size: 30%;
+  position: relative;
+  border-bottom: 1px solid #e4e5e7;
+}
+.board > .prev,
+.board > .next {
+  background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
+  border: 3px solid #fff;
+  border-radius: 23px;
+  box-sizing: content-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 60px;
+  font-weight: 100;
+  height: 40px;
+  left: 5px;
+  line-height: 30px;
+  margin-top: -23px;
+  opacity: 0.5;
+  position: absolute;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 0 0 2px #000;
+  top: 50%;
+  width: 40px;
+}
+.board > .next {
+  left: auto;
+  right: 5px;
+}
+.board > .slick-disabled {
+  background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
+  cursor: default;
+}
+.board > .liner {
+  height: 2px;
+  background: #ddd;
+  position: absolute;
+  width: 80%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+}
+
+.board .slicks {
+  margin: 0 auto;
+  background-size: 30%;
+  position: relative;
+  z-index: 2;
+}
+
+.board .slicks .slick-slide {
+  position: relative;
+}
+
+.board .slicks .slick-slide.active > a,
+.board .slicks .slick-slide.active > a:hover,
+.board .slicks .slick-slide.active > a:focus {
+  color: #555555;
+  cursor: default;
+  border: 0;
+  border-bottom-color: transparent;
+}
+
+.board .slicks .slick-slide a{
+  display: block;
+  position: relative;
+  width: 60px;
+  height: 70px;
+  margin: 20px auto;
+  border-radius: 100%;
+  padding: 0;
+}
+
+.board .slicks .slick-slide a:hover{
+  background: transparent;
+}
+.board .slicks .slick-slide a:focus {
+  outline: none;
+}
+
+.board .slicks .round-tabs{
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  display: inline-block;
+  border-radius: 100px;
+  background: white;
+  z-index: 3;
+  position: absolute;
+  left: 0;
+  text-align: center;
+  font-size: 42px;
+  font-weight: 600;
+  border: 2px solid #ddd;
+  color: #999;
+}
+.board .slicks .slick-slide.active .round-tabs{
+  background: #fff !important;
+  color: rgb(34, 194, 34);
+  border: 2px solid rgb(34, 194, 34);
+}
+
+.board .slicks .slick-slide.active .round-tabs{
+  background: #fafafa;
+}
+
+.board .slicks .label {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.board .slicks .badge {
+  background-color: #ccc;
+  position: absolute;
+  bottom: -14px;
+  z-index: 3;
+  width: 100%;
+}
+
+.board .slicks .badge-success {
+  background-color:  rgb(34, 194, 34);
+}

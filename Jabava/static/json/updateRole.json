@@ -1,0 +1,33 @@
+{
+		"companyId" : 8,
+		"createDate" : {
+			"date" : 7,
+			"day" : 4,
+			"hours" : 19,
+			"minutes" : 36,
+			"month" : 0,
+			"seconds" : 37,
+			"time" : 1452166597000,
+			"timezoneOffset" : -480,
+			"year" : 116
+		},
+		"createUserId" : 22,
+		"createUserName" : "公司系统管理员",
+		"lastModifyDate" : {
+			"date" : 7,
+			"day" : 4,
+			"hours" : 19,
+			"minutes" : 36,
+			"month" : 0,
+			"seconds" : 37,
+			"time" : 1452166597000,
+			"timezoneOffset" : -480,
+			"year" : 116
+		},
+		"lastModifyUserId" : 22,
+		"lastModifyUserName" : "公司系统管理员",
+		"memo" : "23232",
+		"roleId" : 23,
+		"roleName" : "22323"
+	}
+

@@ -1,0 +1,122 @@
+{
+	"list" : [{
+			"contractEndDate" : {
+				"date" : 16,
+				"day" : 3,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1450195200000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"contractId" : 8,
+			"contractMonth" : 0,
+			"contractProperty" : "首签",
+			"contractStartDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449158400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"contractSubject" : 734,
+			"contractType" : "固定期限",
+			"createDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 15,
+				"minutes" : 22,
+				"month" : 11,
+				"seconds" : 21,
+				"time" : 1449213741000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"createUserId" : 22,
+			"createUserName" : "公司系统管理员",
+			"flag" : 0,
+			"lastModifyDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 16,
+				"minutes" : 5,
+				"month" : 11,
+				"seconds" : 58,
+				"time" : 1449216358000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"lastModifyUserId" : 22,
+			"lastModifyUserName" : "公司系统管理员",
+			"memo" : "",
+			"oldExpireDate" : null,
+			"personId" : 1145,
+			"trialMonth" : 4
+		}, {
+			"contractEndDate" : {
+				"date" : 14,
+				"day" : 1,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1450022400000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"contractId" : 9,
+			"contractMonth" : 1,
+			"contractProperty" : "续签",
+			"contractStartDate" : {
+				"date" : 2,
+				"day" : 1,
+				"hours" : 0,
+				"minutes" : 0,
+				"month" : 10,
+				"seconds" : 0,
+				"time" : 1446393600000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"contractSubject" : 734,
+			"contractType" : "固定期限",
+			"createDate" : {
+				"date" : 4,
+				"day" : 5,
+				"hours" : 15,
+				"minutes" : 30,
+				"month" : 11,
+				"seconds" : 30,
+				"time" : 1449214230000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"createUserId" : 22,
+			"createUserName" : "公司系统管理员",
+			"flag" : 0,
+			"lastModifyDate" : {
+				"date" : 9,
+				"day" : 3,
+				"hours" : 10,
+				"minutes" : 46,
+				"month" : 11,
+				"seconds" : 0,
+				"time" : 1449629160000,
+				"timezoneOffset" : -480,
+				"year" : 115
+			},
+			"lastModifyUserId" : 22,
+			"lastModifyUserName" : "公司系统管理员",
+			"memo" : "",
+			"oldExpireDate" : null,
+			"personId" : 1145,
+			"trialMonth" : 1
+		}
+	]
+}

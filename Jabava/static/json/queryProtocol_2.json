@@ -1,0 +1,12 @@
+{
+		"companyId" : 8,
+		"contactEmp" : "Bill",
+		"contractName" : "MicroSoft合同",
+		"id" : 31,
+		"isDeleted" : 0,
+		"pactCode" : "ZY-EHR-20151208-0002",
+		"pactName" : "MicroSoft协议",
+		"remark" : "",
+		"state" : 0,
+		"telephoneNumber" : "111"
+	}

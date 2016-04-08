@@ -1,0 +1,70 @@
+@charset "utf-8";
+/* CSS Document */
+/*账单查看*/
+div,body,dl,dt,dd,table,tr,td,li,ul{ margin:0; padding:0;}
+body{ background:#F1F3F6;}
+h2{ margin-top:0; font-size:large;}
+.hbreadcrumb {
+    background-color: #fff;
+    font-size: 11px;
+    list-style: outside none none;
+    margin-bottom: 0;
+    margin-top: 6px;
+}
+table{ width:100% !important;}
+/*th{ width: auto !important; }*/
+
+
+/*账单*/
+.panel-but{margin-top:8px !important;}
+.dataTables_length label{ font-weight:normal;}
+.panel-bag{background:#fff;/* width:100%; */overflow-x:scroll; /*margin:32px 22px 0;*/}
+// h4{ margin-bottom: 10px; margin-top: 10px;}
+.zhangdan_nianyues{font-weight:700px; margin-left:40px; font-size:16px;}
+.zhifu{text-align:right; margin-right:42px; margin-top:10px; background:#F1F3F6;}
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td{border-bottom-width:1px;} 
+#detailTable .table > thead > tr > td, #detailTable .table > tbody > tr > td, #detailTable .table > tfoot > tr > td{ /*min-width:105px;*/min-width:81px;}
+#detailTable .table th { text-align: center; font-weight:normal; padding-left:0; padding-right:0; min-width:80px;}
+#billTable .table th { text-align: center; font-weight:normal; padding-left:0; padding-right:0; min-width:80px;}
+.pagination {border-radius: 4px;display:inline; margin:0px 0; padding-left: 0; float:right;}
+#detailTable th{min-width:80px;}
+/*table.table-bordered th:last-child,table.table-bordered td:last-child{border-right-width:1px;}*/
+
+/*养老保险*/
+.ylbx{ border-bottom:1px solid #DDDDDD; width:945px;}
+.baoxian ul{ list-style:none;}
+.baoxian ul li{ float:left;  width:93px; border-right:1px solid #ddd;}
+.baoxian ul li.lasts{border-right:0;}
+.baoxians ul{ list-style:none;}
+.baoxians ul li{ float:left; width:93px;}
+.baoxians ul li.lasts{border-right:0;}
+.yl_baoxian ul{ list-style:none;}
+.yl_baoxian ul li{ float:left; width:93px;}
+.yl_baoxian ul li.lasts{border-right:0;}
+/*医疗保险*/
+.ylbxs{ border-bottom:1px solid #DDDDDD; width:945px;}
+.yiliao ul{ list-style:none;}
+.yiliao ul li{ float:left;  width:93px; border-right:1px solid #ddd;}
+.yiliao ul li.lasts{border-right:0;}
+
+/*非社保*/
+.fsb{ border-bottom:1px solid #DDDDDD; width:150px;}
+.shebao ul{ list-style:none;}
+.shebao ul li{ float:left;  width:150px; border-right:1px solid #ddd;}
+.shebao ul li.lasts{border-right:0;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

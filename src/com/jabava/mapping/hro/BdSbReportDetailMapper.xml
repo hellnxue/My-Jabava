@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jabava.dao.hro.BdSbReportDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.jabava.pojo.hro.BdSbReportDetail" >
+    <id column="sb_report_detail_id" property="sbReportDetailId" jdbcType="BIGINT" />
+    <result column="sb_report_id" property="sbReportId" jdbcType="BIGINT" />
+    <result column="sb_id" property="sbId" jdbcType="BIGINT" />
+    <result column="prod_id" property="prodId" jdbcType="BIGINT" />
+    <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="policy_group_id" property="policyGroupId" jdbcType="BIGINT" />
+    <result column="policy_group_type" property="policyGroupType" jdbcType="INTEGER" />
+    <result column="policy_name" property="policyName" jdbcType="VARCHAR" />
+    <result column="handle_party_id" property="handlePartyId" jdbcType="BIGINT" />
+    <result column="report_month" property="reportMonth" jdbcType="CHAR" />
+    <result column="sb_month" property="sbMonth" jdbcType="CHAR" />
+    <result column="employee_id" property="employeeId" jdbcType="BIGINT" />
+    <result column="rec_info_id" property="recInfoId" jdbcType="BIGINT" />
+    <result column="company_base" property="companyBase" jdbcType="DECIMAL" />
+    <result column="individual_base" property="individualBase" jdbcType="DECIMAL" />
+    <result column="company_ratio" property="companyRatio" jdbcType="DECIMAL" />
+    <result column="individual_ratio" property="individualRatio" jdbcType="DECIMAL" />
+    <result column="company_sum" property="companySum" jdbcType="DECIMAL" />
+    <result column="individual_sum" property="individualSum" jdbcType="DECIMAL" />
+    <result column="company_append" property="companyAppend" jdbcType="DECIMAL" />
+    <result column="individual_append" property="individualAppend" jdbcType="DECIMAL" />
+    <result column="all_sum" property="allSum" jdbcType="DECIMAL" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="lock_status" property="lockStatus" jdbcType="VARCHAR" />
+    <result column="lock_by" property="lockBy" jdbcType="BIGINT" />
+    <result column="lock_dt" property="lockDt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="BIGINT" />
+    <result column="create_dt" property="createDt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="BIGINT" />
+    <result column="update_dt" property="updateDt" jdbcType="TIMESTAMP" />
+    <result column="mimic_by" property="mimicBy" jdbcType="BIGINT" />
+    <result column="proxy_by" property="proxyBy" jdbcType="BIGINT" />
+    <result column="compensation_sum" property="compensationSum" jdbcType="DECIMAL" />
+    <result column="backpay_style" property="backpayStyle" jdbcType="VARCHAR" />
+    <result column="backpay_start_month" property="backpayStartMonth" jdbcType="CHAR" />
+    <result column="backpay_stop_month" property="backpayStopMonth" jdbcType="CHAR" />
+    <result column="company_accurate_sum" property="companyAccurateSum" jdbcType="DECIMAL" />
+    <result column="individual_accurate_sum" property="individualAccurateSum" jdbcType="DECIMAL" />
+    <result column="company_pay_type" property="companyPayType" jdbcType="INTEGER" />
+    <result column="individual_pay_type" property="individualPayType" jdbcType="INTEGER" />
+    <result column="is_paied" property="isPaied" jdbcType="INTEGER" />
+    <result column="pay_apply_style" property="payApplyStyle" jdbcType="VARCHAR" />
+    <result column="send_org_id" property="sendOrgId" jdbcType="BIGINT" />
+    <result column="receive_org_id" property="receiveOrgId" jdbcType="BIGINT" />
+    <result column="not_sbgjj" property="notSbgjj" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="company_compensation_sum" property="companyCompensationSum" jdbcType="DECIMAL" />
+    <result column="individual_compensation_sum" property="individualCompensationSum" jdbcType="DECIMAL" />
+  </resultMap>
+   <resultMap id="linkedHashMap" type="java.util.LinkedHashMap"></resultMap>
+  <sql id="Base_Column_List" >
+    sb_report_detail_id, sb_report_id, sb_id, prod_id, prod_name, org_id, company_id, 
+    policy_group_id, policy_group_type, policy_name, handle_party_id, report_month, sb_month, 
+    employee_id, rec_info_id, company_base, individual_base, company_ratio, individual_ratio, 
+    company_sum, individual_sum, company_append, individual_append, all_sum, pay_type, 
+    lock_status, lock_by, lock_dt, is_deleted, create_by, create_dt, update_by, update_dt, 
+    mimic_by, proxy_by, compensation_sum, backpay_style, backpay_start_month, backpay_stop_month, 
+    company_accurate_sum, individual_accurate_sum, company_pay_type, individual_pay_type, 
+    is_paied, pay_apply_style, send_org_id, receive_org_id, not_sbgjj, order_id, company_compensation_sum, 
+    individual_compensation_sum
+  </sql>
+  <!-- 批量新增更新社保公积金详情信息 如果  sb_report_detail_id 没有就新增，如果有就更新 --> 
+  <insert id="insertSbReportDetailUpdateList" parameterType="java.util.List">
+	  <![CDATA[
+		INSERT INTO bd_sb_report_detail
+   	    (
+   	      sb_report_detail_id, report_month, sb_report_id, 
+	      sb_id, prod_id, prod_name, 
+	      org_id, company_id, policy_group_id, 
+	      policy_group_type, policy_name, handle_party_id,
+	      sb_month, employee_id,rec_info_id, company_base, 
+	      individual_base, company_ratio, individual_ratio, 
+	      company_sum, individual_sum, company_append, 
+	      individual_append, all_sum, pay_type, 
+	      compensation_sum, backpay_style, 
+	      company_accurate_sum, individual_accurate_sum, company_pay_type, 
+	      individual_pay_type,  send_org_id, receive_org_id, 
+	      order_id, company_compensation_sum, individual_compensation_sum
+	      ) 
+   	    VALUES 
+   	  ]]>
+		<foreach collection="list" item="item"  index="index" separator=",">
+	  (
+	  #{item.sbReportDetailId,jdbcType=BIGINT}, #{item.reportMonth,jdbcType=CHAR}, #{item.sbReportId,jdbcType=BIGINT}, 
+      #{item.sbId,jdbcType=BIGINT}, #{item.prodId,jdbcType=BIGINT}, #{item.prodName,jdbcType=VARCHAR}, 
+      #{item.orgId,jdbcType=BIGINT}, #{item.companyId,jdbcType=BIGINT}, #{item.policyGroupId,jdbcType=BIGINT}, 
+      #{item.policyGroupType,jdbcType=INTEGER}, #{item.policyName,jdbcType=VARCHAR}, #{item.handlePartyId,jdbcType=BIGINT}, 
+      #{item.sbMonth,jdbcType=CHAR}, #{item.employeeId,jdbcType=BIGINT}, #{item.recInfoId,jdbcType=BIGINT}, #{item.companyBase,jdbcType=DECIMAL}, 
+      #{item.individualBase,jdbcType=DECIMAL}, #{item.companyRatio,jdbcType=DECIMAL}, #{item.individualRatio,jdbcType=DECIMAL}, 
+      #{item.companySum,jdbcType=DECIMAL}, #{item.individualSum,jdbcType=DECIMAL}, #{item.companyAppend,jdbcType=DECIMAL}, 
+      #{item.individualAppend,jdbcType=DECIMAL}, #{item.allSum,jdbcType=DECIMAL}, #{item.payType,jdbcType=VARCHAR}, 
+       #{item.compensationSum,jdbcType=DECIMAL}, #{item.backpayStyle,jdbcType=VARCHAR}, 
+       #{item.companyAccurateSum,jdbcType=DECIMAL}, 
+      #{item.individualAccurateSum,jdbcType=DECIMAL}, #{item.companyPayType,jdbcType=INTEGER}, 
+      #{item.individualPayType,jdbcType=INTEGER},   
+      #{item.sendOrgId,jdbcType=BIGINT}, #{item.receiveOrgId,jdbcType=BIGINT},  
+      #{item.orderId,jdbcType=BIGINT}, #{item.companyCompensationSum,jdbcType=DECIMAL}, #{item.individualCompensationSum,jdbcType=DECIMAL}
+      )
+		</foreach>		
+		ON DUPLICATE KEY UPDATE
+		sb_report_detail_id=values(sb_report_detail_id),
+		report_month=values(report_month),
+		sb_report_id= values(sb_report_id),
+		sb_id= values(sb_id),
+		
+		prod_id=values(prod_id),
+		prod_name= values(prod_name),
+		org_id=values(org_id),
+		
+		company_id= values(company_id),
+		policy_group_id=values(policy_group_id),		
+		policy_group_type= values(policy_group_type),
+		policy_name=values(policy_name),
+		handle_party_id= values(handle_party_id),
+		sb_month= values(sb_month),
+		
+		employee_id=values(employee_id),
+		rec_info_id=values(rec_info_id),
+		company_base= values(company_base),
+		
+		individual_base=values(individual_base),
+		company_ratio= values(company_ratio),
+		individual_ratio=values(individual_ratio),		
+		company_sum= values(company_sum),
+		individual_sum=values(individual_sum),
+		company_append= values(company_append),
+		individual_append= values(individual_append),
+		
+		all_sum=values(all_sum),
+		pay_type= values(pay_type),
+		
+		compensation_sum=values(compensation_sum),
+		backpay_style= values(backpay_style),
+		company_accurate_sum=values(company_accurate_sum),		
+		individual_accurate_sum= values(individual_accurate_sum),
+		company_pay_type=values(company_pay_type),
+		individual_pay_type= values(individual_pay_type),
+		send_org_id= values(send_org_id),
+		
+		receive_org_id=values(receive_org_id),
+		order_id= values(order_id),
+		company_compensation_sum=values(company_compensation_sum),
+		
+		individual_compensation_sum= values(individual_compensation_sum)
+	</insert> 
+	
+	
+	<!-- 查询社保或公积金信息 -->
+    <select id="getSheBaoGongJiJinInfoPage" parameterType="java.util.HashMap" resultMap="linkedHashMap">
+     
+		select  baseinfo.reportMonth reportMonth,bi.employee_name employeeName,bi.card_id cardId,ri.hire_status hireStatus,baseinfo.recinfoid recinfoId,baseinfo.employeeid employeeId,baseinfo.companysum companySum,baseinfo.individealsum individealSum 
+        from (
+
+		   select rd.report_month reportMonth,rd.rec_info_id recinfoid,rd.employee_id employeeid ,sum(rd.company_sum) companysum,sum(rd.individual_sum) individealsum from bd_sb_report_detail rd 
+
+            where 
+            rd.company_id=#{companyId} 
+            and 
+            rd.policy_group_type=#{policygrouptype}
+             <if test="reportmonth!=null and reportmonth!=''">
+			    and report_month=#{reportmonth}
+			 </if>
+             group by rd.rec_info_id
+		
+		)  baseinfo
+		
+	    left join  bd_emp_base_info bi on  baseinfo.employeeid=bi.base_info_id
+		
+		left join bd_emp_rec_info ri on baseinfo.recinfoid=ri.rec_info_id
+		
+		<where>
+		<!-- search 框的搜索 -->
+		<if test="search != null and search!=''">
+		   (
+				bi.employee_name LIKE CONCAT('%',#{search },'%' )
+				OR bi.card_id LIKE CONCAT('%',#{search },'%' )
+			)
+		</if>
+		 
+		</where> 
+		
+		<if test="orderBy != null and orderBy!=''" >
+            ORDER BY  ${orderBy}
+       </if> 
+		 
+  </select> 
+  
+  
+	<!-- 查询个人社保或公积金详情 ，汇缴，补缴，补差？ -->
+	<select id="getSheBaoGongJiJinInfoDetailPage" parameterType="java.util.HashMap" resultMap="linkedHashMap">
+	  select 
+		  bd.report_month reportMonth,bd.policy_name policyName,bd.prod_name prodName,bd.sb_month sbMonth,
+		  bd.company_base companyBase, bd.individual_base individualBase ,bd.company_ratio companyRatio,
+		  bd.individual_ratio individualRatio,bd.company_append companyAppend ,bd.individual_append individualAppend,
+		  bd.company_sum companySum,bd.individual_sum individualSum,bd.policy_group_type policyGroupType  
+	  from bd_sb_report_detail bd  
+	  
+	  where
+	   bd.company_id=#{companyId} 
+	   and bd.report_month=#{reportMonth} 
+	   and bd.employee_id=#{employeeId} 
+	   and bd.policy_group_type=#{policyGroupType} 
+	   and bd.pay_type=#{payType}  
+	  
+      <!-- 补缴类型为2补差 -->
+      <if test="backpayType!=null">
+         and bd.backpay_style=#{backpayType}  
+      </if>
+	  <if test="orderBy != null and orderBy!=''" >
+            ORDER BY  ${orderBy}
+       </if>   
+	</select>
+	
+	<!-- 查询每个年月缴纳社保或公积金的总人数 -->
+	<select id="getSbGjjTotalByReportMonth" parameterType="java.util.HashMap" resultMap="linkedHashMap">
+	   select  count(distinct(sb.employee_id)) totalCount,sb.report_month reportMonth  from 
+	   bd_sb_report_detail sb where sb.company_id=#{companyId} and sb.policy_group_type=#{policyGroupType} and sb.report_month like concat(#{reportMonth},'%') GROUP BY sb.report_month
+	</select>
+</mapper>
