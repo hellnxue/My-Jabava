@@ -30,45 +30,23 @@
 
 <!-- Main Wrapper -->
 <div id="wrapper" class="min-h">
-    <div class="normalheader transition animated fadeIn small-header">
-        <div class="hpanel">
-            <div class="panel-body">
-                <div id="hbreadcrumb" class="pull-right m-t-lg">
-                    <ol class="hbreadcrumb breadcrumb">
-                        <li><a href="to_index?jump=1">首页</a></li>
-                        <li>
-                            <span>员工信息</span>
-                        </li>
-                        <li class="active">
-                            <span></span>
-                        </li>
-                    </ol>
-                </div>
-                <h2 class="font-light m-b-xs">
-                    员工信息
-                </h2>
-                <small>待定</small>
-            </div>
-        </div>
-    </div>
-
 <!-- 放主要内容 -->
-        
         <!--考勤记录-->
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="hpanel hblue">          
+                    <div class="hpanel">
+                        <div class="panel-heading">
+                            <h4 class="text-center font-bold">
+                                <button onclick="toEmployeeList()" class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
+                                <span>员工资料</span>
+                            </h4>
+                        </div>          
                       <!--引入员工信息导航 开始--> 
-                      <jsp:include flush="true" page="employee_nav.jsp"></jsp:include>
+                      <jsp:include flush="true" page="employee_nav.jsp"><jsp:param value="attendance" name="type"/></jsp:include>
                       <!--引入员工信息导航 结束-->
-                        <div class="panel-heading hbuilt">
-                            <div class="panel-tools">
-                           		<button type="button" class="btn btn-success btn-xs lz_gl"><span class="bold">离职管理&gt;&gt;</span></button>
-                            </div>
-                            <h4>考勤记录</h4>          
-                    	</div>
                         <div class="panel-body" id="allcheck">
+                            <h4 class="text-center font-bold">考勤记录</h4>
                             <table id="attendance_table" class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
                                 <tr>
@@ -128,6 +106,7 @@
 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
+<script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
 <script>
    $(function () {

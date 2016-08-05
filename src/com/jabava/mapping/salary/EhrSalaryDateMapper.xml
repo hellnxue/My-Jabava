@@ -125,7 +125,9 @@
   	from ehr_salary_date 
   	where company_id=#{companyId,jdbcType=BIGINT}
   	<if test="search != null and search != ''" >
-  		and change_date like CONCAT('%',#{search,jdbcType=VARCHAR},'%' ) 
+  		and (change_date like binary CONCAT('%',#{search,jdbcType=VARCHAR},'%' ) 
+  			or (case change_type when 1 then '工作日' else '休息日' end) like CONCAT('%',#{search,jdbcType=VARCHAR},'%' )
+  		)
   	</if>
   	order by change_date desc
   </select>
@@ -138,5 +140,13 @@
     <include refid="Base_Column_List" />
     from ehr_salary_date
     where company_id=#{companyId,jdbcType=BIGINT} and change_date = #{changeDate,jdbcType=DATE}
+  </select>
+  <select id="selectBefore" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ehr_salary_date
+    where company_id=#{companyId,jdbcType=BIGINT} 
+    	and change_date <![CDATA[>=]]> #{beginDate,jdbcType=DATE}
+    	and change_date <![CDATA[<]]> #{endDate,jdbcType=DATE}
   </select>
 </mapper>

@@ -45,6 +45,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     update ehr_certificate set is_delete=1   where technology_id = #{technologyId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrCertificate" >
     <!--
@@ -234,6 +235,7 @@
       </if>
     </set>
     where technology_id = #{technologyId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrCertificate" >
     <!--
@@ -258,6 +260,7 @@
       is_qualification = #{isQualification,jdbcType=TINYINT},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where technology_id = #{technologyId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   <select id="getByPersonId" resultMap="BaseResultMap">

@@ -1,9 +1,10 @@
+<%@ page contentType="text/html; charset=utf-8"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
@@ -11,12 +12,11 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <base href="<%=basePath%>">
-<%@ page contentType="text/html; charset=utf-8"%>
-<meta charset="utf-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<base href="${pageContext.request.contextPath}/">
+	<meta charset="utf-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Page title -->
     <title>系统日志查询</title>
@@ -37,36 +37,15 @@
 
     <!-- Main Wrapper -->
     <div id="wrapper">
-        <div class="normalheader transition animated fadeIn small-header">
-            <div class="hpanel">
-                <div class="panel-body">
-                    <div id="hbreadcrumb" class="pull-right m-t-lg">
-                        <ol class="hbreadcrumb breadcrumb">
-                            <li><a href="to_index?jump=1">首页</a></li>
-                            <li><span>系统日志查询</span></li>
-                            <li class="active"><span></span></li>
-                        </ol>
-                    </div>
-                    <h2 class="font-light m-b-xs">
-                        系统日志查询
-                    </h2>
-                    <small>待定</small>
-                </div>
-            </div>
-        </div>
-
         <!-- 放主要内容 -->
-
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel">
                         <div class="panel-heading ">
-                            <div class="pull-right">
-                            </div>
-                            记录集 
-                            <div>
-                            </div>
+                            <h4 class="text-center font-bold">
+                                系统日志查询
+                            </h4>
                         </div>
                         <!-- 复杂查询开始 -->
                         <div class="collapse out" id="collapseExample" aria-expanded="false" >
@@ -195,9 +174,10 @@
 					{ "data": "sysLogId" },
 					{ "data": "userName" },
 			    	{ "data": "operateInfo" },
-					{ "data": "operateDate1" }
+					{ "data": "operateDate" }
         		],
-    	 	 "language": {
+        		"aaSorting": [[ 3, "desc" ]],	//默认第4列降序排列
+    	 	 	"language": {
     			 "search": "过滤:",
 		            "lengthMenu": "每页显示 _MENU_ 条记录",
 		            "zeroRecords": "暂无数据 - 报歉啦〜",
@@ -228,18 +208,10 @@
 <script>
 
         $(function(){
-
-            $('#datepicker').datepicker();
-            $("#datepicker").on("changeDate", function(event) {
-                $("#my_hidden_input").val(
-                        $("#datepicker").datepicker('getFormattedDate')
-                )
+            $('.input-group.date').datepicker({
+                autoclose: true
             });
-
-            $('#datapicker2').datepicker();
-            $('.input-group.date').datepicker({ });
-            $('.input-daterange').datepicker({ });
-
+           
             $("#demo1").TouchSpin({
                 min: 0,
                 max: 100,

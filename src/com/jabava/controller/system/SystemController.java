@@ -20,6 +20,7 @@ import com.jabava.service.system.IMenuService;
 import com.jabava.utils.JabavaUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
+import com.jabava.utils.enums.SystemEnum;
 
 @Controller
 @RequestMapping("/system")
@@ -62,7 +63,7 @@ public class SystemController {
 					user.getCompanyId(), search, order, according, isNumeric,
 					page);
 			page.setData(arguments);
-			sysLogSercice.addSysLog(user, "查询参数列表");
+			//sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Select,SystemEnum.Module.SystemManagement,"查询参数列表");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,7 +85,7 @@ public class SystemController {
 			data.put("msg", msg);
 			data.put("result", result);
 			request.setAttribute("data", data);
-			sysLogSercice.addSysLog(user,
+			sysLogSercice.addSysLog(user,SystemEnum.LogOperateType.Add, SystemEnum.Module.SystemManagement,
 					"新增参数,KEY:" + argument.getArgumentKey() + ",VALUE:"
 							+ argument.getArgumentValue());
 		} catch (Exception e) {
@@ -108,7 +109,7 @@ public class SystemController {
 			data.put("msg", msg);
 			data.put("result", result);
 			request.setAttribute("data", data);
-			sysLogSercice.addSysLog(user, "删除参数设置 参数ID:" + id);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Delete,SystemEnum.Module.SystemManagement, "删除参数设置 参数ID:" + id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -137,7 +138,7 @@ public class SystemController {
 					&& !"".equals(argument.getArgumentValue())) {
 				sb.append(",VALUE:" + argument.getArgumentValue());
 			}
-			sysLogSercice.addSysLog(user, sb.toString());
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update,SystemEnum.Module.SystemManagement,"修改参数"+sb.toString());
 			data.put("msg", msg);
 			data.put("result", result);
 			request.setAttribute("data", data);

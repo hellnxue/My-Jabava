@@ -48,14 +48,14 @@
     -->
     delete from ehr_rewards
     where reward_id = #{rewardId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <!-- 更新 is_deleted =1 -->
   <update id="updateByrewardId" parameterType="java.lang.Long"  >
      update  ehr_rewards set is_deleted=1
     where reward_id = #{rewardId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
-  
-  
   
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrRewards" >
     <!--
@@ -204,6 +204,7 @@
       </if>
     </set>
     where reward_id = #{rewardId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrRewards" >
     <!--
@@ -224,6 +225,7 @@
       last_modify_user_name = #{lastModifyUserName,jdbcType=VARCHAR},
       last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP}
     where reward_id = #{rewardId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   	<select id="getByPersonId" resultMap="BaseResultMap">

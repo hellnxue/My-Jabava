@@ -4,51 +4,57 @@
 package com.jabava.service.manage.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.jabava.common.exception.JabavaServiceException;
+import com.jabava.dao.common.EhrCommonDataMapper;
 import com.jabava.dao.manage.EhrButtonMapper;
 import com.jabava.dao.manage.EhrCompanyMapper;
 import com.jabava.dao.manage.EhrMenuMapper;
 import com.jabava.dao.manage.EhrRoleMapper;
 import com.jabava.dao.manage.EhrSysLogMapper;
 import com.jabava.dao.manage.EhrUserMapper;
+import com.jabava.dao.manage.EhrUserResetPasswordMapper;
 import com.jabava.pojo.manage.EhrButton;
 import com.jabava.pojo.manage.EhrCompany;
 import com.jabava.pojo.manage.EhrMenu;
 import com.jabava.pojo.manage.EhrSysLog;
 import com.jabava.pojo.manage.EhrUser;
+import com.jabava.pojo.manage.EhrUserResetPassword;
 import com.jabava.service.dclient.CenterUserClientService;
 import com.jabava.service.manage.IUserService;
 import com.jabava.service.system.IEhrOrganizationService;
 import com.jabava.service.system.IEhrRoleService;
-import com.jabava.service.system.impl.EhrOrganizationServiceImpl;
-import com.jabava.service.system.impl.EhrRoleServiceImpl;
+import com.jabava.task.CompanyInitializer;
 import com.jabava.utils.Constants;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.utils.JabavaDateUtils;
+import com.jabava.core.config.JabavaPropertyCofigurer;
+import com.jabava.utils.JabavaStringUtils;
+import com.jabava.utils.JabavaUtil;
+import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Tools;
+import com.jabava.utils.constants.ConfigConstants;
+import com.jabava.utils.enums.SystemEnum;
+import com.jabava.utils.security.MD5;
+import com.service.provider.MobileService;
 
 /**
  * @author WangYongqiang
@@ -60,30 +66,30 @@ public class UserServiceImpl implements IUserService {
 
 	@Resource
 	private EhrUserMapper userMapper;
-
 	@Resource
 	private EhrCompanyMapper companyMapper;
-
 	@Resource
-	EhrButtonMapper buttonMapper;
-
+	private EhrButtonMapper buttonMapper;
 	@Resource
-	EhrMenuMapper menuMapper;
-
+	private EhrMenuMapper menuMapper;
 	@Resource
-	EhrSysLogMapper logMapper;
-	
+	private EhrSysLogMapper logMapper;
 	@Resource
-	EhrRoleMapper roleMapper;
-	
+	private EhrRoleMapper roleMapper;
 	@Autowired
 	private CenterUserClientService centerUserClientService;
-	
+	@Autowired
+	private MobileService mobileService;	
 	@Resource
 	private IEhrRoleService ehrRoleService;
-	
 	@Resource
 	private IEhrOrganizationService organizationService;
+	@Autowired
+	private EhrCommonDataMapper commonDataMapper;
+	@Autowired
+	private EhrUserResetPasswordMapper userResetPasswordMapper;
+	@Autowired
+	private CompanyInitializer companyInitializer;
 	
 	@Override
 	/**
@@ -100,12 +106,14 @@ public class UserServiceImpl implements IUserService {
 		if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
 			//用户中心注册
 			Map<String,Object> rr = centerUserClientService.registerUser(user,company.getCompanyName(),password);
-			if("false".equals(rr.get("success"))){
+			if("false".equals(rr.get("success").toString())){
 				//userService.delUser(user.getUserId());
 				//companyService.delCompany(company.getCompanyId());
 				throw new JabavaServiceException(rr.get("msg").toString());
 			}else{
 				data.put("orgId", rr.get("orgId"));
+				company.setUcOrgId((Long)rr.get("orgId"));
+				companyMapper.updateByPrimaryKeySelective(company);
 			}
 		}
 		
@@ -131,31 +139,33 @@ public class UserServiceImpl implements IUserService {
 
 		if(StringUtils.isEmpty(user.getUserCode())){
 			//throw new JabavaServiceException("用户编号为空");
-			return "用户编号为空";
+			return "用户名为空";
 		}
 		EhrUser existUser = userMapper.searchUserByUserCode(user.getUserCode());
 		if(existUser != null){
 			//throw new JabavaServiceException("用户编号已存在");
-			return "用户编号已存在";
+			return "用户名已存在";
 		}
 
 		if(StringUtils.isEmpty(user.getMobile())){
 			//throw new JabavaServiceException("手机号为空");
 			return "手机号为空";
 		}
-		EhrUser existOfMobile = userMapper.searchUserByUserMobile(user.getMobile());
-		if(existOfMobile != null){
-			//throw new JabavaServiceException("手机号已存在");
-			return "手机号已存在";
-		}
-
-		if(!StringUtils.isEmpty(user.getMailAddress())){
-			EhrUser existOfEmail = userMapper.searchUserByUserEmail(user.getMailAddress());
-			if(existOfEmail != null){
-				//throw new JabavaServiceException("邮箱已存在");
-				return "邮箱已存在";
-			}
-		}
+		
+		//新公司不需判断重复
+//		EhrUser existOfMobile = userMapper.searchEUserByUserMobile(user.getMobile());
+//		if(existOfMobile != null){
+//			//throw new JabavaServiceException("手机号已存在");
+//			return "手机号已存在";
+//		}
+//
+//		if(!StringUtils.isEmpty(user.getMailAddress())){
+//			EhrUser existOfEmail = userMapper.searchEUserByUserEmail(user.getMailAddress());
+//			if(existOfEmail != null){
+//				//throw new JabavaServiceException("邮箱已存在");
+//				return "邮箱已存在";
+//			}
+//		}
 		
 		// insert company
 		companyMapper.insertSelective(company);
@@ -173,61 +183,24 @@ public class UserServiceImpl implements IUserService {
 		return null;
 	}
 
-	@Override
-	public HashMap login(String userCode, String passwd) throws Exception {
+	public Map<String,Object> login(String userCode, String passwd) throws Exception {
 		HashMap<String,Object> map = new HashMap<String,Object>();
-		
-//		map.put("flag", "0");
-//		
-//		EhrUser user = userMapper.validateUser(userCode);
-//		if (user == null) {
-//			map.put("logInfo", "用户编号为 " + userCode + " 的用户登录失败,不存在该用户编号");
-//			map.put("viewInfo", "用户编号或密码错误,登录失败");
-//		} else if (user.getIsLocked() != null && user.getIsLocked().intValue() == 1) {	// 用户已经disabled
-//			map.put("logInfo", "用户编号为 " + userCode + " 的用户登录失败,该帐户已经被冻结");
-//			map.put("viewInfo", "该帐户已经被冻结,登录失败");
-//		} else {
-//			int failtureTime = 5;
-//			EhrCompany comp = companyMapper.selectByPrimaryKey(user.getCompanyId());
-//			user.setCompanyCode(comp.getCompanyCode());
-//			user.setCompany(comp);
-//			//if (!user.getPassword().equals(Tools.encryptPassword(passwd)))// 密码不对
-//			if (!user.getPassword().equals(passwd))	{	// 密码不对
-//				map.put("logInfo", "用户编号为 " + userCode + " 的用户登录第 "
-//						+ (user.getFailtureTime().intValue() + 1) + " 次失败,密码错误");
-//				map.put("viewInfo", "公司号码、用户编号或密码错误,登录失败");
-//				boolean isLock = (user.getFailtureTime().intValue() >= failtureTime - 1);
-//				userMapper.lockUser(user.getUserId(), isLock);
-//			} else {	// 密码正确
-//				if (user.getFailtureTime().intValue() >= failtureTime) {	// 登录错误次数已经达到或超过5次
-//					map.put("logInfo", "用户编号为 " + userCode + " 的用户密码正确,但之前已经连续 "
-//							+ (user.getFailtureTime().intValue()) + " 次密码错误,所以登录失败");
-//					map.put("viewInfo", "已经超过" + failtureTime
-//							+ "次密码错误了,帐户已经被关闭,请找系统管理员开启帐户");
-//				} else {
-//					map.put("flag", "1");
-//					map.put("logInfo", "用户编号为 " + userCode + " 的用户登录成功");
-//					userMapper.updateUserloginTime(user.getUserId());
-//					user.setButtonMap(getButtonMap(user.getUserId()));
-//					map.put(Constants.LOGIN_USER, user);
-//					map.put("POWER", getUrlsList(user));
-//					map.put("ROLE", roleMapper.selectByUser(user.getUserId()));
-//				}
-//			}
-//		}
-		
+	
 		EhrUser user = userMapper.validateUser(userCode);
 		EhrCompany comp = companyMapper.selectByPrimaryKey(user.getCompanyId());
 		user.setCompanyCode(comp.getCompanyCode());
 		user.setCompany(comp);
 		user.setButtonMap(getButtonMap(user.getUserId()));
+		user.setMenuList(this.getLeafMenuList(user));
 		
 		userMapper.updateUserloginTime(user.getUserId());
 		
 		map.put("flag", "1");
 		map.put(Constants.LOGIN_USER, user);
-		map.put("POWER", getUrlsList(user));
+		//map.put("POWER", getUrlsList(user));
 		map.put("ROLE", roleMapper.selectByUser(user.getUserId()));
+		map.put("operateType", SystemEnum.LogOperateType.Login);
+		map.put("module", SystemEnum.Module.Login);
 		map.put("logInfo", "用户编号为 " + userCode + " 的用户登录成功");
 		
 		return map;
@@ -383,14 +356,18 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
+	public List<EhrMenu> selectAuthorizedChildren(Long parentId, Long userId) {
+		return menuMapper.selectAuthorizedChildren(parentId, userId);
+	}
+	@Override
 	public EhrUser searchUserByUserCode(String userCode) throws Exception {
 		return userMapper.searchUserByUserCode(userCode);
 	}
 
 	@Override
-	public Long searchUserByMobile(String mobile) throws Exception {
+	public Long searchEUserByMobile(String mobile) throws Exception {
 		Long userId = null;
-		userId = userMapper.searchUserByMobile(mobile);
+		userId = userMapper.searchEUserByMobile(mobile);
 		return userId;
 	}
 
@@ -430,11 +407,207 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public String resetPwd(EhrUser user) throws Exception {
-		String password = Tools.getInitialPassword();
-		user.setPassword(Tools.encryptPassword(password)); 
+	public Map<String,Object> newPassword(EhrUser user, String password) throws Exception {
+		//设置新密码
+		user.setPassword(Tools.encryptPassword(password));
 		userMapper.resetPassword(user);
-		return password;
+		Map<String,Object> result = centerUserClientService.resetPassword(user, password);
+		if("false".equals(result.get("success").toString())){
+			//return result;
+			throw new JabavaServiceException(result.get("msg").toString());
+		}
+		return result;
 	}
 
+	@Override
+	public Map<String, Object> changePassword(EhrUser user, String oldPassword,
+			String newPassword) throws Exception {
+		user.setPassword(Tools.encryptPassword(newPassword));
+		userMapper.resetPassword(user);
+		Map<String,Object> result = centerUserClientService.updatePassword(user, oldPassword, newPassword);
+		if("false".equals(result.get("success").toString())){
+			//return resetResult;
+			throw new JabavaServiceException(result.get("msg").toString());
+		}
+		return result;
+	}
+	@Override
+	public String resetPwd(EhrUser user, EhrUser affectUser) throws Exception {
+//		String password = Tools.getInitialPassword();
+//		user.setPassword(Tools.encryptPassword(password)); 
+//		if(userMapper.resetPassword(user) == 0){
+//			throw new JabavaServiceException("Jabava重置密码失败");
+//		}
+//		
+//		if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
+//			//用户中心重置密码
+//			Map<String,Object> rr = centerUserClientService.resetPassword(user, password);
+//			if("false".equals(rr.get("success"))){
+//				throw new JabavaServiceException(rr.get("msg").toString());
+//			}
+//		}
+//		
+//		//上下文
+//		Map<String,Object> params = new HashMap<String,Object>();
+//		params.put("userName", user.getUserName());
+//		params.put("password", password);
+//		
+//		//发送短信及邮件
+//		try {
+//			Tools.mailSend(user.getMailAddress(), ConfigConstants.SUBJECT_RESET_PASSWORD, params, 
+//					ConfigConstants.TPL_RESET_PASSWORD, null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "邮件发送失败";
+//		}
+//		try {
+//			String mobRes = this.sendMessage(user.getMobile(), CommonDataConstants.COMMON_DATA_MSG_TPL_RESET_PASSWORD, params);
+//			if(!"1".equals(mobRes)){
+//				return "邮件发送成功，短信发送失败";
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "邮件发送成功，短信发送失败";
+//		}
+		
+		Date now = new Date();
+		//生成链接
+		String salt = JabavaStringUtils.getRandomNum(4);
+		String code = MD5.getMD5Code(salt + now.getTime() + affectUser.getUserCode());
+		
+		EhrUserResetPassword urp = new EhrUserResetPassword();
+		urp.setUserId(affectUser.getUserId());
+		urp.setSalt(salt);
+		urp.setCode(code);
+		urp.setInvalidDate(JabavaUtil.addDate(now, Calendar.HOUR, 24));
+		urp.setCreateDate(now);
+		urp.setCreateUserId(user.getUserId());
+		urp.setCreateUserName(user.getUserName());
+		userResetPasswordMapper.insert(urp);
+		
+		String link = JabavaPropertyCofigurer.getProperty("JABAVA_URL") + "/toSetPassword/" + affectUser.getUserId() + "/" + code;
+		
+		//上下文
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("userName", user.getUserName());
+		params.put("url", link);
+		params.put("createDate", JabavaDateUtils.formatDate(now, "yyyy-MM-dd HH:mm:ss"));
+		
+		//发送邮件
+		try {
+			Tools.mailSend(affectUser.getMailAddress(), ConfigConstants.SUBJECT_RESET_PASSWORD, params, 
+					ConfigConstants.TPL_RESET_PASSWORD, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "邮件发送失败";
+		}
+		
+		return null;
+	}
+	
+//	private String sendMessage(String mobile, String tplCode, Map<String,Object> params) throws Exception{
+//		EhrCommonData cd = commonDataMapper.selectByTypeAndCode(CommonDataConstants.COMMON_DATA_MSG_TPL,tplCode);
+//		if(cd == null){
+//			throw new JabavaServiceException("短信模板不存在");
+//		}
+//		
+//		String content = cd.getMemo();
+//		content = JabavaStringUtils.formatString(content, params);
+//		return mobileService.sendMessage(mobile, content);
+//	}
+	
+	@Override
+	public String validateResetPasswordLink(Long userId, String code){
+		//是否存在一致的有效信息
+		List<EhrUserResetPassword> urpList = userResetPasswordMapper.queryValidByUser(userId);
+		if(urpList == null || urpList.isEmpty() ||
+				!urpList.get(0).getCode().equals(code)){
+			return "无效的链接信息";
+		}
+		return null;
+	}
+
+	@Override
+	public Map<String,Object> setPassword(EhrUser user, String code, String password) throws Exception {
+		//是否存在一致的有效信息
+		List<EhrUserResetPassword> urpList = userResetPasswordMapper.queryValidByUser(user.getUserId());
+		if(urpList == null || urpList.isEmpty() ||
+				!urpList.get(0).getCode().equals(code)){
+			return MessageUtil.errorMessage("无效的链接信息");
+		}
+		
+		//设置新密码
+		user.setPassword(Tools.encryptPassword(password));
+		userMapper.resetPassword(user);
+		Map<String,Object> resetResult = centerUserClientService.resetPassword(user, password);
+		if("false".equals(resetResult.get("success").toString())){
+			//return resetResult;
+			throw new JabavaServiceException(resetResult.get("msg").toString());
+		}
+		
+		//更新重置密码信息
+		EhrUserResetPassword urp = urpList.get(0);
+		urp.setActionDate(new Date());
+		userResetPasswordMapper.updateByPrimaryKey(urp);
+		
+		return MessageUtil.successMessage("更新密码成功");
+	}
+	
+	/**
+	 * 通过密码登录, 默认情况下的系统登录被spring security 托管，这里用在需要人工认证的情况下
+	 */
+	public boolean loginWidthPassword(String userCode,String password){
+		try{
+			EhrUser user = userMapper.validateUser(userCode);
+			if(user == null){
+				log.error("用户错误");
+				return false;
+			}
+			
+			log.error("user: " + userCode);
+			log.error("pwd:" + password);
+			log.error("companyId:" + user.getCompanyId());
+			
+			String enp = Tools.encryptPassword(password);
+			int ret = userMapper.checkUserPassword(user.getCompanyId(), userCode, enp);
+			
+			log.error("user pwd: " + ret);
+			
+			return (ret > 0);
+		}catch(Exception e){
+			log.error("====异常");
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public int hasOpenService(EhrUser user, Long systemId) {
+		return centerUserClientService.hasOpenService(user, systemId);
+	}
+	
+	@Override
+	public Map<String,Object> openService(Long orgLoginId, Long systemId) {
+		return centerUserClientService.openService(orgLoginId, systemId, new JSONObject().toString());
+	}
+	
+	@Override
+	public void asynchInitCompany(final EhrUser user) {
+		//启动新线程同步
+		ExecutorService pool = Executors.newFixedThreadPool(1);
+		pool.execute(new Runnable() {
+			@Override
+			public void run() {
+				//初始化(基础数据、报表等)
+				companyInitializer.execute(user);
+			}
+		});
+		log.info("初始化线程已启动：" + user.getUserCode());
+	}
+	
+	@Override
+	public EhrUser validateUser(String userCode) {
+		return userMapper.validateUser(userCode);
+	}
 }

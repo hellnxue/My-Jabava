@@ -1,0 +1,96 @@
+{
+	"header":"json",
+	"data": [
+		{
+			"bq_numint" : 12,
+			"bj_numint" : 36,
+			"bq_base_edecimal" : 56,
+			"bj_base_edecimal" : 45,
+			"bq_base_pdecimal" : 68,
+			"bj_base_pdecimal" : 54,
+			"ratio_edecimal" : 21,
+			"ratio_pdecimal" : 10,
+			"bq_amount_edecimal" : 30,
+			"bj_amount_edecimal" : 50,
+			"bq_amount_pdecimal" : 45,
+			"bj_amount_pdecimal" : 65,
+			"subtotaldecimal" : 70
+		},
+		{
+			"bq_numint" : 12,
+			"bj_numint" : 36,
+			"bq_base_edecimal" : 56,
+			"bj_base_edecimal" : 45,
+			"bq_base_pdecimal" : 68,
+			"bj_base_pdecimal" : 54,
+			"ratio_edecimal" : 21,
+			"ratio_pdecimal" : 10,
+			"bq_amount_edecimal" : 30,
+			"bj_amount_edecimal" : 50,
+			"bq_amount_pdecimal" : 45,
+			"bj_amount_pdecimal" : 65,
+			"subtotaldecimal" : 70
+		},
+		{
+			"bq_numint" : 12,
+			"bj_numint" : 36,
+			"bq_base_edecimal" : 56,
+			"bj_base_edecimal" : 45,
+			"bq_base_pdecimal" : 68,
+			"bj_base_pdecimal" : 54,
+			"ratio_edecimal" : 21,
+			"ratio_pdecimal" : 10,
+			"bq_amount_edecimal" : 30,
+			"bj_amount_edecimal" : 50,
+			"bq_amount_pdecimal" : 45,
+			"bj_amount_pdecimal" : 65,
+			"subtotaldecimal" : 70
+		},
+		{
+			"bq_numint" : 12,
+			"bj_numint" : 36,
+			"bq_base_edecimal" : 56,
+			"bj_base_edecimal" : 45,
+			"bq_base_pdecimal" : 68,
+			"bj_base_pdecimal" : 54,
+			"ratio_edecimal" : 21,
+			"ratio_pdecimal" : 10,
+			"bq_amount_edecimal" : 30,
+			"bj_amount_edecimal" : 50,
+			"bq_amount_pdecimal" : 45,
+			"bj_amount_pdecimal" : 65,
+			"subtotaldecimal" : 70
+		},
+		{
+			"bq_numint" : 12,
+			"bj_numint" : 36,
+			"bq_base_edecimal" : 56,
+			"bj_base_edecimal" : 45,
+			"bq_base_pdecimal" : 68,
+			"bj_base_pdecimal" : 54,
+			"ratio_edecimal" : 21,
+			"ratio_pdecimal" : 10,
+			"bq_amount_edecimal" : 30,
+			"bj_amount_edecimal" : 50,
+			"bq_amount_pdecimal" : 45,
+			"bj_amount_pdecimal" : 65,
+			"subtotaldecimal" : 70
+		},
+		{
+			"bq_numint" : 12,
+			"bj_numint" : 36,
+			"bq_base_edecimal" : 56,
+			"bj_base_edecimal" : 45,
+			"bq_base_pdecimal" : 68,
+			"bj_base_pdecimal" : 54,
+			"ratio_edecimal" : 21,
+			"ratio_pdecimal" : 10,
+			"bq_amount_edecimal" : 30,
+			"bj_amount_edecimal" : 50,
+			"bq_amount_pdecimal" : 45,
+			"bj_amount_pdecimal" : 65,
+			"subtotaldecimal" : 70
+		}
+	]
+	
+}

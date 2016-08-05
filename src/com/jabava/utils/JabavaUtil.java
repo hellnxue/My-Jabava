@@ -1,5 +1,7 @@
 package com.jabava.utils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -107,44 +109,43 @@ public class JabavaUtil {
 		return 2;
 	}
 	
-	public static String getExtension(String fileName) {
-		String extension = fileName.substring(fileName.lastIndexOf("."));
-		return extension;
-	}
-	
 	public static String getCellStr(Cell cell){
 		if(cell == null){
 			return BLANK;
 		}
-		return cell.toString();
+		switch(cell.getCellType()){
+			case Cell.CELL_TYPE_NUMERIC: //数值型 0
+				return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+			case Cell.CELL_TYPE_STRING: //字符串型 1
+				return cell.getStringCellValue().trim();
+			case Cell.CELL_TYPE_FORMULA: //公式型 2
+				cell.toString().trim();
+			case Cell.CELL_TYPE_BLANK: //空值 3
+				return BLANK;
+			case Cell.CELL_TYPE_BOOLEAN: //布尔型 4
+				return String.valueOf(cell.getBooleanCellValue());
+			case Cell.CELL_TYPE_ERROR: //错误 5
+				return BLANK;
+			default:
+				return BLANK;
+		}
+		//return cell.toString().trim();
 	}
 	
-	public static String getMath(int count){
-        StringBuffer sb = new StringBuffer();
-        String str = "0123456789";
-        Random r = new Random();
-        for(int i=0;i<count;i++){
-            int num = r.nextInt(str.length());
-            sb.append(str.charAt(num));
-            str = str.replace((str.charAt(num)+""), "");
-        }
-        return sb.toString();
-    }
-	
-	public static String genCompanyCode(int count){
-		int len = 6;
-		String code = String.valueOf(count);
-		if(code.length() >= len){
-			return code;
+	/**
+	 * String 类型转 BigDecimal
+	 * @param value
+	 * @return
+	 */
+	public static BigDecimal string2BigDecinal(String value){
+		if(StringUtils.isEmpty(value)){
+			return null;
 		}
-		for(int i=code.length();i<len;i++){
-			code = "0"+code;
+		try {
+			return new BigDecimal(DecimalFormat.getInstance().parse(value).toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		return code;
+		return null;
 	}
-
-	public static void main(String[] agrs){
-
-	}
-
 }

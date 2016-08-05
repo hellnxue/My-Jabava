@@ -22,4 +22,8 @@ public interface ISalaryTemplateService {
 	
 	List<EhrSalaryTemplateDetail> loadDetailList(Long salaryTemplateId);
 	
+	boolean hasReferencedItem(Long salaryItemId);
+	
+	boolean hasReferencedTaxRate(Long taxRateId);
+	
 }

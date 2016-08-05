@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,9 +24,11 @@ import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.employee.EhrPersonService;
 import com.jabava.service.system.IEhrOrganizationService;
+import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
+import com.jabava.utils.enums.SystemEnum;
 
 /**
  * 
@@ -39,11 +42,31 @@ public class EhrOrganizationInfoController {
 	public IEhrOrganizationService ehrOrganizationService;
 	
 	@Resource
+	private IEhrSysLogSercice sysLogSercice;
+	
+	@Resource
 	public EhrPersonService ehrPersonService;
 	
 	@RequestMapping("/searchOrganization")
 	public String searchOrganization(){
 		return "organizational/list_structure";
+	}
+	
+	@RequestMapping("listFirstLevel")
+	@ResponseBody
+	public List<EhrOrganization> listFirstLevel(HttpServletRequest request, HttpServletResponse response){
+		EhrUser user = RequestUtil.getLoginUser(request);
+		String withTop = request.getParameter("withTop");
+		//EhrOrganization topOrg = ehrOrganizationService.findTopOrganization(user.getCompanyId());
+		//List<EhrOrganization> orgList = ehrOrganizationService.getChildren(topOrg.getOrganizationId());
+		List<EhrOrganization> topList = ehrOrganizationService.findByLevel(user.getCompanyId(), 0);
+		List<EhrOrganization> orgList = ehrOrganizationService.findByLevel(user.getCompanyId(), 1);
+		if(!StringUtils.isEmpty(withTop)){
+			if(topList != null && !topList.isEmpty()){
+				orgList.add(0,topList.get(0));
+			}
+		}
+		return orgList;
 	}
 
 	@RequestMapping("/loadTree")
@@ -53,31 +76,27 @@ public class EhrOrganizationInfoController {
 		//按Level,Order排序的列表
 //		BeanUtils.cloneBean(bean)
 		Map<String,List<EhrOrganization>> result = new HashMap<String,List<EhrOrganization>>();
-		result.put("data", ehrOrganizationService.loadTree(user.getCompanyId()));
+		result.put("data", ehrOrganizationService.loadAuthorisedTree(user.getCompanyId()));
 		return result;
 	}
 	/**
-	 * 获取公司的组织架构
-	 * <pre>
-	 * @author steven.chen
-	 * @date 2016年2月23日 下午7:38:02 
-	 * </pre>
-	 *
+	 * 获取公司的组织架构(用于选择部门)
 	 * @param personId
 	 * @return
 	 */
 	@RequestMapping("/loadPersonTree")
 	@ResponseBody
 	public Map<String,List<EhrOrganization>> loadPersonTree(Long personId){
-		EhrPerson ehrPerson = null;
 		try {
+			EhrPerson ehrPerson = null;
 			ehrPerson = ehrPersonService.getByPersonId(personId);
+			Map<String,List<EhrOrganization>> result = new HashMap<String,List<EhrOrganization>>();
+			result.put("data", ehrOrganizationService.loadAuthorisedTree(ehrPerson.getCompanyId()));
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new HashMap<String,List<EhrOrganization>>();
 		}
-		Map<String,List<EhrOrganization>> result = new HashMap<String,List<EhrOrganization>>();
-		result.put("data", ehrOrganizationService.loadTree(ehrPerson.getCompanyId()));
-		return result;
 	}
 	@RequestMapping("/renameOrg")
 	@ResponseBody
@@ -85,7 +104,7 @@ public class EhrOrganizationInfoController {
 			String memo,HttpServletRequest request, HttpServletResponse response) throws Exception{	
 		EhrUser user = RequestUtil.getLoginUser(request);
 		EhrOrganization org = ehrOrganizationService.selectByorganizationId(organizationId);
-		if(org == null || org.getCompanyId() != user.getCompanyId()){
+		if(org == null || !org.getCompanyId().equals(user.getCompanyId())){
 			throw new Exception("组织不存在或无权操作");
 		}
 		
@@ -107,6 +126,7 @@ public class EhrOrganizationInfoController {
 		int result = ehrOrganizationService.update(org);
 		if(result > 0){
 			data = MessageUtil.message(MessageUtil.UPD_SUCCESS);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.Organization, "修改了一个名为"+organizationName+"的部门");
 		}else{
 			data = MessageUtil.message(MessageUtil.UPD_ERROR);
 		}
@@ -122,7 +142,7 @@ public class EhrOrganizationInfoController {
 			String memo,HttpServletRequest request, HttpServletResponse response) throws Exception{	
 		EhrUser user = RequestUtil.getLoginUser(request);
 		EhrOrganization parent = ehrOrganizationService.selectByorganizationId(parentId);
-		if(parent == null || parent.getCompanyId() != user.getCompanyId()){
+		if(parent == null || !parent.getCompanyId().equals(user.getCompanyId())){
 			throw new Exception("组织不存在或无权操作");
 		}
 		
@@ -152,6 +172,8 @@ public class EhrOrganizationInfoController {
 		if(result > 0){
 			data = MessageUtil.message(MessageUtil.INS_SUCCESS);
 			data.put("org", org);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, SystemEnum.Module.Organization, "添加了一个名为"+organizationName+"的部门");
+
 		}else{
 			data = MessageUtil.message(MessageUtil.INS_ERROR);
 		}
@@ -168,8 +190,8 @@ public class EhrOrganizationInfoController {
 		EhrUser user = RequestUtil.getLoginUser(request);
 		EhrOrganization source = ehrOrganizationService.selectByorganizationId(sourceId);
 		EhrOrganization target = ehrOrganizationService.selectByorganizationId(targetId);
-		if(source == null || source.getCompanyId() != user.getCompanyId() ||
-				target == null || target.getCompanyId() != user.getCompanyId()){
+		if(source == null || !source.getCompanyId().equals(user.getCompanyId()) ||
+				target == null || !target.getCompanyId().equals(user.getCompanyId())){
 			throw new Exception("组织不存在或无权操作");
 		}
 		if(source.getOrganizationLevel() == null || source.getOrganizationLevel() == 0){
@@ -189,7 +211,19 @@ public class EhrOrganizationInfoController {
 		
 		return data;
 	}
-	
+	/**
+	 * 该部门下的员工
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年3月30日 下午9:54:07 
+	 * </pre>
+	 *
+	 * @param organizationId
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/loadPerson")
 	@ResponseBody
 	public Page<EhrPerson> loadPerson(Long organizationId,HttpServletRequest request, 
@@ -201,11 +235,11 @@ public class EhrOrganizationInfoController {
 			return page;
 		}
 		EhrOrganization org = ehrOrganizationService.selectByorganizationId(organizationId);
-		if(org == null || org.getCompanyId() != user.getCompanyId()){
+		if(org == null || !org.getCompanyId().equals(user.getCompanyId())){
 			throw new Exception("组织不存在或无权操作");
 		}
 		
-		page.setData(ehrOrganizationService.selectPersonByOrganization(org));
+		page.setData(ehrOrganizationService.selectPersonByOrganization(organizationId));
 		return page;
 	}
 
@@ -215,7 +249,7 @@ public class EhrOrganizationInfoController {
 			HttpServletRequest request, HttpServletResponse response) throws Exception{	
 		EhrUser user = RequestUtil.getLoginUser(request);
 		EhrOrganization org = ehrOrganizationService.selectByorganizationId(organizationId);
-		if(org == null || org.getCompanyId() != user.getCompanyId()){
+		if(org == null || !org.getCompanyId().equals(user.getCompanyId())){
 			throw new Exception("组织不存在或无权操作");
 		}
 		if(org.getOrganizationLevel() == null || org.getOrganizationLevel() == 0){
@@ -229,7 +263,7 @@ public class EhrOrganizationInfoController {
 				if (result) {
 					data.put("success", result);
 					data.put("msg", "删除成功");
-					
+					sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Delete, SystemEnum.Module.Organization, "删除了一个名为"+org.getOrganizationName()+"的部门");
 					//日志
 					
 				} else {

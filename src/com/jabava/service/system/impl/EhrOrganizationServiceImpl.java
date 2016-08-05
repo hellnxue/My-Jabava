@@ -2,6 +2,7 @@ package com.jabava.service.system.impl;
 
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -11,20 +12,23 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jabava.core.EnumConstents.NodeMoveFlag;
 import com.jabava.dao.manage.EhrOrganizationDetailHistoryMapper;
 import com.jabava.dao.manage.EhrOrganizationHistoryMapper;
 import com.jabava.dao.manage.EhrOrganizationMapper;
 import com.jabava.dao.manage.EhrPersonHistoryMapper;
 import com.jabava.dao.manage.EhrPersonMapper;
+import com.jabava.dao.manage.EhrUserOrganizationMapper;
 import com.jabava.pojo.manage.EhrOrganization;
 import com.jabava.pojo.manage.EhrOrganizationDetailHistory;
 import com.jabava.pojo.manage.EhrOrganizationHistory;
 import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
+import com.jabava.pojo.manage.EhrUserOrganization;
 import com.jabava.service.system.IEhrOrganizationService;
+import com.jabava.utils.enums.JabavaEnum.NodeMoveFlag;
 /**
  * 
  * @author panfei
@@ -41,7 +45,8 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 	private EhrOrganizationDetailHistoryMapper detailMapper;
 	@Resource
 	private EhrPersonHistoryMapper personHistoryMapper;
-	
+	@Autowired
+	private EhrUserOrganizationMapper userOrganizationMapper;
 	@Resource
 	private EhrPersonMapper personMapper;
 	
@@ -51,21 +56,94 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 	}
 	
 	@Override
+	public Map<Long, EhrOrganization> findOrganizationMap(Long companyId){
+		Map<Long, EhrOrganization> result = new HashMap<Long, EhrOrganization>();
+		List<EhrOrganization> list = orgMapper.selectByCompanyId(companyId);
+		for(EhrOrganization org : list){
+			result.put(org.getOrganizationId(), org);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public List<EhrOrganization> getHierarchicalAncestors(Map<Long, EhrOrganization> orgMap, Long organizationId){
+		List<EhrOrganization> result = new ArrayList<EhrOrganization>();
+		EhrOrganization org = orgMap.get(organizationId);
+		while(org != null && org.getParentId() != null){
+			org = orgMap.get(org.getParentId());
+			if(org != null){
+				//层级高的放到前面
+				result.add(0, org);
+			}
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public EhrOrganization findTopOrganization(Long companyId){
 		return orgMapper.findTopOrganization(companyId);
 	}
 	
 	@Override
+	public List<EhrOrganization> findByLevel(Long companyId, Integer level) {
+		return orgMapper.findByLevel(companyId, level);
+	}
+
+	@Override
 	public List<EhrOrganization> loadTree(Long companyId){
+		//所有组织
 		List<EhrOrganization> orgList = orgMapper.selectByCompanyId(companyId);
 		Map<Long,EhrOrganization> orgMap = new HashMap<Long,EhrOrganization>();
 		for(EhrOrganization org : orgList){
 			orgMap.put(org.getOrganizationId(), org);
 		}
 		
+		return this.loadTree(orgList, orgMap, null);
+	}
+	
+	@Override
+	public List<EhrOrganization> loadAuthorisedTree(Long companyId) {
+		//所有组织
+		List<EhrOrganization> orgList = orgMapper.selectByCompanyId(companyId);
+		Map<Long,EhrOrganization> orgMap = new HashMap<Long,EhrOrganization>();
+		for(EhrOrganization org : orgList){
+			orgMap.put(org.getOrganizationId(), org);
+		}
+		
+		//获取已授权组织
+		List<EhrOrganization> authorisedOrgList = orgMapper.selectAuthorisedByCompanyId(companyId);
+		Map<Long,EhrOrganization> authorisedOrgMap = new HashMap<Long,EhrOrganization>();
+		for(EhrOrganization org : authorisedOrgList){
+			authorisedOrgMap.put(org.getOrganizationId(), org);
+		}
+		if(authorisedOrgList == null || authorisedOrgList.isEmpty()){
+			//如果为空，则默认所有组织
+			return this.loadTree(orgList, orgMap, authorisedOrgMap);
+		}
+
+		//用于显示的树
+		Map<Long,EhrOrganization> treeOrgMap = new HashMap<Long,EhrOrganization>();
+		
+		//从下向上加入组织(如果子节点有权限，则所有父节点都加进去，保持树的完整)
+		for(EhrOrganization org : authorisedOrgList){
+			treeOrgMap.put(org.getOrganizationId(),org);
+			while(org.getOrganizationLevel() != null && org.getOrganizationLevel() != 0){
+				org = orgMap.get(org.getParentId());
+				treeOrgMap.put(org.getOrganizationId(),org);
+			}
+		}
+		
+		return this.loadTree(treeOrgMap.values(), orgMap, authorisedOrgMap);
+	}
+	
+	private List<EhrOrganization> loadTree(Collection<EhrOrganization> treeOrgList, Map<Long,EhrOrganization> orgMap, 
+			Map<Long,EhrOrganization> authorisedOrgMap){
 		//按结构组成树，并找出顶层组织
 		EhrOrganization top = null;
-		for(EhrOrganization org : orgList){
+		//for(EhrOrganization org : orgList){
+		for(EhrOrganization org : treeOrgList){
 			if(org.getOrganizationLevel() == null || org.getOrganizationLevel() == 0){
 				top = org;
 			}else{
@@ -73,18 +151,22 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 			}
 		}
 		
-		//递归去掉引用
+		//递归去掉引用，并设置授权标识
 		List<EhrOrganization> result = new ArrayList<EhrOrganization>();
-		this.trimOrganization(top,result);
+		this.trimOrganization(top,result,authorisedOrgMap);
 		
 		return result;
 	}
-	
-	private void trimOrganization(EhrOrganization parent,List<EhrOrganization> orgList){
+
+	private void trimOrganization(EhrOrganization parent,List<EhrOrganization> orgList, Map<Long,EhrOrganization> authorisedOrgMap){
+		if(authorisedOrgMap != null && authorisedOrgMap.containsKey(parent.getOrganizationId())){
+			//设置授权标识
+			parent.setAuthorized(true);
+		}
 		orgList.add(parent);
 		if(parent.getChildren() != null && !parent.getChildren().isEmpty()){
 			for(EhrOrganization org : parent.getChildren()){
-				trimOrganization(org,orgList);
+				trimOrganization(org,orgList,authorisedOrgMap);
 				org.setParentOrganization(null);
 			}
 			parent.clearChildren();
@@ -124,7 +206,16 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 		}
 		
 		int result = orgMapper.insert(org);
-		return result;
+		if(result == 0){
+			return result;
+		}
+		
+		//添加用户组织
+		if(this.processUserOrganization(org,parent,null)){
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 
 	@Override
@@ -137,6 +228,8 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 	public boolean move(EhrOrganization source,EhrOrganization target,String moveFlag) throws Exception{
 		Integer orginSort = source.getSort();
 		Long orginParentId = source.getParentId();
+		EhrOrganization originParent = orgMapper.selectByPrimaryKey(orginParentId);
+		EhrOrganization newParent = null;
 		int result;
 		if(NodeMoveFlag.LAST_CHILDREN.getValue().equals(moveFlag)){
 			//作为最后一个子节点：获取目标节点的所有子节点
@@ -153,6 +246,8 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 			if(result <= 0){
 				throw new Exception("移动节点失败");
 			}
+			
+			newParent = target;
 		}else if(NodeMoveFlag.NEXT_BROTHER.getValue().equals(moveFlag)){
 			//作为下一个兄弟节点：获取目标节点父节点的所有子节点
 			//修改顺序：target兄弟-->source-->source兄弟
@@ -166,6 +261,8 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 			if(result <= 0){
 				throw new Exception("移动节点失败");
 			}
+			
+			newParent = orgMapper.selectByPrimaryKey(target.getParentId());
 		}else if(NodeMoveFlag.PREV_BROTHER.getValue().equals(moveFlag)){
 			//作为上一个兄弟节点：获取目标节点父节点的所有子节点
 			//修改顺序：target兄弟-->source-->source兄弟
@@ -179,6 +276,8 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 			if(result <= 0){
 				throw new Exception("移动节点失败");
 			}
+			
+			newParent = orgMapper.selectByPrimaryKey(target.getParentId());
 		}else{
 			throw new Exception("错误的移动标识");
 		}
@@ -190,7 +289,7 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 		List<EhrOrganization> sourceBrothers = orgMapper.selectChildren(orginParentId);
 		this.updateBrotherLevel(sourceBrothers, orginSort, false);
 		
-		return true;
+		return this.processUserOrganization(source, newParent, originParent);
 	}
 	
 	/**
@@ -302,17 +401,19 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 			}
 		}
 		
-		//递归获取所有需要删除的节点并删除
-		List<EhrOrganization> orgList = new ArrayList<EhrOrganization>();
-		this.getTreeByParent(org, orgList);
-		for(int i = orgList.size() - 1; i >= 0; i --){
-			result = orgMapper.deleteByPrimaryKey(orgList.get(i).getOrganizationId());
-			if(result <= 0){
-				throw new Exception("删除组织失败");
-			}
-		}
+//		//递归获取所有需要删除的节点并删除
+//		List<EhrOrganization> orgList = new ArrayList<EhrOrganization>();
+//		this.getTreeByParent(org, orgList);
+//		for(int i = orgList.size() - 1; i >= 0; i --){
+//			result = orgMapper.deleteByPrimaryKey(orgList.get(i).getOrganizationId());
+//			if(result <= 0){
+//				throw new Exception("删除组织失败");
+//			}
+//		}
 		
-		return true;
+		orgMapper.deleteByPrimaryKey(org.getOrganizationId());
+		
+		return this.processUserOrganization(org, null, null);
 	}
 	
 	public List<EhrOrganization> getTreeByParent(Long parentId){
@@ -330,6 +431,50 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 				this.getTreeByParent(org, orgList);
 			}
 		}
+	}
+	
+	private boolean processUserOrganization(EhrOrganization org, EhrOrganization newParent, EhrOrganization oldParent){
+		if(org == null){
+			return false;
+		}
+		
+		if(newParent == null && oldParent == null){			//删除
+			userOrganizationMapper.deleteByOrganization(org.getOrganizationId());
+		}else if(newParent != null && oldParent == null){	//新增
+			List<EhrUserOrganization> userOrgList = userOrganizationMapper.selectByOrganization(newParent.getOrganizationId());
+			for(EhrUserOrganization userOrg : userOrgList){
+				EhrUserOrganization uo = new EhrUserOrganization();
+				uo.setUserId(userOrg.getUserId());
+				uo.setOrganizationId(org.getOrganizationId());
+				userOrganizationMapper.insertSelective(uo);
+			}
+		}else if(newParent != null && oldParent != null){	//移动
+			if(newParent.getOrganizationId().equals(oldParent.getOrganizationId())){
+				//平移则不变
+				return true;
+			}
+			
+			//如果没有新父组织权限则不变
+			
+			List<EhrUserOrganization> userOrgList = userOrganizationMapper.selectByOrganization(newParent.getOrganizationId());
+			List<EhrOrganization> orgList = this.getTreeByParent(org.getOrganizationId());
+			for(EhrUserOrganization userOrg : userOrgList){
+				//如果有新父组织权限则需判断原来有没有：有则不变，无则新增
+				for(EhrOrganization tempOrg : orgList){
+					EhrUserOrganization uo = userOrganizationMapper.selectByUserAndOrganization(userOrg.getUserId(), tempOrg.getOrganizationId());
+					if(uo == null){
+						uo = new EhrUserOrganization();
+						uo.setUserId(userOrg.getUserId());
+						uo.setOrganizationId(tempOrg.getOrganizationId());
+						userOrganizationMapper.insertSelective(uo);
+					}
+				}
+			}
+		}else{
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -376,12 +521,12 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 	 * 查找组织下的所有人员(包含子组织)
 	 */
 	@Override
-	public List<EhrPerson> selectPersonByOrganization(EhrOrganization org){
+	public List<EhrPerson> selectPersonByOrganization(Long orgId){
 		List<Long> idList = new ArrayList<Long>();
 		
 		//如果要减少查询，可以按照loadTree的方式：
 		//先加载所有节点，并生成树，然后根据Map主键取出，递归获取所有子节点
-		this.getTreeId(org, idList);
+		this.getTreeId(orgId, idList);
 		
 		List<EhrPerson> result = personMapper.selectByOrgIdList(idList);
 		Collections.sort(result, new Comparator<EhrPerson>() {
@@ -396,12 +541,12 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 		return result;
 	}
 
-	private void getTreeId(EhrOrganization org,List<Long> idList){
-		idList.add(org.getOrganizationId());
-		List<EhrOrganization> children = orgMapper.selectChildren(org.getOrganizationId());
+	private void getTreeId(Long orgId,List<Long> idList){
+		idList.add(orgId);
+		List<EhrOrganization> children = orgMapper.selectChildren(orgId);
 		if(children != null && !children.isEmpty()){
 			for(EhrOrganization child : children){
-				this.getTreeId(child, idList);
+				this.getTreeId(child.getOrganizationId(), idList);
 			}
 		}
 	}
@@ -473,5 +618,9 @@ public class EhrOrganizationServiceImpl implements IEhrOrganizationService {
 			}
 		return result;  
 
+	}
+	@Override
+	public List<EhrPerson> findPersonByOrganizationId(Long organizationId){
+		return orgMapper.selectOrganorganizationId(organizationId);
 	}
 }

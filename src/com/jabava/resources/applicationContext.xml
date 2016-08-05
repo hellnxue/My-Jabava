@@ -12,7 +12,7 @@
 
  	<!--context:property-placeholder location="classpath:com/jabava/resources/config.properties"/--> 
  	
- 	<bean class="com.jabava.utils.JabavaPropertyCofigurer">
+ 	<bean class="com.jabava.core.config.JabavaPropertyCofigurer">
  		<property name="location" value="classpath:com/jabava/resources/config.properties"></property>
  	</bean>
  	
@@ -21,4 +21,6 @@
 	<!--import resource="${security_xml}"/-->
 
 	<import resource="classpath*:/com/jabava/resources/applicationContext-job.xml" />
+	
+	<bean id="initializer" class="com.jabava.common.init.Initializer" init-method="init"></bean>
 </beans>

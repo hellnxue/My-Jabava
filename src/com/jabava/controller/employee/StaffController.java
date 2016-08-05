@@ -60,6 +60,11 @@ public class StaffController {
 			if(linkType.equals("experience")){
 				result="forward:/employee/experienceInfoPage";
 			}
+			
+			//社保信息 
+			if(linkType.equals("socialsecurity")){
+				result="employees/socialsecurity";
+			}
 			//项目经验
 			if(linkType.equals("project")){
 				result="forward:/employee/projectInfoPage";
@@ -78,7 +83,7 @@ public class StaffController {
 			}
 			//劳动合同
 			if(linkType.equals("contract")){							
-				result="forward:/employees/work_contract";
+				result="employees/work_contract";
 			}
 			//试用情况
 			if(linkType.equals("trial")){
@@ -92,10 +97,20 @@ public class StaffController {
 			if(linkType.equals("reward")){
 				result="employees/reward";
 			}
-			//离职管理
+			//考勤记录 
+			if(linkType.equals("attendance")){
+				result="employees/attendance_record";
+			}
+			//离职管理  
 			if(linkType.equals("dimission")){
 				result="employees/dimission";
 			}
+			//资料情况 
+			if(linkType.equals("portfolio")){
+				result="employees/portfolio";
+			}
+			
+			
 		}
 		
 		return result;

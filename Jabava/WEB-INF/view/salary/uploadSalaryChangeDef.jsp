@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,26 +47,28 @@
                             <div class="col-md-5 col-md-offset-3">
                                 <form id="uploadForm" class="form-horizontal">
                                     <div class="form-group">
-                                        <label for="name" class="col-sm-3 col-md-3 col-lg-3 control-label font-bold">名称：</label>
-                                        <div class="col-sm-6 col-md-6 col-lg-6 ">
+                                        <label for="name" class="col-sm-4 col-md-4 col-lg-4 control-label font-bold">名称：</label>
+                                        <div class="col-sm-5 col-md-5 col-lg-5 ">
                                             <input type="text" class="form-control" id="name" name="name">
                                         </div>
-                                        <label class="checkbox-inline form-control-static col-sm-3 col-md-3 col-lg-3">
+                                        <div class="form-control-static col-sm-3 col-md-3 col-lg-3">
+                                        <label class="checkbox-inline">
                                             <input type="checkbox" id="cover" name="cover" value="1">
                                             同名覆盖                                     
                                         </label>
                                     </div>
+                                    </div>
                                    
                                     <div class="form-group">
-                                        <label for="keyInfo" class="col-sm-3 col-md-3 col-lg-3 control-label font-bold">主键列：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9 ">
+                                        <label for="keyInfo" class="col-sm-4 col-md-4 col-lg-4 control-label font-bold">身份识别列标题：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8 ">
                                             <input type="text" class="form-control" id="keyInfo" name="keyInfo">
                                         </div>
                                         
                                     </div>
                                     <div class="form-group">
-                                        <label for="keyType" class="col-sm-3 col-md-3 col-lg-3 control-label font-bold">主键类型：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9 ">
+                                        <label for="keyType" class="col-sm-4 col-md-4 col-lg-4 control-label font-bold">主键类型：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8 ">
                                             <select class="form-control" id="keyType" name="keyType" data-field="component">
 												<option value="0">--------</option>
 												<option value="1">身份证</option>
@@ -74,14 +77,23 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="description" class="col-sm-3 col-md-3 col-lg-3 control-label font-bold">描述：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <label for="keyType" class="col-sm-4 col-md-4 col-lg-4 control-label font-bold">是否月度信息：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8 ">
+                                            <select class="form-control" id="isMonthly" name="isMonthly" data-field="component">
+												<option value="1">是</option>
+												<option value="0">否</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-4 col-md-4 col-lg-4 control-label font-bold">描述：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
                                             <textarea class="form-control" id="description" name="description"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="" class="control-label col-sm-3 col-md-5 col-lg-3 ">上传模板：</label>
-                                        <div class="col-sm-9 col-md-7 col-lg-9 ">
+                                        <label for="" class="control-label col-sm-4 col-md-5 col-lg-4 ">上传模板：</label>
+                                        <div class="col-sm-8 col-md-7 col-lg-8 ">
                                             <div class="input-group" data-toggle="upload:file">
                                                 <input type="text" class="form-control" readonly="readonly">
                                                 <input type="hidden" id="filePath" name="filePath">
@@ -93,9 +105,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-sm-6 col-md-6 col-lg-6 col-lg-offset-3">
+                                        <% if(RequestUtil.hasPower("outerdatadef_uploaddef_ud")){ %>
+                                        <div class="col-sm-5 col-md-5 col-lg-5 col-lg-offset-4">
                                             <button id="upload" class="btn btn-block btn-success" type="button">上　传</button>
                                         </div>
+                                        <% } %>
                                         <div class="col-sm-3 col-md-3 col-lg-3">
                                             <button id="cancel" class="btn btn-block btn-default" type="button">取　消</button>
                                         </div>
@@ -176,7 +190,7 @@
 		}
 		
     	$.ajaxFileUpload({
-            url: 'upload/uploadFile',		//用于文件上传的服务器端请求地址
+            url: 'common/uploadFile',		//用于文件上传的服务器端请求地址
             secureuri: false, 				//是否需要安全协议，一般设置为false
             fileElementId: ['uploadFile'],	//文件上传域的ID
             async:false,

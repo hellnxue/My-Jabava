@@ -1,5 +1,6 @@
 ﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,9 +72,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <% if(RequestUtil.hasPower("salarytax_modify_st")){ %>
                                  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 text-center">
                                     <button class="btn btn-info btn-sm btn-edit-rate" type="submit">保存</button>
                                 </div>
+                                <% } %>
                             </form>
                         </div>  
                         <!-- table -->
@@ -279,6 +282,12 @@
                     validators: {
                         notEmpty: {
                             message: '值不能为空'
+                        },
+                        callback: {
+                            message: '税率不能大于 1',
+                            callback: function(value, validate, $field){
+                                return value>1?false:true;
+                            }
                         }
                     }
                 },
@@ -362,8 +371,14 @@
 				{ "data": "taxRate"},
 				{ "data": "fastCalculationAmount"},
 				{ "render": function render( data, type, row, meta ){
-						return '<button class="btn btn-success btn-xs" data-toggle="modal" data-target="[data-modal=addTaxRate]" type="button" onclick="mod(' + row.taxLevelId + ');">修改</button>&nbsp;' +
-                        		'<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.taxLevelId + ');">删除</button>';
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("salarytax_modify_md")){ %>
+                        strHtml += '<button class="btn btn-success btn-xs" data-toggle="modal" data-target="[data-modal=addTaxRate]" type="button" onclick="mod(' + row.taxLevelId + ');">修改</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("salarytax_modify_dd")){ %>
+                        strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.taxLevelId + ');">删除</button>';
+                        <% } %>
+						return strHtml;
 					}
 				}
 			],
@@ -386,8 +401,9 @@
 				}
    			}
    	    });
-
+        <% if(RequestUtil.hasPower("salarytax_modify_ad")){ %>
         $("div.toolbar").html('<button class="btn btn-info btn-sm" data-target="[data-modal=addTaxRate]" data-toggle="modal">新  增</button>');
+        <% } %>
     };    
 	function mod(id){
 		$.ajax({

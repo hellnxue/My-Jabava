@@ -1,34 +1,42 @@
+<%@ page contentType="text/html; charset=utf-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <%
 String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE HTML>
 <html>
 <head>
-<base href="<%=basePath%>">
-<%@ page contentType="text/html; charset=utf-8" %>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<base href="${pageContext.request.contextPath}/">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<!-- Page title -->
-<title>Jabava组织架构界面</title>
-<jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
-<!--zTree-->
-<link rel="stylesheet" href="static/css/zTreeStyle/zTreeStyle.css" type="text/css">
-<!--for 临时改变-->
-<link rel="stylesheet" href="static/css/user.css">
+	<!-- Page title -->
+	<title>Jabava组织架构界面</title>
+	<jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+	<!--zTree-->
+	<link rel="stylesheet" href="static/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<!--for 临时改变-->
+	<link rel="stylesheet" href="static/css/user.css">
 
 </head>
+
 <body class="body">
   <div id="rMenu">
     <ul>
-      <li class="m_add" id="m_add" onclick="$('#addOrgForm')[0].reset();" data-target="#myModal_add" data-toggle="modal"><span class="fa fa-plus org_span_one"></span><span>增加分支节点</span></li>
+      <% if(RequestUtil.hasPower("organization_as")){ %>
+      <li class="m_add" id="m_add" onclick="$('#addOrgForm')[0].reset();" data-target="#myModal_add" data-toggle="modal"><span class="fa fa-plus org_span_one"></span><span>增加子部门</span></li>
+      <% } %>
+      <% if(RequestUtil.hasPower("organization_dd")){ %>
       <li id="m_del" onclick="removeTreeNode();"><span class="fa fa-minus org_span_one"></span><span>删 除</span></li>
+      <% } %>
+      <% if(RequestUtil.hasPower("organization_md")){ %>
       <li class="m_check" id="m_mod" data-target="#myModal_xiugai" data-toggle="modal"><span class="fa fa-pencil org_span_one"></span><span>修 改</span></li>
+      <% } %>
     </ul>
   </div>
 
@@ -45,34 +53,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
   <!-- Main Wrapper -->
   <div id="wrapper">
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-        <div class="panel-body">
-          <div id="hbreadcrumb" class="pull-right m-t-lg">
-            <ol class="hbreadcrumb breadcrumb">
-              <li><a href="to_index?jump=1">首页</a></li>
-              <li><span>组织架构</span></li>
-              <li class="active"><span>组织架构</span></li>
-            </ol>
-          </div>
-          <h2 class="font-light m-b-xs">组织架构</h2>
-          <!--small>待 定</small-->
-        </div>
-      </div>
-    </div>
-
     <!-- 放主要内容 -->
     <div class="content animate-panel">
       <div class="row">
         <div class="col-lg-12">
           <div class="hpanel">
-            <div class="panel-heading org_padding_bottom">
-              <div class="pull-right org_margin_top">
+            <!-- <div class="panel-heading">
+              <div class="text-right">
                 <button class="btn btn-success btn-xs" type="button" data-target="#myModal7" data-toggle="modal">
                   <i class="fa fa-group"></i> <span class="bold">生成基准</span>
                 </button>
               </div>
-            </div>
+            </div> -->
 
             <!--生成基准弹框-->    
             <div class="modal fade hmodal-success form-row" id="myModal7" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -115,6 +107,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
             <div class="panel-body">
               <div class="col-sm-12">
+                <div class="form-group">
+                  <p>选中组织架构，点击鼠标右键可进行添加、修改、删除操作。</p>
+                </div>
                 <div class="form-group clearfix">
                   <div class="col-lg-4">
                     <!--树状图开始-->
@@ -166,13 +161,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <form role="form" id="addOrgForm" class=" form-horizontal formclass">
                   <div class="form-group lmaigin">
                     <label for="_OrganizationCode" class="col-lg-3">部门名称：</label>
-                    <div class="col-lg-8">
+                    <div class="col-lg-8 form-required">
                       <input type="text" class="form-control" id="_OrganizationName" value="" placeholder="请输入部门名称">
                     </div>
                   </div>
                   <div class="form-group lmaigin">
                     <label for="_OrganizationName" class="col-lg-3">部门编号：</label>
-                    <div class="col-lg-8">
+                    <div class="col-lg-8 form-required">
                       <input type="text" class="form-control" id="_OrganizationCode" value="" placeholder="请输入部门编号">
                     </div>
                   </div>
@@ -206,13 +201,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <form role="form" class=" form-horizontal formclass">
               <div class="form-group lmaigin">
                 <label for="orgNameForModify" class="col-lg-3">部门名称：</label>
-                <div class="col-lg-8">
+                <div class="col-lg-8 form-required">
                   <input type="text" class="form-control" id="orgNameForModify" value="" placeholder="测试部">
                 </div>
               </div>
               <div class="form-group lmaigin">
                 <label for="orgCodeForModify" class="col-lg-3">部门编号：</label>
-                <div class="col-lg-8">
+                <div class="col-lg-8 form-required">
                   <input type="text" class="form-control" id="orgCodeForModify" value="" placeholder="111">
                 </div>
               </div>
@@ -339,7 +334,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				{ "data": "org" },
 				{ "data": "post" },
-			    { "data": "employeeName" },
+			    {"render": function render( data, type, row, meta ){
+					if(row.employeeName){
+						return "<a href='employee/employeeInformation?personId="+row.personId+"'>"+row.employeeName+"</a>";
+					}
+				}
+			},
 				{ "data": "mobile" }
         	],
    	 	 	"language": {
@@ -351,6 +351,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	//鼠标右键
 	function OnRightClick(event, treeId, treeNode) {
+		if(treeNode == null){
+			return false;	
+		}
+
+    if( !treeNode.authorized ) return false;
+	
 		$('#_OrganizationCode').val('');
 		$('#_OrganizationName').val('');
 		$('#_Memo').val('');
@@ -422,9 +428,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	};
 
 	function beforeDrag(treeId, treeNodes) {
-		className = (className === "dark" ? "":"dark");
-		//showLog("[ "+getTime()+" beforeDrag ]&nbsp;&nbsp;&nbsp;&nbsp; drag: " + treeNodes.length + " nodes." );
-		for (var i=0,l=treeNodes.length; i<l; i++) {
+    className = (className === "dark" ? "":"dark");
+    //showLog("[ "+getTime()+" beforeDrag ]&nbsp;&nbsp;&nbsp;&nbsp; drag: " + treeNodes.length + " nodes." );
+    for (var i=0,l=treeNodes.length; i<l; i++) {
 			if (treeNodes[i].drag === false) {
 				curDragNodes = null;
 				return false;
@@ -443,10 +449,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+    if(!targetNode.authorized) return false;
 		if(targetNode.pId == null || targetNode.pId == 0){	//拖拽目标不能是父节点
 			return false;
 		}
-		
 		var msg;
 		$.ajax({
 			url:"system/moveOrg",
@@ -478,6 +484,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    zTree.updateNode(treeNodes[0]);
+
+
 		className = (className === "dark" ? "":"dark");
 		//showLog("[ "+getTime()+" onDrop ]&nbsp;&nbsp;&nbsp;&nbsp; moveType:" + moveType);
 		//showLog("target: " + (targetNode ? targetNode.name : "root") + "  -- is "+ (isCopy==null? "cancel" : isCopy ? "copy" : "move"))
@@ -503,10 +514,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		}
+		
 		return true;
 	}
 	
 	function dropInner(treeId, nodes, targetNode) {
+    if(!targetNode.authorized) return false;
 		if (targetNode && targetNode.dropInner === false) {
 			return false;
 		} else {
@@ -522,6 +535,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	function dropNext(treeId, nodes, targetNode) {
+    if(!targetNode.authorized) return false;
 		var pNode = targetNode.getParentNode();
 		if (pNode && pNode.dropInner === false) {
 			return false;
@@ -554,7 +568,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//}
 		$("#myModal_add").modal('hide');
 	};
-	  
+	 //新增节点 
 	function addOrg(){
 		if($('#_OrganizationName').val() == ''){
 			alert("部门名称不能为空");
@@ -566,7 +580,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-		//nodes = zTree.getSelectedNodes();
+		//nodes = zTree.getSelectedNodes(); 
 		  
 		$.ajax({
 			url:"system/addOrg",
@@ -588,6 +602,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						code: data.org.organizationCode,
 						memo: data.org.memo
 					});
+					
 					alert("新增成功");
 					$("#myModal_add").modal('hide');
 				}else if(data.msg == 'ins_error'){
@@ -595,10 +610,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}else{
 					alert(data.msg);
 				}
+				
 			}
 		});
 	}
-	
+	//修改节点
 	function editTreeNode(){
 		if($('#orgNameForModify').val() == ''){
 			alert("部门名称不能为空");
@@ -629,9 +645,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  currentNode.name = $('#orgNameForModify').val();
 					  currentNode.code = $('#orgCodeForModify').val();
 					  currentNode.memo = $('#memoForModify').val();
-					  zTree.updateNode(currentNode);
+					  zTree.updateNode(currentNode);					 
 					  alert("修改成功");
-					  $("#myModal_xiugai").modal('hide');
+					  $("#myModal_xiugai").modal('hide');					
+					  //刷新人员列表
+					  $('#personTable').dataTable().api().ajax.reload();
 				  }else if(data.msg == 'upd_error'){
 					  alert("修改失败");
 				  }else{
@@ -671,7 +689,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if(data.success){
 					zTree.removeNode(currentNode);
 				}
-					
+				
 				alert(data.msg);
 			}
 		});
@@ -698,11 +716,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  obj.name = strs[i].organizationName;
 				  obj.code = strs[i].organizationCode;
 				  obj.memo = strs[i].memo;
-				  obj.open = true;
+          obj.authorized = strs[i].authorized?true:false;
+          if( obj.pId == 0 ) obj.open = true;
 				  zNodes.push(obj);
 			  }
 			  $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-			  //$("#m_add").bind("click", {isParent:false}, add);
+			  //$("#m_add").bind("click", {isParent:false}, add);f
 			  //$("#callbackTrigger").bind("change", {}, setTrigger);
 			  appendSelectedEvent();
 		  }

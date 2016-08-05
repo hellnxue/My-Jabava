@@ -19,6 +19,9 @@ import com.jabava.pojo.manage.EhrSysLog;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.Page;
+import com.jabava.utils.enums.SystemEnum;
+import com.jabava.utils.enums.SystemEnum.LogOperateType;
+import com.jabava.utils.enums.SystemEnum.Module;
 
 /***
  * 
@@ -92,5 +95,31 @@ public class EhrSysLogSerciceImpl implements IEhrSysLogSercice {
 		log.setOperateDate(new Date());
 		return logMapper.insertSelective(log);
 	}
+
+@Override
+public int addSysLog(EhrUser user, LogOperateType operation, Module module ,String operationInfo)
+		throws Exception {
+	// TODO Auto-generated method stub
+	EhrSysLog log = new EhrSysLog();
+	log.setUserId(user.getUserId());
+	log.setUserName(user.getUserName());
+	log.setOperateType(operation.getValue());
+	log.setModule(module.getModuleName());
+	
+	if (user.getCompany() != null) {
+		log.setCompanyId(user.getCompany().getCompanyId());
+		log.setCompanyCode(user.getCompany().getCompanyCode());
+		log.setCompanyName(user.getCompany().getCompanyName());
+	} else {
+		EhrCompany company = companyMapper.selectByPrimaryKey(user.getCompanyId());
+		log.setCompanyId(company.getCompanyId());
+		log.setCompanyCode(company.getCompanyCode());
+		log.setCompanyName(company.getCompanyName());
+	}
+	log.setOperateInfo(operationInfo);
+	log.setOperateDate(new Date());
+	return logMapper.insertSelective(log);
+
+}
 
 }

@@ -10,6 +10,7 @@ import com.jabava.pojo.manage.EhrFunctionPoint;
 import com.jabava.pojo.manage.EhrPersonField;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.pojo.manage.EhrUserBusinessPower;
+import com.jabava.pojo.manage.EhrUserOrganization;
 import com.jabava.utils.Page;
 
 /**
@@ -19,8 +20,11 @@ import com.jabava.utils.Page;
 public interface EhrUserInfoService {
 	List<EhrUser> searchUser(Map<String, Object> map, String search, String order, String according, Page<EhrUser> page) throws Exception;
 	
-	Map<String, Object> addOrUpdateUser(EhrUser user) throws Exception;
-	Map<String, Object> addOrUpdateHR(EhrUser user) throws Exception;
+	List<EhrUser> searchUser(Map<String, Object> map);
+	
+	Map<String, Object> addOrUpdate(EhrUser user) throws Exception;
+	//Map<String, Object> addOrUpdateUser(EhrUser user) throws Exception;
+	//Map<String, Object> addOrUpdateHR(EhrUser user) throws Exception;
 	
 	Map<String, Object> pwdReset(EhrUser user, int entry) throws Exception;
 	
@@ -49,4 +53,11 @@ public interface EhrUserInfoService {
 	Map<String, Object> deleteUser(Long userId, Integer isValid)
 			throws Exception;
 	
+	List<Map<String, Object>> loadUserOrganizationTree(EhrUser user);
+	
+	public int saveUserOrganization(Long userId, Long[] orgIds) throws Exception;
+	
+	List<EhrUserOrganization> listUserOrganization(EhrUser user);
+	
+	public int deleteUserOrganization(Long userId);
 }

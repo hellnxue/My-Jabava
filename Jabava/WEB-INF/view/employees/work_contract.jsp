@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<base href="${pageContext.request.contextPath}/">
+    <base href="${pageContext.request.contextPath}/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,298 +10,599 @@
     <!-- Page title -->
     <title>劳动合同</title>
     <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+    <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
     <link rel="stylesheet" href="static/css/user_bata.css">
     <link rel="stylesheet" href="static/css/style_1.css" media="screen">
     <link rel="stylesheet" href="static/css/bill.css">
 </head>
 <body >
 
-<!--splash screen-->
- <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
+  <!--splash screen-->
+  <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
 
-<!--引入头文件 开始--> 
+  <!--引入头文件 开始--> 
   <jsp:include flush="true" page="../common/header.div.jsp"></jsp:include>
   <!--引入头文件 结束--> 
   <!--引入菜单文件 开始--> 
   <jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
   <!--引入菜单文件 结束--> 
- 
-<!-- 放主要内容  开始-->
 
-<!-- Main Wrapper -->
-<div id="wrapper" class="min-h">
-<div class="normalheader transition animated fadeIn small-header">
-    <div class="hpanel">
-        <div class="panel-body"><!-- 
-            <a class="small-header-action" href="">
-                <div class="clip-header">
-                    <i class="fa fa-arrow-up"></i>
-                </div>
-            </a> -->
+  <!-- 放主要内容  开始-->
 
-            <div id="hbreadcrumb" class="pull-right m-t-lg">
-                <ol class="hbreadcrumb breadcrumb">
-                    <li><a href="to_index?jump=1">首页</a></li>
-                    <li>
-                        <span>员工个人信息</span>
-                    </li>
-                    <li class="active">
-                        <span></span>
-                    </li>
-                </ol>
+  <!-- Main Wrapper -->
+  <div id="wrapper" class="min-h">
+    <div class="content animate-panel">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="hpanel">
+            <div class="panel-heading">
+              <h4 class="text-center font-bold">员工资料
+                <button onclick="toEmployeeList()" class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
+              </h4>
             </div>
-            <h2 class="font-light m-b-xs">
-                员工个人信息
-            </h2>
-            <small>待定</small>
-        </div>
-    </div>
-</div>
+            <!-- 放主要内容 -->
+            <!--引入员工信息导航 开始--> 
+            <jsp:include flush="true" page="employee_nav.jsp">
+            <jsp:param value="contract" name="type"/>
+          </jsp:include>
+          <!--引入员工信息导航 结束-->
 
-<!-- 放主要内容 -->
-  <!--引入员工信息导航 开始--> 
-  <jsp:include flush="true" page="employee_nav.jsp"></jsp:include>
-  <!--引入员工信息导航 结束-->
+          <!--劳动合同-->
+          <div class="panel-body">
+            <div class="panel-heading">
+                  <h4 class="text-center font-bold">劳动合同</h4>
+            </div>
+            <div class="row m-b-lg">
+            <input type="hidden" name="personId" value="${personId}" id="personId">
+            <script type="text/html" id="laodongss">
+              {{each contractList}}
+             <div class="col-md-12 page-header m-t-md">
+                <div class="panel-tools action-group">
+                  <ul class="list-inline">
+                     <li>
+                    <a href="javascript://" data-action-motive="hideOrshow" data-action-id="{{$value.contractId}}"><i class="pe-7s-angle-down-circle pe-2x text-info"></i><span class="sr-only">隐藏</span></a>
+                    </li>
+                    <li>
+                    <a href="javascript://" data-action-motive="edit" data-action-id="{{$value.contractId}}"><i class="pe-7s-note pe-2x text-info">
+                    </i><span class="sr-only">修改</span></a>
+                    </li>
+                    <li>
+                      <a href="javascript://" data-action-motive="del" data-action-id="{{$value.contractId}}"><i class="pe-7s-trash pe-2x text-info"></i><span class="sr-only">删除</span></a>
+                    </li>
+                  </ul>
+                </div>
+                <ul class="list-inline">
+                  <li><p class="form-control-static text-info font-bold">
+                  {{if $value.contractStartDate}}
+                  {{$value.contractStartDate.substr(0,10)}}
+                  {{/if}}
+                  &nbsp;</p></li>
+                  <li class="m-r"><p class="form-control-static text-info font-bold">至</p></li>
+                  <li><p class="form-control-static text-info font-bold">
+                  {{if $value.contractEndDate}}
+                  {{$value.contractEndDate.substr(0,10)}}
+                  {{/if}}
+                  </p></li>
+                  <li><p class="form-control-static text-info font-bold">
+                    {{each ['劳动合同','劳务协议','实习协议','保密协议','竞业限制协议','培训协议'] as $item $idx}}
+                        {{if $value.contractType == $idx+1}}
+                            {{$item}}
+                        {{/if}}
+                    {{/each}}
+                  </p></li>
+                  <li><p class="form-control-static text-info font-bold">
+                    {{each ['固定期限','无固定期限','以完成一定工作任务为期限'] as $item $idx}}
+                        {{if $value.contractDeadlineType == $idx+1}}
+                            {{$item}}
+                        {{/if}}
+                    {{/each}}
+                  </p></li>
+                  <li><p class="form-control-static text-info font-bold">
+                    {{each ['签订','续签'] as $item $idx}}
+                        {{if $value.contractBussinessType == $idx+1}}
+                            {{$item}}
+                        {{/if}}
+                    {{/each}}
+                  </p></li>
+               </ul>
+              </div>
 
-        
-                     
-               
-                     <!--劳动合同-->
-                     <div class="panel-body laodong">
-                     	<div class="row ">
-                        	<div style="border-bottom:1px solid #33CCFF; margin:20px; line-height:32px; overflow:hidden;">
-                        	<h4 style="float:left; font-weight:normal">劳动合同</h4>
-                            <div style="float:right">
-                            	<button type="button" class="btn btn-success btn-xs laodong_ht"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                                <button type="button" class="btn btn-success btn-xs laodong_ht_update" style=" display:none;"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                               <button type="button" class="btn btn-success btn-xs shi_yqk"><span class="bold">试用情况&gt;&gt;</span></button> 
-                            
+              <form role="form" data-form="{{$value.contractId}}" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12">
+                <input type="hidden" name="contractId" value="{{$value.contractId}}">
+                  <!--合同类型-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">合同类型：</label>
+                        <div class="col-md-8 col-lg-8">
+                            <div class="input-group-static">
+                                <p class="form-control-static">
+                                {{each ['劳动合同','劳务协议','实习协议','保密协议','竞业限制协议','培训协议'] as $item $idx}}
+                                    {{if $value.contractType == $idx+1}}
+                                        {{$item}}
+                                    {{/if}}
+                                {{/each}}
+                                &nbsp;</p>
                             </div>
+                            <div class="form-required">
+                                <select class="form-control " name="contractType">
+                                {{each ['劳动合同','劳务协议','实习协议','保密协议','竞业限制协议','培训协议'] as $item $idx}}
+                                    <option value="{{$idx+1}}"{{if $value.contractType == $idx+1}} selected="selected"{{/if}}>{{$item}}</option>
+                                {{/each}}
+                                </select>
                             </div>
-                             <input type="hidden" name="personId" value="${personId}" id="personId">
-<script type="text/html" id="laodongss">
-{{each list}}
-<form role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
-  <div class="text-right action-group">
-    <a href="javascript://" class="pe-7s-note pe-2x" data-action-motive="edit" ><span class="sr-only">修改</span></a>
-    <a href="javascript://" class="pe-7s-trash pe-2x" data-action-motive="del" data-action-id="{{$value.contractId}}"><span class="sr-only">删除</span></a>
-  </div>
-  <input type="hidden" name="contractId" value="{{$value.contractId}}">
-  <!--合同开始时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同开始时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.contractStartDate.substr(0,10)}}&nbsp;</p>
-        </div>
-        <div class="input-group date" data-data-format="yyy-mm-dd">
-          <input type="text" class="form-control" name="contractStartDate" value="{{$value.contractStartDate.substr(0,10)}}" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--合同结束时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同结束时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.contractEndDate.substr(0,10)}}</p>
-        </div>
-        <div class="input-group date" data-data-format="yyy-mm-dd">
-          <input type="text" class="form-control" name="contractEndDate" value="{{$value.contractEndDate.substr(0,10)}}" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--合同类别-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同类别：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.contractTypeShow}}</p>
-        </div>
-        <select class="form-control " name="contractType">
-          <option value="1"{{if $value.contractType == '1'}} selected="selected"{{/if}}>固定期限</option>
-          <option value="2"{{if $value.contractType == '2'}} selected="selected"{{/if}}>无固定期限</option>
-			<option value="3"{{if $value.contractType == '3'}} selected="selected"{{/if}}>以完成一定工作量的协议</option>
-            <option value="4"{{if $value.contractType == '4'}} selected="selected"{{/if}}>劳务</option>
-			<option value="5"{{if $value.contractType == '5'}} selected="selected"{{/if}}>派遣</option>
-          <option value="6"{{if $value.contractType == '6'}} selected="selected"{{/if}}>实习</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--合同性质-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同性质：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.contractPropertyShow}}</p>
-        </div>
-        <select class="form-control" name="contractProperty" >
-          <option value="1"{{if $value.contractProperty=='1'}} selected="selected"{{/if}}>首签</option>
-          <option value="2"{{if $value.contractProperty=='2'}} selected="selected"{{/if}}>续签</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--试用期-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">试用期：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.trialMonth}}</p>
-        </div>
-        <input type="text" class="form-control" name="trialMonth" value="{{$value.trialMonth}}" required="required">
-      </div>
-    </div>
-  </div>
-  <!--主体-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">主体：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.ehrOrganization.organizationName}}</p>
-        </div>
-        <select class="form-control" name="contractSubject"> 
-			{{each subjectList as key idx}}          
-            <option value="{{key.organizationId}}"{{if $value.contractSubject==key.organizationId}} selected="selected"{{/if}}>{{key.organizationName}}</option>
-		{{/each}}       
-	 </select>
-      </div>
-    </div>
-  </div>
-  <!--备注-->
-  <div class="col-md-12 col-lg-12">
-    <div class="form-group">
-      <label for="" class="control-label col-md-2 col-lg-2">备注：</label>
-      <div class="col-md-10 col-lg-10">
-        <div class="input-group-static">
-          <p class="form-control-static">{{$value.memo}}</p>
-        </div>
-        <textarea class="form-control" name="memo">{{$value.memo}}</textarea>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center form-action">
-    <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
-    <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
-  </div>
-</form>
-{{/each}}
-</script>
-                            <div class="hpanel" id="laodong_div">
-                              </div>
-                            <div class="panel-body" id="hetong_body">
-<form role="form" method="post" class="form-horizontal col-md-12 col-lg-12 hetong hetong_form hidden" id="create_new"> 
-  <!--合同开始时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同开始时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group date" data-data-format="yyy-mm-dd">
-          <input type="text" class="form-control" name="contractStartDate" value="" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--合同结束时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同结束时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group date" data-data-format="yyy-mm-dd">
-          <input type="text" class="form-control" name="contractEndDate" value="" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--合同类别-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同类别：</label>
-      <div class="col-md-6 col-lg-6">
-        <select class="form-control " name="contractType">
-          <option value="1">固定期限</option>
-          <option value="2">无固定期限</option>
-           <option value="3">以完成一定工作量的协议</option>
-          <option value="4">劳务</option>
-           <option value="5">派遣</option>
-          <option value="6">实习</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--合同性质-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">合同性质：</label>
-      <div class="col-md-6 col-lg-6">
-        <select class="form-control" name="contractProperty" >
-          <option value="1">首签</option>
-          <option value="2">续签</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--试用期-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">试用期：</label>
-      <div class="col-md-6 col-lg-6">
-        <input type="text" class="form-control" name="trialMonth" value="" required="required">
-      </div>
-    </div>
-  </div>
-  <!--主体-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">主体：</label>
-      <div class="col-md-6 col-lg-6">
-        <select class="form-control" id="contractSubject" name="contractSubject">
-          <option>事业部</option>
-          <option>百度人才</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--备注-->
-  <div class="col-md-12 col-lg-12">
-    <div class="form-group">
-      <label for="" class="control-label col-md-2 col-lg-2">备注：</label>
-      <div class="col-md-10 col-lg-10">
-        <textarea class="form-control" name="memo"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center">
-    <button  class="btn btn-info">保存</button>
-  </div>
-</form>
+                        </div>
+                      </div>
+                    </div>
+                    <!--开始时间-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">签订日期：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">
+                                    {{if $value.contractSignDate}}
+                                    {{$value.contractSignDate.substr(0,10)}}
+                                    {{/if}}
+                                    &nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="contractSignDate" value="{{if $value.contractSignDate}}{{$value.contractSignDate.substr(0,10)}}{{/if}}">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--业务类型-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">业务类型：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">
+                                    {{each ['签订','续签'] as $item $idx}}
+                                        {{if $value.contractBussinessType == $idx+1}}
+                                            {{$item}}
+                                        {{/if}}
+                                    {{/each}}
+                                    &nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <select class="form-control" name="contractBussinessType">
+                                    {{each ['签订','续签'] as $item $idx}}
+                                        <option value="{{$idx+1}}"{{if $value.contractBussinessType == $idx+1}} selected="selected"{{/if}}>{{$item}}</option>
+                                    {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 合同主体单位 -->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">合同主体单位：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.contractMainUnit}}&nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <input type="text" class="form-control" name="contractMainUnit" value="{{$value.contractMainUnit}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同期限类型-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">合同期限类型：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">
+                                    {{each ['固定期限','无固定期限','以完成一定工作任务为期限'] as $item $idx}}
+                                        {{if $value.contractBussinessType == $idx+1}}
+                                            {{$item}}
+                                        {{/if}}
+                                    {{/each}}
+                                    &nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <select class="form-control" name="contractDeadlineType">
+                                    {{each ['固定期限','无固定期限','以完成一定工作任务为期限'] as $item $idx}}
+                                    <option value="{{$idx+1}}"{{if $value.contractDeadlineType == $idx+1}} selected="selected"{{/if}}>{{$item}}</option>
+                                    {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同开始日期-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">合同开始日期：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.contractStartDate.substr(0,10)}}&nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="contractStartDate" value="{{$value.contractStartDate.substr(0,10)}}">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同期限-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">合同期限：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.contractMonth}} 个月&nbsp;</p>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="contractMonth" value="{{$value.contractMonth}}">
+                                    <span class="input-group-addon">个月</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同结束日期-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">合同结束日期：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.contractEndDate.substr(0,10)}}&nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="contractEndDate" value="{{$value.contractEndDate.substr(0,10)}}">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6" data-action="trial">
+                        <div class="form-group">
+                            <div class="col-md-8 col-lg-8 col-md-offset-4 col-lg-offset-4">
 
-                              </div>
-                              </div>
-                              </div>     
-                            <!--劳动合同 end-->
-                            
-                       
-        
+                                <div class="input-group-static">
+                                    <p class="form-control-static">
+是否试用：
+                                    {{if $value.isTrial == 1}}
+                                    是
+                                    {{else}}
+                                    否
+                                    {{/if}}
+                                    &nbsp;</p>
+                                </div>
+                                <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="isTrial" value="1" data-action="trial"{{if $value.isTrial == 1}}checked="checked"{{/if}}>
+                                    是否试用</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6{{if $value.isTrial != 1}} hidden{{/if}}" data-action-for="trial">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">试用期限：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.trialMonth}} 个月&nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="trialMonth" value="{{$value.trialMonth}}">
+                                        <span class="input-group-addon">个月</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--计划转正时间-->
+                    <div class="col-md-6 col-lg-6{{if $value.isTrial != 1}} hidden{{/if}}" data-action-for="trial">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">计划转正时间：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">
+                                    {{if $value.planPositiveDate}}
+                                    {{$value.planPositiveDate.substr(0,10)}}
+                                    {{/if}}
+                                    &nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="planPositiveDate" value="{{if $value.planPositiveDate}}{{$value.planPositiveDate.substr(0,10)}}{{/if}}">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--实际转正时间-->
+                    <div class="col-md-6 col-lg-6{{if $value.isTrial != 1}} hidden{{/if}}" data-action-for="trial">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">实际转正时间：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">
+                                    {{if $value.factPositiveDate}}
+                                    {{$value.factPositiveDate.substr(0,10)}}
+                                    {{/if}}
+                                    &nbsp;</p>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="factPositiveDate" readonly="readonly" value="{{if $value.factPositiveDate}}{{$value.factPositiveDate.substr(0,10)}}{{/if}}">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--试用期工资-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">试用期工资：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.trialSalary}}&nbsp;</p>
+                                </div>
+                                <input type="text" class="form-control" name="trialSalary" value="{{$value.trialSalary}}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--转正工资-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">转正工资：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.positiveSalary}}&nbsp;</p>
+                                </div>
+                                <input type="text" class="form-control" name="positiveSalary" value="{{$value.positiveSalary}}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--连续次数-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">连续次数：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.continueTime}}&nbsp;</p>
+                                </div>
+                                <input type="text" class="form-control" name="continueTime" value="{{$value.continueTime}}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--备注-->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">备注：</label>
+                            <div class="col-md-8 col-lg-8">
+                                <div class="input-group-static">
+                                    <p class="form-control-static">{{$value.memo}}&nbsp;</p>
+                                </div>
+                                <input type="text" class="form-control" name="memo" value="{{$value.memo}}">
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-lg-12 col-md-12 text-center form-action">
+                  <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
+                  <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                </div>
+              </form>
+              {{/each}}
+              <form role="form" method="post" data-form-type="base" class="form-horizontal col-md-12 col-lg-12 hetong hetong_form hidden" id="create_new" data-form-validator="validator">
+                    <div class="col-md-12 col-lg-12">
+                        <!--合同类型-->
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">合同类型：</label>
+                            <div class="col-md-8 col-lg-8 form-required">
+                              <select class="form-control " name="contractType">
+                                {{each ['劳动合同','劳务协议','实习协议','保密协议','竞业限制协议','培训协议'] as $item $idx}}
+                                    <option value="{{$idx+1}}">{{$item}}</option>
+                                {{/each}}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <!--开始时间-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">签订日期：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="contractSignDate" required="required">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--业务类型-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">业务类型：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <select class="form-control" name="contractBussinessType">
+                                    {{each ['签订','续签'] as $item $idx}}
+                                        <option value="{{$idx+1}}">{{$item}}</option>
+                                    {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 合同主体单位 -->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">合同主体单位：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <input type="text" class="form-control" name="contractMainUnit" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <!--合同期限类型-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">合同期限类型：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <select class="form-control" name="contractDeadlineType" >
+                                        {{each ['固定期限','无固定期限','以完成一定工作任务为期限'] as $item $idx}}
+                                        <option value="{{$idx+1}}">{{$item}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--合同开始日期-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">合同开始日期：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="contractStartDate">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--合同期限-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">合同期限：</label>
+                                <div class="col-md-8 col-lg-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="contractMonth">
+                                        <span class="input-group-addon">个月</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--合同结束日期-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">合同结束日期：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="contractEndDate">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6" data-action="trial">
+                            <div class="form-group">
+                                <div class="col-md-8 col-lg-8 col-md-offset-4 col-lg-offset-4">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="isTrial" value="1">
+                                        是否试用</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 hidden" data-action-for="trial">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">试用期限：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="trialMonth">
+                                        <span class="input-group-addon">个月</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--计划转正时间-->
+                        <div class="col-md-6 col-lg-6 hidden" data-action-for="trial">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">计划转正时间：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                    <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
+                                        <input type="text" class="form-control" name="planPositiveDate">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--实际转正时间-->
+                        <div class="col-md-6 col-lg-6 hidden" data-action-for="trial">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">实际转正时间：</label>
+                                <div class="col-md-8 col-lg-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="factPositiveDate" readonly="readonly">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12">
+                        <!--试用期工资-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">试用期工资：</label>
+                                <div class="col-md-8 col-lg-8">
+                                    <input type="text" class="form-control" name="trialSalary">
+                                </div>
+                            </div>
+                        </div>
+                        <!--转正工资-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">转正工资：</label>
+                                <div class="col-md-8 col-lg-8">
+                                    <input type="text" class="form-control" name="positiveSalary">
+                                </div>
+                            </div>
+                        </div>
+                        <!--连续次数-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">连续次数：</label>
+                                <div class="col-md-8 col-lg-8">
+                                    <input type="text" class="form-control" name="continueTime">
+                                </div>
+                            </div>
+                        </div>
+                        <!--备注-->
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">备注：</label>
+                                <div class="col-md-8 col-lg-8">
+                                    <input type="text" class="form-control" name="memo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-lg-12 col-md-12 text-right">
+                  <button  class="btn btn-success" type="submit">保存</button>
+                  <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                </div>
+              </form>
+            </script>
+            <div class="hpanel" id="laodong_div">
+            </div>
 
-    <!-- Footer-->
-   <!-- Footer-->
-    <!-- 放页脚  开始-->
-<jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
-	<!-- 放页脚  结束-->
+            <div id="hetong_body" data-form-target="content"></div>
+            </div>
+            <!--添加-->
+            <div class="text-center row">
+              <a class="adds" data-form-action="add" href="javascript://"><i class=" pe-7s-plus pe-5x text-muted"></i><br><span class="text-muted">添加新记录</span></a>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>    
+  <!--劳动合同 end-->
+
+  <!-- 放页脚  开始-->
+  <jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
+  <!-- 放页脚  结束-->
 </div>
 
 <!-- Vendor scripts -->
@@ -330,24 +631,129 @@
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 
+<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
+<script type="text/javascript" src="static/js/work_contract.js"></script>
 <script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
-<script src="static/js/common.js"></script>
-<script type="text/javascript">
+<script src="static/js/commonH3.js"></script>
+<script>
 var personId = $("#personId").val();
 var url='employee/contractInfo?personId='+personId;
+var addURL = 'employee/addContract';
+var updateURL = 'employee/updateContract';
+var containerID = $('#laodong_div');
+var templateID = 'laodongss';
+var listURL = url;
+var delsURL = 'employee/delContract?contractId=';
+var addFormSelector="[name=add_new_form]";
+  templateFillData('laodongss', $('#laodong_div'), url,'employee/delContract?contractId=', 'contractList');
+ 
 
-  templateFillData('laodongss', $('#laodong_div'), url,'employee/delJobpost.do?postId=');
 
-</script>
+    //校验
+    var validateOptions = {
+        err: {
+            container: 'tooltip'
+        },
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        locale: 'zh_CN',
+        fields: {
+            contractType: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    }
+                }
+            },
+            contractBussinessType: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    }
+                }
+            },
+            contractDeadlineType: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    }
+                }
+            },
+            contractMainUnit: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    }
+                }
+            },
+            contractSignDate: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD',
+                        message: '该日期是无效的'
+                    }
+                }
+            },
+            contractStartDate: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    },
+                    date: {
+                      format: 'YYYY-MM-DD',
+                      message: '该日期是无效的'
+                    }
+                }
+            },
+            contractEndDate: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    },
+                    date: {
+                      format: 'YYYY-MM-DD',
+                      message: '该日期是无效的'
+                    }
+                }
+            },
+            planPositiveDate: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    },
+                    date: {
+                      format: 'YYYY-MM-DD',
+                      message: '该日期是无效的'
+                    }
+                }
+            },
+            trialMonth: {
+                validators: {
+                    notEmpty: {
+                        message: '请填写必填项目'
+                    }
+                }
+            }
+        }
+    };
 
-<script>
 
-    <!--删除-->
+
+
+    //删除
      function deleteBtnInfo(){
-	  $('.demo4').click(function () {
+      $('.demo4').click(function () {
             swal({
                         title: "确定要删除此用户吗?",
                         text: "注意：用户删除后将不可登录!",
@@ -366,21 +772,20 @@ var url='employee/contractInfo?personId='+personId;
                         }
                     });
         });
-	}
-  <!--取消效果-->
+    }
+  //取消效果
   $(".guanbi").click(function(){
-	  
-	 $("#myModal7").modal('hide');
-	 $("#myModal8").modal('hide');
-	 $("#myModal9").modal('hide');
-	  
+      
+     $("#myModal7").modal('hide');
+     $("#myModal8").modal('hide');
+     $("#myModal9").modal('hide');
+      
   })
-</script>
-<!--日历-->
-<script>
+
+//日历
 
         $(function(){
-			deleteBtnInfo();
+            deleteBtnInfo();
             $('#datepicker').datepicker();
             $("#datepicker").on("changeDate", function(event) {
                 $("#my_hidden_input").val(
@@ -389,7 +794,7 @@ var url='employee/contractInfo?personId='+personId;
             });
 
             $('#datapicker2').datepicker();
-            $('.input-group.date').datepicker({ });
+            // $('.input-group.date').datepicker({ });
             $('.input-daterange').datepicker({ });
 
             $("#demo1").TouchSpin({
@@ -496,10 +901,7 @@ var url='employee/contractInfo?personId='+personId;
 
         });
 
-    </script>
-
-<!--删除-->
-<script>
+ //删除
     $(function () {
         $('.demo4').click(function () {
             swal({
@@ -524,49 +926,46 @@ var url='employee/contractInfo?personId='+personId;
 
     });
 
-</script>
 
-<script>
   $(".guanbi").click(function(){
-	  
-	 $("#myModal7").modal('hide');
-	  
+      
+     $("#myModal7").modal('hide');
+      
   })
-</script>
- 
- <!--全部导出-->
-    <script>
-	  $(".jxdc").click(function(){
-		 $(".modal-content").hide();
-		 $(".modal-backdrop").hide();
-	  })
-	  </script>
-	  
-		<!--导出通讯录-->
-			<script>
-	function downMB(moban) {
-			window.open(moban);
-		}
-		function sendOrderMail() {
-			if (document.getElementById("file").value == "") {
-				alert("请选择要上传的附件");
-				return false;
-			}
-			var path = document.getElementById("file").value;
-			var isIE = (document.all) ? true : false; 3           
-			var isIE9 = isIE && (navigator.userAgent.indexOf('MSIE 9.0') != -1);  
-			var isIE10 = isIE && (navigator.userAgent.indexOf('MSIE 10.0') != -1);  
-			var isIE11 = isIE && (navigator.userAgent.indexOf('MSIE 11.0') != -1); 
-			var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1 
-			if(isIE9 || isIE10 || isIE11 || isChrome){
-				path = path.substring(path.lastIndexOf("\\")+1,path.length);
-			}
-			document.OrderSendForm.saction.value = "sendMail";
-			document.OrderSendForm.attachment.value = path;
-			document.OrderSendForm.action = "hroorderSend.do";
-			document.OrderSendForm.submit();
-		}
-	  </script>
+
+ //全部导出
+
+      $(".jxdc").click(function(){
+         $(".modal-content").hide();
+         $(".modal-backdrop").hide();
+      })
+
+      
+//导出通讯录
+
+    function downMB(moban) {
+            window.open(moban);
+        }
+        function sendOrderMail() {
+            if (document.getElementById("file").value == "") {
+                alert("请选择要上传的附件");
+                return false;
+            }
+            var path = document.getElementById("file").value;
+            var isIE = (document.all) ? true : false; 3           
+            var isIE9 = isIE && (navigator.userAgent.indexOf('MSIE 9.0') != -1);  
+            var isIE10 = isIE && (navigator.userAgent.indexOf('MSIE 10.0') != -1);  
+            var isIE11 = isIE && (navigator.userAgent.indexOf('MSIE 11.0') != -1); 
+            var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1 
+            if(isIE9 || isIE10 || isIE11 || isChrome){
+                path = path.substring(path.lastIndexOf("\\")+1,path.length);
+            }
+            document.OrderSendForm.saction.value = "sendMail";
+            document.OrderSendForm.attachment.value = path;
+            document.OrderSendForm.action = "hroorderSend.do";
+            document.OrderSendForm.submit();
+        }
+      </script>
 
 </body>
 </html>

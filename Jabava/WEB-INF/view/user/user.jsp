@@ -1,25 +1,27 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <%
 String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
 <!DOCTYPE HTML>
 <html>
-  <head>
-  <base href="<%=basePath%>">
+<head>
+	<base href="${pageContext.request.contextPath}/">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<!-- Page title -->
-  <title>用户管理</title>
+	<title>用户管理</title>
 	<jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
 	<!--for 临时改变-->
+	<link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
 	<link rel="stylesheet" href="static/css/user.css">
-  </head>
+</head>
   
 <body>
   <!-- Simple splash screen-->
@@ -34,35 +36,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <!-- 放主要内容  开始-->
   <!-- Main Wrapper -->
   <div id="wrapper">
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-        <div class="panel-body">
-          <div id="hbreadcrumb" class="pull-right m-t-lg">
-            <ol class="hbreadcrumb breadcrumb">
-              <li><a href="to_index?jump=1">首页</a></li>
-              <li><span>用户管理</span></li>
-              <li class="active"><span>用户管理</span></li>
-            </ol>
-          </div>
-          <h2 class="font-light m-b-xs">用户管理</h2>
-          <small>待 定</small>
-        </div>
-      </div>
-    </div>
-
     <!-- 放主要内容 -->
     <div class="content animate-panel">
       <div class="row">
         <div class="col-lg-12">
           <div class="hpanel">
             <div class="panel-heading ">
-              <div class="pull-right">
+              <h4 class="text-center font-bold">
+                  用户管理
+              </h4>
+              <div class="text-right">
+                <% if(RequestUtil.hasPower("index_user_au")){ %>
                 <button class="btn btn-success btn-xs" type="button" onclick="insertUserEnter(this);" data-toggle="modal">
                   <i class="fa fa-group"></i> <span class="bold">新增用户</span>
                 </button>
-              </div>
-              &nbsp;
-              <div>
+                <% } %>
               </div>
             </div>
             <!-- 高级搜索开始 -->
@@ -193,15 +181,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <div class="col-lg-8">
                               <input type="text" name="telephone" placeholder="请输入有效数字" class="form-control content_clear">
                             </div>
-                            <!--<label class="col-lg-1 hong">*</label>-->
                           </div> 
 
                           <div class="form-group">
                             <label class="col-lg-3 new_padding">&nbsp;</label>
                             <div class="col-lg-8">
-                              <!--<input type="text" class="form-control">-->
                             </div>
-                            <!--<label class="col-lg-1 hong">*</label>-->
                           </div>
 
                           <div class="form-group">
@@ -224,7 +209,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                               <option value="A2">GDSS</option>
                             </select>
                           </div>
-                          <!--<label class="col-lg-1 hong">*</label>-->
                         </c:if>
                       </div> 
                     </div>
@@ -237,7 +221,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <div class="col-lg-10">
                           <textarea type="text" class="form-control new_width content_clear" name="memo" id="memoHR" ></textarea>
                         </div>
-                        <!--<label class="col-lg-1 hong">*</label>-->
                       </div>
                       <center>
                         <button class="btn btn-primary" type="button" onclick="insertHr();">保存</button>
@@ -257,60 +240,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
         <!--新增员工弹框-->    
-        <div class="modal fade hmodal-success form-row" id="myModal7" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal fade hmodal-success form-row" data-panel="modal" id="myModal7" tabindex="-1" role="dialog"  aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="color-line"></div>
               <div class="modal-header clearfix">
-                <form role="form" class=" form-horizontal formclass" id="insertForm">
+                <form role="form" class=" form-horizontal formclass" id="insertForm" data-form="validator" data-action-motive="add">
                   <div class="row row_style_one">
                     <div class="col-sm-12">
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">用户名：</label>
-                        <div class="col-lg-8">
-                          <input type="text" class="form-control content_clear" name="userCode" id="userCode" readonly>
+                        <div class="col-lg-9">
+                          <input type="text" class="form-control content_clear" name="userCode" id="userCode" readonly="readonly">
                         </div>
-                        <label class="col-lg-1 hong">*</label>
                       </div> 
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">姓名：</label>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9 form-required">
                           <input type="text" name="userName" id="userName" class="form-control content_clear">
                         </div>
-                        <label class="col-lg-1 hong">*</label>
                       </div> 
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">手机：</label>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9 form-required">
                           <input type="text" name="mobile" id="mobile" placeholder="请输入有效数字" class="form-control content_clear" name="mobile">
                         </div>
-                        <label class="col-lg-1 hong">*</label>
                       </div> 
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">Email：</label>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9 form-required">
                           <input  name="mailAddress" id="mailAddress" class="form-control content_clear" type="email" required placeholder="请输入电子邮件">
                         </div>
-                        <label class="col-lg-1 hong">*</label>
                       </div> 
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">用户类型：</label>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9 form-required">
                           <select name="userType" id="userType" class="form-control m-b nomargin_tow" placeholder="系统管理员">
                             <c:if test="${LOGIN_USER.userType == 1 }">
                             <option value="1">平台系统管理员</option>
                           </c:if>
                           <option value="2">系统管理员</option>
-                          <option value="3">普通用户</option>
                           <option value="4">HR</option>
                         </select>
                       </div>
-                      <label class="col-lg-1 hong">*</label>
                     </div> 
                   </div>
                 </div> 
@@ -327,7 +304,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                     <div class="form-group">
                       <label class="col-lg-3 new_padding">性别：</label>
-                      <div class="col-lg-8">
+                      <div class="col-lg-9">
                         <div class="sex_style">
                           <input id="optionsRadios3" name="sex" class="new_style_four sex" type="radio" value="1" checked="true">
                           <span class="sex sex_tow">男</span>
@@ -339,18 +316,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">电话：</label>
-                        <div class="col-lg-8">
+                        <div class="col-lg-9">
                           <input type="text" name="telephone" placeholder="请输入有效数字" class="form-control content_clear">
                         </div>
-                        <!--<label class="col-lg-1 hong">*</label>-->
                       </div> 
 
                       <div class="form-group">
                         <label class="col-lg-3 new_padding">&nbsp;</label>
-                        <div class="col-lg-8">
-                          <!--<input type="text" class="form-control">-->
+                        <div class="col-lg-9">
                         </div>
-                        <!--<label class="col-lg-1 hong">*</label>-->
                       </div>
 
                       <div class="form-group">
@@ -363,18 +337,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </div>
                         <label class="col-lg-1 hong">*</label>
                       </c:if>
-                      <c:if test="${LOGIN_USER.userType != 1 }">
-                      <input type="hidden" name="companyId" value="${LOGIN_USER.companyId}"/>
-                      <label class="col-lg-3 new_padding_tow">用户区分：</label>
-                      <div class="col-lg-8">
-                        <select name="userDistinguish" id="userDistinguish" class="form-control m-b nomargin_tow" placeholder="用户区分">
-                          <option value="">不限</option>
-                          <option value="A1">GDSI</option>
-                          <option value="A2">GDSS</option>
-                        </select>
-                      </div>
-                      <!--<label class="col-lg-1 hong">*</label>-->
-                    </c:if>
                   </div> 
                 </div>
               </div> 
@@ -386,10 +348,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div class="col-lg-10">
                       <textarea type="text" class="form-control new_width content_clear" name="memo" id="memo" ></textarea>
                     </div>
-                    <!--<label class="col-lg-1 hong">*</label>-->
                   </div>
                   <center>
-                    <button class="btn btn-primary" type="button" onclick="insertUser();">保存</button>
+                    <button class="btn btn-primary" type="submit">保存</button>
                     &nbsp;
                     <button class="btn btn-primary guanbi" type="button"  data-dismiss="modal">取消</button>
                   </center>
@@ -405,45 +366,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <!--新增员工弹框 end--> 
 
     <!--修改弹框start-->
-    <div class="modal fade hmodal-success form-row" id="myModal8" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal fade hmodal-success form-row" data-panel="modal" id="myModal8" tabindex="-1" role="dialog"  aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="color-line"></div>
           <div class="modal-header clearfix">
-            <form role="form" class=" form-horizontal formclass" id="updateForm">
+            <form role="form" class=" form-horizontal formclass" id="updateForm" data-form="validator" data-action-motive="edit">
               <div class="row row_style_one">
                 <div class="col-sm-12">
                   <input type="hidden" name="userId" id="update_userId"/>
                   <div class="form-group">
                     <label class="col-lg-3 new_padding">用户名：</label>
-                    <div class="col-lg-8">
-                      <input type="text" class="form-control content_clear" name="userCode" id="update_code">
+                    <div class="col-lg-9">
+                      <input type="text" class="form-control content_clear" readonly="readonly" name="userCode" id="update_code">
                     </div>
-                    <label class="col-lg-1 hong">*</label>
                   </div> 
 
                   <div class="form-group">
                     <label class="col-lg-3 new_padding">姓名：</label>
-                    <div class="col-lg-8">
+                    <div class="col-lg-9 form-required">
                       <input type="text" name="userName" id="update_name" class="form-control content_clear">
                     </div>
-                    <label class="col-lg-1 hong">*</label>
                   </div> 
 
                   <div class="form-group">
                     <label class="col-lg-3 new_padding">手机：</label>
-                    <div class="col-lg-8">
+                    <div class="col-lg-9 form-required">
                       <input type="text" name="mobile" id="update_mobile" class="form-control content_clear" name="mobile">
                     </div>
-                    <label class="col-lg-1 hong">*</label>
                   </div> 
 
                   <div class="form-group">
                     <label class="col-lg-3 new_padding">Email：</label>
-                    <div class="col-lg-8">
+                    <div class="col-lg-9 form-required">
                       <input  name="mailAddress" id="update_mail" class="form-control content_clear" type="email" required>
                     </div>
-                    <label class="col-lg-1 hong">*</label>
                   </div> 
                 </div>
               </div> 
@@ -458,7 +415,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                   <div class="form-group">
                     <label class="col-lg-3 new_padding">性别：</label>
-                    <div class="col-lg-8">
+                    <div class="col-lg-9">
                       <div class="sex_style">
                         <input id="optionsRadios5" name="sex" class="new_style_four sex" type="radio" value="1" checked="true">
                         <span class="sex sex_tow">男</span>
@@ -470,18 +427,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                     <div class="form-group">
                       <label class="col-lg-3 new_padding">电话：</label>
-                      <div class="col-lg-8">
+                      <div class="col-lg-9">
                         <input type="text" name="telephone" id="update_tel" class="form-control content_clear">
                       </div>
-                      <!--<label class="col-lg-1 hong">*</label>-->
                     </div> 
 
                     <div class="form-group">
                       <label class="col-lg-3 new_padding">&nbsp;</label>
-                      <div class="col-lg-8">
-                        <!--<input type="text" class="form-control">-->
+                      <div class="col-lg-9">
                       </div>
-                      <!--<label class="col-lg-1 hong">*</label>-->
                     </div>
                   </div>
                 </div> 
@@ -493,10 +447,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                       <div class="col-lg-10">
                         <textarea type="text" class="form-control new_width" name="memo" id="update_memo" ></textarea>
                       </div>
-                      <!--<label class="col-lg-1 hong">*</label>-->
                     </div>
                     <center>
-                      <button class="btn btn-primary" type="button" onclick="updateUser();">保存</button>
+                      <button class="btn btn-primary" type="submit">保存</button>
                       &nbsp;
                       <button class="btn btn-primary guanbi" type="button" data-dismiss="modal">取消</button>
                     </center>
@@ -571,13 +524,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
   <!-- App scripts -->
   <script src="static/bootstrap/scripts/homer.js"></script>
+  <!-- 表单验证 -->
+  <script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+  <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+  <script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
   <!--私有-->
   <script src="static/js/user_magement.js"></script>
   <script src="static/js/template.js"></script>
 
 <script>
-	
-   $(function () {
+   $(function(){
 	   var table = $('#example2').dataTable({
   	   		"dom":
 	   	   		"<'row'<'col-sm-6'l><'col-sm-5'f><'col-sm-1'<'toolbar'>>>" +
@@ -588,29 +544,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	        
   	        "sort":true,
   	        "columns": [
-  					/*{ "data": "userId" },*/
-  					{ "data": "userCode" },
-  					{ "data": "userName" },
-  					{ "data": "mailAddress" },
-  					{ "data": "utype"},
-  					{ "data": "valid"},
-  					/*{ "data": "locked" },*/
-  					{ "data": "lastModifyUserName" },
-  					{ "data": "modifyDate" },
-  					{ "render": function render( data, type, row, meta ){
-  						var str = '<li><a class="demo4" onclick="userYDeleteClick('+row.userId+',0)"><i class="fa fa-times "></i> 无效</a></li>  ';
-  						if(row.isValid == 0){
-  							str = '<li><a class="demo4" onclick="userNDeleteClick('+row.userId+',1)"><i class="fa fa-times "></i> 生效</a></li>  ';
-  						}
-  						return   '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">操作<span class="caret"></span></button>'+
-  								 '<ul class="dropdown-menu">'+
-  								 /*' <li><a onclick="userPowerEnter('+row.userId+',this)" data-toggle="modal"><i class="fa pe-7s-config"></i> 设置权限</a></li>'+*/
-  								 ' <li><a onclick="pwdResetClick('+row.userId+')"><i class="fa fa-rotate-left"></i> 密码重置</a></li>'+
-  								 ' <li><a onclick="updateUserEnter('+row.userId+',this)" data-toggle="modal"><i class="fa fa-check"></i> 修改</a></li>'+
-  								 str+  
-  								 '<li><a class="demo4" onclick="userDeleteUH('+row.userId+',1)"><i class="fa fa-times "></i> 删除</a></li>  '+                     
-  							     '</ul></div>';
-  					    } }
+				/*{ "data": "userId" },*/
+				{ "data": "userCode" },
+				{ "data": "userName" },
+				{ "data": "mailAddress" },
+				{ "data": "utype"},
+				{ "data": "valid"},
+				/*{ "data": "locked" },*/
+				{ "data": "lastModifyUserName" },
+				{ "data": "modifyDate" },
+				{ "render": function render( data, type, row, meta ){
+					var str = '<li><a class="demo4" onclick="userYDeleteClick('+row.userId+',0)"><i class="fa fa-times "></i> 无效</a></li>  ';
+					if(row.isValid == 0){
+						str = '<li><a class="demo4" onclick="userNDeleteClick('+row.userId+',1)"><i class="fa fa-times "></i> 生效</a></li>  ';
+					}
+					return   '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">操作<span class="caret"></span></button>'+
+							 '<ul class="dropdown-menu">'+
+							 /*' <li><a onclick="userPowerEnter('+row.userId+',this)" data-toggle="modal"><i class="fa pe-7s-config"></i> 设置权限</a></li>'+*/
+                		<% if(RequestUtil.hasPower("index_user_pr")){ %>
+							 ' <li><a class="demo1" onclick="resetPassword('+row.userId+')"><i class="fa fa-rotate-left"></i> 密码重置</a></li>'+
+                		<% } %>
+                		<% if(RequestUtil.hasPower("index_user_mu")){ %>
+							 ' <li><a onclick="updateUserEnter('+row.userId+',this)" data-toggle="modal"><i class="fa fa-check"></i> 修改</a></li>'+
+                		<% } %>
+                		<% if(RequestUtil.hasPower("index_user_ms")){ %>
+							 str+
+                		<% } %>
+                		<% if(RequestUtil.hasPower("index_user_du")){ %>
+							 <%--'<li><a class="demo4" onclick="userDeleteUH('+row.userId+',1)"><i class="fa fa-times "></i> 删除</a></li>  '+--%> 
+                		<% } %>
+						     '</ul></div>';
+				    } }
   				],
   	           "language": {
   	  			 	"search": "过滤:",
@@ -638,7 +602,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
   	   	$("div.toolbar").html('<button class="btn btn-info  btn-sm new_padding_padding" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>');
 
-	   
 	   	$(".guanbi").click(function(){
 	   		 // $("#myModal7").modal('hide');
 	   		 // $("#myModal8").modal('hide');
@@ -646,6 +609,114 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   		 $("#myModal10").modal('hide');
 	   		 $(".content_clear").val("");
 	   	});
+
+        //新增和修改的验证
+        var validatorOptions = {
+            framework: 'bootstrap',
+            err: {
+                container: 'tooltip'
+            },
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                userName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项'
+                        },
+                        callback: {
+                          message: '英文字母 100 个字符；中文 50 个字符',
+                          callback: function(value, validator, $field){
+                            var valid = {
+                              latin: {
+                                reg: /^([A-Za-z])+$/,
+                                max: 100,
+                                min: 1
+                              },
+                              hans: {
+                                reg: /^([\u4E00-\u9FA5])+$/,
+                                max: 50,
+                                min: 1
+                              }
+                            }
+                            if( (valid.latin.reg).test(value) ){
+                              if( value.length > ( valid.latin.max ) ) return false
+                              return true;
+                            }else if( (valid.hans.reg).test(value) ){
+                              if( value.length > ( valid.hans.max ) ) return false
+                              return true;
+                            }
+
+                            return false;
+                          }
+                        }
+                    }
+                },
+                mobile: {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项'
+                        },
+                        phone: {
+                            country: 'CN',
+                            message: '请输入中国区域的手机或电话号码'
+                        }
+                    }
+                },
+                mailAddress: {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项'
+                        },
+                        stringLength: {
+                            message: '请输入小于50个字符',
+                            max: '50'
+                        },
+                        regexp: {
+                            message: '请输入有效的邮箱',
+                            regexp: /^([a-zA-Z0-9_\-\.])+@(\w)+((\.\w+)+)$/
+                        }
+                    }
+                },
+                userType: {
+                    enabled: false, 
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项'
+                        }
+                    }
+                }
+            }
+        };
+      $('[data-form="validator"]')
+      .formValidation(validatorOptions)
+      .find('[name="userType"]')
+      .each(function(index, el){
+        var fv = $(el).parents('form').data('formValidation');
+        fv.enableFieldValidators('userType', true).revalidateField('userType');
+      })
+      .end()
+      .on('success.form.fv', function(e){
+        e.preventDefault();
+        var getActionMotive = $(e.target).attr('data-action-motive');
+        switch(getActionMotive){
+          case 'add':
+            insertUser();
+            break;
+          case 'edit':
+            updateUser();
+            break;
+        }
+        
+      });
+
+      $('[data-panel="modal"]').on('hide.bs.modal', function (e) {
+        $(e.target).find('form').formValidation('resetForm');
+        $(e.target).find('form')[0].reset();
+      })
     });
    
    	//高级搜索
@@ -677,10 +748,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			        success: function(data) {
 			            if(data.success == true){
 			            	swal("操作成功!", "该用户状态变更为无效.", "success");
-                			window.location.href="<%=basePath%>user/searchUser.do";
+                			window.location.href="user/searchUser.do";
 			            }else{
 			            	swal("操作失败!", "遇到问题了.", "error");
-                			window.location.href="<%=basePath%>user/searchUser.do";
+                			window.location.href="user/searchUser.do";
 			            }
 			        }
 		        });
@@ -714,10 +785,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			        success: function(data) {
 			            if(data.success == true){
 			            	swal("操作成功!", "该用户状态变更为有效.", "success");
-                			window.location.href="<%=basePath%>user/searchUser.do";
+                			window.location.href="user/searchUser.do";
 			            }else{
 			            	swal("操作失败!", "遇到问题了.", "error");
-                			window.location.href="<%=basePath%>user/searchUser.do";
+                			window.location.href="user/searchUser.do";
 			            }
 			        }
 		        });
@@ -726,10 +797,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
         });
     }
-    
-    
+
+    // 密码重置弹框
+    function resetPassword(id,isDelete){
+	    swal({
+	        title: "确定要重置此用户的密码吗?",
+	        type: "warning",
+	        showCancelButton: true,
+	        confirmButtonColor: "#DD6B55",
+	        confirmButtonText: "是!",
+	        cancelButtonText: "否",
+	        closeOnConfirm: false,
+	        closeOnCancel: false },
+	        function (isConfirm) {
+	            if (isConfirm) {
+	            	$.ajax({
+				        cache: true,
+				        type: "GET",
+				        url:"resetPwd/" + id,
+				        dataType: 'json',
+				        async: false,
+				        success: function(data) {
+				            if(data.success == true){
+				            	swal("重置密码请求发送成功!", "请通知用户登录邮箱设置新密码.", "success");
+				            }else{
+				            	swal("重置密码请求发送失败!", data.msg, "error");
+				            }
+				        }
+			        });
+	            } else {
+	                swal("已取消", "密码未重置!", "error");
+	            }
+	        }
+	    );
+    }
+
     function userDeleteUH(id,isDelete){
-    swal({
+    	swal({
 	        title: "确定要删除此用户吗?",
 	        text: "注意：用户删除后，用户将不能恢复!",
 	        type: "warning",
@@ -752,58 +856,59 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				        success: function(data) {
 				            if(data.success == true){
 				            	swal("删除成功!", "该用户已经被删除.", "success");
-	                			window.location.href="<%=basePath%>user/searchUser.do";
+	                			window.location.href="user/searchUser.do";
 				            }else{
 				            	swal("删除失败!", "遇到问题了.", "error");
-	                			window.location.href="<%=basePath%>user/searchUser.do";
+	                			window.location.href="user/searchUser.do";
 				            }
 				        }
 			        });
 	            } else {
 	                swal("已取消", "用户未删除!", "error");
 	            }
-	        });
-	    
-    }
-    
-    //重置密码
-    function pwdResetClick(userId){
-    	$.ajax({
-	        cache: true,
-	        type: "POST",
-	        url:"user/pwdReset.do",
-	        data:{"userId":userId},
-	        dataType: 'json',
-	        async: false,
-	        success: function(data) {
-	            alert(data.msg);
 	        }
-        });
+	    );
     }
+
+    //重置密码
+    // function pwdResetClick(userId){
+    // 	$.ajax({
+	   //      cache: true,
+	   //      type: "POST",
+	   //      url:"user/pwdReset.do",
+	   //      data:{"userId":userId},
+	   //      dataType: 'json',
+	   //      async: false,
+	   //      success: function(data) {
+	   //          alert(data.msg);
+	   //      }
+    //     });
+    // }
     
     function insertUserEnter(btn){
     	console.log($("#insertForm").find("[name='companyId']"));
     	$("#insertForm").find("input[type='text']").each(function(){
-			$(this).val("");
-		});
-		$("#userType").val("2");
-		$("#optionsRadios3").attr("checked", "checked");
-		//$("#insertForm").find("#companyId").val("");
-		$("#userDistinguish").val("");
-		$("#memo").val("");//备注
-		$(btn).attr("data-target","#myModal7");
+			 $(this).val("");
+		  });
+  		$("#userType").val("2");
+  		$("#optionsRadios3").attr("checked", "checked");
+  		//$("#insertForm").find("#companyId").val("");
+  		$("#userDistinguish").val("");
+  		$("#memo").val("");//备注
+  		$(btn).attr("data-target","#myModal7");
     }
-      function insertHREnter(btn){
+
+    function insertHREnter(btn){
     	console.log($("#insertForm").find("[name='companyId']"));
     	$("#insertForm").find("input[type='text']").each(function(){
-			$(this).val("");
-		});
-		$("#userType").val("2");
-		$("#optionsRadios3").attr("checked", "checked");
-		//$("#insertForm").find("#companyId").val("");
-		$("#userDistinguish").val("");
-		$("#memo").val("");//备注
-		$(btn).attr("data-target","#myModal10");
+			 $(this).val("");
+		  });
+  		$("#userType").val("2");
+  		$("#optionsRadios3").attr("checked", "checked");
+  		//$("#insertForm").find("#companyId").val("");
+  		$("#userDistinguish").val("");
+  		$("#memo").val("");//备注
+  		$(btn).attr("data-target","#myModal10");
     }
     
     function updateUserEnter(id, btn){
@@ -841,27 +946,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     function insertUser(){
     	var userCode = $("#userCode").val();
-		var userName = $("#userName").val();
-		var mailAddress = $("#mailAddress").val();
-		var companyId = $("#insertForm").find("[name='companyId']").val();
-		var userType = $("#userType").val();
-		var mobile = $("#mobile").val();
-		if(check(userCode,userName,mailAddress,companyId,userType,mobile)){
-			$.ajax({
-		        cache: true,
-		        type: "POST",
-		        url:"user/addOrUpdateUser.do",
-		        data:$('#insertForm').serialize(),
-		        dataType: 'json',
-		        async: false,
-		        success: function(data) {
-		            alert(data.msg);
-		            if(data.success == true){
-		            	window.location.href="<%=basePath%>user/searchUser.do";
-		            }
-		        }
-	        });
-		}
+  		var userName = $("#userName").val();
+  		var mailAddress = $("#mailAddress").val();
+  		var companyId = $("#insertForm").find("[name='companyId']").val();
+  		var userType = $("#userType").val();
+  		var mobile = $("#mobile").val();
+  		if(check(userCode,userName,mailAddress,companyId,userType,mobile)){
+  			$.ajax({
+  		        cache: true,
+  		        type: "POST",
+  		        url:"user/addOrUpdateUser.do",
+  		        data:$('#insertForm').serialize(),
+  		        dataType: 'json',
+  		        async: false,
+  		        success: function(data) {
+  		            alert(data.msg);
+  		            if(data.success == true){
+  		            	window.location.href="user/searchUser.do";
+  		            }
+  		        }
+  	        });
+  		}
     }
     
      function insertHr(){
@@ -882,7 +987,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        success: function(data) {
 		            alert(data.msg);
 		            if(data.success == true){
-		            	window.location.href="<%=basePath%>user/searchUser.do";
+		            	window.location.href="user/searchUser.do";
 		            }
 		        }
 	        });
@@ -907,7 +1012,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        success: function(data) {
 		            alert(data.msg);
 		            if(data.success == true){
-		            	window.location.href="<%=basePath%>user/searchUser.do";
+		            	window.location.href="user/searchUser.do";
 		            }
 		        }
 	        });
@@ -932,7 +1037,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        success: function(data) {
 		            alert(data.msg);
 		            if(data.success == true){
-		            	window.location.href="<%=basePath%>user/searchUser.do";
+		            	window.location.href="user/searchUser.do";
 		            }
 		        }
 	        });
@@ -959,18 +1064,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    alert("Email地址不合法");
 		    return false;
 		}
+		<c:if test="${LOGIN_USER.userType == 1 }">
         if(companyId == null || companyId == ""){
             alert("所属公司不能为空");
             return false;
         }
-        if(companyId == 1 && userType != 1){
+        if(companyId == 0 && userType != 1){
             alert("平台用户只能是平台系统管理员");
             return false;
         }
-        if(companyId != 1 && userType == 1){
+        if(companyId != 0 && userType == 1){
             alert("非平台用户不能是平台系统管理员");
             return false;
         }
+        </c:if>
         return true;
     }
     
@@ -983,7 +1090,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	function openCompanyTree(){
 		var companyId = $("#companyId").val();
-    	var t="<%=basePath%>view/user/companyTree.jsp?companyId="+companyId;
+    	var t="view/user/companyTree.jsp?companyId="+companyId;
 		showWindow(t,"550px", "450px");
     }
 	
@@ -1006,70 +1113,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$(btn).attr("data-target","#myModal9");
 	}
 	
-function fieldIdChange(fieldId){
-    var fieldIds = document.getElementsByName("fieldId");
-    var fieldType = $(fieldId).find("option:selected").attr("fieldtype");
-    var operateType;
-    var fieldValue;
-    for(var i = 0; i < fieldIds.length; i++){
-        if(fieldId==fieldIds[i]){
-            operateType = document.getElementsByName("operateType")[i];
-            fieldValue = document.getElementsByName("field_value")[i];
-            break;
-        }
-    }
-    operateType.value = "";
-    //fieldValue.value = "";
-    var html = "";
-    if(fieldType >= 4){
-    	operateType.disabled = true;
-    	$.ajax({
-	        cache: true,
-	        type: "POST",
-	        url:"user/getFieldValue.do",
-	        data:{"fieldId":fieldId.value},
-	        dataType:'json',
-	        async: false,
-	        success: function(data) {
-	       	    html +="<select name=\"fieldValue\" class=\"js-source-states-3 form-control m-b nomargin_tow new_style_third\" multiple=\"multiple\">";
-				for(var i = 0; i < data.length; i++){
-					html += "<option value=\""+data[i][0]+"\">"+data[i][1]+"</option>";
-				}
-				html +="</select>";
+	function fieldIdChange(fieldId){
+	    var fieldIds = document.getElementsByName("fieldId");
+	    var fieldType = $(fieldId).find("option:selected").attr("fieldtype");
+	    var operateType;
+	    var fieldValue;
+	    for(var i = 0; i < fieldIds.length; i++){
+	        if(fieldId==fieldIds[i]){
+	            operateType = document.getElementsByName("operateType")[i];
+	            fieldValue = document.getElementsByName("field_value")[i];
+	            break;
 	        }
-		});
-    }else{
-    	operateType.disabled = false;
-    	html += "<input type=\"text\" name=\"fieldValue\" /> ";
-    }
-    $(fieldValue).html(html);
-	$(".js-source-states-3").select2();
-}
-function fieldTypeChange(fieldType){
-    var fieldTypes=document.getElementsByName("fieldType");
-    var fieldId;
-    var operateType;
-    var fieldValue;
-    var fieldValueId;
-    for(var i=0;i<fieldTypes.length;i++){
-        if(fieldType == fieldTypes[i]){
-            fieldId=document.getElementsByName("fieldId")[i];
-            operateType=document.getElementsByName("operateType")[i];
-            fieldValue=document.getElementsByName("fieldValue")[i];
-            selectWin=document.getElementsByName("selectWin")[i];
-            break;
-        }
-    }
-    fieldId.value="";
-    operateType.value="";
-    $(fieldValue).children().removeAttr("selected");
-    fieldId.disabled=true;
-    operateType.disabled=true;
-    fieldValue.disabled=true;
-    if(fieldType.value == 1){
-        fieldId.disabled = false;
-    }
-}
+	    }
+	    operateType.value = "";
+	    //fieldValue.value = "";
+	    var html = "";
+	    if(fieldType >= 4){
+	    	operateType.disabled = true;
+	    	$.ajax({
+		        cache: true,
+		        type: "POST",
+		        url:"user/getFieldValue.do",
+		        data:{"fieldId":fieldId.value},
+		        dataType:'json',
+		        async: false,
+		        success: function(data) {
+		       	    html +="<select name=\"fieldValue\" class=\"js-source-states-3 form-control m-b nomargin_tow new_style_third\" multiple=\"multiple\">";
+					for(var i = 0; i < data.length; i++){
+						html += "<option value=\""+data[i][0]+"\">"+data[i][1]+"</option>";
+					}
+					html +="</select>";
+		        }
+			});
+	    }else{
+	    	operateType.disabled = false;
+	    	html += "<input type=\"text\" name=\"fieldValue\" /> ";
+	    }
+	    $(fieldValue).html(html);
+		$(".js-source-states-3").select2();
+	}
+	
+	function fieldTypeChange(fieldType){
+	    var fieldTypes=document.getElementsByName("fieldType");
+	    var fieldId;
+	    var operateType;
+	    var fieldValue;
+	    var fieldValueId;
+	    for(var i=0;i<fieldTypes.length;i++){
+	        if(fieldType == fieldTypes[i]){
+	            fieldId=document.getElementsByName("fieldId")[i];
+	            operateType=document.getElementsByName("operateType")[i];
+	            fieldValue=document.getElementsByName("fieldValue")[i];
+	            selectWin=document.getElementsByName("selectWin")[i];
+	            break;
+	        }
+	    }
+	    fieldId.value="";
+	    operateType.value="";
+	    $(fieldValue).children().removeAttr("selected");
+	    fieldId.disabled=true;
+	    operateType.disabled=true;
+	    fieldValue.disabled=true;
+	    if(fieldType.value == 1){
+	        fieldId.disabled = false;
+	    }
+	}
+	
 	//权限设置-添加一行
 	function addPowerRow(data){
 		var rowNum = data.listPower.length; 
@@ -1110,14 +1219,14 @@ function fieldTypeChange(fieldType){
 			rowHtml +="<select disabled=\"true\" class=\"form-control m-b nomargin_tow new_style_third\" name=\"operateType\" placeholder=\"操作1\">";
 			rowHtml +="<option value=\"\"></option>";
 			rowHtml +="<option value=\"1\">=</option>";
- 	    rowHtml +="<option value=\"2\" > ></option>";
- 	    rowHtml +="<option value=\"3\" > < </option>";
- 	    rowHtml +="<option value=\"4\" >>=</option>";
- 	    rowHtml +="<option value=\"5\" ><=</option>";
- 	    rowHtml +="<option value=\"6\" >左匹配</option>";
- 	    rowHtml +="<option value=\"7\" >右匹配</option>";
- 	    rowHtml +="<option value=\"8\" >任意匹配</option>";
-      rowHtml +="<option value=\"9\" >in</option>";
+	 	    rowHtml +="<option value=\"2\" > ></option>";
+	 	    rowHtml +="<option value=\"3\" > < </option>";
+	 	    rowHtml +="<option value=\"4\" >>=</option>";
+	 	    rowHtml +="<option value=\"5\" ><=</option>";
+	 	    rowHtml +="<option value=\"6\" >左匹配</option>";
+	 	    rowHtml +="<option value=\"7\" >右匹配</option>";
+	 	    rowHtml +="<option value=\"8\" >任意匹配</option>";
+	        rowHtml +="<option value=\"9\" >in</option>";
 			rowHtml +="</select>";
 			rowHtml +="</span>";
 			rowHtml +="<span class=\"col-lg-2 selcct_span\" name=\"field_value\">";
@@ -1132,10 +1241,8 @@ function fieldTypeChange(fieldType){
 			$("#user_power").append(rowHtml);
 		    //$(".js-source-states-3").select2();
 		
-		
-		/*$(".tianjia").eq(0).after($(".tianjia").eq(0).clone().addClass("hehe"+rowNum));*/
-	});
-	
+			/*$(".tianjia").eq(0).after($(".tianjia").eq(0).clone().addClass("hehe"+rowNum));*/
+		});
 	}
 	
 	function doSubmitClick(){
@@ -1225,10 +1332,10 @@ function fieldTypeChange(fieldType){
     };  
 
 
-$("#mobile").blur(function(){
-	var uc = $("#mobile").val();
-	 $("#userCode").val(uc);
-})
+	$("#mobile").blur(function(){
+		var uc = $("#mobile").val();
+		$("#userCode").val(uc);
+	})
 </script>
 </body>
 </html>

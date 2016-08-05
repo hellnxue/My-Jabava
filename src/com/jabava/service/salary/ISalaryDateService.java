@@ -15,4 +15,8 @@ public interface ISalaryDateService {
 	int deleteById(Long companyId, Long salaryDateId);
 	
 	EhrSalaryDate selectByChangeDate(Long companyId, Date changeDate);
+	
+	int getPayDayCount(String monthly,Long companyId) throws Exception;
+	
+	int getPayDayCountBefore(String monthly,Long companyId,Date bd) throws Exception;
 }

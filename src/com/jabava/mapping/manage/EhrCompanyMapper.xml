@@ -44,6 +44,8 @@
     <result column="company_city" property="companyCity" jdbcType="VARCHAR" />
     <result column="company_dist" property="companyDist" jdbcType="VARCHAR" />
     <result column="perfect_date" property="perfectDate" jdbcType="TIMESTAMP" />
+    <result column="certificate_status" property="certificateStatus" jdbcType="INTEGER" />
+    <result column="uc_org_id" property="ucOrgId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
@@ -56,7 +58,7 @@
     parent_id, company_type, use_ehr, start_date, finish_date, memo, create_user_id, 
     create_user_name, create_date, last_modify_user_id, last_modify_user_name, last_modify_date, 
     company_post, company_net, company_logo, company_license_url, company_prov, company_city, 
-    company_dist, perfect_date
+    company_dist, perfect_date, certificate_status, uc_org_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     <!--
@@ -94,7 +96,8 @@
       last_modify_user_id, last_modify_user_name, last_modify_date, 
       company_post, company_net, company_logo, 
       company_license_url, company_prov, company_city, 
-      company_dist, perfect_date
+      company_dist, perfect_date, certificate_status,
+      uc_org_id
       )
     values (#{companyId,jdbcType=BIGINT}, #{companyCode,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, 
       #{companyShortName,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, #{companyTelephone,jdbcType=VARCHAR}, 
@@ -106,7 +109,8 @@
       #{lastModifyUserId,jdbcType=BIGINT}, #{lastModifyUserName,jdbcType=VARCHAR}, #{lastModifyDate,jdbcType=TIMESTAMP}, 
       #{companyPost,jdbcType=VARCHAR}, #{companyNet,jdbcType=VARCHAR}, #{companyLogo,jdbcType=VARCHAR}, 
       #{companyLicenseUrl,jdbcType=VARCHAR}, #{companyProv,jdbcType=VARCHAR}, #{companyCity,jdbcType=VARCHAR}, 
-      #{companyDist,jdbcType=VARCHAR}, #{perfectDate,jdbcType=TIMESTAMP}
+      #{companyDist,jdbcType=VARCHAR}, #{perfectDate,jdbcType=TIMESTAMP}, #{certificateStatus,jdbcType=INTEGER},
+      #{ucOrgId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jabava.pojo.manage.EhrCompany" >
@@ -213,6 +217,12 @@
       <if test="perfectDate != null" >
         perfect_date,
       </if>
+      <if test="certificateStatus != null" >
+        certificate_status,
+      </if>
+      <if test="ucOrgId != null" >
+        uc_org_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="companyId != null" >
@@ -310,6 +320,12 @@
       </if>
       <if test="perfectDate != null" >
         #{perfectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certificateStatus != null" >
+        #{certificateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="ucOrgId != null" >
+        #{ucOrgId,jdbcType=BIGINT},
       </if>
     </trim>
      <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="companyId">  
@@ -417,6 +433,12 @@
       <if test="perfectDate != null" >
         perfect_date = #{perfectDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="certificateStatus != null" >
+        certificate_status = #{certificateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="ucOrgId != null" >
+        uc_org_id = #{ucOrgId,jdbcType=BIGINT},
+      </if>
     </set>
     where company_id = #{companyId,jdbcType=BIGINT}
   </update>
@@ -457,7 +479,9 @@
       company_prov = #{companyProv,jdbcType=VARCHAR},
       company_city = #{companyCity,jdbcType=VARCHAR},
       company_dist = #{companyDist,jdbcType=VARCHAR},
-      perfect_date = #{perfectDate,jdbcType=TIMESTAMP}
+      perfect_date = #{perfectDate,jdbcType=TIMESTAMP},
+      certificate_status = #{certificateStatus,jdbcType=INTEGER},
+      uc_org_id = #{ucOrgId,jdbcType=BIGINT}
     where company_id = #{companyId,jdbcType=BIGINT}
   </update>
   
@@ -466,7 +490,14 @@
   	</select>
   	
   	<select id="getZeroCompany" resultMap="BaseResultMap">
-  		select <include refid="Base_Column_List" /> from ehr_company where parent_id=0
+  		select <include refid="Base_Column_List" /> from ehr_company where parent_id=0 and company_id&lt;&gt;0
+  	</select>
+  
+  	<select id="getAllCompany" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  		select <include refid="Base_Column_List" /> from ehr_company
+  		 <if test="_parameter == null || _parameter == 0" >
+  		 	where company_id&lt;&gt;0
+  		 </if>
   	</select>
   	
   	<select id="getCompanyIdByName" resultMap="BaseResultMap"  parameterType="java.lang.String">
@@ -475,6 +506,11 @@
   	
   	<select id="getMaxCompanyId" resultMap="CountResultMap">
 		select max(company_id) as countNum from ehr_company
+   </select>
+   <select id="getCompanysByUserName"  resultMap="BaseResultMap"  parameterType="java.lang.String">
+   SELECT cy.* from ehr_company cy 
+		LEFT JOIN ehr_user u on cy.company_id = u.company_id
+			where  u.is_deleted =0  and  u.user_code = #{userName}
    </select>
   	
 </mapper>

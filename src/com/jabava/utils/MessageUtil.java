@@ -90,4 +90,26 @@ public class MessageUtil {
 		map.put("msg", msg);
 		return map;
 	}
+	
+	
+	public static Map<String, Object> successProviderMessage(String returnMessage){
+		return providerMessage("0", returnMessage);
+	}
+	
+	public static Map<String, Object> errorProviderMessage(String returnMessage){
+		return providerMessage("1", returnMessage);
+	}
+	
+	/**
+	 * 生成结果Map(包含returnCode及returnMessage两个键)
+	 * @param returnCode
+	 * @param returnMessage
+	 * @return
+	 */
+	public static Map<String, Object> providerMessage(String returnCode, String returnMessage){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("returnCode", returnCode);
+		map.put("returnMessage", returnMessage);
+		return map;
+	}
 }

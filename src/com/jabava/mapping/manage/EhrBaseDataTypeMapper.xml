@@ -29,6 +29,15 @@
     from ehr_base_data_type
     where base_data_type = #{baseDataType,jdbcType=INTEGER}
   </select>
+    <!-- 查询所有基础类型  -->
+  <select id="selectBaseDataType" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from ehr_base_data_type
+  </select>
+  <select id="selectBaseTypeByBaseName"  parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from ehr_base_data_type where base_data_type_name = #{baseName,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
@@ -95,4 +104,5 @@
     set base_data_type_name = #{baseDataTypeName,jdbcType=VARCHAR}
     where base_data_type = #{baseDataType,jdbcType=INTEGER}
   </update>
+
 </mapper>

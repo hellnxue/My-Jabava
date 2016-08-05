@@ -39,6 +39,7 @@ public class EhrRelationController {
 		}
 		return map;
 	}
+	
 	/***
 	 * 添加家庭成员
 	 * @param relation
@@ -66,13 +67,12 @@ public class EhrRelationController {
 				data.put("success", result);
 				data.put("msg", "添加失败");
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return data;
-	
 	}
+
 	/**
 	 * 修改家庭成员
 	 * @param relation
@@ -92,13 +92,12 @@ public class EhrRelationController {
 			boolean result = relationService.updateRelation(relation);
 			if(result){
 				data.put("success", result);
-		        data.put("msg", "修改成功");
+				data.put("msg", "修改成功");
 			}else{
 				data.put("success", result);
 				data.put("msg", "修改失败");
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return data;
@@ -119,13 +118,12 @@ public class EhrRelationController {
 			boolean result =relationService.delRelation(relationId);
 			if(result){
 				data.put("success", result);
-		        data.put("msg", "删除成功");
+				data.put("msg", "删除成功");
 			}else{
 				data.put("success", result);
 				data.put("msg", "删除失败");
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return data;

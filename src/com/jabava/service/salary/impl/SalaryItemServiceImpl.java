@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,11 @@ import com.jabava.pojo.salary.EhrSalaryItem;
 import com.jabava.service.salary.ISalaryItemService;
 import com.jabava.utils.enums.SalaryEnum;
 
+
 @Service
 public class SalaryItemServiceImpl implements ISalaryItemService{
 	@Autowired
 	private EhrSalaryItemMapper salaryItemMapper;
-
 	@Override
 	public List<EhrSalaryItem> listSalaryItemPage(Map<String, Object> params) {
 		return salaryItemMapper.listSalaryItemPage(params);
@@ -38,14 +40,15 @@ public class SalaryItemServiceImpl implements ISalaryItemService{
 		salaryItem.setCompanyId(user.getCompanyId());
 		if(salaryItem.getSalaryChangeDefId() != null){
 			//如果是系统变动表，则需要作特殊处理
-			if(SalaryEnum.SystemChangeTable.EhrAttendance.getId() == salaryItem.getSalaryChangeDefId()){
-				salaryItem.setChangeTableName(SalaryEnum.SystemChangeTable.EhrAttendance.getTableName());
+			if(SalaryEnum.SystemChangeTable.Attendance.getId().equals(salaryItem.getSalaryChangeDefId())){
+				salaryItem.setChangeTableName(SalaryEnum.SystemChangeTable.Attendance.getTableName());
 				salaryItem.setSalaryChangeDefId(null);
-			}else if(SalaryEnum.SystemChangeTable.EhrSocialInsurance.getId() == salaryItem.getSalaryChangeDefId()){
-				salaryItem.setChangeTableName(SalaryEnum.SystemChangeTable.EhrSocialInsurance.getTableName());
+			}else if(SalaryEnum.SystemChangeTable.SocialSecurity.getId().equals(salaryItem.getSalaryChangeDefId())){
+				salaryItem.setChangeTableName(SalaryEnum.SystemChangeTable.SocialSecurity.getTableName());
 				salaryItem.setSalaryChangeDefId(null);
-			}else{
-				
+			}else if(SalaryEnum.SystemChangeTable.AccumulationFund.getId().equals(salaryItem.getSalaryChangeDefId())){
+				salaryItem.setChangeTableName(SalaryEnum.SystemChangeTable.AccumulationFund.getTableName());
+				salaryItem.setSalaryChangeDefId(null);
 			}
 		}
 		salaryItem.setLastModifyDate(new Date());

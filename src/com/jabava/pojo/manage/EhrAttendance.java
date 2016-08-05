@@ -963,4 +963,46 @@ public class EhrAttendance {
     public void setTimes(Byte times) {
         this.times = times;
     }
+    
+    public void setFieldValue(String fieldName, String value){
+    	if("late_times".equals(fieldName)){					//迟到次数
+    		this.setLateTimes(new BigDecimal(value).byteValue());
+    	}else if("leave_early_times".equals(fieldName)){	//早退次数
+    		this.setLeaveEarlyTimes(new BigDecimal(value).byteValue());
+    	}else if("absent_time".equals(fieldName)){			//旷工次数
+    		this.setAbsentTime(new BigDecimal(value).byteValue());
+    	}else if("all_leave".equals(fieldName)){			//事假天数
+    		this.setAllLeave(new BigDecimal(value));
+    	}else if("sick_leave".equals(fieldName)){			//病假天数
+    		this.setSickLeave(new BigDecimal(value));
+    	}else if("business".equals(fieldName)){				//出差天数
+    		this.setBusiness(new BigDecimal(value));
+    	}else if("annual_leave".equals(fieldName)){			//年假天数
+    		this.setAnnualLeave(new BigDecimal(value));
+    	}else if("work_overtime".equals(fieldName)){		//平日加班
+    		this.setWorkOvertime(new BigDecimal(value));
+    	}else if("week_overtime".equals(fieldName)){		//周末加班
+    		this.setWeekOvertime(new BigDecimal(value));
+    	}else if("holidays_overtime".equals(fieldName)){	//节假日加班
+    		this.setHolidaysOvertime(new BigDecimal(value));
+    	}else if("adjust_day".equals(fieldName)){			//调休天数
+    		this.setAdjustDay(new BigDecimal(value));
+    	}else if("night_shift".equals(fieldName)){			//夜班天数
+    		this.setNightShift(new BigDecimal(value));
+    	}else if("total_annual".equals(fieldName)){			//应休年假天数
+    		this.setTotalAnnual(new BigDecimal(value));
+    	}else if("surplus_annual".equals(fieldName)){		//剩余年假
+    		this.setSurplusAnnual(new BigDecimal(value));
+    	}else if("marriage_leave".equals(fieldName)){		//婚假
+    		this.setMarriageLeave(new BigDecimal(value));
+    	}else if("maternity_leave".equals(fieldName)){		//产假
+    		this.setMaternityLeave(new BigDecimal(value));
+    	}else if("paternity_leave".equals(fieldName)){		//陪产假
+    		this.setPaternityLeave(new BigDecimal(value));
+    	}else if("funeral_leave".equals(fieldName)){		//丧假
+    		this.setFuneralLeave(new BigDecimal(value));
+    	}else if("memo".equals(fieldName)){					//备注
+    		this.setMemo(value);
+    	}
+    }
 }

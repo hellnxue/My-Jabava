@@ -54,6 +54,7 @@
     -->
     delete from ehr_trial
     where trial_id = #{trialId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
     <update id="updateTrialByPrimaryKey" parameterType="java.lang.Long" >
     <!--
@@ -63,6 +64,7 @@
     -->
     update  ehr_trial set is_deleted=1 
     where trial_id = #{trialId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrTrial" >
     <!--
@@ -258,6 +260,7 @@
       </if>
     </set>
     where trial_id = #{trialId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrTrial" >
     <!--
@@ -283,6 +286,7 @@
       notice_number = #{noticeNumber,jdbcType=VARCHAR},
       approval = #{approval,jdbcType=VARCHAR}
     where trial_id = #{trialId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   	<select id="getByPersonId" resultMap="BaseResultMap">

@@ -1,8 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	String path = request.getContextPath();
+	String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html>
 <html>
@@ -44,9 +45,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                         <div class="panel-heading ">
                             <div class="pull-right">
-                                <a href="client/outsourcing"><button class="btn btn-success btn-xs" type="button">    <!--连接到申请开通-->
-                                    <i class="fa fa-group"></i> <span class="bold">申请开通</span>
-                                </button></a>
+                                <% if(RequestUtil.hasPower("protocolquery_ro")){ %>
+                                <a href="client/outsourcing" class="btn btn-success btn-xs"><i class="fa fa-group"></i> <span class="bold">申请开通</span></a>
+                                <% } %>
                             </div>
                             &nbsp; 
                             <div>
@@ -204,9 +205,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 				
 				"serverSide": true,
-				"ajax": "outsourcing/queryProtocol",
+				"ajax": {
+					"url":"outsourcing/queryProtocol",
+					"type": "post"
+				},
 				"columns": [
-					{ "data": "id" },
+					{ "data": "id", "visible": false },
 					{ "data": "pactCode" },
 					{ "render": function render( data, type, row, meta ){
 						
@@ -222,7 +226,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{ "data": "contactEmp" },
 					{ "data": "telephoneNumber" },              
 					{ "render": function render( data, type, row, meta ){
-									return "<button onclick='showProcotol("+row.id+")' class='btn btn-success btn-xs demo5 dropdown-toggle rost_bt'  data-target='#detailModal' data-toggle='modal' type='button' title='查看' id='detail_contractName' name='contractName'>查看</button>";
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("protocolquery_vp")){ %>
+                        strHtml += '<button onclick="showProcotol('+row.id+')" class="btn btn-success btn-xs demo5 dropdown-toggle rost_bt"  data-target="#detailModal" data-toggle="modal" type="button" title="查看" id="detail_contractName" name="contractName">查看</button>';
+                        <% } %>
+						return strHtml;
                     					  
 						} }
 				],

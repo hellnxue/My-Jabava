@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +44,27 @@
                             </h4>     
                         </div>
                             <div class="panel-body">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="msForm">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                         <div class="form-group">
+                                            <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">月份：</label>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+                                                <div class="input-group date"> 
+                                                    <input type="text" class="form-control" id="monthly" name="monthly" />
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                         <div class="form-group">
                                             <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">用途：</label>
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-                                                <select class="form-control">
+                                                <select class="form-control" id="usageFlag" name="usageFlag">
                                                     <option value="">全部</option>
-                                                    <option value="">工资</option>
+                                                    <c:forEach var="salaryType" items="${requestScope.salaryTypeList }" varStatus="status">
+                                                    	<option value="${salaryType.baseDataId }">${salaryType.baseDataName }</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>   
                                         </div>
@@ -59,40 +73,28 @@
                                         <div class="form-group">
                                             <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">有效版本：</label>
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-                                                <select class="form-control">
-                                                    <option value="">全部</option>
-                                                    <option value="">是</option>
-                                                    <option value="">否</option>
+                                                <select class="form-control" id="lastFlag" name="lastFlag">
+                                                    <option value="1">是</option>
+                                                    <option value="0">否</option>
                                                 </select>
                                             </div>   
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                         <div class="form-group">
-                                            <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">月份：</label>
-                                            <div class="input-group date col-xs-6 col-sm-6 col-md-6 col-lg-7"> 
-                                                    <input type="text" class="form-control" name="" />
-                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                                            </div>
-
                                         </div>
                                     </div>
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
                                         <div class="form-group">
                                             <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">分公司：</label>
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
-                                                <select class="form-control">
-                                                    <option value="">全部</option>
-                                                    <option value="">测试</option>
-                                                    <option value="">百度人才上分</option>
+                                                <select class="form-control" id="organizationId" name="organizationId">
+                                                    <!--option value="">全部</option-->
+                                                    <c:forEach var="org" items="${requestScope.orgList }" varStatus="status">
+                                                    	<option value="${org.organizationId }">${org.organizationName }</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>   
                                         </div>
                                     </div>
                                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                        <a class="btn btn-info btn-sm">查　询</a>
-                                        <a class="btn btn-info btn-sm">生  成</a>
-                                        <a class="btn btn-info btn-sm">导  出</a>
+                                        <a class="btn btn-info btn-sm btn-ms-query">查　询</a>
                                     </div>
                                 </form>
                             </div>
@@ -106,6 +108,7 @@
                                     <th>分公司</th>
                                     <th>用途</th>
                                     <th>版本号</th>
+                                    <th>是否有效</th>
                                     <th>状态</th>
                                     <th>审核人</th>
                                     <th>审核时间</th>
@@ -113,18 +116,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>ssssssss</td>
-                                        <td>ssssssss</td>
-                                        <td>ssssssss</td>
-                                        <td>ssssssss</td>
-                                        <td>ssssssss</td>
-                                        <td>ssssssss</td>
-                                        <td>ssssssss</td>
-                                        <td>
-                                            <a class="btn btn-info btn-xs" type="button" href="salary/checkMonthsalary">查  看</a>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                           </div>
@@ -141,6 +132,32 @@
         <!-- 放页脚  结束-->
 
     </div>
+    <div style="display:none;">
+    	<form id="detailForm" action="" method="post">
+    		<input type="hidden" id="monthlySalaryId" name="monthlySalaryId">
+    	</form>
+    </div>
+    
+    
+    <div class="modal fade" data-modal="confReport">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body">
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+    
     <!-- Vendor scripts -->
     <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
     <script src="static/bootstrap/vendor/jquery-ui/jquery-ui.min.js"></script>
@@ -170,40 +187,80 @@
     <script src="static/bootstrap/scripts/homer.js"></script>
     <script src="static/bootstrap/scripts/charts.js"></script>
     
-    <script type="text/javascript">
+<script type="text/javascript">
+	var table;
+	jQuery.prototype.serializeObject=function(){  
+        var obj=new Object();  
+        $.each(this.serializeArray(),function(index,param){  
+          if(!(param.name in obj)){  
+            obj[param.name]=param.value;  
+          }  
+        });  
+        return obj;  
+    };
+
+
+    
+	
     $(function (){
-      	var table = $('#projectTable').DataTable({
+    	$('#msForm')[0].reset();
+    	
+    	$('.btn-ms-query').click(function(){
+    		//校验
+    		
+    		loadTable($('#msForm').serializeObject());
+    	});
+    	
+
+    	
+      	loadTable();
+
+    });
+    
+    function loadTable(params){
+        console.log(params);
+    	if(table){
+    		table.destroy();
+    	}
+    	table = $('#projectTable').DataTable({
     		"dom": 
-                "<'row'<'col-sm-3'l><'col-sm-9'f>>"+
+                "<'row'<'col-sm-4'l><'col-sm-5'f><'col-sm-3'<'toolbar text-right'>>>" +
                 "<'row'<'col-sm-12 table-responsive'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			
+			 
 			//json
-		 //    "processing": true,
-   //     		"serverSide": true,
-   //   		"bDestroy": true,
-   //   		"ordering": false,
-			// "ajax": {
-			// 	"url":"salaryChangeDef/listSalaryChangeDef"
-			// },
-			// "columns": [
-			// 	{ "data": "salaryChangeDefId", "visible":false },
-			// 	{ "data": "name" },
-			// 	{ "data": "keyInfo" },
-			// 	{ "data": "keyType"},
-		 //    	{ "data": "description" },
-   //              { "data": "description" },
-   //              { "data": "description" },
-   //              { "data": "description" },
-			// 	{ "render": function render( data, type, row, met a ){
-			// 			return '<button class="btn btn-success btn-xs" type="button" onclick="">修改</button>&nbsp;' +
-   //                          '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryChangeDefId + ');">删除</button>';
-			// 		}
-			// 	}
-			// ],
-   //  		"columnDefs": [
-   //  			{defaultContent: '', targets: '_all'}
-			// ],
+		    "processing": true,
+        	"serverSide": true,
+      		"bDestroy": true,
+      		"ordering": false,
+			"dataType": 'json',
+			"ajax": {
+				"url":"monthlySalary/listMonthlySalaryPage",
+				"type": "post",
+				"data": params ? params : {}
+			},
+			"columns": [
+				{ "data": "monthly" },
+				{ "data": "organizationName" },
+				{ "data": "usageFlagName" },
+				{ "data": "version"},
+				{ "data": "lastFlag", "render": function( data, type, row, meta ){
+					return (data == 1) ? "是" : "否";
+				} },
+		    	{ "data": "reviewStatus", "visible": false },
+                { "data": "reviewer", "visible": false },
+                { "data": "reviewDate", "visible": false },
+				{ "render": function render( data, type, row, meta ){
+					<% if(RequestUtil.hasPower("monthlysalary_vm")){ %>
+			 		return '<button class="btn btn-info btn-xs view-button" type="button" onclick="view(' + row.monthlySalaryId + ');">查看</button>';
+			 		<% }else{ %>
+			 		return '';
+			 		<% } %>
+			 	}}
+			],
+     		"columnDefs": [
+     			{defaultContent: '', targets: '_all'}
+			],
 			
    	 		"language": {
                 "search": "过滤:",
@@ -220,59 +277,25 @@
 				}
    			}
    	    });
-
-        $("div.toolbar").html('<button class="btn btn-info btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>');
-    });
-
-    function del(id){
-    	swal(
-    		{
-	            title: "确定要删除此定义吗?",
-	            text: "",
-	            type: "warning",
-	            showCancelButton: true,
-	            confirmButtonColor: "#DD6B55",
-	            confirmButtonText: "确定删除!",
-	            cancelButtonText: "放弃操作!",
-	            closeOnConfirm: false,
-	            closeOnCancel: false 
-            },
-        	function (isConfirm) {
-	            if (isConfirm) {
-		            deleteById(id);
-	            }else{
-	            	swal("已取消", "定义未删除", "error");
-	            }
-	        }
-        );
+        var strHtml = '';
+        <% if(RequestUtil.hasPower("monthlysalary_gm")){ %>
+        strHtml += '<a class="btn btn-info btn-sm btn-ms-generate m-r-sm">生  成</a>';
+        <% } %>
+        <% if(RequestUtil.hasPower("monthlysalary_ex")){ %>
+        strHtml += '<a href="report/commonGenReport?reportId=5" class="btn btn-info btn-sm" data-toggle="modal" data-target="[data-modal=confReport]">导出</a>';
+        <% } %>
+        $('.toolbar').html(strHtml);
+        $('.btn-ms-generate').on('click', function(){
+            window.location.href="monthlySalary/toGenerateMonthlySalary";
+        });
     }
     
-    function deleteById(id){
-    	$.ajax({
-			url : "salaryChangeDef/deleteSalaryChangeDef",
-			data : {id: id},
-			dataType:'json',
-			type : 'post',
-			success : function(message) {
-				if(message.success){
-					swal({
-	                    title: "删除成功!",
-	                    text: "",
-	                    type: "success",
-	    				confirmButtonText: "确定"
-	                });
-					window.location.href="salaryChangeDef/toListSalaryChangeDef";
-				}else{
-					swal({
-	                    title: "删除失败!",
-	                    text: message.msg,
-	                    type: "error",
-	    				confirmButtonText: "确定"
-	                });
-				}
-			}
-		});
+    function view(id){
+    	$('#monthlySalaryId').val(id);
+		$('#detailForm').attr('action','monthlySalary/viewMonthlySalary');
+		$('#detailForm').submit();
     }
+    
     // 日历
     $(function(){
         $('#datepicker').datepicker();

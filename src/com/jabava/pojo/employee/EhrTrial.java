@@ -2,7 +2,7 @@ package com.jabava.pojo.employee;
 
 import java.util.Date;
 
-import com.jabava.core.EnumConstents.PositiveType;
+import com.jabava.utils.enums.JabavaEnum.PositiveType;
 
 public class EhrTrial {
     /**

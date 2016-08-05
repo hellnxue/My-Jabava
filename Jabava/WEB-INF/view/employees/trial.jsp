@@ -10,6 +10,7 @@
     <!-- Page title -->
     <title>试用情况</title>
     <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+    <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
     <link rel="stylesheet" href="static/css/user_bata.css">
     <link rel="stylesheet" href="static/css/style_1.css" media="screen">
    
@@ -18,244 +19,287 @@
 </head>
 <body >
 
-<!--splash screen-->
- <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
+  <!--splash screen-->
+  <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
 
-<!--引入头文件 开始--> 
+  <!--引入头文件 开始--> 
   <jsp:include flush="true" page="../common/header.div.jsp"></jsp:include>
   <!--引入头文件 结束--> 
   <!--引入菜单文件 开始--> 
   <jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
   <!--引入菜单文件 结束--> 
- 
-<!-- 放主要内容  开始-->
 
-<!-- Main Wrapper -->
-<div id="wrapper" class="min-h">
-<div class="normalheader transition animated fadeIn small-header">
-    <div class="hpanel">
-        <div class="panel-body"><!-- 
-            <a class="small-header-action" href="">
-                <div class="clip-header">
-                    <i class="fa fa-arrow-up"></i>
-                </div>
-            </a> -->
+  <!-- 放主要内容  开始-->
 
-            <div id="hbreadcrumb" class="pull-right m-t-lg">
-                <ol class="hbreadcrumb breadcrumb">
-                    <li><a href="to_index?jump=1">首页</a></li>
-                    <li>
-                        <span>员工个人信息</span>
-                    </li>
-                    <li class="active">
-                        <span></span>
-                    </li>
-                </ol>
+  <!-- Main Wrapper -->
+  <div id="wrapper" class="min-h">
+    <div class="content animate-panel">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="hpanel">
+            <div class="panel-heading">
+              <h4 class="text-center font-bold">员工资料
+                <a href="" type="button" class="btn btn-default btn-sm btn-absolute">返　回</a>
+              </h4>
             </div>
-            <h2 class="font-light m-b-xs">
-                员工个人信息
-            </h2>
-            <small>待定</small>
-        </div>
-    </div>
-</div>
+            <!-- 放主要内容 -->
+            <!--引入员工信息导航 开始--> 
+            <jsp:include flush="true" page="employee_nav.jsp">
+            <jsp:param value="trial" name="type"/>
+          </jsp:include>
+          <!--引入员工信息导航 结束-->
 
-<!-- 放主要内容 -->
-  <!--引入员工信息导航 开始--> 
-  <jsp:include flush="true" page="employee_nav.jsp"></jsp:include>
-  <!--引入员工信息导航 结束-->
-        
-                    
-                            
-                        <!--试用情况-->
-                        <div class="panel-body shi_yong" style=" ">
-                     	<div class="row">
-                        	<div style="border-bottom:1px solid #33CCFF; margin:20px; line-height:32px; overflow:hidden;">
-                        	<h4 style="float:left; font-weight:normal;">试用情况</h4>
-                            <div style="float:right">
-                            	<button type="button" class="btn btn-success btn-xs shiyong"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                                <button type="button" class="btn btn-success btn-xs shiyong_update" style="display:none;"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                               <button type="button" class="btn btn-success btn-xs ji_xkh"><span class="bold">绩效考核&gt;&gt;</span></button> 
-                            
-                            </div>
-                            </div>
-                            <input type="hidden" id="personId" value="${personId}" />
-<script type="text/html" id="shiyongss">
-{{each list}}
-<form role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
-  <div class="text-right action-group">
-    <a href="javascript://" class="pe-7s-note pe-2x" data-action-motive="edit" ><span class="sr-only">修改</span></a>
-    <a href="javascript://" class="pe-7s-trash pe-2x" data-action-motive="del" data-action-id="{{$value.trialId}}"><span class="sr-only">删除</span></a>
-  </div>
-  <input type="hidden" name="trialId" value="{{$value.trialId}}">
 
-  <!--试用开始时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">试用开始时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{if $value.trialStartDate!=null}}
-            {{$value.trialStartDate.substr(0,10)}}
-            {{/if}}
-            &nbsp;</p>
-        </div>
-        <div class="input-group date">
-          <input type="text" class="form-control" required="required" name="trialStartDate" value="{{if $value.trialStartDate!=null}}{{$value.trialStartDate.substr(0,10)}}{{/if}}">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--转正时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">转正时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{if $value.trialEndDate!=null}}
-            {{$value.trialEndDate.substr(0,10)}}
-            {{/if}}
-            &nbsp;</p>
-        </div>
-        <div class="input-group date">
-          <input type="text" required="required" class="form-control" name="trialEndDate" value="{{if $value.trialEndDate!=null}}{{$value.trialEndDate.substr(0,10)}}{{/if}}">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--转正性质-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">转正性质：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.positiveTypeShow}}
-            &nbsp;</p>
-        </div>
-        <select class="form-control" name="positiveType">
-          <option value="1"{{if $value.positiveType=='1'}} selected="selected"{{/if}}>提前</option>
-          <option value="2"{{if $value.positiveType=='2'}} selected="selected"{{/if}}>按期</option>
-		  <option value="3"{{if $value.positiveType=='3'}} selected="selected"{{/if}}>延长</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--考评结果-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考评结果：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.evaluationResult}}
-            &nbsp;</p>
-        </div>
-        <input type="text" required="required" class="form-control" name="evaluationResult" value="{{$value.evaluationResult}}">
-      </div>
-    </div>
-  </div>
-  <!--试用备注-->
-  <div class="col-md-12 col-lg-12">
-    <div class="form-group">
-      <label for="" class="control-label col-md-2 col-lg-2">试用备注：</label>
-      <div class="col-md-10 col-lg-10">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.memo}}
-          &nbsp;</p>
-        </div>
-        <textarea class="form-control" name="memo">{{$value.memo}}</textarea>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center form-action">
-    <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
-    <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
-  </div>
-</form>
-{{/each}}
-</script>
-                            <div class="hpanel" id="shiyong_div">
+
+          <!--试用情况-->
+          <div class="panel-body">
+            <div class="panel-heading">
+                  <h4 class="text-center font-bold">试用情况</h4>
+            </div>
+            <div class="row m-b-lg">
+            <input type="hidden" id="personId" value="${personId}" />
+            <script type="text/html" id="shiyongss">
+              {{each list}}
+
+                  <div class="col-md-12 page-header m-t-md{{if $index == list.length-1}} no-borders{{/if}} ">
+                      <div class="panel-tools action-group">
+                        <ul class="list-inline">
+                           <li>
+                          <a href="javascript://" data-action-motive="hideOrshow" data-action-id="{{$value.trialId}}"><i class="pe-7s-angle-down-circle pe-2x text-info"></i><span class="sr-only">隐藏</span></a>
+                          </li>
+                          <li>
+                          <a href="javascript://" data-action-motive="edit" data-action-id="{{$value.trialId}}"><i class="pe-7s-note pe-2x text-info">
+                          </i><span class="sr-only">修改</span></a>
+                          </li>
+                          <li>
+                            <a href="javascript://" data-action-motive="del" data-action-id="{{$value.trialId}}"><i class="pe-7s-trash pe-2x text-info"></i><span class="sr-only">删除</span></a>
+                          </li>
+                        </ul>
+                      </div>
+                      <ul class="list-inline">
+                        <li><p class="form-control-static text-info font-bold">
+                            {{if $value.trialStartDate!=null}}
+                            {{$value.trialStartDate.substr(0,10)}}
+                            {{/if}}
+                            &nbsp;</p></li>
+                        <li class="m-r"><p class="form-control-static text-info font-bold">至</p></li>
+                        <li><p class="form-control-static text-info font-bold">
+                                {{if $value.trialEndDate!=null}}
+                                {{$value.trialEndDate.substr(0,10)}}
+                                {{/if}}
+                                &nbsp;</p></li>
+                        <li> <p class="form-control-static text-info font-bold">{{$value.positiveTypeShow}}&nbsp;</p></li>    
+                     </ul>
+                  </div>
+
+              <form role="form" data-form="{{$value.trialId}}" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
+                <input type="hidden" name="trialId" value="{{$value.trialId}}">
+
+                 <!--开始时间-->
+                <div class="row">
+                  <div class="col-md-6 col-lg-6">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="form-group">
+                      <label for="" class="control-label col-md-4 col-lg-4">开始时间：</label>
+                      <div class="col-md-8 col-lg-8">
+                        <div class="input-group-static">
+                          <p class="form-control-static">
+                            {{if $value.trialStartDate!=null}}
+                            {{$value.trialStartDate.substr(0,10)}}
+                            {{/if}}
+                            &nbsp;</p>
+                          </div>
+                          <div class="form-required">
+                            <div class="input-group date">
+                              <input type="text" class="form-control" required="required" name="trialStartDate" value="{{if $value.trialStartDate!=null}}{{$value.trialStartDate.substr(0,10)}}{{/if}}">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      <!--转正时间-->
+                      <div class="col-md-12 col-lg-12">
+                        <div class="form-group">
+                          <label for="" class="control-label col-md-4 col-lg-4">转正时间：</label>
+                          <div class="col-md-8 col-lg-8">
+                            <div class="input-group-static">
+                              <p class="form-control-static">
+                                {{if $value.trialEndDate!=null}}
+                                {{$value.trialEndDate.substr(0,10)}}
+                                {{/if}}
+                              &nbsp;</p>
+                            </div>
+                            <div class="form-required">
+                              <div class="input-group date">
+                                <input type="text" required="required" class="form-control" name="trialEndDate" value="{{if $value.trialEndDate!=null}}{{$value.trialEndDate.substr(0,10)}}{{/if}}">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                               </div>
-                            <div class="panel-body" id="shiyong_body">
-<form role="form" method="post" class="form-horizontal col-md-12 col-lg-12 qing_kuang qing_kuang_form hidden" id="create_new"> 
-  <!--试用开始时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">试用开始时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group date">
-          <input type="text" class="form-control" name="trialStartDate" value="" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--转正时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">转正时间：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group date">
-          <input type="text" class="form-control" name="trialEndDate" value="" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--转正性质-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">转正性质：</label>
-      <div class="col-md-6 col-lg-6">
-        <select class="form-control" name="positiveType">
-          <option value="延长">延长</option>
-          <option value="提前">提前</option>
-          <option value="按期">按期</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <!--考评结果-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考评结果：</label>
-      <div class="col-md-6 col-lg-6">
-        <input type="text" class="form-control" name="evaluationResult" value="" required="required">
-      </div>
-    </div>
-  </div>
-  <!--试用备注-->
-  <div class="col-md-12 col-lg-12">
-    <div class="form-group">
-      <label for="" class="control-label col-md-2 col-lg-2">试用备注：</label>
-      <div class="col-md-10 col-lg-10">
-        <textarea class="form-control" name="memo"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center">
-    <button type="button" class="btn btn-info">保存</button>
-  </div>
-</form>
                             </div>
-                              </div>
-                              </div>       
-                            <!--试用情况 end-->   
-                             
-                          
+                          </div>
+                        </div>
+                      </div>
 
-    <!-- Footer-->
-   <!-- Footer-->
-    <!-- 放页脚  开始-->
-<jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
-	<!-- 放页脚  结束-->
-</div>
+                        <!--转正性质-->
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">转正性质：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <div class="input-group-static">
+                                <p class="form-control-static">
+                                  {{$value.positiveTypeShow}}
+                                  &nbsp;</p>
+                                </div>
+                                <div class="form-required">
+                                  <select class="form-control" name="positiveType">
+                                    <option value="1"{{if $value.positiveType=='1'}} selected="selected"{{/if}}>提前</option>
+                                    <option value="2"{{if $value.positiveType=='2'}} selected="selected"{{/if}}>按期</option>
+                                    <option value="3"{{if $value.positiveType=='3'}} selected="selected"{{/if}}>延长</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                 
+                    <!--考评结果-->
+                    <div class="col-md-6 col-lg-6">
+                    <div class="col-md-12 col-lg-12">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">考评结果：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <div class="input-group-static">
+                            <p class="form-control-static">
+                              {{$value.evaluationResult}}
+                              &nbsp;</p>
+                          </div>
+                          <div class="form-required">
+                            <input type="text" required="required" class="form-control" name="evaluationResult" value="{{$value.evaluationResult}}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--试用备注-->
+                  <div class="col-md-12 col-lg-12">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">试用备注：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <div class="input-group-static">
+                            <p class="form-control-static">
+                              {{$value.memo}}
+                              &nbsp;</p>
+                            </div>
+                            <textarea class="form-control" name="memo" rows="3">{{$value.memo}}</textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                          <div class="col-lg-12 col-md-12 text-center form-action">
+                            <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
+                            <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                          </div>
+                        </form>
+                        {{/each}}
+                      </script>
+                      <div class="hpanel" id="shiyong_div" data-form-target="content">
+                      
+                      </div>
+                      <div id="shiyong_body">
+                        <form role="form" method="post"  data-form-type="base"
+                         class="form-horizontal col-md-12 col-lg-12 qing_kuang qing_kuang_form hidden" id="create_new"> 
+                          <!--开始时间-->
+                          <div class="row m-b-lg">
+                           <div class="col-md-6 col-lg-6">
+                            <div class="col-md-12 col-lg-12">
+                              <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">开始时间：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                  <div class="input-group date">
+                                    <input type="text" class="form-control" name="trialStartDate" value="" required="required">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--转正时间-->
+                         
+                              <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                  <label for="" class="control-label col-md-4 col-lg-4">转正时间：</label>
+                                  <div class="col-md-8 col-lg-8 form-required">
+                                    <div class="input-group date">
+                                      <input type="text" class="form-control" name="trialEndDate" value="" required="required">
+                                      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!--转正性质-->
+                              <div class="col-md-12 col-lg-12">
+                                <div class="form-group">
+                                  <label for="" class="control-label col-md-4 col-lg-4">转正性质：</label>
+                                  <div class="col-md-8 col-lg-8 form-required">
+                                    <select class="form-control" name="positiveType">                                    
+                                       <option value="1">提前</option>
+                                      <option value="2">按期</option>
+                                       <option value="3">延长</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                         </div>
+                          <!--考评结果-->
+                         <div class="col-md-6 col-lg-6">
+                            <div class="col-md-12 col-lg-12">
+                              <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">考评结果：</label>
+                                <div class="col-md-8 col-lg-8 form-required">
+                                  <input type="text" class="form-control" name="evaluationResult" value="" required="required">
+                                </div>
+                              </div>
+                            </div>
+                             <!--试用备注-->
+                            <div class="col-md-12 col-lg-12">
+                              <div class="form-group">
+                                <label for="" class="control-label col-md-4 col-lg-4">试用备注：</label>
+                                <div class="col-md-8 col-lg-8">
+                                  <textarea class="form-control" name="memo" rows="3"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                         </div>                        
+                          <div class="col-lg-12 col-md-12 text-right">
+                            <button type="button" class="btn btn-info btn-success" >保存</button>
+                            <button type="button" class="btn btn-default" >取消</button>
+                          </div>
+                        </form>
+                        </div>
+                      </div>
+                    <!--添加--> 
+                    <div class="text-center row">
+                      <a class="adds" data-form-action="add"><i class=" pe-7s-plus pe-5x text-muted"></i><br><span class="text-muted">添加新记录</span></a>
+                    </div>
+                    </div> 
+                  </div>
+                </div>
+              </div>
+            </div>      
+            </div>
+
+            <!--试用情况 end-->   
+
+
+
+            <!-- Footer-->
+            <!-- Footer-->
+            <!-- 放页脚  开始-->
+            <jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
+            <!-- 放页脚  结束-->
+          </div>
 
 <!-- Vendor scripts -->
 <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
@@ -276,27 +320,117 @@
 <script src="static/bootstrap/vendor/select2-3.5.2/select2.min.js"></script>
 <script src="static/bootstrap/vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
 <script src="static/bootstrap/vendor/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js"></script>
-<script src="static/bootstrap/vendor/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 <!-- for datatable -->
 <script src="static/bootstrap/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="static/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 
+<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
 <script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
-<script src="static/js/common.js"></script>
+<script src="static/js/commonH3.js"></script>
 <script type="text/javascript">
 var personId = $("#personId").val(); 
-var url="employee/trialInfo?personId="+personId;
-  templateFillData('shiyongss', $('#shiyong_div'), url,'employee/delTrial?trialId=');
-</script>
+var addURL="employee/addTrial";
+var listURL="employee/trialInfo?personId="+personId;
+var delsURL="employee/delTrial?trialId=";
+var updateURL="employee/updateTrial";
+var addFormSelector="[name=add_new_form]";
+var initFormSelector="#create_new";
+var templateID="shiyongss";
+var containerID=$('#shiyong_div');
+  templateFillData(templateID, containerID, listURL,delsURL);
 
-<script>
+//新增
+/* function addTrial(obj){
+	 var id = obj.form.id;
+	
+	$.ajax({
+		type : "POST",
+		url : "employee/addTrial",
+		data : $("#"+id).serialize(),
+		dataType : "json",
+		success : function(data) {
+			alert(data.msg);
+			window.location.reload();
+			
+		} 
+	});
+} */
+//修改
+/* function updateTrial(id){
+	$.ajax({
+		type : "POST",
+		url : "employee/updateTrial",
+		data : $("#form_"+id).serialize(),
+		dataType : "json",
+		success : function(data) {
+			alert(data.msg);
+			window.location.reload();
+		} 
+	});
+}
+ */
 
-    <!--删除-->
+//校验
+var validateOptions = {
+      err: {
+          container: 'tooltip'
+      },
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      locale: 'zh_CN',
+      
+      fields: {
+          trialStartDate: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  },
+                  date: {
+                    format: 'YYYY-MM-DD',
+                    message: '该日期是无效的'
+                  }
+              }
+          },
+          evaluationResult: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
+          },
+          trialEndDate: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  },
+                  date: {
+                    format: 'YYYY-MM-DD',
+                    message: '该日期是无效的'
+                  }
+              }
+          },
+          positiveType: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
+          }
+      }
+  };
+
+    //删除
      function deleteBtnInfo(){
 	  $('.demo4').click(function () {
             swal({
@@ -318,7 +452,7 @@ var url="employee/trialInfo?personId="+personId;
                     });
         });
 	}
-  <!--取消效果-->
+  //取消效果
   $(".guanbi").click(function(){
 	  
 	 $("#myModal7").modal('hide');
@@ -326,10 +460,8 @@ var url="employee/trialInfo?personId="+personId;
 	 $("#myModal9").modal('hide');
 	  
   })
-</script>
-<!--日历-->
-<script>
 
+//日历
         $(function(){
 			deleteBtnInfo();
             $('#datepicker').datepicker();
@@ -340,117 +472,13 @@ var url="employee/trialInfo?personId="+personId;
             });
 
             $('#datapicker2').datepicker();
-            $('.input-group.date').datepicker({ });
+            $('.input-group.date').datepicker({
+              format: "yyyy-mm-dd"
+             });
             $('.input-daterange').datepicker({ });
-
-            $("#demo1").TouchSpin({
-                min: 0,
-                max: 100,
-                step: 0.1,
-                decimals: 2,
-                boostat: 5,
-                maxboostedstep: 10,
-            });
-
-            $("#demo2").TouchSpin({
-                verticalbuttons: true
-            });
-
-            $("#demo3").TouchSpin({
-                postfix: '%'
-            });
-
-            $("#demo4").TouchSpin({
-                postfix: "a button",
-                postfix_extraclass: "btn btn-default"
-            });
-
-            $(".js-source-states").select2();
-            $(".js-source-states-2").select2();
-
-            //turn to inline mode
-            $.fn.editable.defaults.mode = 'inline';
-
-            //defaults
-            $.fn.editable.defaults.url = '#';
-
-            //editables
-            $('#username').editable({
-                url: '#',
-                type: 'text',
-                pk: 1,
-                name: 'username',
-                title: 'Enter username'
-            });
-
-            $('#firstname').editable({
-                validate: function(value) {
-                    if($.trim(value) == '') return 'This field is required';
-                }
-            });
-
-            $('#sex').editable({
-                prepend: "not selected",
-                source: [
-                    {value: 1, text: 'Male'},
-                    {value: 2, text: 'Female'}
-                ],
-                display: function(value, sourceData) {
-                    var colors = {"": "gray", 1: "green", 2: "blue"},
-                            elem = $.grep(sourceData, function(o){return o.value == value;});
-
-                    if(elem.length) {
-                        $(this).text(elem[0].text).css("color", colors[value]);
-                    } else {
-                        $(this).empty();
-                    }
-                }
-            });
-
-            $('#dob').editable();
-
-            $('#event').editable({
-                placement: 'right',
-                combodate: {
-                    firstItem: 'name'
-                }
-            });
-
-            $('#comments').editable({
-                showbuttons: 'bottom'
-            });
-
-            $('#fruits').editable({
-                pk: 1,
-                limit: 3,
-                source: [
-                    {value: 1, text: 'banana'},
-                    {value: 2, text: 'peach'},
-                    {value: 3, text: 'apple'},
-                    {value: 4, text: 'watermelon'},
-                    {value: 5, text: 'orange'}
-                ]
-            });
-
-            $('#user .editable').on('hidden', function(e, reason){
-                if(reason === 'save' || reason === 'nochange') {
-                    var $next = $(this).closest('tr').next().find('.editable');
-                    if($('#autoopen').is(':checked')) {
-                        setTimeout(function() {
-                            $next.editable('show');
-                        }, 300);
-                    } else {
-                        $next.focus();
-                    }
-                }
-            });
-
         });
 
-    </script>
-
-<!--删除-->
-<script>
+//删除
     $(function () {
         $('.demo4').click(function () {
             swal({
@@ -475,27 +503,22 @@ var url="employee/trialInfo?personId="+personId;
 
     });
 
-</script>
-
-<script>
   $(".guanbi").click(function(){
 	  
 	 $("#myModal7").modal('hide');
 	  
   })
-</script>
+
 
  
- <!--全部导出-->
-    <script>
+//全部导出
 	  $(".jxdc").click(function(){
 		 $(".modal-content").hide();
 		 $(".modal-backdrop").hide();
 	  })
-	  </script>
 	  
-		<!--导出通讯录-->
-			<script>
+//导出通讯录
+
 	function downMB(moban) {
 			window.open(moban);
 		}
@@ -518,41 +541,7 @@ var url="employee/trialInfo?personId="+personId;
 			document.OrderSendForm.action = "hroorderSend.do";
 			document.OrderSendForm.submit();
 		}
-	  </script>
-      
-<!--去除升序-->
-<!--<script>
- $(function (){
-	 
-	 $(".delete").removeClass("sorting_asc").removeClass("sorting_desc");
-	 
- })
-</script>-->
-
-<!--服务月与账单月切换-->
-<script>
-	$(function (){
-		
-		$(".zhangdan").click(function(){
-			
-			$(".fuwu").show();
-			$(".zhangdan").hide();
-			$(".panel-body_third").hide();
-			$(".panel-body_four").show();
-			
-		});
-		
-		$(".fuwu").click(function(){
-			
-			$(".zhangdan").show();
-			$(".fuwu").hide();
-			$(".panel-body_third").show();
-			$(".panel-body_four").hide();
-			
-		});
-		
-	})
-	
 </script>
+      
 </body>
 </html>

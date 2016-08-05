@@ -28,6 +28,7 @@ import com.jabava.pojo.tools.EhrProvince;
 import com.jabava.service.tools.*;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.ZimuSort;
 
 /**
@@ -43,6 +44,16 @@ public class CalculatorController {
 	
 	@Autowired
 	private EhrCityService  ehrCityService;
+	
+	private HROFetchService requestService;
+	
+	public CalculatorController(){
+		String server =  JabavaPropertyCofigurer.getProperty("SERVER_URL");
+		HROFetchToken fetchToken = new HROFetchToken(
+				server + "/open/authorize", JabavaPropertyCofigurer.getProperty("CLIENT_ID"),
+				JabavaPropertyCofigurer.getProperty("CLIENT_SECRET"));
+		requestService = new HROFetchService(server	+ "/open/rest", fetchToken);
+	}
 	
 	/**
 	 * 社保计算器页面入口
@@ -124,11 +135,11 @@ public class CalculatorController {
 		}*/
 		
 
-		//String server ="http://172.16.0.12:8087";
-		String server="http://hro.ezhiyang.com";
-		HROFetchToken fetchToken = new HROFetchToken(server + "/open/authorize", "dayhr","0f9efee4-303e-11e5-8800-f39b0ce86986");
-		
-		HROFetchService requestService = new HROFetchService(server + "/open/rest", fetchToken);
+//		//String server ="http://172.16.0.12:8087";
+//		String server="http://hro.ezhiyang.com";
+//		HROFetchToken fetchToken = new HROFetchToken(server + "/open/authorize", "dayhr","0f9efee4-303e-11e5-8800-f39b0ce86986");
+//		
+//		HROFetchService requestService = new HROFetchService(server + "/open/rest", fetchToken);
 		
 		Map<String, Object> data = new HashMap<String, Object>();
 		

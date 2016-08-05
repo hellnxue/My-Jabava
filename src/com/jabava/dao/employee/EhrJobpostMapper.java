@@ -1,6 +1,7 @@
 package com.jabava.dao.employee;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -57,4 +58,29 @@ public interface EhrJobpostMapper {
     int updateByPrimaryKey(EhrJobpost record);
     
     List<EhrJobpostVO> getByPersonId(@Param("personId") Long personId);
+    /**
+     * 根据personId查询出员工上一条的任职记录
+     * @param map
+     * @return
+     */
+    List<EhrJobpost> getPreviousRecordByPersonId(Long personId);
+    
+    /**
+     * 根据personId查询员工所有的任职记录
+     * @param personId
+     * @return
+     */
+    List<Map<String,Object>> getAllRecordsByPersonId(Long personId);
+    /**
+     * 根据personId查询员工的变动类型为入职的任职记录
+     * @param personId
+     * @return
+     */
+    List<EhrJobpost> getEntryRecordByPersonId(Map<String,Object> map);
+    /**
+     * 批量新增员工入职的任职记录
+     * @param list
+     * @return
+     */
+   int insertBachForEntryRecords(List<EhrJobpost> list);
 }

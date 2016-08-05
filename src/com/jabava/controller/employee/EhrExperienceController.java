@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.jabava.pojo.employee.EhrExperience;
+import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.employee.EhrExperienceService;
 import com.jabava.service.system.IBaseDataService;
+import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.RequestUtil;
+import com.jabava.utils.enums.SystemEnum;
 
 @Controller
 @RequestMapping("employee")
@@ -26,7 +29,8 @@ public class EhrExperienceController {
 	private EhrExperienceService experienceService;
 	@Resource
 	private IBaseDataService baseDataService;
-	
+	@Resource
+	private IEhrSysLogSercice sysLogSercice;
 	
 	/**
 	 * 工作经验页面入口
@@ -62,6 +66,7 @@ public class EhrExperienceController {
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = experienceService.addExperience(experience, user);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, SystemEnum.Module.Organization, "给id为"+experience.getPersonId()+"的员工添加工作经验");
 		} catch (Exception e) {
 			map.put("success", false);
 			map.put("msg", "添加工作经验失败！");
@@ -77,6 +82,7 @@ public class EhrExperienceController {
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = experienceService.updateExperience(experience, user);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.Organization, "修改id为"+experience.getExperienceId()+"的工作经验");
 		} catch (Exception e) {
 			map.put("success", false);
 			map.put("msg", "修改工作经验失败！");
@@ -91,6 +97,7 @@ public class EhrExperienceController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			map = experienceService.deleteExperience(experienceId);
+			sysLogSercice.addSysLog(RequestUtil.getLoginUser(), SystemEnum.LogOperateType.Delete, SystemEnum.Module.Organization, "删除id为"+experienceId+"的工作经验");
 		} catch (Exception e) {
 			map.put("success", false);
 			map.put("msg", "删除工作经验失败！");

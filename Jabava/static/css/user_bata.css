@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
 }
-// div,
+/*// div,
 // body,
 // dl,
 // dt,
@@ -19,7 +19,7 @@
 // h5 {
 //     margin: 0;
 //     padding: 0;
-// }
+// }*/
 body {
     width:100%;
     min-width:1000px !important;
@@ -671,7 +671,7 @@ input[type='checkbox'] {
 .borders {
     padding-top: 40px;
 
-    border-top: 1px solid #3cf;
+    border-top: 1px solid #eee;
 }
 
 /*修改保存页*/
@@ -1234,4 +1234,11 @@ div.rost_time {
     right: 10% !important;
 
     float: right !important; /*margin-top:42px !important;*/
+}
+
+.online-news{
+    position: fixed;
+    bottom: 40px;
+    right: 25px;
+    z-index: 1000;
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,7 @@
 <title>计薪日变动管理</title>
 <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
 <!--for 临时改变-->
+<link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
 <link rel="stylesheet" href="static/css/user.css">
 
 </head>
@@ -31,6 +33,9 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <jsp:include flush="true" page="../common/extendMenu.jsp">
+            <jsp:param value="toListSalaryDate" name="type"/>
+        </jsp:include>
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
@@ -41,20 +46,6 @@
                                 计薪日变动管理
                             </h4>
                         </div>
-                        <!--div class="panel-body">
-                        	<form class="form-horizontal">
-                        	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                 <div class="form-group">
-                                     <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-3">年度：</label>
-                                     <div class="input-group date col-xs-6 col-sm-6 col-md-6 col-lg-8"> 
-                                             <input type="text" class="form-control" name="" />
-                                             <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                                     </div>
-                                 </div>
-                                 
-                              </div>
-                              </form>
-                        </div-->
                         <!--新增弹框-->    
                  <div class="modal fade hmodal-success form-row" data-modal="addSalaryDate" tabindex="-1" role="dialog"  aria-hidden="true">
                     <div class="modal-dialog">
@@ -68,9 +59,11 @@
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-3">日期：</label>
-                                            <div class="input-group date col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required" data-date-format="yyyy-mm-dd"> 
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-9 form-required"> 
+                                                <div class="input-group date">
                                                     <input type="text" class="form-control" id="changeDate" name="changeDate" />
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -87,7 +80,7 @@
                                     </div>
                                     </div>
                                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                        <a class="btn btn-info btn-sm btn-save-change">保	存</a>
+                                        <button type="submit" class="btn btn-info btn-sm">保	存</button>
                                     </div>
                                 </form>
                               </div>
@@ -151,6 +144,9 @@
     <!-- App scripts -->
     <script src="static/bootstrap/scripts/homer.js"></script>
     <script src="static/bootstrap/scripts/charts.js"></script>
+    <!-- 表单验证 -->
+    <script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+    <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
     
 <script type="text/javascript">
     var table;
@@ -191,8 +187,14 @@
 					}
 				}},
 				{ "render": function render( data, type, row, meta ){
-						return '<button class="btn btn-success btn-xs" data-target="[data-modal=addSalaryDate]" data-toggle="modal" type="button" onclick="mod(' + row.salaryDateId + ',\'' + row.changeDate + '\',' + row.changeType + ');">修改</button>&nbsp;' +
-                            '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryDateId + ');">删除</button>';
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("salarydatechange_mc")){ %>
+                        strHtml += '<button class="btn btn-success btn-xs" data-target="[data-modal=addSalaryDate]" data-toggle="modal" type="button" onclick="mod(' + row.salaryDateId + ',\'' + row.changeDate + '\',' + row.changeType + ');">修改</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("salarydatechange_dc")){ %>
+                        strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryDateId + ');">删除</button>';
+                        <% } %>
+						return strHtml;
 					}
 				}
 			],
@@ -215,27 +217,66 @@
 				}
    			}
    	    });
-
+        <% if(RequestUtil.hasPower("salarydatechange_ac")){ %>
          $("div.toolbar").html('<button class="btn btn-info btn-sm" data-target="[data-modal=addSalaryDate]" data-toggle="modal" onclick="add();">新  增</button>');
-    }
-    
-    $('.btn-save-change').click(function(){
-        $.ajax({
-            url : "salaryDate/editSalaryDate",
-            data : $("#editForm").serialize(),
-            dataType:'json',
-            type : 'post',
-            success : function(message) {
+         <% } %>
+
+         //表单验证
+        $('#editForm').formValidation({
+            err: {
+                container: 'tooltip'
+            },
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                changeDate: {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项'
+                        },
+                        date: {
+                            format: 'YYYY-MM-DD',
+                            message: '该日期是无效的'
+                        }
+                    }
+                },
+                changeType: {
+                    validators: {
+                        notEmpty:{
+                            message: '请填写必填项'
+                        }
+                    }
+                }
+                
+            }
+        })
+        .on('success.form.fv', function(e){
+            e.preventDefault();
+
+            $.ajax({
+                url : "salaryDate/editSalaryDate",
+                data : $("#editForm").serialize(),
+                dataType:'json',
+                type : 'post',
+            })
+            .done(function(message){
                 if(message.success){
-                    //swal({
-                    //    title: "保存成功!",
-                    //    text: "",
-                    //    type: "success",
-                    //  confirmButtonText: "确定"
-                    //});
-                    $('[data-modal="addSalaryDate"]').modal('hide');
+                	$('[data-modal="addSalaryDate"]').modal('hide');
+                    swal({
+                        title: "保存成功!",
+                        text: "",
+                        type: "success",
+                      	confirmButtonText: "确定"
+                    },function(){
+                    	$('#editForm').formValidation('destroy')
+                    	loadTable();
+                    });
                     
-                    loadTable();
+                    
+                    
                 }else{
                     swal({
                         title: "保存失败!",
@@ -244,10 +285,14 @@
                         confirmButtonText: "确定"
                     });
                 }
-            }
+            })
+
+
+
         });
-    });
-    
+
+    }
+
     function add(){
     	$('#editForm input,#editForm select').val('');
     }
@@ -313,17 +358,15 @@
 		});
     }
     
-	// 日历
-    $(function(){
-        $('#datepicker').datepicker();
-        $("#datepicker").on("changeDate", function(event) {
-            $("#my_hidden_input").val($("#datepicker").datepicker('getFormattedDate'))
-        });
-
-        $('#datapicker2').datepicker();
-        $('.input-group.date').datepicker({ });
-        $('.input-daterange').datepicker({ });
+    $('.input-group.date').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true
+    })
+    .on('changeDate', function(e){
+        var getEleName = $(e.target).find(':text').attr('name');
+        $('#editForm').formValidation('revalidateField', getEleName);
     });
+
 </script>
 </body>
 </html>

@@ -8,13 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.cas.web.CasAuthenticationEntryPoint;
 
+import com.jabava.utils.RequestUtil;
+
 public class JabavaCasAuthenticationEntryPoint extends CasAuthenticationEntryPoint{
 	
+	/**
+	 * 处理认证异常(如Session过期)
+	 */
 	@Override
-	protected void preCommence(HttpServletRequest request,
-			HttpServletResponse response) {
-		if(request.getHeader("X-Requested-With") != null && 
-				"XMLHttpRequest".equals(request.getHeader("X-Requested-With").toString())){
+	protected void preCommence(HttpServletRequest request, HttpServletResponse response) {
+		if(RequestUtil.isAjaxRequest(request)){
+			//Ajax请求处理
             try {
 				PrintWriter out = response.getWriter();
 				out.print("AjaxAuthFailed");
@@ -31,6 +35,7 @@ public class JabavaCasAuthenticationEntryPoint extends CasAuthenticationEntryPoi
             //	response.sendRedirect(redirectUrl);
             //所以当out以后会报java.lang.IllegalStateException: Cannot call sendRedirect() after the response has been committed
 		}else{
+			//普通请求处理
 			super.preCommence(request, response);
 		}
 	}

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jabava.pojo.oauth.OauthToken;
 import com.jabava.service.oauth.OAuthService;
 import com.jabava.service.provider.ProtocolService;
+import com.jabava.utils.MessageUtil;
 
 /**
  * 协议接收Controller
@@ -41,9 +42,21 @@ public class ProtocolController {
 			result = protocolService.syncProtocol(paramJson);
 		} catch (Exception e) {
 			e.printStackTrace();
-			result = new HashMap<String,Object>();
-			result.put("resultCode", "1");
-			result.put("resultMsg", e.getMessage());
+			result = MessageUtil.errorProviderMessage(e.getMessage());
+		}
+		
+		return result;
+	}
+
+	@RequestMapping("queryProtocol")
+	@ResponseBody
+	public Map<String, Object> queryProtocol(@RequestBody JSONObject paramJson) {
+		Map<String, Object> result = null;
+		try {
+			result = protocolService.queryProtocol(paramJson);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = MessageUtil.errorProviderMessage(e.getMessage());
 		}
 		
 		return result;

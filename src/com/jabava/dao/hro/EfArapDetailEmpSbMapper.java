@@ -59,4 +59,6 @@ public interface EfArapDetailEmpSbMapper {
     List<Map<String,Object>> selectHeaderListByBillId(Long billId);
     
     List<EfArapDetailEmpSb> selectByBillId(Long billId);
+    
+    int deleteByBillId(Long billId);
 }

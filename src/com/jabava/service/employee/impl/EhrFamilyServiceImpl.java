@@ -38,9 +38,14 @@ public class EhrFamilyServiceImpl implements EhrFamilyService {
 		if(ehrFamily.getPersonId()==null){
 			ehrFamily.setPersonId(user.getUserId());
 		}
-		ehrFamilyMapper.insertSelective(ehrFamily);
-		map.put("success", true);
-		map.put("msg", "添加家庭成员成功！");
+		int flag=ehrFamilyMapper.insertSelective(ehrFamily);
+		if(flag>0){
+			map.put("success", true);
+			map.put("msg", "社会关系添加成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "社会关系添加失败！");
+		}
 		return map;
 	}
 
@@ -51,9 +56,14 @@ public class EhrFamilyServiceImpl implements EhrFamilyService {
 		ehrFamily.setLastModifyDate(new Date());
 		ehrFamily.setLastModifyUserId(user.getUserId());
 		ehrFamily.setLastModifyUserName(user.getUserName());
-		ehrFamilyMapper.updateByPrimaryKeySelective(ehrFamily);
-		map.put("success", true);
-		map.put("msg", "修改家庭成员成功！");
+		int flag=ehrFamilyMapper.updateByPrimaryKeySelective(ehrFamily);
+		if(flag>0){
+			map.put("success", true);
+			map.put("msg", "社会关系修改成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "社会关系修改失败！");
+		}
 		return map;
 	}
 

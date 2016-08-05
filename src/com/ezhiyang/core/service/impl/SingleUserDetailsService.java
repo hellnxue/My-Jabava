@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,20 +16,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.jabava.dao.manage.EhrUserMapper;
 import com.jabava.pojo.manage.EhrUser;
 
-public class SingleUserDetailsService implements UserDetailsService{  
+public class SingleUserDetailsService implements UserDetailsService{
+	public static Logger log = Logger.getLogger(SingleUserDetailsService.class);
+	
     @Resource  
     private EhrUserMapper userMapper;  
   
     //登录验证  
-    public UserDetails loadUserByUsername(String name)  
-            throws UsernameNotFoundException {  
-        System.out.println("show login name："+name+" ");  
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {  
         EhrUser ehrUser = null;
 		try {
 			ehrUser = userMapper.searchUserByUserCode(name);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}  
+		}
 		if(ehrUser == null){
 			return null;
 		}

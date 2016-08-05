@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,9 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
-        
+        <jsp:include flush="true" page="../common/extendMenu.jsp">
+            <jsp:param value="toListSalaryItem" name="type"/>
+        </jsp:include>
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
@@ -220,8 +223,10 @@
 				{ "data": "salaryChangeDefName","render": function(data, type, row, meta){
 					if(row.changeTableName == 'ehr_attendance'){
 						return '考勤表';
-					}else if(row.changeTableName == 'ehr_social_insurance'){
+					}else if(row.changeTableName == 'ss_payment_bill_person'){
 						return '社保表';
+					}else if(row.changeTableName == 'af_payment_bill_person'){
+						return '公积金表';
 					}else{
 						return data;
 					}
@@ -267,8 +272,14 @@
                 } },
                 { "data": "itemMemo","visible": false },
 				{ "render": function render( data, type, row, meta ){
-						return '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.salaryItemId + ');">修改</button>&nbsp;' +
-                            '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryItemId + ');">删除</button>';
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("salaryitem_mi")){ %>
+                        strHtml += '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.salaryItemId + ');">修改</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("salaryitem_di")){ %>
+                        strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryItemId + ');">删除</button>';
+                        <% } %>
+						return strHtml;
 					}
 				}
 			],
@@ -291,8 +302,12 @@
 				}
    			}
    	    });
-
-        $(".toolbar").html('<button class="btn btn-info btn-sm pull-right" type="button" data-toggle="collapse" data-target="[data-toggle=search]" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>&nbsp<button class="btn btn-info btn-sm btn-add-item">新　增</button>');
+        var strHtml = '';
+        strHtml += '<button class="btn btn-info btn-sm pull-right" type="button" data-toggle="collapse" data-target="[data-toggle=search]" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>&nbsp';
+        <% if(RequestUtil.hasPower("salaryitem_ai")){ %>
+        strHtml += '<button class="btn btn-info btn-sm btn-add-item">新　增</button>';
+        <% } %>
+        $(".toolbar").html(strHtml);
 
     	$('.btn-add-item').click(function () {
     		$('#salaryItemId').val('');
@@ -353,6 +368,15 @@
 	    				confirmButtonText: "确定"
 	                });
 				}
+			},
+			error: function(message){
+				console.log(message);
+				swal({
+                    title: "删除失败!",
+                    text: message.responseText,
+                    type: "error",
+    				confirmButtonText: "确定"
+                });
 			}
 		});
     }

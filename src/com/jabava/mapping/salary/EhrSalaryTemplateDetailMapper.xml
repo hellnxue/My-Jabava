@@ -118,4 +118,8 @@
   <delete id="deleteByTemplateId">
   	delete from ehr_salary_template_detail where salary_template_id=#{salaryTemplateId,jdbcType=BIGINT}
   </delete>
+  
+  <select id="countBySalaryItem" resultType="Integer">
+  	select count(1) from ehr_salary_template_detail where salary_item_id = #{salaryItemId,jdbcType=BIGINT}
+  </select>
 </mapper>

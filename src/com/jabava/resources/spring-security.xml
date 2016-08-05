@@ -6,49 +6,60 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<!-- 启用方法控制访问权限  用于直接拦截接口上的方法，拥有权限才能访问此方法-->
 	<global-method-security jsr250-annotations="enabled"/>  
 	<http pattern="/static/**" security="none" />
 	<http pattern="/welcome.jsp" security="none" />
 	<http pattern="/to_register" security="none" />
 	<http pattern="/register" security="none" />
+	<http pattern="/kaptcha.jpg" security="none" />
 	<http pattern="/checkMobile" security="none" />
+	<http pattern="/checkGraphics" security="none" />
 	<http pattern="/login" security="none" />
-    <http pattern="/common/error" security="none" />
-    
-    <!-- 配置拦截页面  --><!-- 启用页面级权限控制 使用表达式 -->
-    <http auto-config='true' entry-point-ref="authenticationEntryPoint">
-        <intercept-url pattern="/**" access="ROLE_LOGIN" />
-        <!-- 设置用户默认登录页面 -->
-        <form-login login-page="/login" 
-        		authentication-failure-url="/login" 
-        		default-target-url="/to_index"
-        		authentication-success-handler-ref="authenticationSuccessHandler"/>
-        <logout invalidate-session="true" 
-                logout-success-url="/login" 
-                logout-url="/j_spring_security_logout"/>
-    </http>
-    
-    <beans:bean id="singleUserDetailsService" class="com.ezhiyang.core.service.impl.SingleUserDetailsService"></beans:bean>
-    
-    <!-- 权限控制 引用 id是myUserDetailsService的server -->
-    <authentication-manager>
-        <authentication-provider user-service-ref="singleUserDetailsService">
-        	<password-encoder ref="passwordEncoder"></password-encoder>
-        </authentication-provider>
-    </authentication-manager>
-  
-    <!-- 用户的密码加密或解密 -->
-    <!--beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-    	<beans:constructor-arg name="strength" value="9" />
-    </beans:bean-->
-    <beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"></beans:bean>
-    
-    <beans:bean id="authenticationSuccessHandler" class="com.ezhiyang.common.handler.SingleAuthenticationSuccessHandler">
-    	
-    </beans:bean>
-    
-    <beans:bean id="authenticationEntryPoint" class="com.ezhiyang.core.web.JabavaLoginUrlAuthenticationEntryPoint">
+	<http pattern="/to_forgetPwd" security="none" />
+	<http pattern="/newPassword" security="none" />
+	<http pattern="/toSetPassword/**" security="none" />
+	<http pattern="/setPassword" security="none" />
+	<http pattern="/employee/login_mobile" security="none"/>
+	<http pattern="/employee/mobile_login" security="none"/>
+	<http pattern="/employee/mobileInfoCollect/*" security="none"/>
+	<http pattern="/employee/updatePerson" security="none"/>
+	<http pattern="/employee/mobileBaseData/*" security="none"/>
+	<http pattern="/employee/uploadToHRO" security="none"/>
+	<http pattern="/employee/savePersonFiles" security="none"/>
+	
+	<http pattern="/common/404" security="none" />
+	<http pattern="/common/500" security="none" />
+	<http pattern="/common/error" security="none" />
+    <http pattern="/common/noPermission" security="none" />
+	<http pattern="/common/maintain" security="none" />
+	<http pattern="/common/online_frame" security="none" />
+     <http pattern="/api/**" security="none" />
+	<http auto-config='true' entry-point-ref="authenticationEntryPoint">
+		<intercept-url pattern="/**" access="ROLE_LOGIN" />
+		<form-login login-page="/login" 
+				authentication-failure-url="/login"
+				authentication-success-handler-ref="authenticationSuccessHandler"/>
+				
+		<logout invalidate-session="true" 
+				logout-success-url="/login" 
+				logout-url="/j_spring_security_logout"/>
+	</http>
+	<!-- default-target-url="/to_index" -->
+	<beans:bean id="singleUserDetailsService" class="com.ezhiyang.core.service.impl.SingleUserDetailsService"></beans:bean>
+	
+	<authentication-manager>
+		<authentication-provider user-service-ref="singleUserDetailsService">
+			<password-encoder ref="passwordEncoder"></password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"></beans:bean>
+	
+	<beans:bean id="authenticationSuccessHandler" class="com.ezhiyang.common.handler.SingleAuthenticationSuccessHandler">
+		
+	</beans:bean>
+	
+	<beans:bean id="authenticationEntryPoint" class="com.ezhiyang.core.web.JabavaLoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg name="loginFormUrl" value="/login" />
-  	</beans:bean>
+	</beans:bean>
 </beans:beans>

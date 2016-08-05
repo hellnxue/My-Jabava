@@ -13,4 +13,6 @@ public interface ProtocolService {
 	 * {"resultCode":"0","resultMsg":"同步成功"}
 	 */
 	public Map<String,Object> syncProtocol(JSONObject paramJson) throws Exception;
+	
+	public Map<String,Object> queryProtocol(JSONObject paramJson) throws Exception;
 }

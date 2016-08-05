@@ -70,6 +70,10 @@
     delete from ehr_attendance
     where attend_id = #{attendId,jdbcType=BIGINT}
   </delete>
+  <!-- 根据ID更新is_deleted 为 1 -->
+  <update id="updateIsDeleted">
+    update ehr_attendance set  is_deleted=1 where attend_id=#{attendId,jdbcType=BIGINT}
+  </update>
   <insert id="insert" parameterType="com.jabava.pojo.manage.EhrAttendance" >
     <!--
       WARNING - @mbggenerated
@@ -458,7 +462,8 @@
 				ehr_attendance ea,
 				ehr_person ep
 			WHERE
-				ea.person_id = ep.person_id
+				ea.is_deleted=0
+				AND ea.person_id = ep.person_id
 				AND ep.company_id = #{company_id}
 	     ]]>
 		<if test="job_number != null and job_number != ''">
@@ -482,6 +487,7 @@
 				OR ep.employee_name LIKE CONCAT('%', #{search}, '%')
 			)
 		</if>
+		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ea.person_id")} 
 		ORDER BY ${orderBy}
 	</select>
 	<!-- 根据主键id和字段名字修改考勤记录的值 -->
@@ -572,7 +578,8 @@
 				ehr_attendance ea,
 				ehr_person ep
 			WHERE
-				ea.person_id = ep.person_id
+				ep.is_deleted=0
+			AND	ea.person_id = ep.person_id
 	     ]]>
 		<if test="company_id != null and company_id != ''">
 			AND ep.company_id = #{company_id}
@@ -584,9 +591,52 @@
 				#{item}
 			</foreach>
 		</if>
+		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ea.person_id")}
 	</select>
 	
 	<select id="getByPersonId" resultMap="BaseResultMap">
   		select <include refid="Base_Column_List" /> from ehr_attendance where person_id=#{personId,jdbcType=BIGINT}
+  		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   	</select>
+  	
+  	<select id="sumAttendance" resultType="java.util.HashMap">
+  		select sum(late_times) late_times, sum(leave_early_times) leave_early_times, sum(absent_time) absent_time,
+  			sum(all_leave) all_leave, sum(sick_leave) sick_leave, sum(business) business,
+  			sum(annual_leave) annual_leave, sum(work_overtime) work_overtime, sum(week_overtime) week_overtime,
+  			sum(holidays_overtime) holidays_overtime, sum(adjust_day) adjust_day, sum(night_shift) night_shift,
+  			sum(total_annual) total_annual, sum(surplus_annual) surplus_annual, sum(marriage_leave) marriage_leave,
+  			sum(maternity_leave) maternity_leave, sum(paternity_leave) paternity_leave, sum(funeral_leave) funeral_leave 
+  		from ehr_attendance
+  		where person_id=#{personId,jdbcType=BIGINT}
+  			and year_month_record=#{yearMonthRecord,jdbcType=VARCHAR}
+  			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+  	</select>
+  	
+  <select id="listAttentancePage" resultType="java.util.HashMap">
+  	select a.*,p.job_number,p.cert_id
+  	from ehr_attendance a left join ehr_person p on a.person_id=p.person_id
+  	where p.company_id=#{companyId,jdbcType=BIGINT}
+  		and a.year_month_record=#{yearMonthRecord,jdbcType=VARCHAR}
+  		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("a.person_id")}
+  </select>
+  <select id="listAttentance" resultType="java.util.HashMap">
+  	select a.*,p.job_number,p.cert_id
+  	from ehr_attendance a left join ehr_person p on a.person_id=p.person_id
+  	where p.company_id=#{companyId,jdbcType=BIGINT}
+  		and a.year_month_record=#{yearMonthRecord,jdbcType=VARCHAR}
+  	<if test="personId != null" >
+  		and a.person_id=#{personId,jdbcType=BIGINT}
+  	</if>
+  	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("a.person_id")}
+  </select>
+  <delete id="deleteById">
+  	delete from ehr_attendance 
+  	where attend_id=#{attendId,jdbcType=BIGINT} 
+  		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+  </delete>
+  <delete id="deleteByYearMonthRecord">
+  	delete from ehr_attendance 
+  	where year_month_record=#{yearMonthRecord,jdbcType=VARCHAR}
+  		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+  </delete>
 </mapper>

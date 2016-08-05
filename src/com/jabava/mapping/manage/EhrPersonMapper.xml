@@ -17,8 +17,8 @@
     <result column="employee_photo" property="employeePhoto" jdbcType="VARCHAR" />
     <result column="employment_type" property="employmentType" jdbcType="VARCHAR" />
     <result column="rank_id" property="rankId" jdbcType="BIGINT" />
-    <result column="key_person" property="keyPerson" jdbcType="TINYINT" />
-    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="key_person" property="keyPerson" jdbcType="INTEGER" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
     <result column="report_object" property="reportObject" jdbcType="VARCHAR" />
     <result column="entry_date" property="entryDate" jdbcType="DATE" />
     <result column="positive_date" property="positiveDate" jdbcType="DATE" />
@@ -26,11 +26,11 @@
     <result column="firstjob_date" property="firstjobDate" jdbcType="DATE" />
     <result column="birth_date" property="birthDate" jdbcType="DATE" />
     <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="cert_type" property="certType" jdbcType="TINYINT" />
+    <result column="cert_type" property="certType" jdbcType="INTEGER" /> 
     <result column="cert_id" property="certId" jdbcType="VARCHAR" /> 
     <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
     <result column="salary_card" property="salaryCard" jdbcType="VARCHAR" />
-    <result column="marital" property="marital" jdbcType="TINYINT" />
+    <result column="marital" property="marital" jdbcType="INTEGER" />
     <result column="degree" property="degree" jdbcType="VARCHAR" />
     <result column="education" property="education" jdbcType="VARCHAR" />
     <result column="study_abroad" property="studyAbroad" jdbcType="TINYINT" />
@@ -38,7 +38,7 @@
     <result column="payroll_location" property="payrollLocation" jdbcType="VARCHAR" />
     <result column="register_location" property="registerLocation" jdbcType="VARCHAR" />
     <result column="social_security_location" property="socialSecurityLocation" jdbcType="VARCHAR" />
-    <result column="register_type" property="registerType" jdbcType="TINYINT" />
+    <result column="register_type" property="registerType" jdbcType="INTEGER" />
     <result column="birth_place" property="birthPlace" jdbcType="VARCHAR" />
     <result column="nationality" property="nationality" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
@@ -49,7 +49,7 @@
     <result column="post_code" property="postCode" jdbcType="VARCHAR" />
     <result column="is_payroll_flag" property="isPayrollFlag" jdbcType="TINYINT" />
     <result column="file_location" property="fileLocation" jdbcType="VARCHAR" />
-    <result column="is_foreign" property="isForeign" jdbcType="TINYINT" />
+    <result column="is_foreign" property="isForeign" jdbcType="INTEGER" />
     <result column="left_date" property="leftDate" jdbcType="DATE" />
     <result column="left_cause" property="leftCause" jdbcType="VARCHAR" />
     <result column="expire_date" property="expireDate" jdbcType="DATE" />
@@ -60,7 +60,7 @@
     <result column="last_modify_user_id" property="lastModifyUserId" jdbcType="BIGINT" />
     <result column="last_modify_user_name" property="lastModifyUserName" jdbcType="VARCHAR" />
     <result column="last_modify_date" property="lastModifyDate" jdbcType="TIMESTAMP" />
-    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="employee_group" property="employeeGroup" jdbcType="VARCHAR" />
     <result column="team" property="team" jdbcType="BIGINT" />
     <result column="is_workplace" property="isWorkplace" jdbcType="TINYINT" />
@@ -73,6 +73,8 @@
     <result column="birthDate1" property="birthDate1" jdbcType="VARCHAR" />
     <result column="origin_place" property="originPlace" jdbcType="VARCHAR" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="politics_status" property="politicsStatus" jdbcType="VARCHAR" />
+    <result column="referrer" property="referrer" jdbcType="VARCHAR" />
     <result column="cert_type_url" property="certTypeUrl" jdbcType="VARCHAR" />
     <result column="resume_url" property="resumeUrl" jdbcType="VARCHAR" />
     <result column="education_url" property="educationUrl" jdbcType="VARCHAR" />
@@ -89,14 +91,17 @@
     -->
     person_id, company_id, organization_id, post_id, cost_id, job_number, employee_name, 
     employee_photo, employment_type, rank_id, key_person, sex, report_object, entry_date, 
-    positive_date, in_company_time, firstjob_date, birth_date, age, cert_type, cert_id, 
+    positive_date, in_company_time, firstjob_date, 
+    birth_date,
+     age, cert_type, cert_id, 
     bank_name, salary_card, marital, degree, education, study_abroad, work_location, 
     payroll_location, register_location, social_security_location, register_type, birth_place, 
     nationality, mobile, phone, Email, contact_address, family_address, post_code, is_payroll_flag, 
     file_location, is_foreign, left_date, left_cause, expire_date, memo, create_user_id, 
     create_user_name, create_date, last_modify_user_id, last_modify_user_name, last_modify_date, 
-    status, employee_group, team, is_workplace, resume, subbank, recruit, origin_place, is_deleted
+    status, employee_group, team, is_workplace, resume, subbank, recruit, origin_place,politics_status,referrer, is_deleted
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     <!--
       WARNING - @mbggenerated
@@ -116,6 +121,7 @@
     -->
     delete from ehr_person
     where person_id = #{personId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.manage.EhrPerson" >
     <!--
@@ -147,21 +153,21 @@
     values (#{personId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{organizationId,jdbcType=BIGINT}, 
       #{postId,jdbcType=BIGINT}, #{costId,jdbcType=BIGINT}, #{jobNumber,jdbcType=VARCHAR}, 
       #{employeeName,jdbcType=VARCHAR}, #{employeePhoto,jdbcType=VARCHAR}, #{employmentType,jdbcType=VARCHAR}, 
-      #{rankId,jdbcType=BIGINT}, #{keyPerson,jdbcType=TINYINT}, #{sex,jdbcType=TINYINT}, 
+      #{rankId,jdbcType=BIGINT}, #{keyPerson,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}, 
       #{reportObject,jdbcType=VARCHAR}, #{entryDate,jdbcType=DATE}, #{positiveDate,jdbcType=DATE}, 
       #{inCompanyTime,jdbcType=TINYINT}, #{firstjobDate,jdbcType=DATE}, #{birthDate,jdbcType=DATE}, 
       #{age,jdbcType=INTEGER}, #{certType,jdbcType=TINYINT}, #{certId,jdbcType=VARCHAR}, 
-      #{bankName,jdbcType=VARCHAR}, #{salaryCard,jdbcType=VARCHAR}, #{marital,jdbcType=TINYINT}, 
+      #{bankName,jdbcType=VARCHAR}, #{salaryCard,jdbcType=VARCHAR}, #{marital,jdbcType=INTEGER}, 
       #{degree,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{studyAbroad,jdbcType=TINYINT}, 
       #{workLocation,jdbcType=VARCHAR}, #{payrollLocation,jdbcType=VARCHAR}, #{registerLocation,jdbcType=VARCHAR}, 
       #{socialSecurityLocation,jdbcType=VARCHAR}, #{registerType,jdbcType=TINYINT}, #{birthPlace,jdbcType=VARCHAR}, 
       #{nationality,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{contactAddress,jdbcType=VARCHAR}, #{familyAddress,jdbcType=VARCHAR}, 
       #{postCode,jdbcType=VARCHAR}, #{isPayrollFlag,jdbcType=TINYINT}, #{fileLocation,jdbcType=VARCHAR}, 
-      #{isForeign,jdbcType=TINYINT}, #{leftDate,jdbcType=DATE}, #{leftCause,jdbcType=VARCHAR}, 
+      #{isForeign,jdbcType=INTEGER}, #{leftDate,jdbcType=DATE}, #{leftCause,jdbcType=VARCHAR}, 
       #{expireDate,jdbcType=DATE}, #{memo,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT}, 
       #{createUserName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{lastModifyUserId,jdbcType=BIGINT}, 
-      #{lastModifyUserName,jdbcType=VARCHAR}, #{lastModifyDate,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{lastModifyUserName,jdbcType=VARCHAR}, #{lastModifyDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
       #{employeeGroup,jdbcType=VARCHAR}, #{team,jdbcType=BIGINT}, #{isWorkplace,jdbcType=TINYINT}, 
       #{resume,jdbcType=VARCHAR}, #{subbank,jdbcType=VARCHAR}, #{recruit,jdbcType=VARCHAR}
       )
@@ -390,10 +396,10 @@
         #{rankId,jdbcType=BIGINT},
       </if>
       <if test="keyPerson != null" >
-        #{keyPerson,jdbcType=TINYINT},
+        #{keyPerson,jdbcType=INTEGER},
       </if>
       <if test="sex != null" >
-        #{sex,jdbcType=TINYINT},
+        #{sex,jdbcType=INTEGER},
       </if>
       <if test="reportObject != null" >
         #{reportObject,jdbcType=VARCHAR},
@@ -429,7 +435,7 @@
         #{salaryCard,jdbcType=VARCHAR},
       </if>
       <if test="marital != null" >
-        #{marital,jdbcType=TINYINT},
+        #{marital,jdbcType=INTEGER},
       </if>
       <if test="degree != null" >
         #{degree,jdbcType=VARCHAR},
@@ -486,7 +492,7 @@
         #{fileLocation,jdbcType=VARCHAR},
       </if>
       <if test="isForeign != null" >
-        #{isForeign,jdbcType=TINYINT},
+        #{isForeign,jdbcType=INTEGER},
       </if>
       <if test="leftDate != null" >
         #{leftDate,jdbcType=DATE},
@@ -519,7 +525,7 @@
         #{lastModifyDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="employeeGroup != null" >
         #{employeeGroup,jdbcType=VARCHAR},
@@ -583,10 +589,10 @@
         rank_id = #{rankId,jdbcType=BIGINT},
       </if>
       <if test="keyPerson != null" >
-        key_person = #{keyPerson,jdbcType=TINYINT},
+        key_person = #{keyPerson,jdbcType=INTEGER},
       </if>
       <if test="sex != null" >
-        sex = #{sex,jdbcType=TINYINT},
+        sex = #{sex,jdbcType=INTEGER},
       </if>
       <if test="reportObject != null" >
         report_object = #{reportObject,jdbcType=VARCHAR},
@@ -610,7 +616,7 @@
         age = #{age,jdbcType=INTEGER},
       </if>
       <if test="certType != null" >
-        cert_type = #{certType,jdbcType=TINYINT},
+        cert_type = #{certType,jdbcType=INTEGER},
       </if>
       <if test="certId != null" >
         cert_id = #{certId,jdbcType=VARCHAR},
@@ -622,7 +628,7 @@
         salary_card = #{salaryCard,jdbcType=VARCHAR},
       </if>
       <if test="marital != null" >
-        marital = #{marital,jdbcType=TINYINT},
+        marital = #{marital,jdbcType=INTEGER},
       </if>
       <if test="degree != null" >
         degree = #{degree,jdbcType=VARCHAR},
@@ -646,7 +652,7 @@
         social_security_location = #{socialSecurityLocation,jdbcType=VARCHAR},
       </if>
       <if test="registerType != null" >
-        register_type = #{registerType,jdbcType=TINYINT},
+        register_type = #{registerType,jdbcType=INTEGER},
       </if>
       <if test="birthPlace != null" >
         birth_place = #{birthPlace,jdbcType=VARCHAR},
@@ -679,7 +685,7 @@
         file_location = #{fileLocation,jdbcType=VARCHAR},
       </if>
       <if test="isForeign != null" >
-        is_foreign = #{isForeign,jdbcType=TINYINT},
+        is_foreign = #{isForeign,jdbcType=INTEGER},
       </if>
       <if test="leftDate != null" >
         left_date = #{leftDate,jdbcType=DATE},
@@ -712,7 +718,7 @@
         last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=TINYINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="employeeGroup != null" >
         employee_group = #{employeeGroup,jdbcType=VARCHAR},
@@ -735,6 +741,12 @@
       <if test="originPlace != null">
 		origin_place = #{originPlace,jdbcType=VARCHAR},
 	  </if>
+	   <if test="politicsStatus != null">
+		politics_status=#{politicsStatus,jdbcType=VARCHAR},
+	  </if>
+	   <if test="referrer != null">
+		referrer=#{referrer,jdbcType=VARCHAR},
+	  </if>
     </set>
     where person_id = #{personId,jdbcType=BIGINT}
   </update>
@@ -754,8 +766,8 @@
       employee_photo = #{employeePhoto,jdbcType=VARCHAR},
       employment_type = #{employmentType,jdbcType=VARCHAR},
       rank_id = #{rankId,jdbcType=BIGINT},
-      key_person = #{keyPerson,jdbcType=TINYINT},
-      sex = #{sex,jdbcType=TINYINT},
+      key_person = #{keyPerson,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=INTEGER},
       report_object = #{reportObject,jdbcType=VARCHAR},
       entry_date = #{entryDate,jdbcType=DATE},
       positive_date = #{positiveDate,jdbcType=DATE},
@@ -763,11 +775,11 @@
       firstjob_date = #{firstjobDate,jdbcType=DATE},
       birth_date = #{birthDate,jdbcType=DATE},
       age = #{age,jdbcType=INTEGER},
-      cert_type = #{certType,jdbcType=TINYINT},
+      cert_type = #{certType,jdbcType=INTEGER},
       cert_id = #{certId,jdbcType=VARCHAR},
       bank_name = #{bankName,jdbcType=VARCHAR},
       salary_card = #{salaryCard,jdbcType=VARCHAR},
-      marital = #{marital,jdbcType=TINYINT},
+      marital = #{marital,jdbcType=INTEGER},
       degree = #{degree,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
       study_abroad = #{studyAbroad,jdbcType=TINYINT},
@@ -775,7 +787,7 @@
       payroll_location = #{payrollLocation,jdbcType=VARCHAR},
       register_location = #{registerLocation,jdbcType=VARCHAR},
       social_security_location = #{socialSecurityLocation,jdbcType=VARCHAR},
-      register_type = #{registerType,jdbcType=TINYINT},
+      register_type = #{registerType,jdbcType=INTEGER},
       birth_place = #{birthPlace,jdbcType=VARCHAR},
       nationality = #{nationality,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
@@ -786,7 +798,7 @@
       post_code = #{postCode,jdbcType=VARCHAR},
       is_payroll_flag = #{isPayrollFlag,jdbcType=TINYINT},
       file_location = #{fileLocation,jdbcType=VARCHAR},
-      is_foreign = #{isForeign,jdbcType=TINYINT},
+      is_foreign = #{isForeign,jdbcType=INTEGER},
       left_date = #{leftDate,jdbcType=DATE},
       left_cause = #{leftCause,jdbcType=VARCHAR},
       expire_date = #{expireDate,jdbcType=DATE},
@@ -797,7 +809,7 @@
       last_modify_user_id = #{lastModifyUserId,jdbcType=BIGINT},
       last_modify_user_name = #{lastModifyUserName,jdbcType=VARCHAR},
       last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=TINYINT},
+      status = #{status,jdbcType=INTEGER},
       employee_group = #{employeeGroup,jdbcType=VARCHAR},
       team = #{team,jdbcType=BIGINT},
       is_workplace = #{isWorkplace,jdbcType=TINYINT},
@@ -806,17 +818,6 @@
       recruit = #{recruit,jdbcType=VARCHAR}
     where person_id = #{personId,jdbcType=BIGINT}
   </update>
-   <select id="selectByCompanyId" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
-	    select 
-	    	ep.*,eo.organization_name org,ebd.base_data_name post
-	    from ehr_person ep
-	    left join ehr_organization eo on ep.organization_id=eo.organization_id
-	    left join ehr_base_data ebd on ep.post_id=ebd.base_data_id
-	    where ep.company_id = #{companyId,jdbcType=BIGINT} and ep.is_deleted=0
-	    <if test="search != null and search != ''">
-	  		and CONCAT(ep.person_id,ep.job_number,ep.employee_name,ep.mobile,ep.phone,ep.email,eo.organization_name,ebd.base_data_name) LIKE CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}), '%')
-	  	</if>
-   </select>
    
    <select id="selectByOrganizationId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 	    select 
@@ -825,6 +826,7 @@
 	    left join ehr_organization eo on ep.organization_id=eo.organization_id
 	    left join ehr_base_data ebd on ep.post_id=ebd.base_data_id
 	    where ep.organization_id = #{organizationId,jdbcType=BIGINT} and ep.is_deleted=0
+	    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ep.person_id")}
    </select>
    
    <select id="selectByOrgIdList" resultMap="BaseResultMap" parameterType="java.util.List" >
@@ -833,6 +835,18 @@
 	    from ehr_person ep
 	    left join ehr_organization eo on ep.organization_id=eo.organization_id
 	    left join ehr_base_data ebd on ep.post_id=ebd.base_data_id
+	    where ep.is_deleted=0 and ep.organization_id in
+        <foreach item="item" index="index" collection="list" 
+              open="(" separator="," close=")">
+              #{item}
+        </foreach>
+        ${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ep.person_id")}
+   </select>
+   
+   <select id="selectByAuthorisedOrgIdList" resultMap="BaseResultMap" parameterType="java.util.List" >
+	    select ep.* 
+	    from ehr_person ep
+	    left join ehr_organization eo on ep.organization_id=eo.organization_id
 	    where ep.is_deleted=0 and ep.organization_id in
         <foreach item="item" index="index" collection="list" 
               open="(" separator="," close=")">
@@ -850,6 +864,7 @@
     <if test="search != null and search != ''">
   		and CONCAT(ep.person_id,ep.job_number,ep.employee_name,ep.mobile,ep.phone,ep.email,eo.organization_name,ebd.base_data_name) LIKE CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}), '%')
   	</if>
+  	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ep.person_id")}
   	order by ${orderBy}
   </select>
   
@@ -867,7 +882,7 @@
 				and job_number like CONCAT(CONCAT('%', #{jobNumber, jdbcType=VARCHAR}), '%')
 			</if>
 			<if test="keyPerson != null">
-				and key_person=#{keyPerson, jdbcType=TINYINT}
+				and key_person=#{keyPerson, jdbcType=INTEGER}
 			</if>
 			<if test="employeeName != null and employeeName != ''">
 				and employee_name like CONCAT(CONCAT('%', #{employeeName, jdbcType=VARCHAR}), '%')
@@ -910,7 +925,7 @@
 				group by person_id)
 			</if>
 			<if test="status != null and status != 10">
-				and status=#{status, jdbcType=TINYINT}
+				and status=#{status, jdbcType=INTEGER}
 			</if>
 			<if test="isPayrollFlag != null and isPayrollFlag != 10">
 				and is_payroll_flag =#{isPayrollFlag, jdbcType=TINYINT}
@@ -919,26 +934,28 @@
 				and person_id in(select person_id from ehr_certificate where certificate_name like CONCAT(CONCAT('%', #{certificate, jdbcType=VARCHAR}), '%')) 
 			</if>
 			${where}
+			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
 		order by person_id desc	
   	</select>
   	
-  	<select id="searchEhrPersonPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<select id="searchEhrPersonPage" resultType="java.util.HashMap" parameterType="java.util.Map">
   		select 
-  			ep.*,eo.organization_name org,ebd.base_data_name post
+  			ep.*,eo.organization_name org,ebd.base_data_name post,
+  			ep.job_number as employeeNumber
 		from 
-			ehr_person ep
-	    left join ehr_organization eo on ep.organization_id=eo.organization_id
-	    left join ehr_base_data ebd on ep.post_id=ebd.base_data_id
+			ehr_person ep	  
+	    left join ehr_organization eo on ep.organization_id =eo.organization_id
+	    left join ehr_base_data ebd on ep.post_id = ebd.base_data_id
 		where 
 			 ep.company_id=#{companyId,jdbcType=BIGINT} and ep.is_deleted=0
 			<if test="distinguish != null and distinguish != ''">
 				 and ep.organization_id in (select organization_id from ehr_organization where total_organization_code like CONCAT(CONCAT('%', #{distinguish, jdbcType=VARCHAR}), '%') )
 			</if>
 			<if test="jobNumber != null and jobNumber != ''">
-				and ep.job_number like CONCAT(CONCAT('%', #{jobNumber, jdbcType=VARCHAR}), '%')
+				and   ep.job_number like CONCAT(CONCAT('%', #{jobNumber, jdbcType=VARCHAR}), '%')
 			</if>
 			<if test="keyPerson != null and keyPerson != ''">
-				and ep.key_person=#{keyPerson, jdbcType=TINYINT}
+				and ep.key_person=#{keyPerson, jdbcType=INTEGER}
 			</if>
 			<if test="employeeName != null and employeeName != ''">
 				and ep.employee_name like CONCAT(CONCAT('%', #{employeeName, jdbcType=VARCHAR}), '%')
@@ -980,12 +997,18 @@
 				</if>
 				group by person_id)
 			</if>
-			<if test="status != null and status != '' and status != 10">
-				and ep.status=#{status, jdbcType=TINYINT}
-			</if>
-			<if test="isPayrollFlag != null and isPayrollFlag != '' and isPayrollFlag != 10">
-				and ep.is_payroll_flag =#{isPayrollFlag, jdbcType=TINYINT}
-			</if>
+			 
+			
+			<if test="isPayrollFlag != null and isPayrollFlag.size() > 0">
+		  		and ep.is_payroll_flag in 
+		  		<foreach collection="isPayrollFlag" item="item" index="index" open="(" separator="," close=")">#{item}</foreach>
+		  	</if>
+			<if test="status != null and status.size() > 0">
+		  		and ep.status in 
+		  		<foreach collection="status" item="item" index="index" open="(" separator="," close=")">#{item}</foreach>
+		  	</if>
+			
+			
 			<if test="certificate != null and certificate != ''">
 				and ep.person_id in(select person_id from ehr_certificate where certificate_name like CONCAT(CONCAT('%', #{certificate, jdbcType=VARCHAR}), '%')) 
 			</if>
@@ -999,14 +1022,31 @@
 					OR  ep.Email  like CONCAT(CONCAT('%', #{search, jdbcType=VARCHAR}), '%')
 					)
 			</if>
+			<if test="countType != null and countType != ''">
+				<if test="countType == 'toBecomeMember'">
+					and TIMESTAMPDIFF(DAY, NOW(), ep.positive_date)<![CDATA[>=]]>0 AND 
+					TIMESTAMPDIFF(DAY, NOW(), ep.positive_date)<![CDATA[<=]]>#{daysToBecomeMember}
+				</if>
+				<if test="countType == 'birthdayToday'">
+					and DATE_FORMAT(NOW(),'%m%d')=DATE_FORMAT(ep.birth_date,'%m%d')
+				</if>
+				<if test="countType == 'entryThisMonth'">
+					and DATE_FORMAT(ep.entry_date,'%Y%m')=DATE_FORMAT(NOW(),'%Y%m')
+				</if>
+				<if test="countType == 'leaveThisMonth'">
+					and DATE_FORMAT(ep.left_date,'%Y%m')=DATE_FORMAT(NOW(),'%Y%m')
+				</if>
+				<if test="countType == 'contractExpiring'">
+					and EXISTS (SELECT 1 FROM ehr_contract WHERE person_id=ep.person_id AND is_deleted=0 AND 
+						TIMESTAMPDIFF(DAY, NOW(), contract_end_date)<![CDATA[>=]]>0 AND 
+						TIMESTAMPDIFF(DAY, NOW(), contract_end_date)<![CDATA[<=]]>#{daysContractExpiring}
+					)
+				</if>
+			</if>
 			${where}
+			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ep.person_id")}
 		order by ${order} ${according}
   	</select>
-  	<select id="searchSalary" resultType="java.lang.Integer">
-  	 select count(*) from ehr_salary where 1=1 
-		 and person_id = #{personId,jdbcType=BIGINT}
-  	</select>
-  	
   	
 	<select id="searchPositive" resultType="java.lang.Integer" parameterType="java.util.Map">
   		select count(*) from ehr_person where company_id= #{companyId,jdbcType=BIGINT} and is_deleted=0 
@@ -1017,6 +1057,7 @@
   		</if>
   		and status=0 
   		${where}
+  		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
 		ORDER BY person_id DESC
   	</select>
   	<select id="searchContract" resultType="java.lang.Integer" parameterType="java.util.Map" >
@@ -1024,11 +1065,12 @@
   	  where  
   	  ${dateSql}
   	  and person_id in (select person_id from ehr_person where company_id=#{companyId,jdbcType=BIGINT} and is_deleted=0 
-  	  <if test="distinguish != null and distinguish != ''">
-  	  and organization_id in (select organization_id from ehr_organization where total_organization_code like CONCAT(CONCAT('%', #{distinguish, jdbcType=VARCHAR}), '%')) 
-  	 </if>
-  	  and status=0 
-  	  ${where}
+	  	  <if test="distinguish != null and distinguish != ''">
+	  	  and organization_id in (select organization_id from ehr_organization where total_organization_code like CONCAT(CONCAT('%', #{distinguish, jdbcType=VARCHAR}), '%')) 
+	  	 </if>
+	  	  and status=0 
+	  	  ${where}
+	  	  ${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   	  )
   	</select>
   	<select id="searchBirth" resultType="java.lang.Integer" parameterType="java.util.Map">
@@ -1039,6 +1081,7 @@
 	 </if>
 	 and status=0 
 	 ${where}
+	 ${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
 	 order by person_id desc
   	</select>
   	<select id="searchBirthList"  resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -1051,6 +1094,7 @@
 	 </if> 
 	 and ep.status=0 
 	 ${where}
+	 ${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ep.person_id")}
 	 order by ep.person_id desc
   	</select>
   	<select id="searchPositiveList" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -1064,13 +1108,14 @@
 	</if>
 	and ep.status=0 
 	${where}
+	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("ep.person_id")}
 	ORDER BY
 	ep.person_id DESC
   	</select>
   	
-  	
   	<update id="deletePerson" parameterType="java.lang.Long">
   		update ehr_person set is_deleted=#{personId,jdbcType=INTEGER} where person_id = #{personId,jdbcType=BIGINT}
+  			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   	</update>
   	
   	<select id="userBusinessPower" resultType="com.jabava.pojo.manage.EhrUserBusinessPower">
@@ -1112,14 +1157,9 @@
 			ehr_user_person_power_value 
 		where user_person_power_id=#{id, jdbcType=BIGINT}
   	</select>
-  	
   
   	<select id="searchBaseData" resultType="com.jabava.pojo.manage.EhrBaseData" parameterType="java.lang.Long">
   		select base_data_id as baseDataId,base_data_name as baseDataName from ehr_base_data where base_data_type = 5
-  	</select>
-	
-	<select id="getPersonByMobile" resultMap="BaseResultMap" parameterType="com.jabava.pojo.manage.EhrPerson">
-  		select <include refid="Base_Column_List"/> from ehr_person where mobile=#{mobile, jdbcType=VARCHAR} and is_deleted=0
   	</select>
   	
   	<select id="getUserId" resultType="java.lang.Long">
@@ -1135,15 +1175,47 @@
   	</insert>
   	
   	<select id="getAllPersonCertId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select person_id, cert_id from ehr_person where company_id=#{companyId,jdbcType=BIGINT}
+		select person_id, cert_id , job_number from ehr_person where company_id=#{companyId,jdbcType=BIGINT} and is_deleted = 0
 	</select>
 	
 	<select id="selectAllPerson" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select p.*, o.organization_name org 
+    from ehr_person p left join ehr_organization o on p.organization_id=o.organization_id
+    where p.company_id=#{companyId,jdbcType=BIGINT} and p.is_deleted = 0
+  </select>
+	
+	<select id="searchPersonByParam" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
     <include refid="Base_Column_List" />
-    from ehr_person
-    where company_id=#{companyId,jdbcType=BIGINT} and is_deleted = 0
+    from ehr_person ep
+    where is_deleted = 0
+    <if test="companyId != null">
+    	and company_id=#{companyId,jdbcType=BIGINT}
+    </if>
+    <if test="countType != null and countType != ''">
+		<if test="countType == 'toBecomeMember'">
+			and TIMESTAMPDIFF(DAY, NOW(), ep.positive_date)<![CDATA[>=]]>0 AND 
+			TIMESTAMPDIFF(DAY, NOW(), ep.positive_date)<![CDATA[<=]]>#{daysToBecomeMember}
+		</if>
+		<if test="countType == 'birthdayToday'">
+			and DATE_FORMAT(NOW(),'%m%d')=DATE_FORMAT(ep.birth_date,'%m%d')
+		</if>
+		<if test="countType == 'entryThisMonth'">
+			and DATE_FORMAT(ep.entry_date,'%Y%m')=DATE_FORMAT(NOW(),'%Y%m')
+		</if>
+		<if test="countType == 'leaveThisMonth'">
+			and DATE_FORMAT(ep.left_date,'%Y%m')=DATE_FORMAT(NOW(),'%Y%m')
+		</if>
+		<if test="countType == 'contractExpiring'">
+			and EXISTS (SELECT 1 FROM ehr_contract WHERE person_id=ep.person_id AND is_deleted=0 AND 
+				TIMESTAMPDIFF(DAY, NOW(), contract_end_date)<![CDATA[>=]]>0 AND 
+				TIMESTAMPDIFF(DAY, NOW(), contract_end_date)<![CDATA[<=]]>#{daysContractExpiring}
+			)
+		</if>
+	</if>
+	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </select>
+  
   <!-- 根据员工名和公司ID查询员工 -->
   <select id="searchPersonByEmployeeNameAndCompanyId" resultMap="BaseResultMap" parameterType="com.jabava.pojo.manage.EhrPerson" >
      select 
@@ -1153,6 +1225,7 @@
   </select>
    <update id="isDeletePerson" parameterType="java.lang.Long" >
   	  update ehr_person set is_deleted = #{isDeleted,jdbcType=BIGINT} where person_id=#{personId,jdbcType=BIGINT}
+  	  	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   	
 	<select id="getById" resultMap="BaseResultMap">
@@ -1163,4 +1236,385 @@
 		select * from ehr_person
     	where is_deleted = 0 and company_id=#{companyId,jdbcType=BIGINT} and job_number=#{jobNumber,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="searchPersonByCertId" resultMap="BaseResultMap">
+		select * from ehr_person
+    	where is_deleted = 0 and company_id=#{companyId,jdbcType=BIGINT} and cert_id=#{certId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getPersonId" parameterType="java.lang.Long" resultType="long">
+		select person_id from ehr_user_person where user_id= #{userId,jdbcType=BIGINT}
+	</select>
+	<resultMap id="PersonResultMap" type="com.jabava.pojo.manage.EhrPerson"  extends="BaseResultMap">
+		<association  column="company_id"  property="company" javaType="com.jabava.pojo.manage.EhrCompany" resultMap="CompanyMap"> </association>
+		<association   property="user" javaType="com.jabava.pojo.manage.EhrUser" resultMap="UserResultMap"> </association>
+		
+	</resultMap>
+	<resultMap type="com.jabava.pojo.manage.EhrCompany" id="CompanyMap">
+	      <id column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="company_code" property="companyCode" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_short_name" property="companyShortName" jdbcType="VARCHAR" />
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+    <result column="company_telephone" property="companyTelephone" jdbcType="VARCHAR" />
+    <result column="company_fax" property="companyFax" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="employee_quantity" property="employeeQuantity" jdbcType="INTEGER" />
+    <result column="contactor" property="contactor" jdbcType="VARCHAR" />
+    <result column="contactor_telephone" property="contactorTelephone" jdbcType="VARCHAR" />
+    <result column="license" property="license" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="company_type" property="companyType" jdbcType="INTEGER" />
+    <result column="use_ehr" property="useEhr" jdbcType="INTEGER" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_modify_user_id" property="lastModifyUserId" jdbcType="BIGINT" />
+    <result column="last_modify_user_name" property="lastModifyUserName" jdbcType="VARCHAR" />
+    <result column="last_modify_date" property="lastModifyDate" jdbcType="TIMESTAMP" />
+    <result column="company_post" property="companyPost" jdbcType="VARCHAR" />
+    <result column="company_net" property="companyNet" jdbcType="VARCHAR" />
+    <result column="company_logo" property="companyLogo" jdbcType="VARCHAR" />
+    <result column="company_license_url" property="companyLicenseUrl" jdbcType="VARCHAR" />
+    <result column="company_prov" property="companyProv" jdbcType="VARCHAR" />
+    <result column="company_city" property="companyCity" jdbcType="VARCHAR" />
+    <result column="company_dist" property="companyDist" jdbcType="VARCHAR" />
+    <result column="perfect_date" property="perfectDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	 <resultMap id="UserResultMap" type="com.jabava.pojo.manage.EhrUser" >
+   
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
+ 
+  </resultMap>
+	<select id="getAllPersonForSync" resultMap="PersonResultMap" >
+	    SELECT ehr_person.*, ehr_company.company_name, ehr_company.contactor, ehr_company.contactor_telephone,
+			(SELECT ehr_user.user_name FROM ehr_user
+		     WHERE is_deleted = 0 AND company_id = ehr_person.company_id AND user_type = 2 
+			 	and mobile is not null and mobile <![CDATA[<>]]>''
+			 ORDER BY user_id  ASC limit 1) as user_name,
+			(SELECT ehr_user.mobile as user_mobile FROM ehr_user
+			 WHERE is_deleted = 0 AND company_id = ehr_person.company_id AND user_type = 2 
+			 	and mobile is not null and mobile<![CDATA[<>]]>''
+			 ORDER BY user_id  ASC limit 1) as user_mobile
+		FROM ehr_person LEFT JOIN ehr_company on ehr_person.company_id = ehr_company.company_id
+		WHERE ehr_person.is_deleted = 0 AND ehr_person.STATUS = 0 AND ehr_person.mobile IS NOT NULL
+	</select>
+	<select id="getEmployeeInfoByCardId" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT ehr_person.employee_name as userName,
+			ehr_person.sex as sex ,ehr_company.company_name as companyName,
+			ehr_base_data.base_data_name as positionName,
+			ehr_person.mobile as mobile ,ehr_person.Email as mail,
+			ehr_organization.organization_name as department
+		FROM  ehr_person 
+		LEFT JOIN ehr_company on ehr_person.company_id = ehr_company.company_id
+		LEFT JOIN ehr_organization  on ehr_person.organization_id = ehr_organization.organization_id
+		LEFT JOIN ehr_base_data on ehr_person.post_id = ehr_base_data.base_data_id 
+		where ehr_person.is_deleted=0
+			and ehr_person.cert_id=#{carId}
+		order by ehr_person.create_date desc
+		limit 1
+	</select>
+	<select id="getEmployeeByCardId" resultMap="BaseResultMap" parameterType="String">
+	    select * from ehr_person
+    	where is_deleted = 0 and cert_id=#{cardId,jdbcType=VARCHAR}
+		order by create_date desc
+		limit 1
+	</select>
+	
+	<select id="searchBySearch" resultMap="BaseResultMap">
+		select * from ehr_person
+		where company_id=#{companyId,jdbcType=BIGINT} and (
+			job_number like CONCAT('%', #{search,jdbcType=VARCHAR}, '%') or 
+			employee_name like CONCAT('%', #{search,jdbcType=VARCHAR}, '%') or 
+			cert_id like CONCAT('%', #{search,jdbcType=VARCHAR}, '%')
+		)
+		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+	</select>
+
+	<update id="updateEmployeeInfoByCardId" parameterType="com.jabava.pojo.manage.EhrPerson">
+		update ehr_person set
+		<trim suffix="" suffixOverrides=",">
+			<if test="companyId != null" >
+				company_id = #{companyId,jdbcType=BIGINT},
+			</if>
+			<if test="organizationId != null" >
+				organization_id = #{organizationId,jdbcType=BIGINT},
+			</if>
+			<if test="postId != null" >
+				post_id = #{postId,jdbcType=BIGINT},
+			</if>
+			<if test="costId != null" >
+				cost_id = #{costId,jdbcType=BIGINT},
+			</if>
+			<if test="jobNumber != null" >
+				job_number = #{jobNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="employeeName != null" >
+				employee_name = #{employeeName,jdbcType=VARCHAR},
+			</if>
+			<if test="employeePhoto != null" >
+				employee_photo = #{employeePhoto,jdbcType=VARCHAR},
+			</if>
+			<if test="employmentType != null" >
+				employment_type = #{employmentType,jdbcType=VARCHAR},
+			</if>
+			<if test="rankId != null" >
+				rank_id = #{rankId,jdbcType=BIGINT},
+			</if>
+			<if test="keyPerson != null" >
+				key_person = #{keyPerson,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null" >
+				sex = #{sex,jdbcType=INTEGER},
+			</if>
+			<if test="reportObject != null" >
+				report_object = #{reportObject,jdbcType=VARCHAR},
+			</if>
+			<if test="entryDate != null" >
+				entry_date = #{entryDate,jdbcType=DATE},
+			</if>
+			<if test="positiveDate != null" >
+				positive_date = #{positiveDate,jdbcType=DATE},
+			</if>
+			<if test="inCompanyTime != null" >
+				in_company_time = #{inCompanyTime,jdbcType=TINYINT},
+			</if>
+			<if test="firstjobDate != null" >
+				firstjob_date = #{firstjobDate,jdbcType=DATE},
+			</if>
+			<if test="birthDate != null" >
+				birth_date = #{birthDate,jdbcType=DATE},
+			</if>
+			<if test="age != null" >
+				age = #{age,jdbcType=INTEGER},
+			</if>
+			<if test="certType != null" >
+				cert_type = #{certType,jdbcType=INTEGER},
+			</if>
+			<if test="certId != null" >
+				cert_id = #{certId,jdbcType=VARCHAR},
+			</if>
+			<if test="inCompanyTime != null" >
+				bank_name = #{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="salaryCard != null" >
+				salary_card = #{salaryCard,jdbcType=VARCHAR},
+			</if>
+			<if test="marital != null" >
+				marital = #{marital,jdbcType=INTEGER},
+			</if>
+			<if test="degree != null" >
+				degree = #{degree,jdbcType=VARCHAR},
+			</if>
+			<if test="education != null" >
+				education = #{education,jdbcType=VARCHAR},
+			</if>
+			<if test="studyAbroad != null" >
+				study_abroad = #{studyAbroad,jdbcType=TINYINT},
+			</if>
+			<if test="workLocation != null" >
+				work_location = #{workLocation,jdbcType=VARCHAR},
+			</if>
+			<if test="payrollLocation != null" >
+				payroll_location = #{payrollLocation,jdbcType=VARCHAR},
+			</if>
+			<if test="registerLocation != null" >
+				register_location = #{registerLocation,jdbcType=VARCHAR},
+			</if>
+			<if test="socialSecurityLocation != null" >
+				social_security_location = #{socialSecurityLocation,jdbcType=VARCHAR},
+			</if>
+			<if test="registerType != null" >
+				register_type = #{registerType,jdbcType=INTEGER},
+			</if>
+			<if test="birthPlace != null" >
+				birth_place = #{birthPlace,jdbcType=VARCHAR},
+			</if>
+			<if test="nationality != null" >
+				nationality = #{nationality,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null" >
+				mobile = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null" >
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null" >
+				Email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="contactAddress != null" >
+				contact_address = #{contactAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="familyAddress != null" >
+				family_address = #{familyAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="postCode != null" >
+				post_code = #{postCode,jdbcType=VARCHAR},
+			</if>
+			<if test="isPayrollFlag != null" >
+				is_payroll_flag = #{isPayrollFlag,jdbcType=TINYINT},
+			</if>
+			<if test="fileLocation != null" >
+				file_location = #{fileLocation,jdbcType=VARCHAR},
+			</if>
+			<if test="isForeign != null" >
+				is_foreign = #{isForeign,jdbcType=INTEGER},
+			</if>
+			<if test="leftDate != null" >
+				left_date = #{leftDate,jdbcType=DATE},
+			</if>
+			<if test="leftCause != null" >
+				left_cause = #{leftCause,jdbcType=VARCHAR},
+			</if>
+			<if test="expireDate != null" >
+				expire_date = #{expireDate,jdbcType=DATE},
+			</if>
+			<if test="memo != null" >
+				memo = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="createUserId != null" >
+				create_user_id = #{createUserId,jdbcType=BIGINT},
+			</if>
+			<if test="createUserName != null" >
+				create_user_name = #{createUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null" >
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifyUserId != null" >
+				last_modify_user_id = #{lastModifyUserId,jdbcType=BIGINT},
+			</if>
+			<if test="lastModifyUserName != null" >
+				last_modify_user_name = #{lastModifyUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifyDate != null" >
+				last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null" >
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="employeeGroup != null" >
+				employee_group = #{employeeGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="team != null" >
+				team = #{team,jdbcType=BIGINT},
+			</if>
+			<if test="isWorkplace != null" >
+				is_workplace = #{isWorkplace,jdbcType=TINYINT},
+			</if>
+			<if test="resume != null" >
+				resume = #{resume,jdbcType=VARCHAR},
+			</if>
+			<if test="subbank != null" >
+				subbank = #{subbank,jdbcType=VARCHAR},
+			</if>
+			<if test="recruit != null" >
+				recruit = #{recruit,jdbcType=VARCHAR}
+			</if>
+			</trim>
+		where cert_id = #{certId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="countToBecomeMember" resultType="Integer" parameterType="String">
+	  	SELECT COUNT(1) FROM ehr_person 
+		WHERE company_id=#{companyId,jdbcType=BIGINT} AND is_deleted=0 AND
+			TIMESTAMPDIFF(DAY, NOW(), positive_date)<![CDATA[>=]]>0 AND 
+			TIMESTAMPDIFF(DAY, NOW(), positive_date)<![CDATA[<=]]>#{daysToBecomeMember}
+			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+	</select>
+	<select id="countBirthdayToday" resultType="Integer" parameterType="String">
+	  	SELECT COUNT(1) FROM ehr_person 
+		WHERE company_id=#{companyId,jdbcType=BIGINT} AND is_deleted=0 AND
+			DATE_FORMAT(NOW(),'%m%d')=DATE_FORMAT(birth_date,'%m%d')
+			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+	</select>
+	<select id="countEntryThisMonth" resultType="Integer" parameterType="String">
+	  	SELECT COUNT(1) FROM ehr_person 
+		WHERE company_id=#{companyId,jdbcType=BIGINT} AND is_deleted=0 AND 
+			DATE_FORMAT(entry_date,'%Y%m')=DATE_FORMAT(NOW(),'%Y%m')
+			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+	</select>
+	<select id="countLeaveThisMonth" resultType="Integer" parameterType="String">
+	  	SELECT COUNT(1) FROM ehr_person 
+		WHERE company_id=#{companyId,jdbcType=BIGINT} AND is_deleted=0 AND 
+			DATE_FORMAT(left_date,'%Y%m')=DATE_FORMAT(NOW(),'%Y%m')
+			${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+	</select>
+	<select id="countContractExpiring" resultType="Integer" parameterType="String">
+	  	SELECT COUNT(1) FROM (
+			SELECT MAX(c.contract_end_date) contract_end_date, c.person_id person_id 
+			FROM ehr_contract c LEFT JOIN ehr_person p ON c.person_id=p.person_id
+			WHERE c.is_deleted=0 AND p.is_deleted=0 AND p.company_id=#{companyId,jdbcType=BIGINT}
+				${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("p.person_id")}
+			GROUP BY c.person_id
+		) t
+		WHERE TIMESTAMPDIFF(DAY, NOW(), contract_end_date)<![CDATA[>=]]>0 AND 
+			TIMESTAMPDIFF(DAY, NOW(), contract_end_date)<![CDATA[<=]]>#{daysContractExpiring}
+	</select>
+	<select id="getEmployeesByCompanyId"   resultMap="BaseResultMap" parameterType="com.jabava.pojo.manage.EhrPerson">
+	SELECT * FROM ehr_person  p where p.is_deleted=0 and 	
+				p.company_id=#{companyId}
+		<if test="employeeName != null" >
+			and p.employee_name like CONCAT ('%',#{employeeName},'%')
+		</if>
+		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+	</select>
+	
+	<!-- 根据personidListy查询员工列表 -->
+	<select id="findPersonByIdList" resultMap="BaseResultMap"  parameterType="java.util.List">
+	      select <include refid="Base_Column_List" />
+	       from ehr_person
+	        where is_deleted=0 	
+	      <if test="list!=null">
+		     and person_id in
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+               #{item}
+         </foreach> 
+         </if>	       
+	</select>
+	
+	<!-- 根据工号和companyId查询人员列表 -->
+	<select id="selectByCompanyIdJobNumberList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	    select ep.* 
+	    from ehr_person ep
+	    where ep.is_deleted=0 and ep.company_id=#{companyId}  and ep.job_number in
+	  	<foreach item="item" index="index" collection="jobNumberList" 
+            open="(" separator="," close=")">
+            #{item}
+     	</foreach>
+   </select>
+	
+	<select id="fetchEmailCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(person_id) from ehr_person where is_deleted = 0 and Email=#{email,jdbcType=VARCHAR}
+			and company_id=#{companyId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="fetchMobileCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(person_id) from ehr_person where is_deleted = 0 and mobile=#{mobile,jdbcType=VARCHAR}
+			and company_id=#{companyId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="fetchCertIdCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(person_id) from ehr_person where cert_id = #{certId,jdbcType=VARCHAR} and is_deleted = 0
+			and company_id=#{companyId,jdbcType=BIGINT}
+	</select>
+	
+	<!-- 根据personId获取姓名，手机，岗位，部门信息 -->
+  	<select id="getBasicPersonInfoByPersonId" resultType="java.util.Map" parameterType="java.lang.Long">
+  	
+		select person.person_id personId,person.employee_name employeeName,person.mobile mobile,org.organization_name organizationName,person.post_id postId  from ehr_person person
+ 
+		LEFT JOIN ehr_organization org on org.organization_id=person.organization_id
+		
+		where person_id=#{personId,jdbcType=BIGINT} and person.is_deleted=0 
+  	</select>
 </mapper>

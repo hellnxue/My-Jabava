@@ -26,10 +26,18 @@ public class HrHelperFileUploader {
 	public static final String fileUploaderUrl = "/dorado/uploader/fileupload";
 
 	public static String upload(String filePath) {
-		return upload(filePath, null);
+		return upload(filePath, null, null);
 	}
+	
+	public static String upload(String filePath, Map<String,Object> rtnMsgMap) {
+		return upload(filePath, null, rtnMsgMap);
+	}
+	
+//	public static String upload(String filePath, String filename) {
+//		return upload(filePath, filename, null);
+//	}
 
-	public static String upload(String filePath, String filename) {
+	public static String upload(String filePath, String filename, Map<String,Object> rtnMsgMap) {
 		CloseableHttpClient httpClient = null;
 		try {
 			httpClient = HttpClientBuilder.create().build();
@@ -46,7 +54,7 @@ public class HrHelperFileUploader {
 			builder.addBinaryBody("file", file);
 
 			builder.addTextBody("modulFrom", "OPEN API");
-			builder.addTextBody("fileClass", "101");
+			builder.addTextBody("fileClass", "100");	//最大20M
 			builder.addTextBody("_fileResolver", "uploadFileProcessor#processAnonymous");
 
 			builder.setCharset(Charset.forName("UTF-8"));
@@ -59,6 +67,9 @@ public class HrHelperFileUploader {
 			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
 			};
 			Map<String, Object> jsonResult = mapper.readValue(json, typeRef);
+			if(rtnMsgMap != null){
+				rtnMsgMap.putAll(jsonResult);
+			}
 			System.out.println(jsonResult);
 			String fileUrl = (String) jsonResult.get("realUrl");
 			return fileUrl;

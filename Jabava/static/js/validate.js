@@ -85,7 +85,8 @@ function trim(str) {
 }  
 
 function IdentityMobileValid(mobile) {
-	var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
+	//var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
+	var reg = /^\d{11}$/;
 	if (reg.test(mobile)) {
 		return true;
 	} else {

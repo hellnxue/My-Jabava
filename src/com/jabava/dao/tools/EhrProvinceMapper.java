@@ -59,4 +59,14 @@ public interface EhrProvinceMapper {
      * 查询所有的省
      */
     List<HashMap<String,Object>> getAllProvince(EhrProvince ehrProvince);
+    /**
+     * 获取省份列表
+     * <pre>
+     * @author steven.chen
+     * @date 2016年4月13日 下午4:33:08 
+     * </pre>
+     *
+     * @return
+     */
+    List<EhrProvince> getProvinceList();
 }

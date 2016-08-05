@@ -45,6 +45,7 @@
     -->
     delete from ehr_salary
     where salary_id = #{salaryId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.salary.EhrSalary" 
   		useGeneratedKeys="true" keyProperty="salaryId">
@@ -134,6 +135,7 @@
       </if>
     </set>
     where salary_id = #{salaryId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.salary.EhrSalary" >
     <!--
@@ -148,6 +150,7 @@
       salary_memo = #{salaryMemo,jdbcType=VARCHAR},
       usage_flag = #{usageFlag,jdbcType=INTEGER}
     where salary_id = #{salaryId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   <select id="listSalaryPage" resultMap="BaseResultMap">
@@ -175,6 +178,7 @@
   		and p.organization_id in 
   		<foreach collection="orgList" item="org" index="index" open="(" separator="," close=")">#{org.organizationId}</foreach>
   	</if>
+  	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("s.person_id")}
   </select>
   <select id="selectByPersonAndUsage" resultMap="BaseResultMap">
   	select s.* from ehr_salary s left join ehr_person p on s.person_id=p.person_id
@@ -184,7 +188,7 @@
   <delete id="deleteById">
   	delete from ehr_salary 
   	where salary_id=#{salaryId,jdbcType=BIGINT} 
-  		and person_id in (select person_id from ehr_person where company_id=#{companyId,jdbcType=BIGINT})
+  		${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <select id="selectById" resultMap="BaseResultMap">
   	select s.*,p.employee_name,p.job_number,p.cert_id,t.template_name 
@@ -192,5 +196,25 @@
   		left join ehr_person p on s.person_id=p.person_id
   		left join ehr_salary_template t on s.salary_template_id=t.salary_template_id 
   	where p.company_id=#{companyId,jdbcType=BIGINT} and s.salary_id=#{salaryId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByParam" resultMap="BaseResultMap">
+  	select s.* 
+  	from ehr_salary s 
+  	where status=#{status,jdbcType=INTEGER} and usage_flag=#{usageFlag,jdbcType=INTEGER}
+  		and person_id in (select person_id from ehr_person 
+  			where company_id=#{companyId,jdbcType=BIGINT} 
+	  	<if test="orgList != null and orgList.size() > 0">
+	  		and organization_id in 
+	  		<foreach collection="orgList" item="org" index="index" open="(" separator="," close=")">#{org.organizationId}</foreach>
+	  	</if>
+	  	)
+	  	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
+  </select>
+  
+  <select id="countBySalaryTemplate" resultType="Integer">
+  	select count(1) from ehr_salary where salary_template_id = #{salaryTemplateId,jdbcType=BIGINT}
+  </select>
+  <select id="countByPerson" resultType="Integer">
+  	select count(1) from ehr_salary where person_id = #{personId,jdbcType=BIGINT}
   </select>
 </mapper>

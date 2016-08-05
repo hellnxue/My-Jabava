@@ -220,6 +220,8 @@
     	(SELECT * FROM ehr_role_user c WHERE c.role_id=b.role_id AND c.user_id=#{userId,jdbcType=BIGINT})
   </select>
   
-  
-  
+  <select id="queryButtonByMenuId" resultMap="BaseResultMap" >
+  	select b.* from ehr_button b left join ehr_page p on b.page_id=p.page_id
+  	where p.menu_id=#{menuId} 
+  </select>
 </mapper>

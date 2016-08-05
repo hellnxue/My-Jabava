@@ -1,6 +1,7 @@
 package com.jabava.controller.employee;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,16 +14,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.jabava.pojo.employee.EhrEducation;
+import com.jabava.pojo.manage.EhrBaseData;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.employee.EhrEducationService;
+import com.jabava.service.system.IBaseDataService;
+import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.RequestUtil;
+import com.jabava.utils.constants.BaseDataConstants;
+import com.jabava.utils.enums.SystemEnum;
 
 @Controller
 @RequestMapping("employee")
 public class EhrEducationController {
 	@Resource
 	private EhrEducationService educationService;
-	
+	@Resource
+	private IEhrSysLogSercice sysLogSercice;
+	@Resource
+	private IBaseDataService baseDataService;
 	
 	/**
 	 * 教育背景页面入口
@@ -40,11 +49,31 @@ public class EhrEducationController {
 	 */
 	@RequestMapping("educationInfo")
 	@ResponseBody
-	public Map<String, Object> educationInfo(Long personId){
+	public Map<String, Object> educationInfo(Long personId, HttpServletRequest request){
+		EhrUser user = RequestUtil.getLoginUser(request); 
 		Map<String, Object> map = new HashMap<String, Object>();
+		//学位
+		List<EhrBaseData> degreeList=null;
+		
+		//学历 	
+		List<EhrBaseData> educationList=null;
 		try {
-			map.put("list", educationService.getByPersonId(personId));
+			List<EhrEducation> resultList=educationService.getByPersonId(personId);
+			map.put("list", resultList);
 			 
+			
+			degreeList = baseDataService.selectBaseData(user.getCompanyId(),BaseDataConstants.BASE_DATA_EDUCATION , null);
+			
+			if(degreeList!=null&&degreeList.size()>0){
+				map.put("degreeList", degreeList );
+			} 
+			
+			educationList = baseDataService.selectBaseData(user.getCompanyId(), BaseDataConstants.BASE_DATA_DEGREE, null);
+			
+			if(educationList!=null&&educationList.size()>0){
+				map.put("educationList", educationList );
+			} 
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,13 +83,15 @@ public class EhrEducationController {
 	@RequestMapping("addEducation")
 	@ResponseBody
 	public Map<String, Object> addEducation(@RequestBody EhrEducation education, HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();	
+		Map<String, Object> map = null;	
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = educationService.addEducation(education, user);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, SystemEnum.Module.Organization, "给id为"+education.getPersonId()+"的员工添加学历信息");
 		} catch (Exception e) {
+			map = new HashMap<String, Object>();	
 			map.put("success", false);
-			map.put("msg", "添加教育背景失败！");
+			map.put("msg", "错误信息："+e.toString());
 			e.printStackTrace();
 		}
 		return map;
@@ -69,13 +100,16 @@ public class EhrEducationController {
 	@RequestMapping("updateEducation")
 	@ResponseBody
 	public Map<String, Object> updateEducation(@RequestBody EhrEducation education, HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();	
+		Map<String, Object> map = null;	
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = educationService.updateEducation(education, user);
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.Organization, "修改id为"+education.getEducationId()+"的学历信息");
+
 		} catch (Exception e) {
+			map = new HashMap<String, Object>();
 			map.put("success", false);
-			map.put("msg", "修改教育背景失败！");
+			map.put("msg", "错误信息："+e.toString());
 			e.printStackTrace();
 		}
 		return map;
@@ -87,6 +121,7 @@ public class EhrEducationController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			map = educationService.deleteEducation(educationId);
+			sysLogSercice.addSysLog(RequestUtil.getLoginUser(), SystemEnum.LogOperateType.Delete, SystemEnum.Module.Organization, "删除id为"+educationId+"的学历信息");
 		} catch (Exception e) {
 			map.put("success", false);
 			map.put("msg", "删除教育背景失败！");

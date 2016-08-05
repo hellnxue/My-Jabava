@@ -17,7 +17,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jabava.pojo.manage.EhrFunctionPoint;
@@ -27,8 +29,11 @@ import com.jabava.pojo.manage.EhrUserBusinessPower;
 import com.jabava.service.manage.IUserService;
 import com.jabava.service.system.EhrUserInfoService;
 import com.jabava.service.system.IEhrSysLogSercice;
+import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
+import com.jabava.utils.enums.SystemEnum;
+import com.jabava.utils.enums.SystemEnum.Module;
 
 /**
  * @author pengyr
@@ -71,7 +76,7 @@ public class UserManageController {
 		try {
 			List<EhrUser> list = userInfoService.searchUser(map, search, order, according, page);
 			page.setData(list);
-			sysLogSercice.addSysLog(user, "查询用户列表");
+			//sysLogSercice.addSysLog(user,SystemEnum.LogOperateType.Select,SystemEnum.Module.UserManagement, "查询用户列表");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,8 +87,12 @@ public class UserManageController {
 	@ResponseBody
 	public Map<String, Object> addOrUpdateUser(EhrUser user, HttpServletRequest request, HttpServletResponse response){	
 		EhrUser u = RequestUtil.getLoginUser(request);
-		Map<String, Object> map = new HashMap<>();
+		user.setCompanyId(u.getCompanyId());
 		if("".equals(user.getUserId()) || user.getUserId() == null){
+//			if(u.getUserType() != 1){	//如果不是平台用户，只能增加本公司人员
+//				user.setCompanyId(u.getCompanyId());
+//			}
+			
 			user.setLastModifyDate(new Date());
 			user.setLastModifyUserId(u.getUserId());
 			user.setLastModifyUserName(u.getUserName());
@@ -97,24 +106,29 @@ public class UserManageController {
 			user.setIsLocked((byte) 0);
 			//user.setPassword("123456");
 		}
+		boolean flag = user.getUserId()==null;
 		try {
-			map = userInfoService.addOrUpdateUser(user);
-			map.put("msg", "操作成功");
-			map.put("success", true);
-			sysLogSercice.addSysLog(user, (String) map.get("logInfo"));
+			//map = userInfoService.addOrUpdateUser(user);
+			//sysLogSercice.addSysLog(user, (String) map.get("logInfo"));
+			Map<String,Object> map = userInfoService.addOrUpdate(user);
+			if(flag){
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, SystemEnum.Module.UserManagement,"创建用户：" + user.getUserCode());
+
+			}else{
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.UserManagement,"修改用户：" + user.getUserCode());
+
+			}
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
-			map.put("msg", e.getMessage());
-			map.put("success", false);
+			return MessageUtil.errorMessage(e.getMessage());
 		}
-		return map;
 	}
 	
 	@RequestMapping("/addOrUpdateHR")
 	@ResponseBody
 	public Map<String, Object> addOrUpdateHR(EhrUser user, HttpServletRequest request, HttpServletResponse response){	
 		EhrUser u = RequestUtil.getLoginUser(request);
-		Map<String, Object> map = new HashMap<>();
 		//user.setUserCode(user.getMobile());
 		if("".equals(user.getUserId()) || user.getUserId() == null){
 			user.setCompanyId(u.getCompanyId());
@@ -135,14 +149,15 @@ public class UserManageController {
 			user.setIsDeleted(0);
 		}
 		try {
-			map = userInfoService.addOrUpdateHR(user);
-			sysLogSercice.addSysLog(user, (String) map.get("logInfo"));
+			//map = userInfoService.addOrUpdateHR(user);
+			//sysLogSercice.addSysLog(user, (String) map.get("logInfo"));
+			Map<String,Object> map = userInfoService.addOrUpdate(user);
+			sysLogSercice.addSysLog(user,SystemEnum.LogOperateType.Update,SystemEnum.Module.UserManagement, "修改HR用户：" + user.getUserCode());
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
-			map.put("msg", e.getMessage());
-			map.put("success", false);
+			return MessageUtil.errorMessage(e.getMessage());
 		}
-		return map;
 	}
 	@RequestMapping("/updateUserEnter")
 	@ResponseBody
@@ -171,9 +186,9 @@ public class UserManageController {
 		try {
 			map = userInfoService.deleteUser(userId,isValid);
 			if(isValid == 0){//无效
-				sysLogSercice.addSysLog(user, "用户管理  改变用户ID:"+userId+"状态为无效");
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update,SystemEnum.Module.UserManagement, "用户管理  改变用户ID:"+userId+"状态为无效");
 			}else if(isValid == 1){//有效
-				sysLogSercice.addSysLog(user, "用户管理  改变用户ID:"+userId+"状态为有效");
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update,SystemEnum.Module.UserManagement, "用户管理  改变用户ID:"+userId+"状态为有效");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -195,7 +210,7 @@ public class UserManageController {
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = userInfoService.isDeleteUser(userId,isDelete);
-			sysLogSercice.addSysLog(user, "用户管理 删除用户ID:"+user.getUserId());
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Delete, SystemEnum.Module.UserManagement, "用户管理 删除用户ID:"+user.getUserId());
 		} catch ( Exception e) {
 			// TODO Auto-generated catch block
 			 
@@ -315,5 +330,66 @@ public class UserManageController {
 			e.printStackTrace();
 		}
 		return map;
+	}
+	
+	@RequestMapping("toUserOrganization")
+	public String toUserOrganization(){
+		return "user/user_organization";
+	}
+	
+	@RequestMapping("listUser")
+	@ResponseBody
+	public List<EhrUser> listUser(HttpServletRequest request, HttpServletResponse response){
+		EhrUser user = RequestUtil.getLoginUser(request);
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("companyId", user.getCompanyId());
+		return userInfoService.searchUser(params);
+	}
+	
+	@RequestMapping("loadUserOrganizationTree/{userId}")
+	@ResponseBody
+	public List<Map<String,Object>> loadUserOrganizationTree(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable Long userId){
+		EhrUser user = RequestUtil.getLoginUser(request);
+		try {
+			EhrUser affectUser = userService.selectUserById(userId);
+			if(affectUser == null || !user.getCompanyId().equals(affectUser.getCompanyId())){
+				return null;
+			}
+			return userInfoService.loadUserOrganizationTree(affectUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@RequestMapping("saveUserOrganization")
+	@ResponseBody
+	public Map<String,Object> saveUserOrganization(HttpServletRequest request, HttpServletResponse response,
+			Long userId, @RequestParam(value = "orgIds[]")Long[] orgIds){
+		EhrUser user = RequestUtil.getLoginUser(request);
+		try {
+			EhrUser affectUser = userService.selectUserById(userId);
+			if(affectUser == null || !user.getCompanyId().equals(affectUser.getCompanyId())){
+				return MessageUtil.errorMessage("没有数据操作权限");
+			}
+			
+			int result = 0;
+			if(orgIds[0] == -1){
+				result = userInfoService.deleteUserOrganization(userId);
+			}else{
+				result = userInfoService.saveUserOrganization(userId, orgIds);
+			}
+			
+			if(result == 0){
+				return MessageUtil.errorMessage("保存用户组织失败");
+			}else{
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, Module.UserManagement, "修改id为"+userId+"的用户权限");
+				return MessageUtil.successMessage("保存用户组织成功");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return MessageUtil.errorMessage(e.getMessage());
+		}
 	}
 }

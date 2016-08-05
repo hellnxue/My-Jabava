@@ -1,10 +1,8 @@
 package com.jabava.service.employee;
 
-import java.util.List;
-
+import com.jabava.common.exception.JabavaServiceException;
 import com.jabava.pojo.employee.EhrPosition;
 import com.jabava.pojo.employee.EhrPositionVO;
-import com.jabava.pojo.manage.EhrPerson;
 
 /**
  * 岗位信息
@@ -27,18 +25,8 @@ public interface EhrPositionService {
 	 * @param ehrPosition
 	 * @return
 	 */
-	public String addPositin(EhrPosition ehrPosition,Long companyId,String reportId);
-	/**
-	 * 修改岗位信息 
-	 * <pre>
-	 * @author steven.chen
-	 * @date 2016年2月17日 下午5:55:53 
-	 * </pre>
-	 *
-	 * @param ehrPosition
-	 * @return
-	 */
-	public String updatePosition(EhrPosition ehrPosition);
+	public String addPositin(EhrPosition ehrPosition,Long companyId,String reportEmployeeName);
+
 	/**
 	 * 根据用户ID获取岗位信息 
 	 * <pre>
@@ -49,7 +37,7 @@ public interface EhrPositionService {
 	 * @param personId
 	 * @return
 	 */
-	EhrPositionVO getEhrPositionByPersonId(Long personId);
+	EhrPositionVO getEhrPositionByPersonId(Long personId) throws JabavaServiceException;
 	/**
 	 * 根据工号  和 公司ID查询该工号是否存在
 	 * 如果存在 返回 true 否则返回 false
@@ -63,29 +51,17 @@ public interface EhrPositionService {
 	 * @return
 	 */
 	boolean employeeNumberExist(String jobNumber, Long companyId);
+
 	/**
-	 * 根据personId 和 公司ID查询岗位信息	
+	 * 更新员工的岗位信息
 	 * <pre>
 	 * @author steven.chen
-	 * @date 2016年2月19日 下午2:11:00 
+	 * @date 2016年5月6日 上午10:50:48 
 	 * </pre>
 	 *
-	 * @param personId
-	 * @param companyId
+	 * @param ehrPosition
 	 * @return
 	 */
-	List<EhrPosition> getPositionByPersonIdAndCompanyId(EhrPerson ehrPerson);
-	/**
-	 * 判断该员工在不在该公司中 
-	 * <pre>
-	 * @author steven.chen
-	 * @date 2016年2月19日 下午4:42:18 
-	 * </pre>
-	 *
-	 * @param employeeName
-	 * @param companyId
-	 * @return
-	 */
-	boolean reportExist(String employeeName, Long companyId);
+	int updatePersonPosition(EhrPosition ehrPosition);
 
 }

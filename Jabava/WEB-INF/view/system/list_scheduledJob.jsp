@@ -1,9 +1,10 @@
+<%@ page contentType="text/html; charset=utf-8"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
@@ -11,15 +12,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <base href="<%=basePath%>">
-<%@ page contentType="text/html; charset=utf-8"%>
-<meta charset="utf-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<!-- Page title -->
-<title>系统定时任务查询</title>
+	<base href="${pageContext.request.contextPath}/">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<!-- Page title -->
+	<title>系统定时任务查询</title>
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->

@@ -156,4 +156,8 @@
   	delete from ehr_salary_template 
   	where company_id=#{companyId,jdbcType=BIGINT} and salary_template_id=#{salaryTemplateId,jdbcType=BIGINT}
   </delete>
+  
+  <select id="countByTaxRate" resultType="Integer">
+  	select count(1) from ehr_salary_template where tax_rate_id = #{taxRateId,jdbcType=BIGINT}
+  </select>
 </mapper>

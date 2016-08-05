@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,7 +86,7 @@
                                         <thead>
                                         <tr>
                                             <th>
-                                                <input type="checkbox" id="selAll" onclick="selectAll();"/>
+                                                <input type="checkbox" id="selAll" onclick="selectAll(this);"/>
                                             </th>
                                             <th>显示顺序</th>
                                             <th>项目名称</th>
@@ -102,10 +103,12 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>       
+                            </div>
+                            <% if(RequestUtil.hasPower("salarytemplate_edit_st")){ %>
                             <div class="panel-footer text-right">
                                <button class="btn btn-info btn-sm btn-save-template" type="submit">保存</button>
-                            </div> 
+                            </div>
+                            <% } %>
                                 </form>
                           </div>
                 </div>
@@ -187,7 +190,7 @@
 			},
 			"columns": [
 				{ "data": "salaryItemId", "render": function(data, type, row, meta){
-                    var html = '<input type="checkbox" value="' + data + '" ' + (row.inTemplate ? 'checked' : '') + ' data-id="'+data+'" name="itemId[]">';
+                    var html = '<input type="checkbox" value="' + data + '" ' + (row.inTemplate ? 'checked' : '') + ' data-id="'+data+'" name="itemId[]" data-checked="checkAll">';
 					return html;
 				} },
 				{ "data": "displayOrder" },
@@ -329,6 +332,7 @@
         })
 
 	});
+// 全选 反选
     function selectAll(){
         var obj = document.getElementsByName("ids");
         if(document.getElementById("selAll").checked == false) {
@@ -341,6 +345,13 @@
 	        }
 	     } 
 	 }
+
+    var selAll = document.getElementById("selAll");
+    function selectAll( relatedTarget ){
+      var obj = $('[data-checked="checkAll"]');
+      $(relatedTarget).prop('checked') ? obj.prop('checked', true): obj.prop('checked', false)
+}
+
 </script>
 </body>
 </html>

@@ -8,37 +8,34 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.alibaba.fastjson.JSONArray;
-import com.jabava.core.EnumConstents;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
 
 public class TaskUtil {
 	
-	/**
-	 * 根据HRO证件类型匹配Jabava证件类型
-	 * @param hroCardType
-	 * @return
-	 */
-	public static int transformCardTypeFromHro(String hroCardType){
-		if(StringUtils.isEmpty(hroCardType)){
-			return EnumConstents.CardType.OTHER.getValue();
-		}
-		
-		//证件类型
-		if("1".equals(hroCardType)){		//身份证
-			return EnumConstents.CardType.OTHER.getValue();
-		}else if("2".equals(hroCardType)){	//军人证
-			return EnumConstents.CardType.MILITARY_CARD.getValue();
-		}else if("5".equals(hroCardType)){	//护照
-			return EnumConstents.CardType.PASSPORT.getValue();
-		}
-		
-		//其它
-		return EnumConstents.CardType.OTHER.getValue();
-	}
+//	/**
+//	 * 根据HRO证件类型匹配Jabava证件类型
+//	 * @param hroCardType
+//	 * @return
+//	 */
+//	public static int transformCardTypeFromHro(String hroCardType){
+//		if(StringUtils.isEmpty(hroCardType)){
+//			return JabavaEnum.CardType.OTHER.getValue();
+//		}
+//		
+//		//证件类型
+//		if("1".equals(hroCardType)){		//身份证
+//			return JabavaEnum.CardType.OTHER.getValue();
+//		}else if("2".equals(hroCardType)){	//军人证
+//			return JabavaEnum.CardType.MILITARY_CARD.getValue();
+//		}else if("5".equals(hroCardType)){	//护照
+//			return JabavaEnum.CardType.PASSPORT.getValue();
+//		}
+//		
+//		//其它
+//		return JabavaEnum.CardType.OTHER.getValue();
+//	}
 	 
 	/**
 	 * 根据返回结果拿到json串

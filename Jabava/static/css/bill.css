@@ -19,7 +19,7 @@ table{ width:100% !important;}
 .panel-but{margin-top:8px !important;}
 .dataTables_length label{ font-weight:normal;}
 .panel-bag{background:#fff;/* width:100%; */overflow-x:scroll; /*margin:32px 22px 0;*/}
-// h4{ margin-bottom: 10px; margin-top: 10px;}
+ /*h4{ margin-bottom: 10px; margin-top: 10px;}*/
 .zhangdan_nianyues{font-weight:700px; margin-left:40px; font-size:16px;}
 .zhifu{text-align:right; margin-right:42px; margin-top:10px; background:#F1F3F6;}
 .table-bordered > thead > tr > th, .table-bordered > thead > tr > td{border-bottom-width:1px;} 
@@ -31,7 +31,9 @@ table{ width:100% !important;}
 /*table.table-bordered th:last-child,table.table-bordered td:last-child{border-right-width:1px;}*/
 
 /*养老保险*/
-.ylbx{ border-bottom:1px solid #DDDDDD; width:945px;}
+.ylbx2{border-bottom:1px solid #DDDDDD; width:838px;}
+.ylbx{ border-bottom:1px solid #DDDDDD; width:558px;}
+.neirong{border-bottom:1px solid #DDDDDD; width:186px;}
 .baoxian ul{ list-style:none;}
 .baoxian ul li{ float:left;  width:93px; border-right:1px solid #ddd;}
 .baoxian ul li.lasts{border-right:0;}
@@ -42,7 +44,9 @@ table{ width:100% !important;}
 .yl_baoxian ul li{ float:left; width:93px;}
 .yl_baoxian ul li.lasts{border-right:0;}
 /*医疗保险*/
-.ylbxs{ border-bottom:1px solid #DDDDDD; width:945px;}
+.renshu{border-bottom:1px solid #DDDDDD; width:186px;}
+.ylbxs{ border-bottom:1px solid #DDDDDD; width:558px;}
+.ylbx2{border-bottom:1px solid #DDDDDD; width:838px;}
 .yiliao ul{ list-style:none;}
 .yiliao ul li{ float:left;  width:93px; border-right:1px solid #ddd;}
 .yiliao ul li.lasts{border-right:0;}

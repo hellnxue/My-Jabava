@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.jabava.pojo.hro.HroPactInfo;
 import com.jabava.service.hro.OutsourcingService;
-import com.jabava.utils.Config;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 
 /**
  * 更新协议的状态
@@ -32,6 +31,8 @@ public class ImportProcotolTask {
 
 	@Autowired
 	private OutsourcingService outsourcingService;
+	@Autowired
+	private GetReceiveOrgService getReceiveOrgService;
 
 	private static final Logger logger = Logger
 			.getLogger(ImportProcotolTask.class);
@@ -89,6 +90,8 @@ public class ImportProcotolTask {
 							logger.error("ImportProcotolTask 更新协议失败 ，协议code "
 									+ hroPact.getPactCode());
 						}
+						//插入接单方ID
+						getReceiveOrgService.getReceiveOrgByProtocolCode(hroPactInfo3);
 						sum++;
 
 					} else {

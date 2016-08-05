@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -156,7 +157,11 @@
       { "data": "addCount" },
       { "data": "delCount"},
       { "render": function render( data, type, row, meta ){
-        return "<td><a class='btn btn-success btn-xs' type='button' href='order/toOrderList?yearmonth="+row.yearmonth+"'>明细</a></td>";
+        var strHtml = '';
+        <% if(RequestUtil.hasPower("order_od")){ %>
+        strHtml += '<td><a class="btn btn-success btn-xs" type="button" href="order/toOrderList?yearmonth='+row.yearmonth+'">明细</a></td>';
+        <% } %>
+        return strHtml;
       } 
       }
       ],

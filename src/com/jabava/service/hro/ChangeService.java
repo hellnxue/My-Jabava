@@ -4,6 +4,7 @@
 package com.jabava.service.hro;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jabava.pojo.hro.HroOrderSend;
 import com.jabava.utils.Page;
@@ -27,5 +28,5 @@ public interface ChangeService {
 	List<HroOrderSend> findChangePage(Page<HroOrderSend> page,
 			HroOrderSend hroOrderSend);
 
-
+	List<Map<String,Object>> loadDetail(HroOrderSend hos, String type) throws Exception;
 }

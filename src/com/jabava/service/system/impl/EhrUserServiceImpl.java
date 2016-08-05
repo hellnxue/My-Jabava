@@ -12,6 +12,7 @@ import java.util.Stack;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,19 +21,22 @@ import com.jabava.common.exception.JabavaServiceException;
 import com.jabava.dao.manage.EhrCompanyMapper;
 import com.jabava.dao.manage.EhrPersonMapper;
 import com.jabava.dao.manage.EhrUserMapper;
+import com.jabava.dao.manage.EhrUserOrganizationMapper;
 import com.jabava.pojo.manage.EhrCompany;
 import com.jabava.pojo.manage.EhrFunctionPoint;
+import com.jabava.pojo.manage.EhrOrganization;
 import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrPersonField;
 import com.jabava.pojo.manage.EhrPersonFieldFixvalue;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.pojo.manage.EhrUserBusinessPower;
+import com.jabava.pojo.manage.EhrUserOrganization;
 import com.jabava.pojo.manage.EhrUserPersonPowerValue;
 import com.jabava.service.dclient.CenterUserClientService;
-import com.jabava.service.manage.IUserService;
 import com.jabava.service.system.EhrUserInfoService;
+import com.jabava.service.system.IEhrOrganizationService;
 import com.jabava.service.system.IEhrRoleService;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.Tools;
@@ -57,6 +61,10 @@ public class EhrUserServiceImpl implements EhrUserInfoService {
 	private CenterUserClientService centerUserClientService;
 	@Resource
 	private IEhrRoleService roleService;
+	@Autowired
+	private IEhrOrganizationService organizationService;
+	@Autowired
+	private EhrUserOrganizationMapper userOrganizationMapper;
 
 	@Override
 	public List<EhrUser> searchUser(Map<String, Object> map, String search, String order, String according, Page<EhrUser> page) throws Exception {
@@ -68,77 +76,76 @@ public class EhrUserServiceImpl implements EhrUserInfoService {
 	}
 
 	@Override
-	public Map<String, Object> addOrUpdateUser(EhrUser user) throws Exception {
-		return this.addOrUpdate(user, 3);
-//		Map<String, Object> map = new HashMap<>();
-//		int num = 0;
-//		if(ehrUserInfoMapper.isSingleUserCode(user) > 0){
-//			 map.put("msg", "用户编号已经存在");
-//			 map.put("success", false);
-//			 return map;
-//		}
-//		if("".equals(user.getUserId()) || user.getUserId() == null){
-//			num = ehrUserInfoMapper.insertSelective(user);
-//			String password = Tools.getInitialPassword();
-//			user.setPassword(Tools.encryptPassword(password));
-//			map.put("logInfo", "用户管理   添加用户姓名："+ user.getUserName());
-//			roleService.addCommonRoleUser(user);
-//			if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
-//				//用户中心开通
-//				Map<String,Object> rr = centerUserClientService.openUser(user,password);
-//				if("false".equals(rr.get("success"))){
-//					map.put("msg", rr.get("msg"));
-//					map.put("success", false);
-//					return map;
-//				}
-//			}
-//			
-//			if(num > 0){
-//				int id = resetPassword(user,password, 1);
-//		    	if(id == 3){
-//		    		map.put("msg", "重置密码成功,但是密码无法通过邮件发出");
-//		    		map.put("success", true);
-//		    		return map;
-//		    	}
-//			}
-//		}else{
-//			num = ehrUserInfoMapper.updateByPrimaryKeySelective(user);
-//			map.put("logInfo", "用户管理   修改用户姓名："+ user.getUserName());
-//		}
-//		if(num > 0){
-//			map.put("msg", "操作成功！");
-//			map.put("success", true);
-//			return map;
-//		}else{
-//			map.put("msg", "操作失败！");
-//    		map.put("success", false);
-//    		return map;
-//		}
+	public List<EhrUser> searchUser(Map<String, Object> map) {
+		return ehrUserInfoMapper.searchUser(map);
 	}
-	
+
+	//	@Override
+//	public Map<String, Object> addOrUpdateUser(EhrUser user) throws Exception {
+//		return this.addOrUpdate(user, 3);
+////		Map<String, Object> map = new HashMap<>();
+////		int num = 0;
+////		if(ehrUserInfoMapper.isSingleUserCode(user) > 0){
+////			 map.put("msg", "用户编号已经存在");
+////			 map.put("success", false);
+////			 return map;
+////		}
+////		if("".equals(user.getUserId()) || user.getUserId() == null){
+////			num = ehrUserInfoMapper.insertSelective(user);
+////			String password = Tools.getInitialPassword();
+////			user.setPassword(Tools.encryptPassword(password));
+////			map.put("logInfo", "用户管理   添加用户姓名："+ user.getUserName());
+////			roleService.addCommonRoleUser(user);
+////			if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
+////				//用户中心开通
+////				Map<String,Object> rr = centerUserClientService.openUser(user,password);
+////				if("false".equals(rr.get("success"))){
+////					map.put("msg", rr.get("msg"));
+////					map.put("success", false);
+////					return map;
+////				}
+////			}
+////			
+////			if(num > 0){
+////				int id = resetPassword(user,password, 1);
+////		    	if(id == 3){
+////		    		map.put("msg", "重置密码成功,但是密码无法通过邮件发出");
+////		    		map.put("success", true);
+////		    		return map;
+////		    	}
+////			}
+////		}else{
+////			num = ehrUserInfoMapper.updateByPrimaryKeySelective(user);
+////			map.put("logInfo", "用户管理   修改用户姓名："+ user.getUserName());
+////		}
+////		if(num > 0){
+////			map.put("msg", "操作成功！");
+////			map.put("success", true);
+////			return map;
+////		}else{
+////			map.put("msg", "操作失败！");
+////    		map.put("success", false);
+////    		return map;
+////		}
+//	}
+//	
+//	@Override
+//	public Map<String, Object> addOrUpdateHR(EhrUser user) throws Exception {
+//		return this.addOrUpdate(user,4);
+//	}
 	@Override
-	public Map<String, Object> addOrUpdateHR(EhrUser user) throws Exception {
-		return this.addOrUpdate(user,4);
-	}
-	
-	private Map<String, Object> addOrUpdate(EhrUser user,int type) throws Exception {
-		Map<String, Object> map = new HashMap<>();
-		
-		EhrPerson person = new EhrPerson();
-		EhrUser ehrUser  = new EhrUser();
-		ehrUser.setUserCode(user.getUserCode());
-		ehrUser.setCompanyId(user.getCompanyId());
+	public Map<String, Object> addOrUpdate(EhrUser user) throws Exception {
 		if(StringUtils.isEmpty(user.getUserCode())){
 			throw new JabavaServiceException("用户编号为空");
 		}
-		if(ehrUserInfoMapper.isSingleUserCode(ehrUser) > 0){
+		if(ehrUserInfoMapper.isSingleUserCode(user) > 0){
 			 throw new JabavaServiceException("用户编号已存在");
 		}
 
 		if(StringUtils.isEmpty(user.getMobile())){
 			throw new JabavaServiceException("手机号为空");
 		}
-		EhrUser existOfMobile = userMapper.searchUserByUserMobile(user.getMobile());
+		EhrUser existOfMobile = userMapper.searchEUserByUserMobile(user.getMobile());
 		if(existOfMobile != null){
 			if(user.getUserId() == null || !existOfMobile.getUserId().equals(user.getUserId())){
 				throw new JabavaServiceException("手机号已存在");
@@ -146,104 +153,101 @@ public class EhrUserServiceImpl implements EhrUserInfoService {
 		}
 
 		if(!StringUtils.isEmpty(user.getMailAddress())){
-			EhrUser existOfEmail = userMapper.searchUserByUserEmail(user.getMailAddress());
+			EhrUser existOfEmail = userMapper.searchEUserByUserEmail(user.getMailAddress());
 			if(existOfEmail != null){
-				if(user.getUserId() == null || !existOfMobile.getUserId().equals(user.getUserId())){
+				if(user.getUserId() == null || !existOfEmail.getUserId().equals(user.getUserId())){
 					throw new JabavaServiceException("邮箱已存在");
 				}
 			}
 		}
-		
+
+//		EhrPerson person = new EhrPerson();
+//		EhrUser ehrUser  = new EhrUser();
+//		ehrUser.setUserCode(user.getUserCode());
+//		ehrUser.setCompanyId(user.getCompanyId());
 		if(user.getUserId() == null){
 			//String password = user.getPassword();
 			String password = Tools.getInitialPassword();
 			user.setPassword(Tools.encryptPassword(password));
 			ehrUserInfoMapper.insertSelective(user);
-			if(type == 4){
+			if(user.getUserType() == 2){
+				roleService.addAdminRoleUser(user);
+			}else if(user.getUserType() == 4){
 				roleService.addHRRoleUser(user);
 			}else{
-				roleService.addCommonRoleUser(user);
+				//roleService.addCommonRoleUser(user);
 			}
 			
-			person.setLastModifyDate(user.getLastModifyDate());
-			person.setLastModifyUserId(user.getLastModifyUserId());
-			person.setLastModifyUserName(user.getLastModifyUserName());
-			person.setCreateDate(user.getCreateDate());
-			person.setCreateUserId(user.getCreateUserId());
-			person.setCreateUserName(user.getCreateUserName());
-			person.setEmployeeName(user.getUserName());
-			person.setEmail(user.getMailAddress());
-			person.setMobile(user.getMobile());
-			if(user.getSex() == 1){//男
-				person.setSex((byte) 0);
-			}else if(user.getSex() == 2){//女
-				person.setSex((byte) 1);
-			}
-			person.setCompanyId(user.getCompanyId());
-			personMapper.insertSelective(person);//添加员工
-			//ehrUserInfoMapper.insertRoleUser(user.getUserId());
-			ehrUserInfoMapper.insertUserPerson(user.getUserId(), person.getPersonId());
+//			person.setLastModifyDate(user.getLastModifyDate());
+//			person.setLastModifyUserId(user.getLastModifyUserId());
+//			person.setLastModifyUserName(user.getLastModifyUserName());
+//			person.setCreateDate(user.getCreateDate());
+//			person.setCreateUserId(user.getCreateUserId());
+//			person.setCreateUserName(user.getCreateUserName());
+//			person.setEmployeeName(user.getUserName());
+//			person.setEmail(user.getMailAddress());
+//			person.setMobile(user.getMobile());
+//			if(user.getSex() == 1){//男
+//				person.setSex((byte) 0);
+//			}else if(user.getSex() == 2){//女
+//				person.setSex((byte) 1);
+//			}
+//			person.setCompanyId(user.getCompanyId());
+//			personMapper.insertSelective(person);//添加员工
+//			//ehrUserInfoMapper.insertRoleUser(user.getUserId());
+//			ehrUserInfoMapper.insertUserPerson(user.getUserId(), person.getPersonId());
 			
 			if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
 				//用户中心开通
 				Map<String,Object> rr = centerUserClientService.openUser(user,password);
-				if("false".equals(rr.get("success"))){
-					throw new JabavaServiceException(rr.get("msg").toString());
+				if("false".equals(rr.get("success").toString())){
+					return rr;
 				}
 			}
 			
 			int id = resetPassword(user,password, 1);
 	    	if(id == 3){
-	    		map.put("msg", "密码无法通过邮件发出");
-	    		map.put("success", false);
-	    		return map;
+	    		return MessageUtil.errorMessage("密码无法通过邮件发出");
 	    	}
 		}else{
 			ehrUserInfoMapper.updateByPrimaryKeySelective(user);
 			
-			Long userId = ehrUserInfoMapper.searchPersonId(user.getUserId());
-			person.setPersonId(userId);
-			person.setLastModifyDate(user.getLastModifyDate());
-			person.setLastModifyUserId(user.getLastModifyUserId());
-			person.setLastModifyUserName(user.getLastModifyUserName());
-			person.setEmployeeName(user.getUserName());
-			person.setEmail(user.getMailAddress());
-			person.setMobile(user.getMobile());
-			if(user.getSex() == 1){//男
-				person.setSex((byte) 0);
-			}else if(user.getSex() == 2){//女
-				person.setSex((byte) 1);
-			}
-			personMapper.updateByPrimaryKeySelective(person);//修改员工
+//			Long userId = ehrUserInfoMapper.searchPersonId(user.getUserId());
+//			person.setPersonId(userId);
+//			person.setLastModifyDate(user.getLastModifyDate());
+//			person.setLastModifyUserId(user.getLastModifyUserId());
+//			person.setLastModifyUserName(user.getLastModifyUserName());
+//			person.setEmployeeName(user.getUserName());
+//			person.setEmail(user.getMailAddress());
+//			person.setMobile(user.getMobile());
+//			if(user.getSex() == 1){//男
+//				person.setSex((byte) 0);
+//			}else if(user.getSex() == 2){//女
+//				person.setSex((byte) 1);
+//			}
+//			personMapper.updateByPrimaryKeySelective(person);//修改员工
 			
 			if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
 				//更新用户中心用户信息
-				Map<String,Object> rr = centerUserClientService.updateUser(ehrUser);
-				if("false".equals(rr.get("success"))){
-					throw new JabavaServiceException(rr.get("msg").toString());
+				Map<String,Object> rr = centerUserClientService.updateUser(user);
+				if("false".equals(rr.get("success").toString())){
+					return rr;
 				}
 			}
 		}
 
-		map.put("msg", "操作成功");
-		map.put("success", true);
-		return map;
+		return MessageUtil.successMessage("操作成功");
 	}
 	
 	public Map<String, Object> pwdReset(EhrUser user, int entry) throws Exception{
-		Map<String, Object> map = new HashMap<>();
 		int num = resetPassword(user,Tools.getInitialPassword(), 0);
 		if(num == 0){
-			map.put("success", false);
-			map.put("msg", "重置密码没有成功！");
+			return MessageUtil.errorMessage("重置密码没有成功！");
     	}else if(num == 2){
-			map.put("success", true);
-            map.put("msg", "重置密码成功,密码已经通过邮件发出！");
+            return MessageUtil.successMessage("重置密码成功,密码已经通过邮件发出！");
     	}else{
-			map.put("success", false);
-			map.put("msg", "重置密码成功,但是密码无法通过邮件发出！");
+			return MessageUtil.errorMessage("重置密码成功,但是密码无法通过邮件发出！");
     	}
-		return map;
 	}
 	
 	public int resetPassword(EhrUser user, String password, int entry) throws Exception{
@@ -560,6 +564,73 @@ public class EhrUserServiceImpl implements EhrUserInfoService {
 		return map;
 	}
 
-	
-	
+	@Override
+	public List<EhrUserOrganization> listUserOrganization(EhrUser user) {
+		return userOrganizationMapper.listByUserId(user.getUserId());
+	}
+
+	@Override
+	public List<Map<String, Object>> loadUserOrganizationTree(EhrUser user) {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		
+		//获取用户组织并放入Map
+		List<EhrUserOrganization> userOrgList = userOrganizationMapper.listByUserId(user.getUserId());
+		Map<Long,Object> userOrgMap = new HashMap<Long,Object>();
+		for(EhrUserOrganization uo : userOrgList){
+			userOrgMap.put(uo.getOrganizationId(), uo);
+		}
+		
+		//按层级加载组织树并遍历
+		List<EhrOrganization> orgList = organizationService.loadTree(user.getCompanyId());
+		for(EhrOrganization org : orgList){
+			Map<String,Object> orgMap = new HashMap<String,Object>();
+			orgMap.putAll(new BeanMap(org));
+			orgMap.remove("class");
+			if(userOrgMap.containsKey(org.getOrganizationId())){
+				orgMap.put("selected", true);
+			}else{
+				orgMap.put("selected", false);
+			}
+			result.add(orgMap);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int saveUserOrganization(Long userId, Long[] orgIds) throws Exception {
+		//获取用户组织并放入Map
+		List<EhrUserOrganization> userOrgList = userOrganizationMapper.listByUserId(userId);
+		Map<Long,Long> userOrgMap = new HashMap<Long,Long>();
+		for(EhrUserOrganization uo : userOrgList){
+			userOrgMap.put(uo.getOrganizationId(), uo.getId());
+		}
+		
+		for(Long orgId : orgIds){
+			if(userOrgMap.containsKey(orgId)){
+				//原来有现在有的则保留
+				userOrgMap.remove(orgId);
+			}else{
+				//原来没有现在有的则新增
+				EhrUserOrganization uo = new EhrUserOrganization();
+				uo.setUserId(userId);
+				uo.setOrganizationId(orgId);
+				userOrganizationMapper.insertSelective(uo);
+			}
+		}
+		
+		//原来有现在没有的则删除
+		for(Long id : userOrgMap.values()){
+			userOrganizationMapper.deleteByPrimaryKey(id);
+		}
+		
+		return 1;
+	}
+
+	@Override
+	public int deleteUserOrganization(Long userId) {
+		userOrganizationMapper.deleteByUser(userId);
+		return 1;
+	}
+
 }

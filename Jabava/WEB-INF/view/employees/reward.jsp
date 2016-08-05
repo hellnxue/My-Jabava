@@ -10,216 +10,233 @@
     <!-- Page title -->
     <title>奖惩记录</title>
     <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+    <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
     <link rel="stylesheet" href="static/css/user_bata.css">
     <link rel="stylesheet" href="static/css/style_1.css" media="screen">
 
 </head>
 <body >
 
-<!--splash screen-->
- <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
+  <!--splash screen-->
+  <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
 
-<!--引入头文件 开始--> 
+  <!--引入头文件 开始--> 
   <jsp:include flush="true" page="../common/header.div.jsp"></jsp:include>
   <!--引入头文件 结束--> 
   <!--引入菜单文件 开始--> 
   <jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
   <!--引入菜单文件 结束--> 
- 
-<!-- 放主要内容  开始-->
 
-<!-- Main Wrapper -->
-<div id="wrapper" class="min-h">
-    <div class="normalheader transition animated fadeIn small-header">
-        <div class="hpanel">
-            <div class="panel-body"><!-- 
-                <a class="small-header-action" href="">
-                    <div class="clip-header">
-                        <i class="fa fa-arrow-up"></i>
-                    </div>
-                </a> -->
-    
-                <div id="hbreadcrumb" class="pull-right m-t-lg">
-                    <ol class="hbreadcrumb breadcrumb">
-                        <li><a href="to_index?jump=1">首页</a></li>
-                        <li>
-                            <span>员工信息</span>
-                        </li>
-                        <li class="active">
-                            <span></span>
-                        </li>
-                    </ol>
-                </div>
-                <h2 class="font-light m-b-xs">
-                    员工信息
-                </h2>
-                <small>待定</small>
+  <!-- 放主要内容  开始-->
+
+  <!-- Main Wrapper -->
+  <div id="wrapper" class="min-h">
+    <div class="content animate-panel">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="hpanel">
+            <div class="panel-heading">
+              <h4 class="text-center font-bold">员工资料
+                <a onclick="toEmployeeList()" type="button" class="btn btn-default btn-sm btn-absolute">返　回</a>
+              </h4>
             </div>
-        </div>
-    </div>
+            <!-- 放主要内容 -->
+            <!--引入员工信息导航 开始--> 
+            <jsp:include flush="true" page="employee_nav.jsp">
+            <jsp:param value="reward" name="type"/>
+            </jsp:include>
+            <!--引入员工信息导航 结束-->
 
-<!-- 放主要内容 -->
-  <!--引入员工信息导航 开始--> 
-  <jsp:include flush="true" page="employee_nav.jsp"></jsp:include>
-  <!--引入员工信息导航 结束-->
-        
-        <!--奖惩记录-->
-        <div class="panel-body jiang_cheng">
-        	<div class="row ">
-        		<div style="border-bottom:1px solid #33CCFF; margin:20px; line-height:32px; overflow:hidden;">
-        		<h4 style="float:left; font-weight:normal;">奖惩记录</h4>
-        			<div style="float:right">
-                        <button type="button" class="btn btn-success btn-xs jilu"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                        <button type="button" class="btn btn-success btn-xs jilu_update" style="display:none;"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                        <button type="button" class="btn btn-success btn-xs kq_jl"><span class="bold">考勤记录&gt;&gt;</span></button> 
-        			</div>
-        		</div>
-        		 <input type="hidden" name="personId" value="${personId}" id="personId">
-<script type="text/html" id="discipline">
-{{each list}}
-<form role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
-  <div class="text-right action-group">
-    <a href="javascript://" class="pe-7s-note pe-2x" data-action-motive="edit" ><span class="sr-only">修改</span></a>
-    <a href="javascript://" class="pe-7s-trash pe-2x" data-action-motive="del" data-action-id="{{$value.rewardId}}"><span class="sr-only">删除</span></a>
-  </div>
-  <input type="hidden" name="rewardId" value="{{$value.rewardId}}">
+            <!--奖惩记录-->
+            <div class="panel-body">
+                <div class="panel-heading">
+                  <h4 class="text-center font-bold">奖惩记录</h4>
+                </div>
+                <div class="row m-b-lg">
+                <input type="hidden" name="personId" value="${personId}" id="personId">
+                <script type="text/html" id="discipline">
+                  {{each list}}
 
-<!--奖惩时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩时间：</label>
-      <div class="col-md-8 col-lg-8">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{if $value.rewardDate!=null}}
-            {{$value.rewardDate.substr(0,10)}}
-            {{/if}}
-            &nbsp;
-          </p>
+                    <div class="col-md-12 page-header m-t-md{{if $index == list.length-1}} no-borders{{/if}} ">
+                      <div class="panel-tools action-group">
+                        <ul class="list-inline">
+                           <li>
+                          <a href="javascript://" data-action-motive="hideOrshow" data-action-id="{{$value.rewardId}}"><i class="pe-7s-angle-down-circle pe-2x text-info"></i><span class="sr-only">隐藏</span></a>
+                          </li>
+                          <li>
+                          <a href="javascript://" data-action-motive="edit" data-action-id="{{$value.rewardId}}"><i class="pe-7s-note pe-2x text-info">
+                          </i><span class="sr-only">修改</span></a>
+                          </li>
+                          <li>
+                            <a href="javascript://" data-action-motive="del" data-action-id="{{$value.rewardId}}"><i class="pe-7s-trash pe-2x text-info"></i><span class="sr-only">删除</span></a>
+                          </li>
+                        </ul>
+                      </div>
+                      <ul class="list-inline">
+                        <li><p class="form-control-static text-info font-bold">{{if $value.rewardDate!=null}}{{$value.rewardDate.substr(0,10)}}
+                                  {{/if}} &nbsp;</p></li>
+                        
+                        <li class="m-r"><p class="form-control-static text-info font-bold">{{$value.rewardTypeShow}}&nbsp;</p></li>
+                        <li><p class="form-control-static text-info font-bold"> {{$value.rewardCost}}&nbsp; </p></li>
+                     </ul>
+                    </div>
+
+                <form data-form="{{$value.rewardId}}" role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
+                    <input type="hidden" name="rewardId" value="{{$value.rewardId}}">
+
+                    <!--奖惩时间-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩时间：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <div class="input-group-static">
+                            <p class="form-control-static">
+                              {{if $value.rewardDate!=null}}
+                              {{$value.rewardDate.substr(0,10)}}
+                              {{/if}}
+                              &nbsp;
+                            </p>
+                          </div>
+                          <div class="form-required">
+                            <div class="input-group date">
+                              <input type="text" class="form-control" name="rewardDate" value="{{if $value.rewardDate!=null}}{{$value.rewardDate.substr(0,10)}}{{/if}}" required="required">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!--奖惩金额-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩金额：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <div class="input-group-static">
+                            <p class="form-control-static">
+                              {{$value.rewardCost}}
+                              &nbsp;
+                            </p>
+                          </div>
+                          <input type="text" class="form-control" name="rewardCost" value="{{$value.rewardCost}}">
+                        </div>
+                      </div>
+                    </div>
+                    <!--奖惩类别-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩类别：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <div class="input-group-static">
+                            <p class="form-control-static">
+                              {{$value.rewardTypeShow}}
+                              &nbsp;
+                            </p>
+                          </div>
+                          <div class="form-required">
+                            <select class="form-control" name="rewardType">
+                              <option value="1" {{if ($value.rewardType == "1")}} selected="selected"{{/if}} >奖励</option>
+                              <option value="2" {{if ($value.rewardType == "2")}} selected="selected"{{/if}} >惩罚</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--奖惩描述-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩描述：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <div class="input-group-static">
+                            <p class="form-control-static">
+                              {{$value.memo}}
+                              &nbsp;
+                            </p>
+                          </div>
+                          <input type="text" class="form-control" name="memo" value="{{$value.memo}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 text-center form-action">
+                      <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
+                      <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                    </div>
+                  </form>
+                  {{/each}}
+                </script>
+                <div class="hpanel" id="jilu_div">
+
+                </div> 
+                <div id="jilu_body" data-form-target="content">
+                  <form role="form" method="post" data-form-type="base" class="form-horizontal col-md-12 col-lg-12 jc_jilu jc_jilu_form hidden" id="create_new"> 
+                    <input type="hidden" name="personId" value="${personId}" >
+                    <!--奖惩时间-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩时间：</label>
+                        <div class="col-md-8 col-lg-8 form-required">
+                          <div class="input-group date">
+                            <input type="text" class="form-control" name="rewardDate" >
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!--奖惩金额-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩金额：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <input type="text" class="form-control" name="rewardCost" >
+                        </div>
+                      </div>
+                    </div>
+                    <!--奖惩类别-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩类别：</label>
+                        <div class="col-md-8 col-lg-8 form-required">
+                          <select class="form-control" name="rewardType">
+                            <option value="1">奖励</option>
+                            <option value="2">惩罚</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!--奖惩描述-->
+                    <div class="col-md-6 col-lg-6">
+                      <div class="form-group">
+                        <label for="" class="control-label col-md-4 col-lg-4">奖惩描述：</label>
+                        <div class="col-md-8 col-lg-8">
+                          <input type="text" class="form-control" name="memo" >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 text-right">
+                      <button type="button" class="btn btn-success" onclick="addReward(this)" >保存</button>
+                      <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+                <!--添加-->
+              <div class="text-center row">
+                <a class="adds" data-form-action="add" href="javascript://"><i class=" pe-7s-plus pe-5x text-muted"></i><br><span class="text-muted">添加新记录</span></a>
+              </div>
+            </div> 
+
+          </div>
         </div>
-        <div class="input-group date">
-          <input type="text" class="form-control" name="rewardDate" value="{{if $value.rewardDate!=null}}{{$value.rewardDate.substr(0,10)}}{{/if}}" required="required">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
       </div>
-    </div>
+    </div>    
+    <!--奖惩记录 end-->  
+
+    <!-- Footer-->
+    <!-- 放页脚  开始-->
+    <jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
+    <!-- 放页脚  结束-->
   </div>
-<!--奖惩类别-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩类别：</label>
-      <div class="col-md-8 col-lg-8">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.rewardTypeShow}}
-            &nbsp;
-          </p>
-        </div>
-        <select class="form-control" name="rewardType">
-            <option value="1" {{if ($value.rewardType == "1")}} selected="selected"{{/if}} >奖励</option>
-            <option value="2" {{if ($value.rewardType == "2")}} selected="selected"{{/if}} >惩罚</option>
-        </select>
-      </div>
-    </div>
-  </div>
-<!--奖惩金额-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩金额：</label>
-      <div class="col-md-8 col-lg-8">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.rewardCost}}
-            &nbsp;
-          </p>
-        </div>
-        <input type="text" class="form-control" name="rewardCost" value="{{$value.rewardCost}}">
-      </div>
-    </div>
-  </div>
-<!--奖惩描述-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩描述：</label>
-      <div class="col-md-8 col-lg-8">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.memo}}
-            &nbsp;
-          </p>
-        </div>
-        <input type="text" class="form-control" name="memo" value="{{$value.memo}}">
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center form-action">
-    <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
-    <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
-  </div>
-</form>
-{{/each}}
-</script>
-            <div class="hpanel" id="jilu_div">
-                
-            </div>  
-            <div class="panel-body" id="jilu_body">
-<form role="form" method="post" class="form-horizontal col-md-12 col-lg-12 jc_jilu jc_jilu_form hidden" id="create_new"> 
-<!--奖惩时间-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩时间：</label>
-      <div class="col-md-8 col-lg-8">
-        <div class="input-group date">
-          <input type="text" class="form-control" name="rewardDate" value="">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-<!--奖惩类别-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩类别：</label>
-      <div class="col-md-8 col-lg-8">
-        <select class="form-control" name="rewardType">
-            <option value="1">奖励</option>
-            <option value="2">惩罚</option>
-        </select>
-      </div>
-    </div>
-  </div>
-<!--奖惩金额-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩金额：</label>
-      <div class="col-md-8 col-lg-8">
-        <input type="text" class="form-control" name="rewardCost" value="">
-      </div>
-    </div>
-  </div>
-<!--奖惩描述-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-4 col-lg-4">奖惩描述：</label>
-      <div class="col-md-8 col-lg-8">
-        <input type="text" class="form-control" name="memo" value="">
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center">
-    <button type="submit" class="btn btn-info">保存</button>
-  </div>
-</form>
-        	</div>
-        </div>
-        </div>     
-        <!--奖惩记录 end-->  
-      
-   	    <!-- Footer-->
-    	<!-- 放页脚  开始-->
-		<jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
-		<!-- 放页脚  结束-->
-</div>
 
 <!-- Vendor scripts -->
 <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
@@ -246,35 +263,71 @@
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 
+<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
 <script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
-<script src="static/js/common.js"></script>
+<script src="static/js/commonH3.js"></script>
 <script type="text/javascript">
 var personId = $("#personId").val();
 var url="employee/getReward?personId="+personId;
-  templateFillData('discipline', $('#jilu_div'), url,'employee/delJobpost.do?postId=');
-</script>
+  templateFillData('discipline', $('#jilu_div'), url,'employee/delRewards?rewardId=');
 
-<script>
-/*  $(function (){
-    $.ajax({
-          url:"static/json/reward.json",
-          dataType:'json',
-          error: function(XMLHttpRequest, textStatus, errorThrown){
-               alert(textStatus);
-          },
-          success: function(data){
-              for(var i = 0; i < data.list.length; i++){
-                  data.list[i].rewardStr = getHandleDate(data.list[i].rewardDate);
+//校验
+var validateOptions = {
+      err: {
+          container: 'tooltip'
+      },
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      locale: 'zh_CN',
+      
+      fields: {
+          rewardDate: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  },
+                  date: {
+                    format: 'YYYY-MM-DD',
+                    message: '该日期是无效的'
+                  }
               }
-             $("#jilu_body").html(template('discipline', data));
-             $('.input-group.date').datepicker({});
+          },
+          rewardType: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
           }
-       });
-  }); */
-     // <!--删除-->
+      }
+  };
+
+
+//新增
+function addReward(obj){
+	 var id = obj.form.id;
+	
+	/* $.ajax({
+		type : "POST",
+		url : "employee/addRewards",
+		data : $("#"+id).serialize(),
+		dataType : "json",
+		success : function(data) {
+			alert(data.msg);
+			window.location.reload();
+			
+		} 
+	}); */
+}
+     //删除
      function deleteBtnInfo(){
 	  $('.demo4').click(function () {
             swal({
@@ -296,7 +349,7 @@ var url="employee/getReward?personId="+personId;
                     });
         });
 	}
-  // <!--取消效果-->
+  // 取消效果
   $(".guanbi").click(function(){
 	  
 	 $("#myModal7").modal('hide');
@@ -305,11 +358,7 @@ var url="employee/getReward?personId="+personId;
 	  
   });
   
-
-</script>
-<!--日历-->
-<script>
-
+//日历
         $(function(){
 			deleteBtnInfo();
             $('#datepicker').datepicker();
@@ -427,9 +476,9 @@ var url="employee/getReward?personId="+personId;
 
         });
 
-    </script>
-<!--删除-->
-<script>
+   
+//删除
+
     $(function () {
         $('.demo4').click(function () {
             swal({
@@ -454,9 +503,6 @@ var url="employee/getReward?personId="+personId;
 
     });
 
-</script>
-
-<script>
   $(".guanbi").click(function(){
 	  
 	 $("#myModal7").modal('hide');

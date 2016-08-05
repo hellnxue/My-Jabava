@@ -22,8 +22,9 @@ import com.jabava.service.hro.IEfArapService;
 import com.jabava.service.hro.IHroPactInfoService;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
+import com.jabava.utils.enums.JabavaEnumUtil;
 
 /**
  * 定时导入账单数据
@@ -278,15 +279,15 @@ public class ImportBillTask {
 			try {
 				if(entitie.get("DATE_BILL_CREATE_FIRST")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CREATE_FIRST").toString())){
 					efArap.setDateBillCreateFirst(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CREATE_FIRST").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CREATE_FIRST").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("DATE_BILL_CREATE")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CREATE").toString())){
 					efArap.setDateBillCreate(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CREATE").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CREATE").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("DATE_BILL_CONFIRM")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CONFIRM").toString())){
 					efArap.setDateBillConfirm(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CONFIRM").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CONFIRM").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("PAY_DAY")!=null && StringUtils.isNotBlank(entitie.get("PAY_DAY").toString())){
 					efArap.setPayDay(JabavaUtil.formatDate(entitie.get(
@@ -294,15 +295,15 @@ public class ImportBillTask {
 				}
 				if(entitie.get("CREATE_DT")!=null && StringUtils.isNotBlank(entitie.get("CREATE_DT").toString())){
 					efArap.setCreateDate(JabavaUtil.formatDate(entitie.get(
-							"CREATE_DT").toString(), "yyyyMMddhhmmss"));
+							"CREATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("UPDATE_DT")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_DT").toString())){
 					efArap.setUpdateDate(JabavaUtil.formatDate(entitie.get(
-							"UPDATE_DT").toString(), "yyyyMMddhhmmss"));
+							"UPDATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("DATE_BILL_CANCEL")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CANCEL").toString())){
 					efArap.setDateBillCancel(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CANCEL").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CANCEL").toString(), "yyyyMMddHHmmss"));
 				}
 				
 			} catch (Exception e) {
@@ -381,9 +382,19 @@ public class ImportBillTask {
 					+ ", 账单总额: TotalAmount=" + efArap.getAmountTotal());
 			
 			// 根据账单id获取是否存在此数据
-			int isExitBill = efArapService.isExitBill(efArap.getBillCode());
-			if (isExitBill > 0) {	// 修改账单
-				int res = efArapService.updateByPrimaryKey(efArap);
+//			int isExitBill = efArapService.isExitBill(efArap.getBillCode());
+//			if (isExitBill > 0) {	// 修改账单
+			EfArap exist = efArapService.findByBillCode(efArap.getBillCode());
+			if(exist != null){
+				int res = -1;
+				if(!exist.getBillId().equals(efArap.getBillId())){
+					//如果同一账单号重新生成了账单，则需要先删除再插入
+					efArapService.deleteById(exist);
+					res = efArapService.insertSelective(efArap);
+				}else{
+					res = efArapService.updateByPrimaryKey(efArap);
+				}
+				
 				if (res > 0) {
 					updsusccess ++;
 				} else {
@@ -557,14 +568,14 @@ public class ImportBillTask {
 				}
 				if(entitie.get("CREATE_DT")!=null && StringUtils.isNotBlank(entitie.get("CREATE_DT").toString())){
 					arapDetailEmp.setCreateDate(JabavaUtil.formatDate(entitie.get(
-							"CREATE_DT").toString(), "yyyyMMddhhmmss"));
+							"CREATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("UPDATE_BY")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_BY").toString())){
 					arapDetailEmp.setUpdateUserId(Long.parseLong(entitie.get("UPDATE_BY").toString()));
 				}
 				if(entitie.get("UPDATE_DT")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_DT").toString())){
 					arapDetailEmp.setUpdateDate(JabavaUtil.formatDate(entitie.get(
-							"UPDATE_DT").toString(), "yyyyMMddhhmmss"));
+							"UPDATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("QUOT_TYPE")!=null && StringUtils.isNotBlank(entitie.get("QUOT_TYPE").toString())){
 					arapDetailEmp.setQuotType(Integer.parseInt(entitie.get("QUOT_TYPE").toString()));
@@ -576,15 +587,12 @@ public class ImportBillTask {
 					arapDetailEmp.setCertId(entitie.get("CARD_ID").toString());
 				}
 				if(entitie.get("CARD_TYPE")!=null && StringUtils.isNotBlank(entitie.get("CARD_TYPE").toString())){
-					arapDetailEmp.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
-				}
-				if(entitie.get("CARD_TYPE")!=null && StringUtils.isNotBlank(entitie.get("CARD_TYPE").toString())){
-					arapDetailEmp.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					//arapDetailEmp.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					arapDetailEmp.setCertType(Integer.valueOf(JabavaEnumUtil.transformCardType(entitie.get("CARD_TYPE").toString())));
 				}
 				if(entitie.get("EMPLOYEE_REC_ID")!=null && StringUtils.isNotBlank(entitie.get("EMPLOYEE_REC_ID").toString())){
 					arapDetailEmp.setEmployeeRecId(Long.parseLong(entitie.get("EMPLOYEE_REC_ID").toString()));
 				}
-				
 				
 				arapDetailEmp.setRedFlag(null);
 				arapDetailEmp.setEmployeeRecId(null);
@@ -735,13 +743,13 @@ public class ImportBillTask {
 					arapDetailEmpSb.setCreateUserId(Long.parseLong(entitie.get("CREATE_BY").toString()));
 				}
 				if(entitie.get("CREATE_DT")!=null && StringUtils.isNotBlank(entitie.get("CREATE_DT").toString())){
-					arapDetailEmpSb.setCreateDate(JabavaUtil.formatDate(entitie.get("CREATE_DT").toString(),"yyyyMMddhhmmss"));
+					arapDetailEmpSb.setCreateDate(JabavaUtil.formatDate(entitie.get("CREATE_DT").toString(),"yyyyMMddHHmmss"));
 				}
 				if(entitie.get("UPDATE_BY")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_BY").toString())){
 					arapDetailEmpSb.setUpdateUserId(Long.parseLong(entitie.get("UPDATE_BY").toString()));
 				}
 				if(entitie.get("UPDATE_DT")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_DT").toString())){
-					arapDetailEmpSb.setUpdateDate(JabavaUtil.formatDate(entitie.get("UPDATE_DT").toString(),"yyyyMMddhhmmss"));
+					arapDetailEmpSb.setUpdateDate(JabavaUtil.formatDate(entitie.get("UPDATE_DT").toString(),"yyyyMMddHHmmss"));
 				}
 				if(entitie.get("ORDER_ID")!=null && StringUtils.isNotBlank(entitie.get("ORDER_ID").toString())){
 					arapDetailEmpSb.setOrderId(Long.parseLong(entitie.get("ORDER_ID").toString()));
@@ -750,7 +758,8 @@ public class ImportBillTask {
 					arapDetailEmpSb.setCertId(entitie.get("CARD_ID").toString());
 				}
 				if(entitie.get("CARD_TYPE")!=null && StringUtils.isNotBlank(entitie.get("CARD_TYPE").toString())){
-					arapDetailEmpSb.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					//arapDetailEmpSb.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					arapDetailEmpSb.setCertType(Integer.valueOf(JabavaEnumUtil.transformCardType(entitie.get("CARD_TYPE").toString())));
 				}
 				if(entitie.get("EMPLOYEE_REC_ID")!=null && StringUtils.isNotBlank(entitie.get("EMPLOYEE_REC_ID").toString())){
 					arapDetailEmpSb.setEmployeeRecId(Long.parseLong(entitie.get("EMPLOYEE_REC_ID").toString()));

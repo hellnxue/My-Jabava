@@ -1,8 +1,9 @@
 ﻿<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <%
 String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- Page title -->
 <title>Jabava人事外包服务界面</title>
 <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+<link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
 <!--for 临时改变-->
 <link rel="stylesheet" href="static/css/user.css">
 </head>
@@ -41,82 +43,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel clearfix">
-                        <div class="panel-heading org_padding_bottom">
-                            <div class="pull-right org_margin_top">
-                                &nbsp;
-                            </div>
-                        </div>
-
                         <div class="panel-body service_new_one">
-                            <div class="col-sm-12">
-                                <form role="form" id="addOutsourcingForm" class="formclass">
-
-                                    <div class="form-group service_none">
-                                        <label class="col-lg-1 service_margin_b">&nbsp;</label>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputName1" class="col-lg-2 service_margin_b">客户名称：</label>
-                                        <div class="col-lg-6 service_margin_b">
-                                            <span id="companyName"></span>
+                            <div class="col-lg-offset-1 col-lg-11">
+                                <form role="form" id="addOutsourcingForm" class="form-horizontal">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label for="exampleInputName1" class="col-lg-2 control-label">客户名称：</label>
+                                            <div class="col-lg-6">
+                                                <p class="form-control-static" id="companyName"></p>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group service_none">
-                                        <label class="col-lg-3
-                                        service_margin_b">&nbsp;</label>
-                                    </div>
-
-                                    <div class="form-group service_none">
-                                        <label class="col-lg-1 service_margin_b">&nbsp;</label>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputName3" class="col-lg-2 service_margin_b">联系人&nbsp;&nbsp;&nbsp;：</label>
-                                        <div class="col-lg-3 service_margin_b">
-                                            <input type="text" class="form-control" id="contactEmp" name="contactEmp">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="exampleInputName3" class="col-lg-4 control-label">联系人：</label>
+                                            <div class="col-lg-8 form-required">
+                                                <input type="text" class="form-control" id="contactEmp" name="contactEmp">
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="exampleInputName4" class="col-lg-2 service_margin_b">联系电话：</label>
-                                        <div class="col-lg-3 service_margin_b">
-                                            <input type="text" class="form-control" id="telephoneNumber" name="telephoneNumber">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="exampleInputName4" class="col-lg-4 control-label">联系电话：</label>
+                                            <div class="col-lg-8 form-required">
+                                                <input type="text" class="form-control" id="telephoneNumber" name="telephoneNumber">
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group service_none">
-                                        <label class="col-lg-1 service_margin_b">&nbsp;</label>
-                                    </div>
-
-
-                                    <div class="form-group service_none">
-                                        <label class="col-lg-1 service_margin_b">&nbsp;</label>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputName5" class="col-lg-2 service_margin_b">备注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：</label>
-                                        <div class="col-lg-8 service_margin_b">
-                                            <textarea type="text" class="form-control" id="addRemark" name="remark"></textarea>
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <label for="exampleInputName5" class="col-lg-2 control-label">备注：</label>
+                                            <div class="col-lg-10">
+                                                <textarea type="text" class="form-control" id="addRemark" name="remark"></textarea>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="form-group service_none">
-                                        <label class="col-lg-1 service_margin_b">&nbsp;</label>
-                                    </div>
+                                    <% if(RequestUtil.hasPower("protocolrequest_op")){ %>
                                     <div class="form-submit">
-                                        <div class="col-md-11 col-lg-11 text-right">
-                                            <button class="btn btn-success" type="button" id="addOutsourcing">开通</button>
+                                        <div class="col-lg-10 text-right">
+                                            <button class="btn btn-success" type="submit" id="addOutsourcing">开通</button>
                                         </div>
-
                                     </div>
+                                    <% } %>
                                 </form>
                             </div>
 
                         </div>
-
                         <div class="panel-body service_new_two"></div>
-
                     </div>
                 </div>
             </div>
@@ -148,7 +124,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- for datatable -->
 	<script src="static/bootstrap/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
 	<script src="static/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
-
+    <!-- 校验 -->
+    <script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+    <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+    <script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 
 	<!-- alert -->
 	<script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>

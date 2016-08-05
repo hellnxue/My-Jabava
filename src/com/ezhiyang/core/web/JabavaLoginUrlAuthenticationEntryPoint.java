@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import com.jabava.utils.RequestUtil;
+
 public class JabavaLoginUrlAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint{
 	public JabavaLoginUrlAuthenticationEntryPoint(String loginFormUrl){
 		super(loginFormUrl);
@@ -18,8 +20,7 @@ public class JabavaLoginUrlAuthenticationEntryPoint extends LoginUrlAuthenticati
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException ex) throws IOException, ServletException {
-		if(request.getHeader("X-Requested-With") != null && 
-				"XMLHttpRequest".equals(request.getHeader("X-Requested-With").toString())){
+		if(RequestUtil.isAjaxRequest(request)){
             PrintWriter out = response.getWriter();
             out.print("AjaxAuthFailed");
             out.flush();

@@ -26,7 +26,7 @@ import com.jabava.service.hro.BdSbService;
 import com.jabava.task.ImportPolicyPackageTask;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;

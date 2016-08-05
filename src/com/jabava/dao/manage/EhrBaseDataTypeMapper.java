@@ -1,5 +1,7 @@
 package com.jabava.dao.manage;
 
+import java.util.List;
+
 import com.jabava.pojo.manage.EhrBaseDataType;
 
 public interface EhrBaseDataTypeMapper {
@@ -50,4 +52,8 @@ public interface EhrBaseDataTypeMapper {
      * @mbggenerated Tue Dec 22 13:34:15 CST 2015
      */
     int updateByPrimaryKey(EhrBaseDataType record);
+    
+    EhrBaseDataType  selectBaseTypeByBaseName(String baseName);
+    					  
+    List<EhrBaseDataType> selectBaseDataType();
 }

@@ -1,9 +1,9 @@
 <%@page import="com.jabava.utils.Constants"%>
-<%@page import="com.jabava.utils.JabavaPropertyCofigurer"%>
+<%@page import="com.jabava.core.config.JabavaPropertyCofigurer"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 	//已登录则不需要登录
@@ -13,46 +13,48 @@
 	
 	//SSO环境不需要访问登录页面
 	if("1".equals(JabavaPropertyCofigurer.getSsoSwitch())){
-		request.getRequestDispatcher("/to_index").forward(request, response);
+		//request.getRequestDispatcher("/to_index").forward(request, response);
+		request.getRequestDispatcher("/").forward(request, response);
 	}
 %>
 
 <!DOCTYPE HTML>
 <html>
-<base href="<%=basePath%>">
-<meta charset="utf-8">
-<meta name="rootport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<!-- Page title -->
-<title>Jabava V1.0 | 登录</title>
-<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-<!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
-
-<!-- Vendor styles -->
-<link rel="stylesheet"
-	href="static/bootstrap/vendor/fontawesome/css/font-awesome.css"
-	type="text/css" />
-<link rel="stylesheet"
-	href="static/bootstrap/vendor/metisMenu/dist/metisMenu.css"
-	type="text/css" />
-<link rel="stylesheet"
-	href="static/bootstrap/vendor/animate.css/animate.css" type="text/css" />
-<link rel="stylesheet"
-	href="static/bootstrap/vendor/bootstrap/dist/css/bootstrap.css"
-	type="text/css" />
-
-<!-- App styles -->
-<link rel="stylesheet"
-	href="static/bootstrap/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"
-	type="text/css" />
-<link rel="stylesheet"
-	href="static/bootstrap/fonts/pe-icon-7-stroke/css/helper.css"
-	type="text/css" />
-<link rel="stylesheet" href="static/bootstrap/styles/style.css"
-	type="text/css">
-<!--for 临时改变-->
-<link rel="stylesheet" href="static/css/user.css">
+<head>
+	<base href="${pageContext.request.contextPath}/">
+	<meta charset="utf-8">
+	<meta name="rootport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<!-- Page title -->
+	<title>Jabava V1.0 | 登录</title>
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
+	
+	<!-- Vendor styles -->
+	<link rel="stylesheet"
+		href="static/bootstrap/vendor/fontawesome/css/font-awesome.css"
+		type="text/css" />
+	<link rel="stylesheet"
+		href="static/bootstrap/vendor/metisMenu/dist/metisMenu.css"
+		type="text/css" />
+	<link rel="stylesheet"
+		href="static/bootstrap/vendor/animate.css/animate.css" type="text/css" />
+	<link rel="stylesheet"
+		href="static/bootstrap/vendor/bootstrap/dist/css/bootstrap.css"
+		type="text/css" />
+	
+	<!-- App styles -->
+	<link rel="stylesheet"
+		href="static/bootstrap/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css"
+		type="text/css" />
+	<link rel="stylesheet"
+		href="static/bootstrap/fonts/pe-icon-7-stroke/css/helper.css"
+		type="text/css" />
+	<link rel="stylesheet" href="static/bootstrap/styles/style.css"
+		type="text/css">
+	<!--for 临时改变-->
+	<link rel="stylesheet" href="static/css/user.css">
 
 </head>
 <body class="blank">
@@ -88,18 +90,12 @@
 					</div>
 					<div class="hpanel">
 						<div class="panel-body">
-
-<!-- 							<div class="form-group"> -->
-<!-- 								<label class="control-label" for="companyCode">企业号</label> <input -->
-<!-- 									type="text" placeholder="请输入企业号" title="请输入企业号" required="" -->
-<!-- 									value="" name="companyCode" id="companyCode" -->
-<!-- 									class="form-control"> -->
-<!-- 							</div> -->
 							<div class="form-group">
 								<label class="control-label" for="userCode">帐号</label> <input
 									type="text" placeholder="请输入用户名/手机/邮箱" required="" value=""
 									name="j_username" id="userCode" class="form-control">
 							</div>
+							<input type="hidden" name='channel' value="pc"/></input>
 							<div class="form-group">
 								<label class="control-label" for="password">密码</label> <input
 									type="password" title="请输入密码" placeholder="******" required=""
@@ -107,17 +103,13 @@
 							</div>
 							<div class="checkbox clearfix">
 								<div class="login_fl">
-									<input type="checkbox" class="i-checks" checked> 记住登录
-								</div>
-								<div class="login_fr">
-									<a href="to_forgetPwd">忘记密码?</a>
+									<a href="user/password">忘记密码?</a>
 								</div>
 							</div>
 							<!--button class="btn btn-success btn-block" onClick="javascript:loginClick();">登录</button-->
 							<button class="btn btn-success btn-block" onClick="javascript:$('#LoginForm').submit();">登录</button>
 							<a class="btn btn-default btn-block"
 								href="to_register">注册</a>
-
 						</div>
 					</div>
 				</div>
@@ -162,8 +154,17 @@
 				LoginForm.passwd.select();
 				return false;
 			}
-			document.LoginForm.submit();
+			document.LoginForm.submit(function(){
+				alert("==== 啊 啊 啊 ===");
+			});
 		}
+		
+		$(function(){
+			console.log("=========== loading the work ==========");
+			
+			console.log($.fn.submit);
+			//$.fn.submit();
+		});
 	</script>
 </body>
 </html>

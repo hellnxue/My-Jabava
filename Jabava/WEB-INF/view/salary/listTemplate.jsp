@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +33,9 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <jsp:include flush="true" page="../common/extendMenu.jsp">
+            <jsp:param value="toListSalaryTemplate" name="type"/>
+        </jsp:include>
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
@@ -195,9 +199,17 @@
 				{ "data": "taxRateName" },
 				{ "data": "templateMemo"},
 				{ "render": function render( data, type, row, meta ){
-						return '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.salaryTemplateId + ');">修改</button>&nbsp;' +
-                            '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryTemplateId + ');">删除</button>&nbsp;' +
-                            '<button class="btn btn-info btn-xs" type="button" onclick="download(' + row.salaryTemplateId + ');">下载</button>';
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("salarytemplate_mt")){ %>
+                        strHtml += '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.salaryTemplateId + ');">修改</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("salarytemplate_dt")){ %>
+                        strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryTemplateId + ');">删除</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("salarytemplate_dl")){ %>
+                        strHtml += '<button class="btn btn-info btn-xs" type="button" onclick="download(' + row.salaryTemplateId + ');">下载</button>';
+                        <% } %>
+						return strHtml;
 					}
 				}
 			],
@@ -220,8 +232,9 @@
 				}
    			}
    	    });
-
+        <% if(RequestUtil.hasPower("salarytemplate_at")){ %>
         $("div.toolbar").html('<button class="btn btn-info btn-sm" data-target="[data-modal=addTemplate]" data-toggle="modal" onclick="add();">新  增</button>');
+        <% } %>
     });
 
 

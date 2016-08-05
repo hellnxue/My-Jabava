@@ -4,6 +4,6 @@
 <configuration>
 	<plugins>
 		<!-- 郑长山，2016年1月11日13:40:35，mybatis分页拦截器 -->
-		<plugin interceptor="com.jabava.interceptor.PageInterceptor"></plugin>
+		<plugin interceptor="com.jabava.core.interceptor.PageInterceptor"></plugin>
 	</plugins>
 </configuration>

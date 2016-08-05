@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,9 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
-
+        <jsp:include flush="true" page="../common/extendMenu.jsp">
+            <jsp:param value="toListTaxRate" name="type"/>
+        </jsp:include>
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
@@ -183,8 +186,14 @@
 				{ "data": "threshold" },
 				{ "data": "taxRateMemo"},
 				{ "render": function render( data, type, row, meta ){
-						return '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.taxRateId + ');">修改</button>&nbsp;' +
-                            '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.taxRateId + ');">删除</button>';
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("salarytax_mt")){ %>
+                        strHtml += '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.taxRateId + ');">修改</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("salarytax_dt")){ %>
+                        strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.taxRateId + ');">删除</button>';
+                        <% } %>
+						return strHtml;
 					}
 				}
 			],
@@ -207,8 +216,9 @@
 				}
    			}
    	    });
-
+        <% if(RequestUtil.hasPower("salarytax_at")){ %>
         $("div.toolbar").html('<button class="btn btn-info btn-sm" data-target="[data-modal=addRate]" data-toggle="modal"">新  增</button>');
+        <% } %>
 
         //表单验证
         $('#addForm').formValidation({

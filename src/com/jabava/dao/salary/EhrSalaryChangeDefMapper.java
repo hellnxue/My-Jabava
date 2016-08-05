@@ -12,6 +12,8 @@ public interface EhrSalaryChangeDefMapper {
 	
 	EhrSalaryChangeDef selectByName(@Param("companyId")Long companyId, @Param("name")String name);
 	
+	EhrSalaryChangeDef selectById(@Param("companyId")Long companyId, @Param("salaryChangeDefId")Long salaryChangeDefId);
+	
 	int logicDeleteById(@Param("companyId")Long companyId, @Param("salaryChangeDefId")Long salaryChangeDefId);
 
 	/**

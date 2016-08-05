@@ -18,7 +18,7 @@ import com.jabava.service.hro.IEfReceiptOwnedService;
 import com.jabava.service.hro.IHroPactInfoService;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
 
 /**
@@ -225,10 +225,10 @@ public class ImportReceiptOwnedTask {
 					receiptOwned.setTransDate(JabavaUtil.formatDate(entity.get("transDate").toString(), "yyyy-MM-dd"));
 				}
 				if(entity.get("createDt")!=null && StringUtils.isNotBlank(entity.get("createDt").toString())){
-					receiptOwned.setCreateDt(JabavaUtil.formatDate(entity.get("createDt").toString(), "yyyyMMddhhmmss"));
+					receiptOwned.setCreateDt(JabavaUtil.formatDate(entity.get("createDt").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entity.get("updateDt")!=null && StringUtils.isNotBlank(entity.get("updateDt").toString())){
-					receiptOwned.setUpdateDt(JabavaUtil.formatDate(entity.get("updateDt").toString(), "yyyyMMddhhmmss"));
+					receiptOwned.setUpdateDt(JabavaUtil.formatDate(entity.get("updateDt").toString(), "yyyyMMddHHmmss"));
 				}
 				
 			} catch (Exception e) {

@@ -58,4 +58,28 @@ public interface EhrCityMapper {
      *根据省份id查询对应城市列表
      */
     List<HashMap<String,Object>> getCityByProvinceId(EhrCity record);
+    /**
+     * 根据省份ID 获取城市列表
+     * <pre>
+     * @author steven.chen
+     * @date 2016年4月13日 下午4:39:37 
+     * </pre>
+     *
+     * @param provinceId
+     * @return
+     */
+    List<EhrCity> getCityListByProvinceId(Long  provinceId);
+    /**
+     * 根据城市名称查询城市列表
+     * <pre>
+     * @author steven.chen
+     * @date 2016年4月15日 下午1:28:01 
+     * </pre>
+     *
+     * @param cityName
+     * @return
+     */
+    public List<EhrCity> getCitiByCityName(String cityName);
+
+    
 }

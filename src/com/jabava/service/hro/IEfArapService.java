@@ -25,6 +25,8 @@ public interface IEfArapService {
 	
 	EfArap findByPrimaryKey(Long billId);
 	
+	EfArap findByBillCode(String billCode);
+	
 	List<Map<String,Object>> searchBillDetailHeader(EfArap bill);
 	
 	List<Map<String,Object>> searchBillDetailData(EfArap bill,String order,String by);
@@ -122,4 +124,6 @@ public interface IEfArapService {
 	 * @return
 	 */
 	public List<Map<String,Object>> queryBalanceList(EhrUser user, String year);
+	
+	public int deleteById(EfArap efArap);
 }

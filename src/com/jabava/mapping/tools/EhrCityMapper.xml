@@ -398,4 +398,20 @@
 	      </if>
     </where>
   </select>
+     <!-- 查询指定省份的城市列表 -->
+    <select id="getCityListByProvinceId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from ehr_city where IS_DELETED=0   AND   PROVINCE_ID = #{provinceId,jdbcType=BIGINT}
+	
+  </select>
+  
+  <!-- 根据城市名称查询  城市列表 -->
+   <select id="getCitiByCityName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from ehr_city where IS_DELETED=0   AND  CITY_NAME LIKE CONCAT('%', #{cityName},'%')
+	
+  </select>
+  
 </mapper>

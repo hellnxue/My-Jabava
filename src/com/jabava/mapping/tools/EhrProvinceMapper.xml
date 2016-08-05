@@ -263,4 +263,10 @@
 	      </if>
     </where>
   </select>
+    <!-- 查询所有的省份  返回list -->
+    <select id="getProvinceList" resultMap="BaseResultMap"  >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from ehr_province where IS_DELETED=0	   
+  </select>
 </mapper>

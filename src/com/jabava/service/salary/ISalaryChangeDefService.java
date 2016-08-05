@@ -9,7 +9,7 @@ import com.jabava.pojo.salary.EhrSalaryChangeDefItem;
 public interface ISalaryChangeDefService {
 	List<EhrSalaryChangeDef> listSalaryChangeDef(Long companyId);
 	
-	List<Map<String,Object>> loadSalaryChangeDef(Long salaryChangeDefId);
+	EhrSalaryChangeDef selectById(Long companyId, Long salaryChangeDefId, boolean withItem);
 	
 	EhrSalaryChangeDef selectByName(Long companyId, String name);
 	

@@ -6,9 +6,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 
@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.jabava.core.config.JabavaPropertyCofigurer;
+import com.jabava.utils.security.MD5;
 
 public class FileUtil {
 
@@ -130,6 +133,14 @@ public class FileUtil {
 			}
 		}
 	}
+	
+	/**
+	 * 读取Html模板(路径为com/jabava/resources/html)
+	 * @return
+	 */
+	public static String readHtmlTemplate(String fileName){
+		return readFileContent("com/jabava/resources/html/" + fileName);
+	}
 
 	/**
 	 * 
@@ -145,13 +156,14 @@ public class FileUtil {
 		URL url = FileUtil.class.getClassLoader().getResource(filePath);
 		try {
 			File file = new File(url.toURI());
-			BufferedReader bf = new BufferedReader(new FileReader(file));
-			String content = "";
+			BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));
+			
 			StringBuilder sb = new StringBuilder();
-
+			String content = "";
 			while (content != null) {
 				content = bf.readLine();
-				if (StringUtils.isEmpty(content)) {
+				//if (StringUtils.isEmpty(content)) {
+				if(content == null){
 					break;
 				}
 				sb.append(content.trim());
@@ -258,8 +270,10 @@ public class FileUtil {
 		} else if ("doc".equals(fileType)) {
 			response.setContentType("application/msword;charset=GBK");
 		}
-		fileName = java.net.URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
 		//文件名
+		//fileName = java.net.URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
+		fileName = new String(fileName.getBytes("gb2312"), "ISO8859-1");
+		
 		response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName));
 		response.setContentLength((int) file.length());
 		byte[] buffer = new byte[4096];// 缓冲区
@@ -285,5 +299,61 @@ public class FileUtil {
 				output.close();
 		}
 		return true;
+	}
+	
+	/**
+	 * 对(prefix + time + originalName)进行MD5加密
+	 * @param prefix
+	 * @param originalName
+	 * @return
+	 */
+	public static String generateFileName(String prefix, String originalName){
+		return generateFileName(prefix, originalName, false);
+	}
+	
+	public static String generateFileName(String prefix, String originalName, boolean reserveExtName){
+		String newName = MD5.getMD5Code(prefix + System.currentTimeMillis() + originalName);
+		if(reserveExtName){
+			if(prefix.lastIndexOf(".") > -1){
+				newName += prefix.substring(prefix.lastIndexOf("."));
+			}
+		}
+		
+		return newName;
+	}
+	
+	/**
+	 * UPLOAD_PATH+relativeRoot+fileClass+年+月+日
+	 * @param relativeRoot
+	 * @param fileClass
+	 * @return
+	 */
+	public static String confirmFullPath(String relativeRoot, String fileClass) throws Exception{
+		//绝对目录(UPLOAD_PATH+relativeRoot+fileClass+年+月+日)
+		String now = JabavaDateUtils.formatDate("yyyyMMdd");
+		String fullPath = new StringBuffer(JabavaPropertyCofigurer.getProperty("UPLOAD_PATH"))
+				.append(File.separator).append(relativeRoot)
+				.append(File.separator).append(fileClass)
+				.append(File.separator).append(JabavaDateUtils.formatDate(now.substring(0, 4)))
+				.append(File.separator).append(JabavaDateUtils.formatDate(now.substring(4, 6)))
+				.append(File.separator).append(JabavaDateUtils.formatDate(now.substring(6, 8))).toString();
+		File file  = new File(fullPath);
+		if (!file.exists()) {	//不存在则创建该目录
+			file.mkdirs();
+		}
+		
+		return fullPath;
+	}
+	
+	public static String getExtension(String fileName) {
+		String extension = fileName.substring(fileName.lastIndexOf("."));
+		return extension;
+	}
+	
+	public static void main(String[] args){
+		String content1 = readFileContent("com/jabava/resources/html/tpl_reset_password.html");
+		String content2 = readHtmlTemplate("tpl_reset_password.html");
+		System.out.println(content1);
+		System.out.println(content2);
 	}
 }

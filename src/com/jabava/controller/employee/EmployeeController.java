@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jabava.pojo.manage.EhrOrganization;
 import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
+import com.jabava.service.employee.EhrPersonService;
 import com.jabava.service.employee.IEmployeeService;
 import com.jabava.service.system.IBaseDataService;
 import com.jabava.service.system.IEhrOrganizationService;
+import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
 import com.jabava.utils.excel.ExcelConfig;
@@ -39,6 +41,8 @@ public class EmployeeController {
 	private IEhrOrganizationService organizationSerevice;
 	@Resource
 	private IBaseDataService basedataService;
+	@Resource
+	private EhrPersonService ehrPersonService;
 	
 	@RequestMapping("addressList")
 	public String addressList(HttpServletRequest request,HttpServletResponse response){
@@ -115,7 +119,7 @@ public class EmployeeController {
 //		ExcelConfig config = new ExcelConfig("通讯录", headers, datas);
 		
 		EhrPerson person = new EhrPerson();
-		person.setStatus((byte)0);
+		person.setStatus(1);
 		person.setIsPayrollFlag((byte)0);
 		
 //		List<ExcelHeader> headers = new ArrayList<ExcelHeader>();
@@ -138,7 +142,7 @@ public class EmployeeController {
 		
 		Map<String,Object> datas = new HashMap<String,Object>();
 		
-		person.setKeyPerson((byte)1);
+		person.setKeyPerson(1);
 		List<EhrPerson> retMdl = personService.searchPerson(person, user.getUserId(), user.getCompanyId(), user.getUserDistinguish());
 		//configList.add(this.getExcelConfig("关键人",retMdl,headers,user));
 		datas.put("keyPersons", this.getExcelData(retMdl, user));
@@ -373,6 +377,7 @@ public class EmployeeController {
 //		}
 	}
 	
+	@SuppressWarnings("unused")
 	private ExcelConfig getExcelConfig(String sheetName,List<EhrPerson> personList,List<ExcelHeader> headers,EhrUser user) throws Exception{
 		List<JSONObject> datas = new ArrayList<JSONObject>();
 		JSONObject jo = null;
@@ -480,5 +485,32 @@ public class EmployeeController {
 		
 		return org;
 	}
+	/**
+	 * 给员工发送邮件或者短信
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年5月8日 下午1:56:56 
+	 * </pre>
+	 *
+	 * @param request
+	 * @param response
+	 * @param personId
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("sendMessage")
+	@ResponseBody
+	public Map<String,Object> sendMessage(HttpServletRequest request,HttpServletResponse response,Long personId){	
+		EhrUser user = RequestUtil.getLoginUser(request);
+		 Map<String,Object> map=new HashMap<String,Object>();
+		try {
+			String msg =  ehrPersonService.sendMessage(personId, user);
+			map.put("msg", msg);
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return MessageUtil.errorMessage(e.getMessage());
+		}
+	 }
 	
 }

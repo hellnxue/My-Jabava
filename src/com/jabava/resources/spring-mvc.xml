@@ -39,8 +39,19 @@
 		</property>
 	</bean>
 
-	<bean id="exceptionResolver"
-		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	<!-- 拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 对所有的请求拦截使用/** ,对某个模块下的请求拦截使用：/myPath/** -->
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/static/**"/>
+            <mvc:exclude-mapping path="/api/**"/>
+            <bean class="com.jabava.core.interceptor.JabavaInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+	
+	<!--bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"-->
+	<bean id="exceptionResolver" class="com.jabava.core.JabavaMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
 				<prop key="java.lang.Exception">common/error</prop>
@@ -50,7 +61,7 @@
 		<property name="statusCodes">
 			<props>
 				<prop key="common/error">500</prop>
-				<prop key="common/error">404</prop>
+				<!--prop key="common/error">404</prop-->
 			</props>
 		</property>
 		<property name="defaultErrorView" value="common/error"></property>

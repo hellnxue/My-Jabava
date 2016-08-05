@@ -18,7 +18,7 @@ import com.jabava.service.hro.IEfSalaryInfoService;
 import com.jabava.service.hro.IHroPactInfoService;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
 
 /**
@@ -177,7 +177,7 @@ public class ImportSalaryInfoTask {
 			
 			try {
 				if(entity.get("grantDate")!=null && StringUtils.isNotBlank(entity.get("grantDate").toString())){
-					salaryInfo.setGrantDate(JabavaUtil.formatDate(entity.get("grantDate").toString(), "yyyyMMddhhmmss"));
+					salaryInfo.setGrantDate(JabavaUtil.formatDate(entity.get("grantDate").toString(), "yyyyMMddHHmmss"));
 				}
 				
 			} catch (Exception e) {

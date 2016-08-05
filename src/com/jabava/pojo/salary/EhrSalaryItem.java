@@ -166,6 +166,8 @@ public class EhrSalaryItem {
      */
     private Date lastModifyDate;
     
+    private Boolean isSalarySlipItem;
+    
     //是否在模板中(仅用于显示)
     private Integer inTemplate;
 
@@ -656,6 +658,14 @@ public class EhrSalaryItem {
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
     }
+
+	public Boolean getIsSalarySlipItem() {
+		return isSalarySlipItem;
+	}
+
+	public void setIsSalarySlipItem(Boolean isSalarySlipItem) {
+		this.isSalarySlipItem = isSalarySlipItem;
+	}
 
 	public Integer getInTemplate() {
 		return inTemplate;

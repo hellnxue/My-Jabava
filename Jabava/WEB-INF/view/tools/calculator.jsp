@@ -18,29 +18,9 @@
     <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
 
     <!-- Vendor styles -->
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/fontawesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/metisMenu/dist/metisMenu.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/animate.css/animate.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/xeditable/bootstrap3-editable/css/bootstrap-editable.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/select2-3.5.2/select2.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/select2-bootstrap/select2-bootstrap.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
-
-      
-    <!-- for data table -->
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.css" />
-    <!-- for alert -->
-     <link rel="stylesheet" href="${ctxStatic }/bootstrap/vendor/sweetalert/lib/sweet-alert.css" />
-
-    <!-- App styles -->
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/fonts/pe-icon-7-stroke/css/helper.css" />
-    <link rel="stylesheet" href="${ctxStatic }/bootstrap/styles/style.css">
+    <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
    <!-- <link rel="stylesheet" href="css/user.css">-->
-    <link rel="stylesheet" href="${ctxStatic }/css/styles.css">
+    <link rel="stylesheet" href="static/css/styles.css">
 
 </head>
 <body >

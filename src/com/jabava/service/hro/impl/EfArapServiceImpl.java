@@ -81,6 +81,11 @@ public class EfArapServiceImpl implements IEfArapService {
 	}
 	
 	@Override
+	public EfArap findByBillCode(String billCode) {
+		return efArapMapper.selectByBillCode(billCode);
+	}
+	
+	@Override
 	public List<Map<String,Object>> searchBillDetailHeader(EfArap bill){
 		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
 		result.add(this.getFieldHeader("jobNumber", "雇员编号"));
@@ -443,6 +448,13 @@ public class EfArapServiceImpl implements IEfArapService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int deleteById(EfArap efArap) {
+		efArapDetailEmpNsbMapper.deleteByBillId(efArap.getBillId());
+		efArapDetailEmpSbMapper.deleteByBillId(efArap.getBillId());
+		return efArapMapper.deleteByPrimaryKey(efArap.getBillId());
 	}
 	
 }

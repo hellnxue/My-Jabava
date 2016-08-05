@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,9 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
-
+        <jsp:include flush="true" page="../common/extendMenu.jsp">
+            <jsp:param value="toListSalaryChangeDef" name="type"/>
+        </jsp:include>
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
@@ -39,9 +42,10 @@
                     <div class="hpanel">
                         <div class="panel-heading">
                             <div class="text-right">
-                               <!--button class="btn btn-success btn-sm btn-add-change" type="button">增加</button-->
+                               <% if(RequestUtil.hasPower("outerdatadef_ud")){ %>
                                <button class="btn btn-success btn-sm btn-upload-change" type="button">上传定义</button>
-                               <button class="btn btn-success btn-sm btn-download-template" type="button">下载模板</button>
+                               <% } %>
+                               <button class="btn btn-success btn-sm btn-download-template" type="button">下载变动表样例</button>
                             </div>
                          </div>
                         <div class="panel-body"> 
@@ -51,8 +55,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>名称</th>
-                                    <th>主键列</th>
+                                    <th>身份识别列标题</th>
                                     <th>主键类型</th>
+                                    <th>是否月度信息</th>
                                     <th>描述</th>
                                     <th>操作</th>
                                 </tr>
@@ -116,11 +121,6 @@
     $(function () {
     	loadTable();
     	
-    	//$('.btn-add-change').click(function () {
-    	//	$('#id').val('');
-    	//	$('#changeForm').attr('action','salaryChangeDef/toAddSalaryChangeDef');
-    	//	$('#changeForm').submit();
-    	//});
     	
     	$('.btn-upload-change').click(function () {
     		$('#changeForm').attr('action','salaryChangeDef/toUploadSalaryChangeDef');
@@ -156,11 +156,23 @@
 						return "工号";
 					}
 				} },
+				{ "data": "isMonthly", "render": function(data, type, row, meta){
+					if(data == 1){
+						return "是";
+					}else{
+						return "否";
+					}
+				} },
 		    	{ "data": "description" },
 				{ "render": function render( data, type, row, meta ){
-						return '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryChangeDefId + ');">删除</button>&nbsp;' + 
-                        	'<button class="btn btn-success btn-xs" type="button" onclick="view(' + row.salaryChangeDefId + ');">查看</button>&nbsp;' +
-                        	'<button class="btn btn-info btn-xs" type="button" onclick="download(' + row.salaryChangeDefId + ');">下载</button>';
+                        var strHtml = '';
+                        <% if(RequestUtil.hasPower("outerdatadef_dd")){ %>
+                        strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryChangeDefId + ');">删除</button>&nbsp;';
+                        <% } %>
+                        <% if(RequestUtil.hasPower("outerdatadef_vd")){ %>
+                        strHtml += '<button class="btn btn-success btn-xs" type="button" onclick="view(' + row.salaryChangeDefId + ');">查看</button>&nbsp;';
+                        <% } %>
+						return strHtml;
 					}
 				}
 			],

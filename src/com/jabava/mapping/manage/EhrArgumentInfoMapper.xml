@@ -111,7 +111,7 @@
       <if test="argumentValue != null and argumentValue != ''">
         ARGUMENT_VALUE = #{argumentValue,jdbcType=VARCHAR},
       </if>
-      <if test="companyId != null and companyId != ''">
+      <if test="companyId != null">
         COMPANY_ID = #{companyId,jdbcType=BIGINT},
       </if>
       <if test="remark != null and remark != ''">

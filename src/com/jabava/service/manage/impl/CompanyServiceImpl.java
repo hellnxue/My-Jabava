@@ -1,5 +1,7 @@
 package com.jabava.service.manage.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -69,6 +71,16 @@ public class CompanyServiceImpl implements ICompanyService {
 		} catch (Exception e) {
 			throw new Exception("查询公司实体失败.", e);
 		}
+	}
+
+	@Override
+	public EhrCompany getCompanysByUserName(String userName) {
+		return companyMapper.getCompanysByUserName(userName);
+	}
+
+	@Override
+	public List<EhrCompany> getAllCompany(boolean withPlatform) {
+		return companyMapper.getAllCompany(withPlatform ? 1 : 0);
 	}
 
 }

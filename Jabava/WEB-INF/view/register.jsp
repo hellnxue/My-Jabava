@@ -1,14 +1,14 @@
-<%@page import="com.jabava.utils.JabavaPropertyCofigurer"%>
+<%@page import="com.jabava.core.config.JabavaPropertyCofigurer"%>
 <%@ page contentType="text/html; charset=utf-8" %>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	//response.sendRedirect(basePath + "common/maintain");
 %>
 <!DOCTYPE html>
 <html>
-<base href="<%=basePath%>">
 <head>
 	<base href="${pageContext.request.contextPath}/">
     <meta charset="utf-8">
@@ -16,7 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Page title -->
-    <title>Jabava V1.0 | 注册</title>
+    <title>注册</title>
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
@@ -27,9 +27,6 @@
     <link rel="stylesheet" href="static/bootstrap/vendor/animate.css/animate.css" />
     <link rel="stylesheet" href="static/bootstrap/vendor/bootstrap/dist/css/bootstrap.css" />
     
-    <!-- for data table -->
-    <link rel="stylesheet" href="static/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.css" />
-    
     <!-- for alert -->
     <link rel="stylesheet" href="static/bootstrap/vendor/sweetalert/lib/sweet-alert.css" />
     
@@ -38,25 +35,17 @@
     <link rel="stylesheet" href="static/bootstrap/fonts/pe-icon-7-stroke/css/helper.css" />
     <link rel="stylesheet" href="static/bootstrap/styles/static_custom.css">
     <link rel="stylesheet" href="static/bootstrap/styles/style.css">
-    
+    <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
     <!--for 临时改变-->
-	<link rel="stylesheet" href="static/css/user.css">
+     <link rel="stylesheet" href="static/css/jabava.css">
+	<!-- <link rel="stylesheet" href="static/css/user.css"> -->
 	
      
 
 </head>
 <body class="blank">
 
-<!-- Simple splash screen-->
-<div class="splash"> 
- <div class="color-line"></div><div class="splash-title">
-<h1>Jabava V1.0 </h1>
-<p>属于你的专业人事专员</p>
-<img src="static/images/loading-bars.svg" width="64" height="64" /> </div> </div>
-
-<!--[if lt IE 7]>
-<p class="alert alert-danger">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-<![endif]-->
+<jsp:include flush="true" page="./common/splashscreen.div.jsp"></jsp:include>
 
 <div class="color-line"></div>
 <!-- <div class="back-link">
@@ -71,90 +60,88 @@
             <div class="hpanel">
                 <div class="panel-body">
                 	<div class="col-sm-12">
-                        <form action="#" id="loginForm" class="formclass" method="post">
+                        <form action="#" id="loginForm" class="form-horizontal" method="post">
                             <div class="row">
                             <div class="form-group">
-                            	<label class="col-lg-2">&nbsp;</label>
-                                <label class="col-lg-2">公司名称</label>
-                                <div class="col-lg-7">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">公司名称</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
                                 	<input type="text" value="" id="companyName" class="form-control" name="companyName" placeholder="请输入公司名称">
                                 </div>
-                                <label class="col-lg-1 hong">*</label>
                             </div>
-                            
                             <div class="form-group">
-                            	<label class="col-lg-2">&nbsp;</label>
-                                <label class="col-lg-2">所在城市</label>
-                                <span id="all_city">
-	                                <div class="col-lg-2">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">联系人</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
+                                	<input type="text" value="" id="contacts" class="form-control" name="contacts" placeholder="请输入联系人姓名">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">所在城市</label>
+                                <div id="all_city">
+	                                <div class="col-sm-3 col-md-3 col-lg-3">
 	                                 	<select id="companyProv" class="prov form-control" name="companyProv" ></select> 
 	                                </div>
-	                                <div class="col-lg-2">
+	                                <div class="col-sm-3 col-md-3 col-lg-3">
 	                                	<select id="companyCity" class="city form-control" name="companyCity" disabled="disabled"></select>
 	                                </div>	
-	                                <div class="col-lg-2">
+	                                <div class="col-sm-3 col-md-3 col-lg-3">
 	                                	<select id="companyDist" class="dist form-control" name="companyDist" disabled="disabled"></select>
 	                                </div>
-                                </span>
-                                <label class="col-lg-2">&nbsp;</label>
-                            </div>
-                            
-                            <div class="form-group">
-                            	<label class="col-lg-2">&nbsp;</label>
-                                <label class="col-lg-2">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机</label>
-                                <div class="col-lg-6">
-                                	<input value="" id="mobile" class="form-control" name="mobile" placeholder="请输入登录手机号">
-                                	<input id="realCode" name="realCode" type="hidden"/>
                                 </div>
-                                <label class="col-lg-1 hong">*</label>
-                                <label class="col-lg-1">&nbsp;</label>
                             </div>
-                            
                             <div class="form-group">
-                            	<label class="col-lg-2">&nbsp;</label>
-                                <label class="col-lg-2">验&nbsp; 证&nbsp;码</label>
-                                <div class="col-lg-4">
-                                	<input value="" id="checkCode" class="form-control" name="checkCode" placeholder="请输入验证码">
-                                </div>
-                                <div class="col-lg-2">
-                                <button class="btn btn-success register_but" style="width:100%;" onclick="checkMobile();return false;">获取验证码</button>
-                                </div>
-                                <label class="col-lg-1 hong">*</label>
-                                <label class="col-lg-1">&nbsp;</label>
-                            </div>
-                            
-                            <div class="form-group">
-                            	<label class="col-lg-2">&nbsp;</label>
-                                <label class="col-lg-2">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
-                                <div class="col-lg-6">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">密码</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
                                 	<input type="password" value="" id="password" class="form-control" name="password" placeholder="******">
+                                	<span class="help-block col-sm-9 com-md-9 com-lg-9">密码由6-16个英文字母+数字组成,区分大小写(不包含空格).</span>
                                 </div>
-                                
-                                <label class="col-lg-2">&nbsp;</label>
                             </div>
-                            
                             <div class="form-group">
-                            	<label class="col-lg-2">&nbsp;</label>
-                                <label class="col-lg-2">确认密码</label>
-                                <div class="col-lg-6">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">确认密码</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
                                 	<input type="password" value="" id="password2" class="form-control" name="password2" placeholder="******">
                                 </div>
-                                <label class="col-lg-2">&nbsp;</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">手机</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
+                                	<input id="mobile" class="form-control" name="mobile" value="${param.mobile }" placeholder="请输入登录手机号">
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">图片验证码</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
+                                	<div class="input-group">
+                                		<input value="" id="gCheckCode" class="form-control" name="gCheckCode" placeholder="请输入验证码">
+                                		<span class="input-group-btn">
+                                		<img src="<%=path %>/kaptcha.jpg" height="34" id="kaptchaImage" alt="图片验证码" title="看不清？点击更换验证码" />
+                                		</span>
+                                	</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-md-2 col-lg-2 control-label">短信验证码</label>
+                                <div class="col-sm-9 col-md-9 col-lg-9 form-required">
+                                	<div class="input-group">
+                                		<input value="" id="mCheckCode" class="form-control" name="mCheckCode" placeholder="请输入短信验证码">
+                                		<span class="input-group-btn">
+                                		<button class="btn btn-success register_but" style="width:100%;" onclick="checkMobile();return false;" type="button">获取验证码</button>
+                                		</span>
+                                	</div>
+                                </div>
                             </div>
                             
                             <div class="form-group">
-                            	<label class="col-lg-4">&nbsp;</label>
- 
-                                <div class="col-lg-6">
-                                	<input type="checkbox" class="register_radio" id="agree" onchange="agreeReg();return false;"><span class="register_span">我已经阅读并同意遵守《jabava的服务条款》</span>
+                                <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 checkbox">
+									<div class="checkbox">
+                                		<input type="checkbox" class="register_radio" id="agree" name="agree">
+                                		<a href="static/docs/protocol.html" target="_blank" style="text-decoration: underline;" class="register_span">我已经阅读并同意遵守《Jabava服务条款》</a>
+                                	</div>
                                 </div>
-                                <label class="col-lg-2">&nbsp;</label>
                             </div>
                             </div>
-                            
-                            <center>
-                                <a><button id="reg" class="btn btn-success demo2" onclick="register();" type="button" disabled="disabled">注 册</button></a>
-                            <center>
+                            <div class="form-group text-center">
+                            	<button id="reg" class="btn btn-success demo2" type="submit" disabled="disabled">注 册</button>
+                            </div>
                             
                              <input type="hidden"  id="userId" name="userId" value="${userId}"/>
                             <input type="hidden"  id="companyId" name="companyId"value="${companyId}"/>
@@ -191,10 +178,13 @@
 	<script src="static/bootstrap/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
 	<script src="static/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
-
+	<!-- 表单验证 -->
+	<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+	<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+	<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 	<!-- alert -->
 	<script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
-    
+    <script src="static/js/plugins/countdown/jquery.countdown.min.js"></script>
 	<!-- App scripts -->
 	<script src="static/bootstrap/scripts/homer.js"></script>
     <script src="static/bootstrap/scripts/charts.js"></script>
@@ -205,40 +195,174 @@
 <script>
 $(function (){
 	
+	$(".register_but, [name=mCheckCode]").prop('disabled', true).addClass('disabled');
 	document.getElementById("loginForm").reset(); 
 	
 	$("#all_city").citySelect({
 		nodata:"none",
 		required:false
 	}); 
+
+    $('#kaptchaImage')
+    .css({
+    	cursor: 'pointer'
+    })
+    .on('click', function() {
+        $(this).attr('src', '<%=path %>/kaptcha.jpg?' + Math.floor(Math.random()*100) );
+    })
+
+ 	var validators = {
+ 			err: {
+	            container: 'tooltip'
+	        },
+	        icon: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        locale: 'zh_CN',
+	        
+	        fields: {
+	            companyName: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写必填项目'
+	                    }
+	                }
+	            },
+	            contacts: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写必填项目'
+	                    }
+	                }
+	            },
+	            mobile: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写必填项目'
+	                    },
+	                    phone: {
+	                    	message: '请输入正确格式的手机号码',
+	                    	country: 'CN'
+	                    }
+	                },
+	                onSuccess: function(e,data){
+	                	if($('#gCheckCode').val()!='') $('.register_but, [name=mCheckCode]').prop('disabled', false).removeClass('disabled')
+	                },
+	            	onError: function(e,data){
+	            		$('.register_but, [name=mCheckCode]').prop('disabled', true).addClass('disabled')
+	            	}
+	            },
+	            gCheckCode: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写必填项目'
+	                    },
+                		remote: {
+		                    url: 'checkGraphics',
+		                    type: 'POST',
+		                    delay: 1000,
+		                    data: function(validator, $field, value) {
+							    return {
+							        gCheckCode: value
+							    };
+							},
+							validKey: 'success',
+							message: '图形验证码不匹配'
+		                }
+	                },
+	                onSuccess: function(e, data){
+            			if($('#mobile').val()!='') $(".register_but, [name=mCheckCode]").prop('disabled', false).removeClass('disabled')
+            		},
+            		onError: function(e, data){
+            			$(".register_but, [name=mCheckCode]").prop('disabled', true).addClass('disabled')
+            		}
+	            },
+	            mCheckCode: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写短信验证码'
+	                    }
+	                }
+	            },
+	            password: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写必填项目'
+	                    },
+		                regexp: {
+	                            regexp: /^[a-zA-Z0-9]{6,16}$/,
+	                            message: '密码由6-16个英文字母+数字组成，区分大小写(不包含空格)'
+	                    }
+	                }
+	            },
+	            password2: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请填写必填项目'
+	                    },
+	                    regexp: {
+	                            regexp: /^[a-zA-Z0-9]{6,16}$/,
+	                            message: '密码由6-16个英文字母+数字组成，区分大小写(不包含空格)'
+	                    },
+	                    identical: {
+                            field: 'password',
+                            message: '密码不一致，请重新输入密码'
+                        }
+	                }
+	            },
+	            agree: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '您必须同意《Jabava服务条款》，才能继续注册。'
+	                    }
+	                }
+	            }
+	        }
+ 		}
+
+
+ 	$('#loginForm')
+ 	.formValidation(validators)
+ 	.on('success.form.fv',function(e){
+ 		e.preventDefault();
+		register()
+ 	})
+
 	
 })
 
 function checkMobile(){
-	if($("#mobile").val() == ''){
-		alert("请输入手机号码");
-		return false;
-	}
-	if(IdentityMobileValid($("#mobile").val()) == false){
-		alert("请输入正确格式的手机号码");
-		return false;
-	}
-	$.ajax({
+    var $countdownOptionEnd = $(".register_but");
+    $.ajax({
 		cache : true,
 		type : "POST",
 		url : "checkMobile",
-		data : {"mobile":$("#mobile").val(),"flag": 0},
+		data : {"mobile":$("#mobile").val(), "gCheckCode":$('#gCheckCode').val(), "flag": 1},
 		dataType : 'json',
 		async : false,
 		success : function(data) {
-			if(data.info != ""){
-				alert(data.info);
+			if(!data.success){
+				$countdownOptionEnd.prop('disabled', false).removeClass('disabled')
+				swal({title:data.msg, type:'error'})
 				return false;
 			}else{
-				document.getElementById("realCode").value = data.checkCode;
+			    function get15dayFromNow() {
+			    	return (new Date()).getTime() + 120 * 1000; // 1 minute later;
+			    }
+			    $countdownOptionEnd.countdown(get15dayFromNow(), function(event) {
+			    	$(this).html(event.strftime('%M:%S 秒后重新发送'));
+			    })
+			    .on('finish.countdown', function(event){
+			        $countdownOptionEnd.prop('disabled', false)
+			        .removeClass('disabled')
+			        .html('获取验证码');
+			    })
+
 			}
 		}
-	});
+	}); 
 }
 
 function agreeReg(){
@@ -251,39 +375,6 @@ function agreeReg(){
 }
 
 function register(){
-	if($("#companyName").val() == ''){
-		alert("请输入公司名称");
-		return false;
-	}
-	if($("#mobile").val() == ''){
-		alert("请输入手机号码");
-		return false;
-	}
-	if(IdentityMobileValid($("#mobile").val()) == false){
-		alert("请输入正确格式的手机号码");
-		return false;
-	}
-	if($("#checkCode").val() == ''){
-		alert("请输入校验码");
-		return false;
-	}
-	if($("#checkCode").val() != $("#realCode").val()){
-		alert("请输入正确的校验码");
-		return false;
-	}
-	if($("#password").val() == ''){
-		alert("请输入密码");
-		return false;
-	}
-	if($("#password2").val() == ''){
-		alert("请确认密码");
-		return false;
-	}
-	if($("#password").val() != $("#password2").val()){
-		alert("两次输入密码不一致");
-		return false;
-	}
-	
 	$.ajax({
 			cache : true,
 			type : "POST",
@@ -295,12 +386,16 @@ function register(){
 				if (data.result == true) {
 					document.getElementById("userId").value = data.userId;
 					document.getElementById("companyId").value = data.companyId;
+					//console.log(data)
 					if(data.url){
-						$("#loginForm").attr("action", data.url);
+						//$("#loginForm").attr("action", data.url);
+						location.href = data.url;
 					}else{
-						$("#loginForm").attr("action", "to_perfect");
+						console.log(data)
+						//$("#loginForm").attr("action", "to_perfect");
+						//$("#loginForm").attr("action", "to_index");
+						location.href = "to_index";
 					}
-					$('#loginForm').submit();
 				} else {
 					alert("注册用户失败: " + data.msg);
 					return false;

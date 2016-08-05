@@ -290,4 +290,10 @@
 			and role_name=#{roleName, jdbcType=VARCHAR}
 		</if>
 	</select>
+	
+	<select id="selectByRoleName" resultMap="BaseResultMap">
+		select * from ehr_role
+		where company_id=#{companyId,jdbcType=BIGINT}
+			and role_name=#{roleName, jdbcType=VARCHAR}
+	</select>
 </mapper>

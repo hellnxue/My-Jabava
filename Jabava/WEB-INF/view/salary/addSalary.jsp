@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,11 +40,9 @@
                     <div class="hpanel">
                         <div class="panel-heading">
                             <h4 class="text-center font-bold">
+                                <a href="salary/toListSalary" type="button" class="btn btn-success btn-sm pull-left">返　回</a>
                                 员工工资修改
                             </h4>
-                            <div class="text-left">
-                                <a href="salary/toListSalary" type="button" class="btn btn-success btn-sm">返　回</a>
-                            </div>
                         </div>
                         
                         <div class="panel-body m-b-md">
@@ -51,7 +50,6 @@
                             	<input type="hidden" name="salaryId" value="${salary.salaryId }">
                             	<%--input type="hidden" name="personId" value="${salary.personId }"--%>
                             	<input type="hidden" name="jobNumber" value="${salary.jobNumber }">
-                            	<input type="hidden" name="salaryTemplateId" value="${salary.salaryTemplateId }">
                             	<input type="hidden" name="usageFlag" value="${salary.usageFlag }">
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
@@ -65,8 +63,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">工资模板：</label>
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
-                                            <select class="form-control" id="salaryTemplateId" disabled="disabled">
-                                                <option value="">----------</option>
+                                            <select class="form-control" id="salaryTemplateId" name="salaryTemplateId">
                                                 <c:forEach var="template" items="${requestScope.templateList }" varStatus="status">
                                                 	<option value="${template.salaryTemplateId }">${template.templateName }</option>
                                                 </c:forEach>
@@ -79,7 +76,10 @@
                                         <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">用途</label>
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
                                             <select class="form-control" id="usageFlag" disabled="disabled">
-                                                <option value="616">工资</option>
+                                                <option value="">请选择</option>
+                                                <c:forEach var="salaryType" items="${requestScope.salaryTypeList }" varStatus="status">
+                                                	<option value="${salaryType.baseDataId }">${salaryType.baseDataName }</option>
+                                                </c:forEach>
                                             </select>
                                         </div>   
                                     </div>
@@ -103,9 +103,11 @@
                                         </div> 
                                     </div>
                                 </div>
+                                <% if(RequestUtil.hasPower("salary_modifysalary_ss")){ %>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                                     <button type="button" class="btn btn-info btn-sm" onclick="save();">保　存</button>
                                 </div>
+                                <% } %>
                             </form>
                         </div>
                         <div class="panel-body">
@@ -153,8 +155,13 @@
           </div>
         </div>
         <!--全部导入弹框 end--> 
-
     </div>
+	<div style="display:none;">
+		<form id="payoffForm" action="" method="post">
+			<input type="hidden" name="salaryId" value="${salary.salaryId }">
+		</form>
+    </div>
+    
     <!-- Vendor scripts -->
     <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
     <script src="static/bootstrap/vendor/jquery-ui/jquery-ui.min.js"></script>
@@ -203,6 +210,7 @@
     	
       	var table = $('#addSalaryTable').DataTable({
     		"dom": 
+                "<'row'<'col-sm-12'<'toolbar text-right'>>>" +
                 "<'row'<'col-sm-12 table-responsive'tr>>",
 			
 			//json
@@ -218,14 +226,26 @@
 			"columns": [
 			 	{ "data": "salaryItemName" },
 			 	{ "data": "amount", "render": function render( data, type, row, meta ){
+                    <% if(RequestUtil.hasPower("salary_modifysalary_ss")){ %>
 					return'<a id="amount" class="editable editable-click" data-title="Amount" data-placeholder="Required" data-placement="right" data-pk="' + row.salaryDetailId + '" data-type="text" href="#" style="display: inline;">' + data + '</a>';
+                    <% }else{ %>
+                    return data;
+                    <% } %>
 				} },
 			 	{ "data": "payRadio", "render": function render( data, type, row, meta ){
+                    <% if(RequestUtil.hasPower("salary_modifysalary_ss")){ %>
 					return'<a id="pay_radio" class="editable editable-click" data-title="Pay Radio" data-placeholder="Required" data-placement="right" data-pk="' + row.salaryDetailId + '" data-type="text" href="#" style="display: inline;">' + data + '</a>';
+                    <% }else{ %>
+                    return data;
+                    <% } %>
 				} },
 			 	{ "data": "bonusBase", "render": function render( data, type, row, meta ){
+                    <% if(RequestUtil.hasPower("salary_modifysalary_ss")){ %>
 					return'<a id="bonus_base" class="editable editable-click" data-title="Bonus Base" data-placeholder="Required" data-placement="right" data-pk="' + row.salaryDetailId + '" data-type="text" href="#" style="display: inline;">' + data + '</a>';
-				} },
+                    <% }else{ %>
+                    return data;
+                    <% } %>
+				},"visible": false },
 		     	{ "data": "bonusRule", "visible": false },
                 { "visible": false },
                 { "visible": false }
@@ -233,6 +253,7 @@
      		"columnDefs": [
      			{defaultContent: '', targets: '_all'}
 			],
+
 			drawCallback: function(){
     			$('.editable').editable({
     				url : 'salary/updateSalaryDetail',
@@ -270,7 +291,11 @@
 					"last":"尾页"
 				}
    			}
+
    	    });
+        <% if(RequestUtil.hasPower("salary_modifysalary_ri")){ %>
+        $(".toolbar").html('<a class="btn btn-info btn-sm" onclick="viewPayoffHistory();">发放信息</a>');
+        <% } %>
     });
 
     function save(){
@@ -304,11 +329,16 @@
     };
 
     $.fn.editable.defaults.mode = 'inline';
-        $('.editable').editable({
-            validate: function(value) {
-                if($.trim(value) == '') return '不能为空值';
-            }
-        });
+    $('.editable').editable({
+        validate: function(value) {
+            if($.trim(value) == '') return '不能为空值';
+        }
+    });
+    
+    function viewPayoffHistory(){
+        $('#payoffForm').attr('action','salary/toListPayoffHistory');
+        $('#payoffForm').submit();
+    }
 </script>
 </body>
 </html>

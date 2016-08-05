@@ -2,8 +2,8 @@ package com.jabava.pojo.employee;
 
 import java.util.Date;
 
-import com.jabava.core.EnumConstents.WorkContractProperty;
-import com.jabava.core.EnumConstents.WorkContractType;
+import com.jabava.utils.enums.JabavaEnum.WorkContractProperty;
+import com.jabava.utils.enums.JabavaEnum.WorkContractType;
 import com.jabava.pojo.manage.EhrOrganization;
 
 public class EhrContractVO {

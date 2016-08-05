@@ -51,6 +51,7 @@
     -->
     delete from ehr_resume
     where resume_id = #{resumeId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrResume" >
     <!--
@@ -217,6 +218,7 @@
       </if>
     </set>
     where resume_id = #{resumeId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrResume" >
     <!--
@@ -239,6 +241,7 @@
       last_modify_user_name = #{lastModifyUserName,jdbcType=VARCHAR},
       last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP}
     where resume_id = #{resumeId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   	<select id="getByPersonId" resultMap="BaseResultMap">

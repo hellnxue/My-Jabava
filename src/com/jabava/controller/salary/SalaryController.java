@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,9 +32,13 @@ import com.jabava.pojo.salary.EhrSalaryDetail;
 import com.jabava.service.employee.IEmployeeService;
 import com.jabava.service.salary.ISalaryService;
 import com.jabava.service.salary.ISalaryTemplateService;
+import com.jabava.service.system.IBaseDataService;
 import com.jabava.service.system.IEhrOrganizationService;
+import com.jabava.service.system.IEhrSysLogSercice;
+import com.jabava.utils.constants.BaseDataConstants;
+import com.jabava.utils.enums.SystemEnum;
 import com.jabava.utils.Constants;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
@@ -42,6 +47,9 @@ import com.jabava.utils.RequestUtil;
 @RequestMapping("/salary")
 public class SalaryController {
 	private static Logger log = Logger.getLogger(SalaryController.class);
+	
+	@Resource
+	private IEhrSysLogSercice sysLogSercice;
 	
 	@Autowired
 	private ISalaryService salaryService;
@@ -55,12 +63,18 @@ public class SalaryController {
 	@Autowired
 	private IEhrOrganizationService organizationService;
 	
+	@Autowired
+	private IBaseDataService baseDataService;
+	
 	@RequestMapping("toListSalary")
 	public String toListSalary(HttpServletRequest request, HttpServletResponse response){
 		EhrUser user = RequestUtil.getLoginUser(request);
 		request.setAttribute("templateList", templateService.listSalaryTemplate(user.getCompanyId()));
-		EhrOrganization topOrg = organizationService.findTopOrganization(user.getCompanyId());
-		request.setAttribute("orgList", organizationService.getChildren(topOrg.getParentId()));
+		//EhrOrganization topOrg = organizationService.findTopOrganization(user.getCompanyId());
+		//request.setAttribute("orgList", organizationService.getChildren(topOrg.getOrganizationId()));
+		request.setAttribute("orgList", organizationService.findByLevel(user.getCompanyId(), 1));
+		//查询类型为4-工资用途的基础数据
+		request.setAttribute("salaryTypeList", baseDataService.selectBaseData(user.getCompanyId(), BaseDataConstants.BASE_DATA_SALARY_TYPE));
 		return "salary/listSalary";
 	}
 	
@@ -89,7 +103,7 @@ public class SalaryController {
 		Page<EhrSalary> page = new Page<EhrSalary>(start,length);
 		params.put("page", page);
 		List<EhrSalary> list = salaryService.listSalaryPage(params);
-		
+		//sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Select, SystemEnum.Module.Salary, "查看公司id为"+user.getCompanyId()+"的员工薪酬档案");
 		page.setData(list);
 		return page;
 	}
@@ -105,12 +119,14 @@ public class SalaryController {
 		}
 		
 		request.setAttribute("templateList", templateService.listSalaryTemplate(user.getCompanyId()));
+		//查询类型为4-工资用途的基础数据
+		request.setAttribute("salaryTypeList", baseDataService.selectBaseData(user.getCompanyId(), BaseDataConstants.BASE_DATA_SALARY_TYPE));
 		return "salary/addSalary";
 	}
 	
 	@RequestMapping("editSalary")
 	@ResponseBody
-	public Map<String,Object> editSalary(HttpServletRequest request, HttpServletResponse response, EhrSalary salary){
+	public Map<String,Object> editSalary(HttpServletRequest request, HttpServletResponse response, EhrSalary salary) throws Exception{
 		EhrUser user = RequestUtil.getLoginUser(request);
 		EhrPerson person = employeeService.searchPersonByJobNumber(user.getCompanyId(), salary.getJobNumber());
 		if(person == null){
@@ -120,17 +136,22 @@ public class SalaryController {
 		if(exist != null){
 			if(salary.getSalaryId() == null){
 				return MessageUtil.errorMessage("员工用途组合重复");
-			}else if(exist.getSalaryId() != salary.getSalaryId()){
+			}else if(!exist.getSalaryId().equals(salary.getSalaryId())){
 				return MessageUtil.errorMessage("员工用途组合重复");
 			}
 		}else{
 			salary.setStatus(1);	//默认在发
 		}
-
+			boolean flag = salary.getSalaryId() == null;
 		salary.setPersonId(person.getPersonId());
 		if(salaryService.saveOrUpdate(salary, user) == 0){
 			return MessageUtil.errorMessage("操作失败");
 		}else{
+			if(flag){
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, SystemEnum.Module.Salary, "添加一个名叫"+salary.getEmployeeName()+"的薪酬档案");
+			}else{
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.Salary, "修改一个名叫"+salary.getEmployeeName()+"的薪酬档案");
+			}
 			Map<String,Object> result = MessageUtil.successMessage("操作成功");
 			result.put("salaryId", salary.getSalaryId());
 			return result;
@@ -162,11 +183,12 @@ public class SalaryController {
 	
 	@RequestMapping("deleteSalary")
 	@ResponseBody
-	public Map<String,Object> deleteSalary(HttpServletRequest request, HttpServletResponse response, Long salaryId){
+	public Map<String,Object> deleteSalary(HttpServletRequest request, HttpServletResponse response, Long salaryId) throws Exception{
 		EhrUser user = RequestUtil.getLoginUser(request);
 		if(salaryService.deleteById(user.getCompanyId(), salaryId) == 0){
 			return MessageUtil.errorMessage("删除失败");
 		}else{
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Delete, SystemEnum.Module.Salary, "删除一个id为"+salaryId+"的薪酬档案");
 			return MessageUtil.successMessage("删除成功");
 		}
 	}
@@ -255,6 +277,10 @@ public class SalaryController {
 	private String readSheet(XSSFSheet sheet, Integer usageFlag, EhrUser user, List<EhrSalary> salaryList, 
 			List<Map<String,Object>> rowMessageList) throws Exception {
 		XSSFRow titleRow = sheet.getRow(0);
+		if(titleRow == null){
+			return "格式不正确，请参考模板填写数据";
+		}
+		
 		Cell jobNumberCell = titleRow.getCell(2);
 		if(jobNumberCell == null || !"工号".equals(jobNumberCell.toString())){
 			return "格式不正确，请参考模板填写数据";
@@ -341,5 +367,53 @@ public class SalaryController {
 		rowMessage.put("cell", cell);
 		rowMessage.put("msg", msg);
 		return rowMessage;
+	}
+	
+	@RequestMapping("toListPayoffHistory")
+	public String toListPayoffHistory(HttpServletRequest request, HttpServletResponse response, Long salaryId)
+			throws Exception{
+		if(salaryId == null){
+			throw new Exception("数据为空");
+		}
+		
+		EhrUser user = RequestUtil.getLoginUser(request);
+		EhrSalary salary = salaryService.selectById(user.getCompanyId(), salaryId);
+		if(salary == null){
+			throw new Exception("工资不存在");
+		}
+		
+		request.setAttribute("salary", salary);
+		return "salary/listPayoffHistory";
+	}
+	
+	@RequestMapping("listPayoffHistoryPage")
+	@ResponseBody
+	public Page<Map<String,Object>> listPayoffHistoryPage(HttpServletRequest request, HttpServletResponse response, int start, int length) 
+			throws Exception {
+		String salaryId = request.getParameter("salaryId");
+		if(StringUtils.isEmpty(salaryId)){
+			throw new Exception("数据为空");
+		}
+		
+		EhrUser user = RequestUtil.getLoginUser(request);
+		EhrSalary salary = salaryService.selectById(user.getCompanyId(), Long.valueOf(salaryId));
+		if(salary == null){
+			throw new Exception("工资不存在");
+		}
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("companyId", user.getCompanyId());
+		params.put("personId", salary.getPersonId());
+		params.put("usageFlag", salary.getUsageFlag());
+		params.put("startMonth", request.getParameter("startMonth"));
+		params.put("endMonth", request.getParameter("endMonth"));
+		
+		Page<Map<String,Object>> page = new Page<Map<String,Object>>(start, length);
+		params.put("page", page);
+		
+		List<Map<String,Object>> list = salaryService.listPayoffHistoryPage(params);
+		page.setData(list);
+		
+		return page;
 	}
 }

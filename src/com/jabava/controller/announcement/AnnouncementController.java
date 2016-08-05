@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,13 +24,16 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jabava.core.EnumConstents.HasRead;
-import com.jabava.core.EnumConstents.InformationRange;
-import com.jabava.core.EnumConstents.InformationType;
+import com.jabava.utils.enums.JabavaEnum.HasRead;
+import com.jabava.utils.enums.JabavaEnum.InformationRange;
+import com.jabava.utils.enums.JabavaEnum.InformationType;
+import com.jabava.utils.enums.SystemEnum;
+import com.jabava.utils.enums.SystemEnum.Module;
 import com.jabava.pojo.announcement.EhrInformation;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.announcement.AnnouncementService;
 import com.jabava.service.manage.IUserService;
+import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
@@ -48,6 +52,8 @@ import com.jabava.utils.RequestUtil;
 @RequestMapping("/announcement")
 public class AnnouncementController {
 	
+	@Resource
+	private IEhrSysLogSercice sysLogSercice;
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
@@ -108,7 +114,7 @@ public class AnnouncementController {
 		}
 		if(map!=null && map.get("finishDate")!=null && StringUtils.isNotBlank(map.get("finishDate").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(map.get("finishDate").toString()+" 23:59:59");
 			} catch (ParseException e) {
@@ -256,12 +262,9 @@ public class AnnouncementController {
 		ehrInformation.setHasRead(HasRead.UNREAD.getValue());
 		String msg = null;
 		if("success".equals(announcementService.addAnnouncement(ehrInformation))){
-			int result = userService.insertSysLog(ehrUser, "新增信息公告  公告ID " +ehrInformation.getInformationId()+" 公告 标题   "+ehrInformation.getInformationTitle());
-			if(result < 0){
-				msg = MessageUtil.INS_ERROR;
-			}else{
-				msg = MessageUtil.INS_SUCCESS;
-			}
+			sysLogSercice.addSysLog(RequestUtil.getLoginUser(), SystemEnum.LogOperateType.Add, Module.InformationBulletin, "发布标题为"+ehrInformation.getInformationTitle()+"的公告");
+			msg = MessageUtil.INS_SUCCESS;
+			
 		}else{
 			msg = MessageUtil.INS_ERROR;
 		}
@@ -308,12 +311,8 @@ public class AnnouncementController {
 		ehrInformation.setLastModifyDate(new Date());
 		String msg = null;
 		if("success".equals(announcementService.updateAnnouncement(ehrInformation))){
-			int result = userService.insertSysLog(ehrUser, "修改信息公告  公告ID " +ehrInformation.getInformationId()+" 公告 标题   "+ehrInformation.getInformationTitle());
-			if(result < 0){
-				msg = MessageUtil.UPD_ERROR;
-			}else{
+				sysLogSercice.addSysLog(RequestUtil.getLoginUser(), SystemEnum.LogOperateType.Update, SystemEnum.Module.InformationBulletin, "修改id为："+ehrInformation.getInformationId()+"的公告");
 				msg = MessageUtil.UPD_SUCCESS;
-			}
 		}else{
 			msg = MessageUtil.UPD_ERROR;
 		}
@@ -336,12 +335,8 @@ public class AnnouncementController {
 		EhrUser ehrUser = RequestUtil.getLoginUser(request);
 		String msg = null;
 		if("success".equals(announcementService.deleteByInformationId(informationId))){
-			int result = userService.insertSysLog(ehrUser, "删除信息公告  公告ID " +informationId);
-			if(result < 0){
-				msg = MessageUtil.DEL_ERROR;
-			}else{
+				sysLogSercice.addSysLog(RequestUtil.getLoginUser(), SystemEnum.LogOperateType.Delete, SystemEnum.Module.InformationBulletin, "删除id为"+informationId+"的公告");
 				msg = MessageUtil.DEL_SUCCESS;
-			}
 		}else{
 			msg = MessageUtil.DEL_ERROR;
 		}

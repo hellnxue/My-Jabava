@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,8 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jabava.pojo.manage.EhrBaseData;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.manage.ITimeService;
+import com.jabava.service.system.IBaseDataService;
+import com.jabava.utils.constants.BaseDataConstants;
 import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
@@ -44,6 +48,8 @@ import com.jabava.utils.RequestUtil;
 public class TimeController {
 	@Autowired
 	private ITimeService timeService;
+	@Resource
+	private IBaseDataService baseDataService;
 
 	/**
 	 * 获取考勤列表，分页
@@ -77,15 +83,15 @@ public class TimeController {
 
 		/* 高级查询 */
 		// 工号
-		String job_number = map.get("job_number").toString();
+		String job_number = map.get("job_number").toString().trim();
 		// 姓名
-		String employee_name = map.get("employee_name").toString();
+		String employee_name = map.get("employee_name").toString().trim();
 		// 月份
-		String year_month_record = map.get("year_month_record").toString();
+		String year_month_record = map.get("year_month_record").toString().trim();
 		// 所属部门
-		String organization_id = map.get("organization_id").toString();
+		String organization_id = map.get("organization_id").toString().trim();
 		// 工作地
-		String work_location = map.get("work_location").toString();
+		String work_location = map.get("work_location").toString().trim();
 
 		/* 排序 */
 		// 排序列的下标
@@ -104,7 +110,23 @@ public class TimeController {
 		page.setData(list);
 		return page;
 	}
-
+	/**
+	 * 获取当前公司的城市列表
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年4月7日 下午3:22:04 
+	 * </pre>
+	 *
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("getWorkCityList")
+	@ResponseBody
+	public List<EhrBaseData> getWorkCityList(HttpServletRequest request) throws Exception{
+		EhrUser user = RequestUtil.getLoginUser(request);
+		return baseDataService.selectBaseData(user.getCompanyId(), BaseDataConstants.BASE_DATA_CITY, null);
+	}
 	/**
 	 * 删除考勤记录
 	 * 
@@ -134,7 +156,24 @@ public class TimeController {
 	public Map<String, Object> updAttend(String name, String value, String pk) {
 		return timeService.updAttend(name, value, pk);
 	}
-
+	/**
+	 * 导出全部的条数
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年4月11日 下午3:48:28 
+	 * </pre>
+	 *
+	 * @return
+	 */
+	@RequestMapping("exportAllSum")
+	@ResponseBody
+	public Long exportAllSum(HttpServletRequest request){
+		EhrUser user = RequestUtil.getLoginUser(request);
+		String company_id = Long.toString(user.getCompanyId());
+		List<Map<String, Object>> list = timeService.downTimeExcel(company_id,
+				null);
+		return (long)list.size();
+	}
 	/**
 	 * 导出全部考勤记录
 	 * 
@@ -152,7 +191,25 @@ public class TimeController {
 				null);
 		return downTimeExcel(request, response, list);
 	}
-
+	/**
+	 * 导出部分记录的条数
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年4月11日 下午3:52:05 
+	 * </pre>
+	 *
+	 * @param request
+	 * @param params
+	 * @return
+	 */
+	@RequestMapping("exportPartSum")
+	@ResponseBody
+	public Long exportPartSum(HttpServletRequest request,String params){
+		String[] attend_ids = params.split(",");
+		List<Map<String, Object>> list = timeService.downTimeExcel(null,
+				attend_ids);
+		return (long)list.size();
+	}
 	/**
 	 * 导出部分考勤记录
 	 * 
@@ -315,12 +372,13 @@ public class TimeController {
 		Map<String, Object> user = new HashMap<String, Object>();
 		user.put("create_user_id", ehrUser.getUserId());
 		user.put("create_user_name", ehrUser.getUserName());
-		String res = timeService.importTimeExcel(temp, file, user);
-		String message = "失败";
+		String res = timeService.importTimeExcel(temp, file, user);		
 		if (res.equals(MessageUtil.SUCCESS)) {
-			message = "成功";
+			res = "导入成功";
 		}
-		return "<script>alert('导入" + message + "')</script>";
+		return res+"<script>alert('" + res + "');"
+				+ "window.parent.location.reload();"				
+				+ "</script>";
 	}
 
 	/**

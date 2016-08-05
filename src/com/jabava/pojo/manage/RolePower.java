@@ -1,5 +1,6 @@
 package com.jabava.pojo.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RolePower {
@@ -65,5 +66,19 @@ public class RolePower {
 
 	public void setNodes(List<RolePower> nodes) {
 		this.nodes = nodes;
+	}
+	
+	public void addNode(RolePower node){
+		if(this.nodes == null){
+			this.nodes = new ArrayList<RolePower>();
+		}
+		this.nodes.add(node);
+	}
+	
+	public void addNodes(List<RolePower> nodes){
+		if(this.nodes == null){
+			this.nodes = new ArrayList<RolePower>();
+		}
+		this.nodes.addAll(nodes);
 	}
 }

@@ -7,10 +7,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jabava.common.exception.JabavaServiceException;
 import com.jabava.pojo.employee.EhrPosition;
 import com.jabava.pojo.employee.EhrPositionVO;
 import com.jabava.pojo.manage.EhrUser;
@@ -54,8 +56,16 @@ public class PositionController {
 	@ResponseBody
 	public Map<String, Object> getEhrPositionByPersonId(Long personId){
 		Map<String, Object> map = new HashMap<>();
-		EhrPositionVO ehrPositionVO =  ehrPositionService.getEhrPositionByPersonId(personId);
-		map.put("ehrPositionVO", ehrPositionVO);
+		EhrPositionVO ehrPositionVO=null;
+		try {
+			ehrPositionVO = ehrPositionService.getEhrPositionByPersonId(personId);
+			map.put("ehrPositionVO", ehrPositionVO);
+		} catch (JabavaServiceException e) {
+			e.printStackTrace();
+			map.put("success", false);
+			map.put("msg", e.toString());
+		}
+		
 		return map;
 	}
 	/**
@@ -76,23 +86,11 @@ public class PositionController {
 		ehrPosition.setCreateDate(date);
 		ehrPosition.setCreateUserId(u.getUserId());
 		ehrPosition.setUpdateDate(date);
-		ehrPosition.setUpdateUserId(u.getUserId());
+		ehrPosition.setUpdateUserId(u.getUserId());		
+		if(StringUtils.isBlank(employeeName)){
+			employeeName =  null;  
+		}		 
 		return ehrPositionService.addPositin(ehrPosition,null,employeeName);
-	}
-	/**
-	 * 更新岗位信息
-	 * <pre>
-	 * @author steven.chen
-	 * @date 2016年2月17日 下午6:08:17 
-	 * </pre>
-	 *
-	 * @param ehrPosition
-	 * @return
-	 */
-	@RequestMapping("updatePosition")
-	@ResponseBody
-	public String updatePosition(EhrPosition ehrPosition){
-		return ehrPositionService.updatePosition(ehrPosition);
 	}
 
 }

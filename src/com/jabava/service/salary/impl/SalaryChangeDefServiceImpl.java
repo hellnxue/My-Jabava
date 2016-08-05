@@ -1,7 +1,7 @@
 package com.jabava.service.salary.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,9 @@ import com.jabava.dao.salary.EhrSalaryChangeDefMapper;
 import com.jabava.pojo.salary.EhrSalaryChangeDef;
 import com.jabava.pojo.salary.EhrSalaryChangeDefItem;
 import com.jabava.service.salary.ISalaryChangeDefService;
+import com.jabava.utils.SalaryHelper;
+import com.jabava.utils.enums.SalaryEnum;
+import com.jabava.utils.enums.SalaryEnum.SystemChangeTable;
 
 @Service
 public class SalaryChangeDefServiceImpl implements ISalaryChangeDefService{
@@ -26,9 +29,30 @@ public class SalaryChangeDefServiceImpl implements ISalaryChangeDefService{
 	}
 
 	@Override
-	public List<Map<String, Object>> loadSalaryChangeDef(Long salaryChangeDefId) {
-		// TODO Auto-generated method stub
-		return null;
+	public EhrSalaryChangeDef selectById(Long companyId, Long salaryChangeDefId, boolean withItem) {
+		EhrSalaryChangeDef result = null;
+		SystemChangeTable ct = null;
+		if(salaryChangeDefId.equals(SalaryEnum.SystemChangeTable.Attendance.getId())){
+			ct = SalaryEnum.SystemChangeTable.Attendance;
+			result = new EhrSalaryChangeDef();
+			result.setSalaryChangeDefId(salaryChangeDefId);
+			result.setCompanyId(companyId);
+			result.setName(ct.getDisplayName());
+			result.setKeyInfo("工号");
+			result.setKeyType(SalaryEnum.SalaryChangeDefKeyType.JobNumber.getValue());
+			if(withItem && result != null){
+				List<EhrSalaryChangeDefItem> itemList = new ArrayList<EhrSalaryChangeDefItem>();
+				itemList.addAll(SalaryHelper.getAttendanceDefination());
+				itemList.add(0, new EhrSalaryChangeDefItem("工号","job_number",1));
+				result.setItemList(itemList);
+			}
+		}else{
+			result = salaryChangeDefMapper.selectById(companyId, salaryChangeDefId);
+			if(withItem && result != null){
+				result.setItemList(salaryChangeDefItemMapper.listByDefId(salaryChangeDefId));
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -38,7 +62,7 @@ public class SalaryChangeDefServiceImpl implements ISalaryChangeDefService{
 
 	@Override
 	public int saveOrUpdate(EhrSalaryChangeDef changeDef) {
-		if(changeDef.getSalaryChangeDefId() == null || changeDef.getSalaryChangeDefId() == 0){
+		if(changeDef.getSalaryChangeDefId() == null || changeDef.getSalaryChangeDefId().longValue() == 0){
 			salaryChangeDefMapper.insertSelective(changeDef);
 		}else{
 			salaryChangeDefMapper.updateByPrimaryKey(changeDef);

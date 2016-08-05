@@ -1,11 +1,10 @@
 package com.jabava.service.tools.serviceImpl;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.jabava.dao.tools.EhrProvinceMapper;
@@ -26,6 +25,11 @@ public class EhrProvinceServiceImpl implements EhrProvinceService {
 	public List<HashMap<String, Object>> getAllProvince(EhrProvince ehrProvince) {
 		
 		return ehrProvincedao.getAllProvince(ehrProvince);
+	}
+
+	@Override
+	public List<EhrProvince> getProvinceList() {
+		return ehrProvincedao.getProvinceList();
 	}
 	
 

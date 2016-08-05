@@ -151,3 +151,7 @@
 .carousel-caption p {
   margin-bottom: 0;
 }
+
+.pointer{
+  cursor: pointer;
+}

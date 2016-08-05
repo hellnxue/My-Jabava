@@ -22,6 +22,12 @@ public interface ISalaryService {
 	
 	List<EhrSalaryDetail> loadDetailList(Long salaryId);
 	
+	boolean hasReferencedItem(Long salaryItemId);
+	
+	boolean hasReferencedTemplate(Long salaryTemplateId);
+	
+	boolean hasReferencedPerson(Long personId);
+	
 	/**
 	 * 以salaryItemName为键将工资明细组成Map
 	 * @param salaryId
@@ -30,4 +36,6 @@ public interface ISalaryService {
 	Map<String,EhrSalaryDetail> getDetailMap(Long salaryId);
 	
 	int updateSalaryDetail(String name, String value, String pk);
+	
+	List<Map<String,Object>> listPayoffHistoryPage(Map<String,Object> params);
 }

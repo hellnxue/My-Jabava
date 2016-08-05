@@ -132,9 +132,6 @@ public class EhrResumeController {
 		}
 		
 		return data;
-		 
-		 
-		 
 	 }
 	
 }

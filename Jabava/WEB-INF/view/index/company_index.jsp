@@ -5,7 +5,7 @@
 
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 	
@@ -19,13 +19,13 @@
 //	if(!RequestUtil.hasRoleOfName("企业管理员")){
 //		if(RequestUtil.hasRoleOfName("HR")){
 //			//request.getRequestDispatcher("/index/hr_index").forward(request, response);
-//			response.sendRedirect(basePath + "common/index");
+//			response.sendRedirect(basePath + "index");
 //		}else {
-//			//request.getRequestDispatcher("/common/index").forward(request, response);
-//			response.sendRedirect(basePath + "common/index");
+//			//request.getRequestDispatcher("/index").forward(request, response);
+//			response.sendRedirect(basePath + "index");
 //		}
 //	}
-	response.sendRedirect(basePath + "common/index");
+	response.sendRedirect(basePath + "index");
 	
 	//Integer jump = (Integer)request.getAttribute("jump");
 	//if(jump == null || jump.intValue() != 1){

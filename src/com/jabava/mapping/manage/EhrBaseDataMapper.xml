@@ -281,19 +281,33 @@
 		is_valid = #{isValid,jdbcType=TINYINT}
 		where base_data_id = #{baseDataId,jdbcType=BIGINT}
 	</update>
-	
+	<!-- 修改基础数据名称 -->
+	<update id="updateByCode"  parameterType="com.jabava.pojo.manage.EhrBaseData">
+	 	update ehr_base_data 
+	 	set 
+	 	base_data_name = #{baseDataName,jdbcType=VARCHAR} 
+	 	where base_data_code=#{baseDataCode,jdbcType=VARCHAR} and company_id = #{companyId,jdbcType=BIGINT} 
+	 	and base_data_type = #{baseDataType,jdbcType=INTEGER}  and is_valid=1
+	</update>
 	<select id="getByCompanyId" resultMap="BaseResultMap">
 		select base_data_id,base_data_type,base_data_name from ehr_base_data where company_id=#{companyId,jdbcType=BIGINT} and is_valid=1
 	</select>
 	
 	<select id="selectBaseData" resultMap="BaseResultMap">
-		select <include refid="Base_Column_List" /> from ehr_base_data where company_id = #{companyId,jdbcType=BIGINT}
+		select <include refid="Base_Column_List" /> from ehr_base_data where is_valid=1 and company_id = #{companyId,jdbcType=BIGINT}
+		
 		<if test="baseDataType != null and baseDataType != ''">
 			and base_data_type = #{baseDataType,jdbcType=INTEGER}
 		</if>
-		<if test="baseDataName != null and baseDataName != ''">
+	   <if test="baseDataName != null and baseDataName != ''">
 			and base_data_name = #{baseDataName,jdbcType=VARCHAR}
-		</if>
+		</if>  
+	</select>
+	
+	<select id="selectByType" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from ehr_base_data 
+		where company_id = #{companyId,jdbcType=BIGINT}
+			and base_data_type = #{baseDataType,jdbcType=INTEGER}
 	</select>
 	 
 	<select id="checkRepeat" resultType="java.lang.Integer" parameterType="com.jabava.pojo.manage.EhrBaseData">
@@ -311,5 +325,45 @@
 			<if test="baseDataId != null">
 				and base_data_id&lt;&gt;#{baseDataId,jdbcType=BIGINT}
 			</if>
+	</select>
+	<!-- 查询基本数据的编号 -->
+	<select id="checkCode" resultType="java.lang.Integer" parameterType="com.jabava.pojo.manage.EhrBaseData">
+		select 
+			count(0)
+		from 
+			ehr_base_data
+		where 
+			base_data_code=#{baseDataCode,jdbcType=VARCHAR}
+			and base_data_type=#{baseDataType,jdbcType=INTEGER}
+			and is_valid=1
+			and company_id=#{companyId,jdbcType=BIGINT}
+			<if test="baseDataId != null">
+				and base_data_id&lt;&gt;#{baseDataId,jdbcType=BIGINT}
+			</if>
+		
+	</select>
+	<!-- 查询基本数据名称 -->
+	<select id="checkName" resultType="java.lang.Integer" parameterType="com.jabava.pojo.manage.EhrBaseData">
+		select 
+			count(0)
+		from 
+			ehr_base_data
+		where 
+			base_data_name=#{baseDataName,jdbcType=VARCHAR}
+			and base_data_type=#{baseDataType,jdbcType=INTEGER}
+			and is_valid=1
+			and company_id=#{companyId,jdbcType=BIGINT}
+			<if test="baseDataId != null">
+				and base_data_id&lt;&gt;#{baseDataId,jdbcType=BIGINT}
+			</if>
+		
+	</select>
+	
+	<select id="countByCompany" resultType="Integer">
+		select count(1) from ehr_base_data where company_id=#{companyId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="selectFromTemplate" resultType="java.util.HashMap">
+		select * from tpl_base_data
 	</select>
 </mapper>

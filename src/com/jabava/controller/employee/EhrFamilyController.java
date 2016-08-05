@@ -48,8 +48,12 @@ public class EhrFamilyController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			map.put("list", familyService.getByPersonId(personId));
+			map.put("success", true);
+			map.put("msg", "社会关系添加成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
+			map.put("success", false);
+			map.put("msg", "错误信息："+e.toString());
 		}
 		return map;
 	}
@@ -57,13 +61,14 @@ public class EhrFamilyController {
 	@RequestMapping("addFamily")
 	@ResponseBody
 	public Map<String, Object> addFamily(@RequestBody EhrFamily family, HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = null;
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = familyService.addFamily(family, user);
 		} catch (Exception e) {
+			map = new HashMap<String, Object>();
 			map.put("success", false);
-			map.put("msg", "添加家庭成员失败！");
+			map.put("msg", "错误信息："+e.toString());
 			e.printStackTrace();
 		}
 		return map;
@@ -72,13 +77,14 @@ public class EhrFamilyController {
 	@RequestMapping("updateFamily")
 	@ResponseBody
 	public Map<String, Object> updateFamily(@RequestBody EhrFamily family, HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = null;
 		EhrUser user = RequestUtil.getLoginUser(request);
 		try {
 			map = familyService.updateFamily(family, user);
 		} catch (Exception e) {
+			map = new HashMap<String, Object>();
 			map.put("success", false);
-			map.put("msg", "修改家庭成员失败！");
+			map.put("msg", "错误信息："+e.toString());
 			e.printStackTrace();
 		}
 		return map;

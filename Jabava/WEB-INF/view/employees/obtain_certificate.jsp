@@ -31,58 +31,45 @@
   <!-- 放主要内容  开始-->
   <!-- Main Wrapper -->
   <div id="wrapper" class="min-h">
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-      <div class="panel-body">
-          <div id="hbreadcrumb" class="pull-right m-t-lg">
-            <ol class="hbreadcrumb breadcrumb">
-              <li><a href="to_index?jump=1">首页</a></li>
-              <li>
-                <span>员工信息</span>
-              </li>
-              <li class="active">
-                <span></span>
-              </li>
-            </ol>
-          </div>
-          <h2 class="font-light m-b-xs">
-            员工信息
-          </h2>
-          <small>待定</small>
-        </div>
-      </div>
-    </div>
-
     <!-- 放主要内容 -->
 
     <!--获得证书-->
     <div class="content animate-panel">
       <div class="row">
         <div class="col-lg-12">
-          <div class="hpanel hblue">
+          <div class="hpanel">
+            <div class="panel-heading">
+                    <h4 class="text-center font-bold">
+                        <button class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
+                        <span>员工资料</span>
+                    </h4>
+              </div>
             <!--引入员工信息导航 开始--> 
             <jsp:include flush="true" page="employee_nav.jsp">
             <jsp:param value="obtain" name="type"/>
           </jsp:include>
           <!--引入员工信息导航 结束-->
-          <div class="panel-heading hbuilt">
+          <!-- <div class="panel-heading hbuilt">
             <div class="panel-tools">
               <button type="button" class="btn btn-success btn-xs hd_zs" data-form-action="add"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
               <button type="button" class="btn btn-success btn-xs hd_zs_update obtain_none"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
               <button type="button" class="btn btn-success btn-xs pxjl"><span class="bold">培训经历&gt;&gt;</span></button> 
             </div>
             <h4>获得证书</h4>
-          </div>
+          </div> -->
         
           <div class="panel-body" id="zhengshu_body">
+              <div class="panel-heading">
+                  <h4 class="text-center font-bold">获得证书</h4>
+             </div>
             <div classs="row">
               <div class="hpanel" id="obtain_div"></div> 
               <div class="hpanel"  data-form-target="content">
                 <form role="form" method="post" data-form-type="base" name="obtain_form"   class="searchs-form form-horizontal col-md-12 col-lg-12 zhengshu zhengshu_form hidden" id="create_new" enctype="multipart/form-data">
-                  <div class="col-md-4 col-lg-4">
+                  <div class="col-md-6 col-lg-6">
                     <div class="form-group">
                       <label for="" class="control-label col-md-6 col-lg-6">取得证书时间：</label>
-                      <div class="col-md-6 col-lg-6">
+                      <div class="col-md-6 col-lg-6 form-required">
                         <div class="input-group date">
                           <input type="text" class="form-control" name="issueDate" value="" required="required">
                           <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
@@ -90,26 +77,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 col-lg-4">
+                  <div class="col-md-6 col-lg-6">
                     <div class="form-group">
-                      <label for="" class="control-label col-md-6 col-lg-6">证书有效期：</label>
+                      <label for="" class="control-label col-md-6 col-lg-6">电子版上传：</label>
                       <div class="col-md-6 col-lg-6">
-                        <input type="text" class="form-control" name="validityYear" value="">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 col-lg-4">
-                    <div class="form-group">
-                      <label for="" class="control-label col-md-6 col-lg-6">证书名称：</label>
-                      <div class="col-md-6 col-lg-6">
-                        <input type="text" class="form-control" name="certificateName" value="">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-8 col-lg-8">
-                    <div class="form-group">
-                      <label for="" class="control-label col-md-3 col-lg-3">电子版上传：</label>
-                      <div class="col-md-9 col-lg-9">
                         <input class="upload hidden" type="file" name="myfiles" id="myfile-add"  onchange="$(this).siblings('.input-group').find(':input').val($(this).val())">
                         <div class="input-group">
                           <div class="input-group-btn">
@@ -120,19 +91,41 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-12 col-lg-12">
+                  <div class="col-md-6 col-lg-6">
                     <div class="form-group">
-                      <label for="" class="control-label col-md-2 col-lg-2">备注：</label>
-                      <div class="col-md-10 col-lg-10">
+                      <label for="" class="control-label col-md-6 col-lg-6">证书有效期：</label>
+                      <div class="col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="validityYear" value="">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6 col-lg-6">
+                    <div class="form-group">
+                      <label for="" class="control-label col-md-6 col-lg-6">证书名称：</label>
+                      <div class="col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="certificateName" value="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-lg-6">
+                    <div class="form-group">
+                      <label for="" class="control-label col-md-6 col-lg-6">备注：</label>
+                      <div class="col-md-6 col-lg-6">
                         <textarea class="form-control" name="memo"></textarea>
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-12 col-md-12 text-center">
-                    <button type="button" class="btn btn-info"  >保存</button>
+                  
+                  <div class="col-lg-12 col-md-12 text-right">
+                    <button type="button" class="btn btn-success"  >保存</button>
+                    <button type="button" class="btn btn-default"  >取消</button>
                   </div>
                 </form>
               </div>
+            </div>
+            <div class="text-center row">
+              <a class="adds" data-form-action="add" href="javascript://"><i class=" pe-7s-plus pe-5x text-muted"></i><br><span class="text-muted">添加新记录</span></a>
             </div>                                
           </div>
         </div>
@@ -143,52 +136,52 @@
   <!--渲染模板-->
   <script type="text/html" id="obtain_cer">
     {{each list}}
-    <form role="form" method="post" name="obtain_form" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}" enctype="multipart/form-data">
-      <div class="text-right action-group">
+    <div class="col-md-12 page-header m-t-md{{if $index == list.length-1}} no-borders{{/if}}">
+      <div class="panel-tools action-group">
+        <ul class="list-inline">
+           <li>
+          <a href="javascript://" data-action-motive="hideOrshow" data-action-id="{{$value.technologyId}}"><i class="pe-7s-angle-down-circle pe-2x text-info"></i><span class="sr-only">隐藏</span></a>
+          </li>
+          <li>
+          <a href="javascript://" data-action-motive="edit" data-action-id="{{$value.technologyId}}"><i class="pe-7s-note pe-2x text-info">
+          </i><span class="sr-only">修改</span></a>
+          </li>
+          <li>
+            <a href="javascript://" data-action-motive="del" data-action-id="{{$value.technologyId}}"><i class="pe-7s-trash pe-2x text-info"></i><span class="sr-only">删除</span></a>
+          </li>
+        </ul>
+      </div>
+      <ul class="list-inline">
+        <li><p class="form-control-static text-info font-bold">{{$value.issueDate | dateFormat}}</p></li>
+        <li><p class="form-control-static text-info font-bold">{{$value.certificateName}}</p></li>
+      </ul>
+    </div>
+    <form data-form="{{$value.technologyId}}" role="form" method="post" name="obtain_form" class="searchs-form form-horizontal col-md-12 col-lg-12  m-b-lg  {{if $index>0}} jianju borders{{/if}}" enctype="multipart/form-data">
+      <!-- <div class="text-right action-group">
         <a href="javascript://" class="pe-7s-note pe-2x" data-action-motive="edit" ><span class="sr-only" data-action-id="{{$value.technologyId}}">修改</span></a>
         <a href="javascript://" class="pe-7s-trash pe-2x" data-action-motive="del" data-action-id="{{$value.technologyId}}"><span class="sr-only">删除</span></a>
-      </div>
+      </div> -->
       <input type="hidden" name="technologyId" value="{{$value.technologyId}}">
-      <div class="col-md-4 col-lg-4">
+      <div class="col-md-6 col-lg-6">
         <div class="form-group">
           <label for="" class="control-label col-md-6 col-lg-6">取得证书时间：</label>
           <div class="col-md-6 col-lg-6">
             <div class="input-group-static">
               <p class="form-control-static">{{$value.issueDate | dateFormat}}&nbsp;</p>
             </div>
-            <div class="input-group date">
-              <input type="text" class="form-control" required="required" name="issueDate" value="{{$value.issueDate | dateFormat}}">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            <div class="form-required">
+              <div class="input-group date">
+                <input type="text" class="form-control" required="required" name="issueDate" value="{{$value.issueDate | dateFormat}}">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4 col-lg-4">
+      <div class="col-md-6 col-lg-6">
         <div class="form-group">
-          <label for="" class="control-label col-md-6 col-lg-6">证书有效期：</label>
+          <label for="" class="control-label col-md-6 col-lg-6">电子版上传：</label>
           <div class="col-md-6 col-lg-6">
-            <div class="input-group-static">
-              <p class="form-control-static">{{$value.validityYear}}&nbsp;</p>
-            </div>
-            <input type="text" class="form-control" name="validityYear" value="{{$value.validityYear}}">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-lg-4">
-        <div class="form-group">
-          <label for="" class="control-label col-md-6 col-lg-6">证书名称：</label>
-          <div class="col-md-6 col-lg-6">
-            <div class="input-group-static">
-              <p class="form-control-static">{{$value.certificateName}}&nbsp;</p>
-            </div>
-            <input type="text" class="form-control" name="certificateName" value="{{$value.certificateName}}">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-8 col-lg-8">
-        <div class="form-group">
-          <label for="" class="control-label col-md-3 col-lg-3">电子版上传：</label>
-          <div class="col-md-9 col-lg-9">
             <div class="input-group-static">
               <p class="form-control-static"> 
 
@@ -219,10 +212,33 @@
 
         </div>
       </div>
-      <div class="col-md-12 col-lg-12">
+      <div class="col-md-6 col-lg-6">
         <div class="form-group">
-          <label for="" class="control-label col-md-2 col-lg-2">备注：</label>
-          <div class="col-md-10 col-lg-10">
+          <label for="" class="control-label col-md-6 col-lg-6">证书有效期：</label>
+          <div class="col-md-6 col-lg-6">
+            <div class="input-group-static">
+              <p class="form-control-static">{{$value.validityYear}}&nbsp;</p>
+            </div>
+            <input type="text" class="form-control" name="validityYear" value="{{$value.validityYear}}">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6">
+        <div class="form-group">
+          <label for="" class="control-label col-md-6 col-lg-6">证书名称：</label>
+          <div class="col-md-6 col-lg-6">
+            <div class="input-group-static">
+              <p class="form-control-static">{{$value.certificateName}}&nbsp;</p>
+            </div>
+            <input type="text" class="form-control" name="certificateName" value="{{$value.certificateName}}">
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-6">
+        <div class="form-group">
+          <label for="" class="control-label col-md-6 col-lg-6">备注：</label>
+          <div class="col-md-6 col-lg-6">
             <div class="input-group-static">
               <p class="form-control-static">{{$value.memo}}&nbsp;</p>
             </div>
@@ -272,11 +288,14 @@
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 
+<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
 <script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
-<script src="static/js/common.js"></script>
+<script src="static/js/commonH3.js"></script>
 <script src="static/js/change/ajaxfileupload.js" ></script>
 <script src="static/js/imgView.js" ></script>
 <script type="text/javascript">
@@ -297,6 +316,33 @@ $(function(){
 	templateFillData(templateID, containerID, listURL,delsURL,"",uploadFileType);
 
 });
+
+//校验
+var validateOptions = {
+      err: {
+          container: 'tooltip'
+      },
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      locale: 'zh_CN',
+      
+      fields: {
+          issueDate: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  },
+                  date: {
+                    format: 'YYYY-MM-DD',
+                    message: '该日期是无效的'
+                  }
+              }
+          }
+      }
+  };
 </script>
 </body>
 </html>

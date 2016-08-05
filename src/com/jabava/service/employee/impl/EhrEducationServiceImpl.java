@@ -37,9 +37,15 @@ public class EhrEducationServiceImpl implements EhrEducationService {
 //		if(education.getPersonId()==null){
 //			education.setPersonId(user.getUserId());
 //		}
-		educationMapper.insertSelective(education);
-		map.put("success", true);
-		map.put("msg", "添加教育背景成功！");
+		int flag=educationMapper.insertSelective(education);
+		if(flag>0){
+			map.put("success", true);
+			map.put("msg", "添加教育背景成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "添加教育背景失败！");
+		}
+		
 		return map;
 	}
 
@@ -50,9 +56,16 @@ public class EhrEducationServiceImpl implements EhrEducationService {
 		education.setLastModifyDate(new Date());
 		education.setLastModifyUserId(user.getUserId());
 		education.setLastModifyUserName(user.getUserName());
-		educationMapper.updateByPrimaryKeySelective(education);
-		map.put("success", true);
-		map.put("msg", "修改教育背景成功！");
+		int flag=educationMapper.updateByPrimaryKeySelective(education);
+		if(flag>0){
+			map.put("success", true);
+			map.put("msg", "添加教育背景成功！");
+		}else{
+			map.put("success", false);
+			map.put("msg", "添加教育背景失败！");
+		}
+		
+		
 		return map;
 	}
 

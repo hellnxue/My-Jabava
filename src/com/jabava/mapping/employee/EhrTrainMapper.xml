@@ -44,6 +44,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
    update ehr_train set is_delete=1   where train_id = #{trainId,jdbcType=BIGINT}
+   	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrTrain" >
     <!--
@@ -253,6 +254,7 @@
       </if>
     </set>
     where train_id = #{trainId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrTrain" >
     <!--
@@ -279,6 +281,7 @@
       old_expire_date = #{oldExpireDate,jdbcType=DATE},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where train_id = #{trainId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
     <select id="getByPersonId" resultMap="BaseResultMap">

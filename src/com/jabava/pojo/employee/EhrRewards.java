@@ -3,7 +3,7 @@ package com.jabava.pojo.employee;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.jabava.core.EnumConstents.RewardType;
+import com.jabava.utils.enums.JabavaEnum.RewardType;
 
 public class EhrRewards {
     /**

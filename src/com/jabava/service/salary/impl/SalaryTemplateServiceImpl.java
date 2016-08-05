@@ -3,6 +3,8 @@ package com.jabava.service.salary.impl;
 import java.util.List;
 import java.util.Map;
 
+
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,12 @@ import com.jabava.pojo.salary.EhrSalaryTemplate;
 import com.jabava.pojo.salary.EhrSalaryTemplateDetail;
 import com.jabava.service.salary.ISalaryTemplateService;
 
+
+
 @Service
 public class SalaryTemplateServiceImpl implements ISalaryTemplateService{
 	@Autowired
 	private EhrSalaryTemplateMapper salaryTemplateMapper;
-	
 	@Autowired
 	private EhrSalaryTemplateDetailMapper salaryTemplateDetailMapper;
 
@@ -42,6 +45,7 @@ public class SalaryTemplateServiceImpl implements ISalaryTemplateService{
 		salaryTemplate.setCompanyId(user.getCompanyId());
 		if(salaryTemplate.getSalaryTemplateId() == null){
 			salaryTemplateMapper.insertSelective(salaryTemplate);
+		
 		}else{
 			salaryTemplateMapper.updateByPrimaryKey(salaryTemplate);
 			
@@ -82,6 +86,16 @@ public class SalaryTemplateServiceImpl implements ISalaryTemplateService{
 	@Override
 	public List<EhrSalaryTemplateDetail> loadDetailList(Long salaryTemplateId) {
 		return salaryTemplateDetailMapper.loadDetailList(salaryTemplateId);
+	}
+
+	@Override
+	public boolean hasReferencedItem(Long salaryItemId) {
+		return salaryTemplateDetailMapper.countBySalaryItem(salaryItemId) > 0;
+	}
+
+	@Override
+	public boolean hasReferencedTaxRate(Long taxRateId) {
+		return salaryTemplateMapper.countByTaxRate(taxRateId) > 0;
 	}
 
 }

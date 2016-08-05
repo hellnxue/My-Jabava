@@ -2,24 +2,24 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
 <!DOCTYPE HTML>
 <html>
 <head>
-<base href="<%=basePath%>">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<!-- Page title -->
-<title>Jabava V1.0 | 参数设置</title>
-<jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
-<!-- for editable -->
-<link rel="stylesheet" href="static/bootstrap/vendor/xeditable/bootstrap3-editable/css/bootstrap-editable.css" />
-<link rel="stylesheet" href="static/css/user.css">
+	<base href="${pageContext.request.contextPath}/">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<!-- Page title -->
+	<title>Jabava V1.0 | 参数设置</title>
+	<jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+	<!-- for editable -->
+	<link rel="stylesheet" href="static/bootstrap/vendor/xeditable/bootstrap3-editable/css/bootstrap-editable.css" />
+	<link rel="stylesheet" href="static/css/user.css">
 
 </head>
 <body>
@@ -33,21 +33,6 @@
 	<!--引入菜单文件 结束--> 
 	<!-- Main Wrapper -->
 	<div id="wrapper">
-		<div class="normalheader transition animated fadeIn small-header">
-			<div class="hpanel">
-				<div class="panel-body">
-					<div id="hbreadcrumb" class="pull-right m-t-lg">
-						<ol class="hbreadcrumb breadcrumb">
-							<li><a href="to_index?jump=1">首页</a></li>
-							<li><span>系统管理</span></li>
-							<li class="active"><span>参数设置</span></li>
-						</ol>
-					</div>
-					<h2 class="font-light m-b-xs">参数设置</h2>
-					<small>待&nbsp;定</small>
-				</div>
-			</div>
-		</div>
 		<!-- 放主要内容 -->
 		<div class="content animate-panel">
 
@@ -55,13 +40,14 @@
 				<div class="col-lg-12">
 					<div class="hpanel">
 						<div class="panel-heading ">
-							<div class="pull-right">
+							<h4 class="text-center font-bold">
+                                系统参数配置
+                            </h4>
+							<div class="text-right">
 								<button class="btn btn-success btn-xs" type="button"
 								data-target="#myModal7" data-toggle="modal">
 								<i class="fa fa-group"></i> <span class="bold">新增参数</span>
 							</div>
-							系统参数配置
-							<div></div>
 						</div>
 						<!--表格start-->
 						<div class="panel-body">

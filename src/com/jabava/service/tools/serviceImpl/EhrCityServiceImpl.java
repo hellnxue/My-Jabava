@@ -22,4 +22,18 @@ public class EhrCityServiceImpl implements EhrCityService {
 		return ehrCitydao.getCityByProvinceId(record);
 	}
 
+	@Override
+	public List<EhrCity> getCityListByProvinceId(Long provinceId) {
+		return ehrCitydao.getCityListByProvinceId(provinceId);
+	}
+
+	@Override
+	public EhrCity getCitiByCityId(Long cityId) {
+		return ehrCitydao.selectByPrimaryKey(cityId);
+	}
+	@Override
+	public List<EhrCity> getCitiByCityName(String cityName) {
+		return ehrCitydao.getCitiByCityName(cityName);
+	}
+
 }

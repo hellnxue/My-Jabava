@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html>
 <html>
@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
-                        <div class="panel-body" id="allcheck"> 
+                        <div class="panel-body "> 
                         <input type="hidden"  id="yearmonth" value="${yearmonth}"/>
                             <table id="orderList" class="table table-bordered table-hover rost_table" width="100%">
                             <thead>
@@ -194,8 +194,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="static/bootstrap/vendor/select2-3.5.2/select2.min.js"></script>
     <script src="static/bootstrap/vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
     <!-- <script src="static/bootstrap/vendor/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js"></script> -->
-    <script src="//cdn.bootcss.com/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
-    <script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <script src="static/bootstrap/vendor/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="static/bootstrap/vendor/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 	<!-- for editable -->
 	<script src="static/bootstrap/vendor/moment/moment.js"></script>
 	 

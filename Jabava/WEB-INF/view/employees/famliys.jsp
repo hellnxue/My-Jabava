@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Page title -->
-    <title>家庭成员</title>
+    <title>社会关系</title>
     <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
     <link rel="stylesheet" href="static/css/user_bata.css">
     <link rel="stylesheet" href="static/css/style_1.css" media="screen">
@@ -29,75 +29,86 @@
   <!-- 放主要内容  开始-->
   <!-- Main Wrapper -->
   <div id="wrapper" class="min-h">
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-<div class="panel-body"><!-- 
-<a class="small-header-action" href="">
-<div class="clip-header">
-<i class="fa fa-arrow-up"></i>
-</div>
-</a> -->
-
-<div id="hbreadcrumb" class="pull-right m-t-lg">
-  <ol class="hbreadcrumb breadcrumb">
-    <li><a href="to_index?jump=1">首页</a></li>
-    <li>
-      <span>员工信息</span>
-    </li>
-    <li class="active">
-      <span></span>
-    </li>
-  </ol>
-</div>
-<h2 class="font-light m-b-xs">
-  员工信息
-</h2>
-<small>待定</small>
-</div>
-</div>
-</div>
-
 <!-- 放主要内容 -->
 
 
-<!--家庭成员-->
+<!--社会关系-->
 <div class="content animate-panel">
 <div class="row">
- <div class="hpanel hblue">
-  <!--引入员工信息导航 开始--> 
-<jsp:include flush="true" page="employee_nav.jsp"></jsp:include>
-<!--引入员工信息导航 结束-->
-  <div class="panel-heading hbuilt">
-    <div class="panel-tools">
-      <button type="button" class="btn btn-success btn-xs fm_cy"  data-form-action="add"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-        <button type="button" class="btn btn-success btn-xs fm_cy_update" style=" display:none;"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-        <button type="button" class="btn btn-success btn-xs ld_ht"><span class="bold">劳动合同&gt;&gt;</span></button>  
+ <div class="hpanel">
+    <div class="panel-heading">
+          <h4 class="text-center font-bold">
+              <button class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
+              <span>员工资料</span>
+          </h4>
     </div>
-    <h4>家庭成员</h4>
-  </div>
+  <!--引入员工信息导航 开始--> 
+<jsp:include flush="true" page="employee_nav.jsp">
+  <jsp:param value="member" name="type"/>
+</jsp:include>
+<!--引入员工信息导航 结束-->
 <div class="panel-body" style=" ">
+     <div class="panel-heading">
+          <h4 class="text-center font-bold">社会关系</h4>
+     </div>
+     <div class="row m-b-lg">
     <script type="text/html" id="famliy">
       {{each list}}
-      <form role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
-        <div class="text-right action-group">
-          <a href="javascript://" class="pe-7s-note pe-2x" data-action-motive="edit" ><span class="sr-only">修改</span></a>
-          <a href="javascript://" class="pe-7s-trash pe-2x" data-action-motive="del" data-action-id="{{$value.familyId}}"><span class="sr-only">删除</span></a>
-        </div>
+
+              <div class="col-md-12 page-header m-t-md{{if $index == list.length-1}} no-borders{{/if}} ">
+                <div class="panel-tools action-group">
+                  <ul class="list-inline">
+                     <li>
+                    <a href="javascript://" data-action-motive="hideOrshow" data-action-id="{{$value.familyId}}"><i class="pe-7s-angle-down-circle pe-2x text-info"></i><span class="sr-only">隐藏</span></a>
+                    </li>
+                    <li>
+                    <a href="javascript://" data-action-motive="edit" data-action-id="{{$value.familyId}}"><i class="pe-7s-note pe-2x text-info">
+                    </i><span class="sr-only">修改</span></a>
+                    </li>
+                  </ul>
+                </div>
+                <ul class="list-inline">
+                  <li> <p class="form-control-static text-info font-bold">{{$value.name}}&nbsp;</p></li>
+                  <li class="m-r"><p class="form-control-static text-info font-bold">
+                  {{if $value.relation=='1'}}
+                  父母
+                  {{else if $value.relation=='2' }}
+                  配偶
+                  {{else if $value.relation=='3' }}
+                  子女
+                  {{else if $value.relation=='4' }}
+                  兄弟姐妹
+                  {{else if $value.relation=='5' }}
+                  同事
+                  {{else if $value.relation=='6' }}
+                  朋友
+                  {{else if $value.relation=='7' }}
+                  其他
+                  {{/if}}
+                  &nbsp;
+                </p></li>
+                  <li><p class="form-control-static text-info font-bold">{{$value.phone}}&nbsp;</p></li>    
+               </ul>
+              </div>
+
+      <form role="form" data-form="{{$value.familyId}}" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
         <input type="hidden" name="familyId" value="{{$value.familyId}}">
-        <!--成员姓名-->
-        <div class="col-md-4 col-lg-4">
+        <!--姓名-->
+        <div class="col-md-6 col-lg-6">
           <div class="form-group">
-            <label for="" class="control-label col-md-4 col-lg-4">成员姓名：</label>
+            <label for="" class="control-label col-md-4 col-lg-4">姓名：</label>
             <div class="col-md-8 col-lg-8">
               <div class="input-group-static">
                 <p class="form-control-static">{{$value.name}}&nbsp;</p>
               </div>
-              <input type="text" required="required" class="form-control"  name="name" value="{{$value.name}}">
+              <div class="form-required">
+                <input type="text" required="required" class="form-control"  name="name" value="{{$value.name}}">
+              </div>
             </div>
           </div>
         </div>
         <!--与本人关系-->
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-6 col-lg-6">
           <div class="form-group">
             <label for="" class="control-label col-md-4 col-lg-4">与本人关系：</label>
             <div class="col-md-8 col-lg-8">
@@ -108,82 +119,50 @@
                   {{else if $value.relation=='2' }}
                   配偶
                   {{else if $value.relation=='3' }}
-                  儿子
+                  子女
                   {{else if $value.relation=='4' }}
-                  女儿
+                  兄弟姐妹
                   {{else if $value.relation=='5' }}
+                  同事
+                  {{else if $value.relation=='6' }}
+                  朋友
+                  {{else if $value.relation=='7' }}
                   其他
                   {{/if}}
                   &nbsp;
                 </p>
               </div>
-              <select class="form-control " name="relation">
-                <option value="1"{{if $value.relation=='1'}} selected="selected"{{/if}}>父母</option>
-                <option value="2"{{if $value.relation=='2'}} selected="selected"{{/if}}>配偶</option>
-                <option value="3"{{if $value.relation=='3'}} selected="selected"{{/if}}>儿子</option>
-                <option value="4"{{if $value.relation=='4'}} selected="selected"{{/if}}>女儿</option>
-                <option value="5"{{if $value.relation=='5'}} selected="selected"{{/if}}>其他</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <!--居住城市-->
-        <div class="col-md-4 col-lg-4">
-          <div class="form-group">
-            <label for="" class="control-label col-md-4 col-lg-4">居住城市：</label>
-            <div class="col-md-8 col-lg-8">
-              <div class="input-group-static">
-                <p class="form-control-static">{{$value.city}}&nbsp;</p>
-              </div>
-              <input type="text" required="required" class="form-control" name="city" value="{{$value.city}}">
-            </div>
-          </div>
-        </div>
-        <!--出生日期-->
-        <div class="col-md-4 col-lg-4">
-          <div class="form-group">
-            <label for="" class="control-label col-md-4 col-lg-4">出生时间：</label>
-            <div class="col-md-8 col-lg-8">
-              <div class="input-group-static">
-                <p class="form-control-static">
-                  {{if $value.birthDate!=null}}
-                  {{$value.birthDate | dateFormat}}
-                  {{/if}}
-                  &nbsp;</p>
-                </div>
-                <div class="input-group date">
-                  <input type="text" required="required" class="form-control" name="birthDate" value="{{if $value.birthDate!=null}}{{$value.birthDate | dateFormat}}{{/if}}">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                </div>
+              <div class="form-required">
+                <select class="form-control " name="relation">
+                  <option value="2"{{if $value.relation=='2'}} selected="selected"{{/if}}>配偶</option>
+                  <option value="3"{{if $value.relation=='3'}} selected="selected"{{/if}}>子女</option>
+                  <option value="1"{{if $value.relation=='1'}} selected="selected"{{/if}}>父母</option>
+                  <option value="4"{{if $value.relation=='4'}} selected="selected"{{/if}}>兄弟姐妹</option>
+                  <option value="6"{{if $value.relation=='5'}} selected="selected"{{/if}}>同事</option>
+                  <option value="7"{{if $value.relation=='6'}} selected="selected"{{/if}}>朋友</option>
+                  <option value="5"{{if $value.relation=='7'}} selected="selected"{{/if}}>其他</option>
+                </select>
               </div>
             </div>
           </div>
+        </div>
           <!--联系电话-->
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-6 col-lg-6">
             <div class="form-group">
               <label for="" class="control-label col-md-4 col-lg-4">联系电话：</label>
               <div class="col-md-8 col-lg-8">
                 <div class="input-group-static">
                   <p class="form-control-static">{{$value.phone}}&nbsp;</p>
                 </div>
-                <input type="text" required="required" class="form-control" name="phone" value="{{$value.phone}}">
-              </div>
-            </div>
-          </div>
-          <!--身份证号--> 
-          <div class="col-md-4 col-lg-4">
-            <div class="form-group">
-              <label for="" class="control-label col-md-4 col-lg-4">身份证号：</label>
-              <div class="col-md-8 col-lg-8">
-                <div class="input-group-static">
-                  <p class="form-control-static">{{$value.idCard}}&nbsp;</p>
+                <div class="form-required">
+                  <input type="text" required="required" class="form-control" name="phone" value="{{$value.phone}}">
                 </div>
-                <input type="text" class="form-control" name="idCard" value="{{$value.idCard}}">
               </div>
             </div>
           </div>
+         
           <!--工作单位--> 
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-6 col-lg-6">
             <div class="form-group">
               <label for="" class="control-label col-md-4 col-lg-4">工作单位：</label>
               <div class="col-md-8 col-lg-8">
@@ -194,8 +173,44 @@
               </div>
             </div>
           </div>
+        <!--居住城市-->
+        <div class="col-md-6 col-lg-6">
+          <div class="form-group">
+            <label for="" class="control-label col-md-4 col-lg-4">联系地址：</label>
+            <div class="col-md-8 col-lg-8">
+              <div class="input-group-static">
+                <p class="form-control-static">{{$value.address}}&nbsp;</p>
+              </div>
+                <input type="text" class="form-control" name="address" value="{{$value.address}}">
+            </div>
+          </div>
+        </div>
+         <!--职务--> 
+          <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+              <label for="" class="control-label col-md-4 col-lg-4">职务：</label>
+              <div class="col-md-8 col-lg-8">
+                <div class="input-group-static">
+                  <p class="form-control-static">{{$value.position}}&nbsp;</p>
+                </div>
+                <input type="text" class="form-control" name="position" value="{{$value.position}}">
+              </div>
+            </div>
+          </div>
+         <!--备注--> 
+          <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+              <label for="" class="control-label col-md-4 col-lg-4">备注：</label>
+              <div class="col-md-8 col-lg-8">
+                <div class="input-group-static">
+                  <p class="form-control-static">{{$value.memo}}&nbsp;</p>
+                </div>
+                <input type="text" class="form-control" name="memo" value="{{$value.memo}}">
+              </div>
+            </div>
+          </div>
           <div class="col-lg-12 col-md-12 text-center form-action">
-            <button type="button" class="btn btn-info" data-action-motive="save">保存</button>
+            <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
             <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
           </div>
         </form>
@@ -205,70 +220,42 @@
       </div>
       <div class="" id="jiating_body" data-form-target="content">
         <form role="form" method="post" class="form-horizontal col-md-12 col-lg-12 famliy_1 famliy_1_form hidden" id="create_new" name="family_form" data-form-type="base"> 
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-6 col-lg-6">
             <div class="form-group">
-              <label for="" class="control-label col-md-4 col-lg-4">成员姓名：</label>
-              <div class="col-md-8 col-lg-8">
+              <label for="" class="control-label col-md-4 col-lg-4">姓名：</label>
+              <div class="col-md-8 col-lg-8 form-required">
                 <input type="text" class="form-control"  name="name" value="">
               </div>
             </div>
           </div>
           <!--与本人关系-->
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-6 col-lg-6">
             <div class="form-group">
               <label for="" class="control-label col-md-4 col-lg-4">与本人关系：</label>
-              <div class="col-md-8 col-lg-8">
+              <div class="col-md-8 col-lg-8 form-required">
                 <select class="form-control " name="relation">
-                  <option value="1">父母</option>
                   <option value="2">配偶</option>
-                  <option value="3">儿子</option>
-                  <option value="4">女儿</option>
-                  <option value="5">其他</option>
+                  <option value="3">子女</option>
+                  <option value="1">父母</option>
+                  <option value="4">兄弟姐妹</option>
+                  <option value="5">同事</option>
+                  <option value="6">朋友</option>
+                  <option value="7">其他</option>
                 </select>
               </div>
             </div>
           </div>
-          <!--居住城市-->
-          <div class="col-md-4 col-lg-4">
-            <div class="form-group">
-              <label for="" class="control-label col-md-4 col-lg-4">居住城市：</label>
-              <div class="col-md-8 col-lg-8">
-                <input type="text" class="form-control" name="city" value="">
-              </div>
-            </div>
-          </div>
-          <!--出生日期-->
-          <div class="col-md-4 col-lg-4">
-            <div class="form-group">
-              <label for="" class="control-label col-md-4 col-lg-4">出生时间：</label>
-              <div class="col-md-8 col-lg-8">
-                <div class="input-group date">
-                  <input type="text" class="form-control" name="birthDate" value="">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                </div>
-              </div>
-            </div>
-          </div>
           <!--联系电话-->
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-6 col-lg-6">
             <div class="form-group">
               <label for="" class="control-label col-md-4 col-lg-4">联系电话：</label>
-              <div class="col-md-8 col-lg-8">
+              <div class="col-md-8 col-lg-8 form-required">
                 <input type="text" class="form-control" name="phone" value="">
               </div>
             </div>
           </div>
-          <!--身份证号--> 
-          <div class="col-md-4 col-lg-4">
-            <div class="form-group">
-              <label for="" class="control-label col-md-4 col-lg-4">身份证号：</label>
-              <div class="col-md-8 col-lg-8">
-                <input type="text" class="form-control" name="idCard" value="">
-              </div>
-            </div>
-          </div>
           <!--工作单位--> 
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-6 col-lg-6">
             <div class="form-group">
               <label for="" class="control-label col-md-4 col-lg-4">工作单位：</label>
               <div class="col-md-8 col-lg-8">
@@ -276,11 +263,44 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-12 col-md-12 text-center">
-            <button type="button" class="btn btn-info">保存</button>
+          <!--联系地址-->
+          <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+              <label for="" class="control-label col-md-4 col-lg-4">联系地址：</label>
+              <div class="col-md-8 col-lg-8">
+                <input type="text" class="form-control" name="address" value="">
+              </div>
+            </div>
+          </div>
+          <!--职务--> 
+          <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+              <label for="" class="control-label col-md-4 col-lg-4">职务：</label>
+              <div class="col-md-8 col-lg-8">
+                <input type="text" class="form-control" name="position" value="">
+              </div>
+            </div>
+          </div>
+          <!--备注--> 
+          <div class="col-md-6 col-lg-6">
+            <div class="form-group">
+              <label for="" class="control-label col-md-4 col-lg-4">备注：</label>
+              <div class="col-md-8 col-lg-8">
+                <input type="text" class="form-control" name="memo" value="">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 text-right">
+            <button type="submit" class="btn btn-success" >保存</button>
+            <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
           </div>
         </form>
       </div>
+      </div>
+      <!--添加-->
+        <div class="text-center row">
+          <a class="adds" data-form-action="add" href="javascript://"><i class=" pe-7s-plus pe-5x text-muted"></i><br><span class="text-muted">添加新记录</span></a>
+        </div>
     </div>
     </div>
   </div>
@@ -319,11 +339,14 @@
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 
+<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
 <script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
-<script src="static/js/common.js"></script>
+<script src="static/js/commonH3.js"></script>
 <script type="text/javascript">
 /* var personId = $("#personId").val();
   templateFillData('famliy', $('#famliy_div'), 'static/json/member.json','employee/delJobpost.do?postId=');
@@ -343,10 +366,48 @@
 
     //templateFillData('education', $('#education_div'), 'static/json/educational.json','employee/delJobpost.do?postId=');
     
-</script>
 
-<!--日历-->
-	<script>
+//校验
+var validateOptions = {
+      err: {
+          container: 'tooltip'
+      },
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      locale: 'zh_CN',
+      
+      fields: {
+          name: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
+          },
+          relation: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
+          },
+          phone: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  },
+                  phone: {
+                    country: 'CN',
+                    message: '请输入有效的手机或电话号码'
+                  }
+              }
+          }
+      }
+  };
+//日历
 		$(function() {
 			
 			 templateFillData(templateID, containerID, listURL,delsURL);

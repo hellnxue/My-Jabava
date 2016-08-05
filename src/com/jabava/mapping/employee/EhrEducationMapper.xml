@@ -27,13 +27,14 @@
     <result column="degree_date" property="degreeDate" jdbcType="DATE" />
     <result column="degree_shcool" property="degreeShcool" jdbcType="VARCHAR" />
     <result column="degree_country" property="degreeCountry" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     education_id, person_id, education, learn_type, entrance_date, graduate_date, major, 
     graduate_school, school_time, education_certificate, create_user_id, create_user_name, 
     create_date, last_modify_user_id, last_modify_user_name, last_modify_date, education_type, 
-    degree, degree_date, degree_shcool, degree_country, is_delete
+    degree, degree_date, degree_shcool, degree_country,memo, is_delete
   </sql>
   
    <select id="getByPersonId" resultMap="BaseResultMap">
@@ -42,6 +43,7 @@
   	
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     update  ehr_education set is_delete=1 where education_id = #{educationId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrEducation" >
     insert into ehr_education (education_id, person_id, education, 
@@ -50,7 +52,7 @@
       education_certificate, create_user_id, create_user_name, 
       create_date, last_modify_user_id, last_modify_user_name, 
       last_modify_date, education_type, degree, 
-      degree_date, degree_shcool, degree_country, 
+      degree_date, degree_shcool, degree_country, memo,
       is_delete)
     values (#{educationId,jdbcType=BIGINT}, #{personId,jdbcType=BIGINT}, #{education,jdbcType=VARCHAR}, 
       #{learnType,jdbcType=VARCHAR}, #{entranceDate,jdbcType=DATE}, #{graduateDate,jdbcType=DATE}, 
@@ -58,7 +60,7 @@
       #{educationCertificate,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT}, #{createUserName,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{lastModifyUserId,jdbcType=BIGINT}, #{lastModifyUserName,jdbcType=VARCHAR}, 
       #{lastModifyDate,jdbcType=TIMESTAMP}, #{educationType,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, 
-      #{degreeDate,jdbcType=DATE}, #{degreeShcool,jdbcType=VARCHAR}, #{degreeCountry,jdbcType=VARCHAR}, 
+      #{degreeDate,jdbcType=DATE}, #{degreeShcool,jdbcType=VARCHAR}, #{degreeCountry,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
       #{isDelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.jabava.pojo.employee.EhrEducation" >
@@ -127,6 +129,9 @@
       <if test="degreeCountry != null" >
         degree_country,
       </if>
+       <if test="memo != null" >
+        memo,
+      </if>
       <if test="isDelete != null" >
         is_delete,
       </if>
@@ -194,6 +199,9 @@
       </if>
       <if test="degreeCountry != null" >
         #{degreeCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
       </if>
       <if test="isDelete != null" >
         #{isDelete,jdbcType=INTEGER},
@@ -267,11 +275,15 @@
       <if test="degreeCountry != null" >
         degree_country = #{degreeCountry,jdbcType=VARCHAR},
       </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
       <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
     </set>
     where education_id = #{educationId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrEducation" >
     <!--
@@ -299,7 +311,9 @@
       degree_date = #{degreeDate,jdbcType=DATE},
       degree_shcool = #{degreeShcool,jdbcType=VARCHAR},
       degree_country = #{degreeCountry,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where education_id = #{educationId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
 </mapper>

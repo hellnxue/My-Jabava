@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.jabava.controller.announcement.QeuryEhrInformation;
-import com.jabava.core.ReturnS;
 import com.jabava.pojo.announcement.EhrInformation;
 import com.jabava.utils.Page;
 

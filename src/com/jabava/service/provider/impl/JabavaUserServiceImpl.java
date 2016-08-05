@@ -89,6 +89,7 @@ public class JabavaUserServiceImpl implements JabavaUserService{
 			EhrCompany company = new EhrCompany();
 			company.setCompanyCode(String.valueOf(System.currentTimeMillis()));
 			company.setCompanyName(orgNameObj.toString());
+			company.setContactor(nameObj.toString());//联系人
 			//company.setCompanyProv(companyProv);
 			//company.setCompanyCity(companyCity);
 			//company.setCompanyDist(companyDist);
@@ -102,7 +103,7 @@ public class JabavaUserServiceImpl implements JabavaUserService{
 			user.setUserCode(usernameObj.toString());
 			user.setMobile(mobileObj.toString());
 			user.setPassword(Tools.encryptPassword(password));
-			user.setUserName("系统管理员");
+			user.setUserName(nameObj.toString());//联系人
 			user.setIsValid((byte) 1);
 			user.setIsLocked((byte) 0);
 			user.setLastChangePasswordDate(now);
@@ -117,6 +118,9 @@ public class JabavaUserServiceImpl implements JabavaUserService{
 			//在Jabava中注册
 			String msg = userService.register(company, user);
 			if(StringUtils.isEmpty(msg)){
+				//初始化
+				userService.asynchInitCompany(user);
+				
 				Map<String,Object> data = new HashMap<String,Object>();
 				data.put("userId",user.getUserId());
 				result.put("resultData",data);

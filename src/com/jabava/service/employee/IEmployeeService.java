@@ -8,14 +8,14 @@ import com.jabava.utils.Page;
 public interface IEmployeeService {
 
 	public List<EhrPerson> searchAddress(Long CompanyId,String search,Page<EhrPerson> page,String orderBy,String billYm);
-
-	public List<EhrPerson> searchAllAddress(Long CompanyId,String search);
 	
 	public List<EhrPerson> searchPerson(EhrPerson person,Long userId,long companyid,String distinguish);
 	
 	public List<EhrPerson> searchByOrganizationId(Long organizationId);
 	
 	public EhrPerson searchPersonByJobNumber(Long companyId, String jobNumber);
+	
+	public EhrPerson searchPersonByCertId(Long companyId, String certId);
 	
 	/**
 	 * 根据员工姓名和公司ID查询员工信息 

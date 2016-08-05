@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -17,18 +19,19 @@ import com.jabava.utils.HrHelperFileUploader;
 
 @Service("personFileService")
 public class EhrPersonFileServiceImpl implements EhrPersonFileService {
+	public static Logger log = Logger.getLogger(EhrPersonFileServiceImpl.class);
+	
 	@Resource
 	private EhrPersonFileMapper fileMapper;
 
 	@Override
 	public List<EhrPersonFile> searchFile(Long personId ) {
-		
-		 return fileMapper.searchFile(personId );
+		return fileMapper.searchFile(personId );
 	}
 	
 	public void batchInsert(List<EhrPersonFile> list) throws Exception{
- 		fileMapper.batchDelete(list);//先逻辑删除，再添加
- 		fileMapper.batchInsert(list);
+		fileMapper.batchDelete(list);//先逻辑删除，再添加
+		fileMapper.batchInsert(list);
 	}
 	
 	/**

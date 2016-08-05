@@ -10,7 +10,9 @@
     <!-- Page title -->
     <title>考勤</title>
     <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
+    <link rel="stylesheet" href="static/bootstrap/vendor/xeditable/bootstrap3-editable/css/bootstrap-editable.css" />
     <link rel="stylesheet" href="static/css/user_bata.css">
+    <link rel="stylesheet" href="static/css/zTreeStyle/zTreeStyle.css" type="text/css">
 </head>
 <body >
 <!--splash screen-->
@@ -26,25 +28,7 @@
   
   <!-- Main Wrapper -->
   <div id="wrapper">
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-        <div class="panel-body">
-          <div id="hbreadcrumb" class="pull-right m-t-lg">
-            <ol class="hbreadcrumb breadcrumb">
-              <li><a href="to_index?jump=1">首页</a></li>
-              <li>
-                <span>考勤</span>
-              </li>
-              <li class="active"></li>
-            </ol>
-          </div>
-          <h2 class="font-light m-b-xs">
-            考勤
-          </h2>
-          <small>待定</small>
-        </div>
-      </div>
-    </div>
+   
     <!-- 放主要内容 -->
     <div class="content animate-panel">
       <div class="row">
@@ -57,7 +41,7 @@
                 <button class="btn btn-primary btn-xs" type="button" data-target="#myModal7_1" data-toggle="modal">
                   <i class=""></i> <span class="bold">导入考勤</span>
                 </button>
-                <button class="btn btn-warning btn-xs" type="button" data-target="#myModal7" data-toggle="modal">
+                <button class="btn btn-warning btn-xs" type="button" onclick="exportAllSum()">
                   <i class=""></i> <span class="bold">全部导出</span>
                 </button>
                 <button class="btn btn-info btn-xs bfdc" type="button">
@@ -97,21 +81,24 @@
                       </div>
                     </div>
                     <!--所属部门-->
+                     <input type="hidden" id="organization_id"  name="organization_id" required="required">
                     <div class="form-group search-unit">
                       <label for="exampleInputName4" class="col-lg-4">所属部门：</label>
                       <div class="col-lg-8">
-                        <select class="form-control " id="organization_id" name="organization_id" placeholder="全部">
-                          <option value="">全部</option>
-                          <option value="1">人事</option>
-                          <option value="2">行政</option>
-                          <option value="3">无效</option>
-                        </select>
+                         <div class="input-group">
+                            <input type="text" class="form-control" id="dept"
+                            data-tree-attr="getTreeNode" 
+                            value="" required="required">
+                            <span class="input-group-btn"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#getTree"><i class="fa fa-search"></i></button></span>
+                          </div>
                       </div>
                     </div> 
                     <div class="form-group search-unit">
                       <label for="exampleInputName2" class="col-lg-4">工作地：</label>
                       <div class="col-lg-8">
-                        <input type="text" class="form-control" id="work_location" name="work_location">
+                        <select class="form-control" id="work_location" name="work_location">
+                        <option></option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -122,6 +109,21 @@
               </div>
             </div>
           </div>
+              <div class="modal fade hmodal-success" id="getTree" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="color-line"></div>
+            <div class="modal-body">
+              <div class="dd" id="nestable_third">
+
+                <div class="zTreeDemoBackground">
+                  <ul id="orgTree" class="ztree"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
           <!-- 高级搜索 复杂查询结束 -->
           <div class="panel-body" id="allcheck">
             <table id="example2" class="table table-striped table-bordered table-hover" width="100%">
@@ -129,7 +131,7 @@
                 <tr>
                   <th style=" width:50px;">
                     <input type="checkbox" id="selAll" onclick="selectAll();" class="yincang"/>
-                    <button  class="btn btn-info btn-xs  yincang" type="button" data-target="#myModal8" data-toggle="modal"  style="height:16px; vertical-align:top; margin-top:3px; margin-left:10px;"><i class="pe pe-7s-download"></i></button>
+                    <button  class="btn btn-info btn-xs  yincang" type="button" onclick="exportPartSum()"  style="height:16px; vertical-align:top; margin-top:3px; margin-left:10px;"><i class="pe pe-7s-download"></i></button>
                   </th>
                   <th>工号</th>
                   <th>姓名</th>
@@ -185,7 +187,8 @@
             <form role="form" class=" form-horizontal formclass">
               <img src="static/img/daochu.png" width="220" height="220" style=" margin-left:146px; margin-bottom:40px;">
               <center>
-                <button class="btn btn-warning jxdc" type="button" onclick="downMB('time/downTimeExcelAll');" title="考勤导出模板">继续导出</button>
+              	<label id="exportAllSum"></label>
+                <button class="btn btn-warning jxdc" id="nextExport" type="button" onclick="downMB('time/downTimeExcelAll');" title="考勤导出模板">继续导出</button>
                 &nbsp;&nbsp;
                 <button class="btn btn-info guanbi" type="button">取消</button>
               </center>
@@ -208,7 +211,8 @@
             <form role="form" class=" form-horizontal formclass">
               <img src="static/img/daochu.png" width="220" height="220" style=" margin-left:146px; margin-bottom:40px;">
               <center>
-                <button class="btn btn-warning jxdc" type="button" onclick="downMBP('time/downTimeExcelPart');" title="考勤导出模板">继续导出</button>
+                  <label id="exportPartSum"></label>
+                <button class="btn btn-warning jxdc" id="partExport" type="button" onclick="downMBP('time/downTimeExcelPart');" title="考勤导出模板">继续导出</button>
                 &nbsp;&nbsp;
                 <button class="btn btn-info guanbi" type="button" data-dismiss="modal">取消</button>
               </center>
@@ -250,9 +254,92 @@
 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
+<script type="text/javascript" src="static/js/zTreeJs/zTreeJs/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="static/js/zTreeJs/zTreeJs/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="static/js/zTreeJs/zTreeJs/jquery.ztree.exedit-3.5.js"></script>
 	<script>
+	//弹出全部导出的 modal 
+   function exportAllSum(){
+	   $('#nextExport').attr("disabled",false); 
+	   var sum =0;
+	   $.ajax({
+		    type : "POST",
+		    url : "time/exportAllSum",	  
+		    dataType : "json",
+		    success : function(result) {
+		     if(result){
+		    	sum =result;
+		    //	 sum=1200;
+		       $('#myModal7').modal('toggle').modal('show');	
+		  	   if(sum>1000){
+		  		 $('#exportAllSum').text("本次共导出"+sum+"条,最多只能导出1000条");
+		  		 $('#nextExport').attr("disabled","disabled");
+		  	   }else{
+		  		 $('#exportAllSum').text("共导出"+sum+"条考勤记录,是否继续?"); 
+		  	   }
+		  	 
+		     }
+		      
+		    } 
+		  }); 	  
+	  
+   }
+	//弹出部分导出的 modal 
+   function exportPartSum(){
+	   $('#partExport').attr("disabled",false); 
+	   var param='';
+		var obj = document.getElementsByName("checkAll");
+		for(var i=0; i<obj.length; i++){
+			if(obj[i].checked){
+				if(param==''){
+					param+=obj[i].value;
+				}
+				else{
+					param+=','+obj[i].value;
+				}
+			}
+		}
+	   var sum =0;//导出的条数	  
+	   $.ajax({
+		    type : "POST",
+		    url : "time/exportPartSum",	  
+		    dataType : "json",
+		    data:{params:param},
+		    success : function(result) {
+		     if(result){
+		    	sum =result;
+		    //	 sum=1200;
+		       $('#myModal8').modal('toggle').modal('show');	
+		  	   if(sum>1000){
+		  		 $('#exportPartSum').text("本次共导出"+sum+"条,最多只能导出1000条");
+		  		 $('#partExport').attr("disabled","disabled");
+		  	   }else{
+		  		 $('#exportPartSum').text("共导出"+sum+"条考勤记录,是否继续?"); 
+		  	   }
+		  	 
+		     }
+		      
+		    } 
+		  }); 	  
+	  
+   }
    $(function () {
-
+	   //填充工作地的 下拉框 
+	      $.ajax({
+	    		    type : "POST",
+	    		    url : "time/getWorkCityList",	  
+	    		    dataType : "json",
+	    		    success : function(result) {
+	    		     if(result){
+	    		    	 $("#work_location").html('');
+			    		 $("#work_location").append("<option value=''>全部 </option>");
+	    		    	for(var i=0;i<result.length;i++){
+	    		    		 $("#work_location").append("<option value='"+result[i].baseDataId+"'>"+result[i].baseDataName+"</option>");
+	    		    	} 
+	    		     }
+	    		      
+	    		    } 
+	    		  }); 
 /* 	   var table = $('#example2').dataTable() */
    	$.fn.editable.defaults.mode = 'inline';
      	var table = $('#example2').dataTable({
@@ -279,7 +366,7 @@
     				success : function(response, newValue) {
     					var obj = JSON.parse(response); 
     					if (obj.msg != 'upd_success') {
-    						return '修改失败';
+    						return obj.msg;
     					}
     				}
     			});
@@ -359,7 +446,11 @@
 
     	$("div.toolbar").html('<button class="btn btn-info  btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>');
     }); 
+   //点击查询按钮调用的方法
     function serchTime(){
+    	if($("#dept").val()==''){
+    		$("#organization_id").val('');
+    	}
 		$('#example2').dataTable().api().ajax.reload();
 	}
   //form表单转成json格式
@@ -397,6 +488,7 @@
 					data : {
 						"attend_id" : attend_id
 					},
+					dataType: "json", 
 					success : function(data) {
 						if (data.msg == 'del_success') {
 							swal("删除成功!", "该考勤记录已经被删除.", "success");
@@ -423,17 +515,9 @@ $(".guanbi").click(function(){
  <script>
 
         $(function(){
-
-            $('#datepicker').datepicker();
-            $("#datepicker").on("changeDate", function(event) {
-                $("#my_hidden_input").val($("#datepicker").datepicker('getFormattedDate'))
+            $('.input-group.date').datepicker({ 
+              autoclose: true
             });
-
-            $('#datapicker2').datepicker();
-            $('.input-group.date').datepicker({ });
-            $('.input-daterange').datepicker({ });
-
-
         });
 
     </script>
@@ -507,6 +591,73 @@ function selectAll()
 		document.OrderSendForm.action = "hroorderSend.do";
 		document.OrderSendForm.submit();
 	}
+</script>
+<script>
+
+//选择部门 
+  var setting = {
+    view: {
+      dblClickExpand: false,
+      showLine:false
+    },
+    check: {
+      enable: true
+    },
+    callback: {
+      onClick: zTreeOnClick
+    },
+    data: {
+      simpleData: {
+        enable: true
+      }
+    },
+    treeNode:{
+      nocheck:true
+    }
+  };
+  function zTreeOnClick(event, treeId, treeNode){
+    var $modal = $('#getTree'),
+        $sourceDepartment = $(domTreeRelatedTarget).parent().siblings('[data-tree-attr=getTreeNode]');
+    $modal.modal('hide');
+    $sourceDepartment.val( treeNode.name );
+    
+    $("#organization_id").val(treeNode.id);
+  //   console.log(treeNode.id)
+  };
+  function loadData(targetDom){
+    //组织架构树引用json
+    var zNodes =[];
+    $.ajax({
+    	 url:"system/loadTree",       
+       type : "POST",
+      dataType:'json',
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+         alert(textStatus);
+      },
+      success: function(data){
+        var strs = data.data;
+        for(var i = 0; i < strs.length; i++){
+          var obj = new Object();
+          obj.id = strs[i].organizationId;
+          obj.pId = strs[i].parentId;
+          obj.name = strs[i].organizationName;
+          obj.code = strs[i].organizationCode;
+          obj.memo = strs[i].memo;
+          obj.open = true;
+          zNodes.push(obj);
+        }
+        $.fn.zTree.init($(targetDom), setting, zNodes);
+      }
+    });
+  }
+  var domTreeRelatedTarget = null;
+  $('#getTree').on('show.bs.modal', function(e){
+    // e.relatedTarget
+    domTreeRelatedTarget = e.relatedTarget;
+    var getTargetDom = $('#orgTree');
+    loadData(getTargetDom);
+  });
+
 </script>
 
  

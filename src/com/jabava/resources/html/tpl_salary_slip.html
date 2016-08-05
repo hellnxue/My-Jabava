@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+	table {
+		text-align:center;
+		border-collapse:collapse;
+	}
+	td {
+		min-width: 50px;
+		padding: 5px;
+		font-size:12px;
+	}
+	#headerTr td {
+		background: #0CF;
+	}
+	p {
+		font-weight:bold;
+		font-size:12px;
+	}
+</style>
+</head>
+
+<body>
+<p>
+亲爱的${employeeName}先生/女士您好！
+</p>
+<br>
+<br>
+<p>
+感谢您本月的辛勤工作，以下是您${month}的工资明细，请查收。如您有任何疑问，请您直接与人事部门进行沟通，请勿直接回复此邮件。谢谢！
+</p>
+<br>
+<table border="1">
+	<tr id="headerTr">${header}</tr>
+	<tr>${data}</tr>
+</table>
+</body>
+</html>

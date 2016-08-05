@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.jabava.pojo.manage.EhrRole;
 import com.jabava.pojo.manage.EhrUser;
+import com.jabava.pojo.manage.RolePower;
 import com.jabava.utils.Page;
 
 public interface IEhrRoleService {
@@ -78,9 +79,15 @@ public interface IEhrRoleService {
 	
 	public Map<String, Object> rolePower(Long roleId) throws Exception; 
 	
+	public RolePower roleButtonPower(Long roleId) throws Exception;
+	
+	public RolePower menuPowerTree(Long roleId) throws Exception;
+	
 	public void rolePowerSave(Long roleId, String[] buttons, String[] menus) throws Exception;
 	
 	public void addAdminPower(EhrUser user);
+	
+	public void addAdminRoleUser(EhrUser user);
 	
 	public void addCommonRoleUser(EhrUser user);
 	

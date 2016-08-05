@@ -3,8 +3,11 @@ package com.jabava.service.system;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import com.jabava.pojo.manage.EhrBaseData;
 import com.jabava.pojo.manage.EhrBaseDataType;
+import com.jabava.pojo.manage.EhrUser;
 import com.jabava.utils.Page;
 
 /**
@@ -68,5 +71,32 @@ public interface IBaseDataService {
 	List<EhrBaseData> getByCompanyId(Long companyId) throws Exception;
 	
 	List<EhrBaseData> selectBaseData(Long companyId, int baseDataType, String baseDataName) throws Exception;
-
+	
+	List<EhrBaseData> selectBaseData(Long companyId, int baseDataType);
+	/**
+	 * 批量取值
+	 * @param importFile
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object>  importBaseData(Map <String,Object>map,EhrUser ehrUser) throws Exception;
+	/**
+	 * 批量插值
+	 * @param map
+	 * @return
+	 */
+	public Map<String,Object> moreInsert(Map<String, Object>map)throws Exception;
+	public Map<String,Object> resolveBaseData(CommonsMultipartFile multipartFile)throws Exception;
+	/**
+	 * 查询所有基础数据类型
+	 * @return
+	 */
+	List<EhrBaseDataType> selectBaseDateType();
+	/**
+	 * 根据主键查询基础数据类型
+	 * @param baseDataType
+	 * @return
+	 */
+	EhrBaseDataType selectByPrimaryKey(Integer baseDataType);
 }

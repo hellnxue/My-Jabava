@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <!-- Page title -->
-<title>工资项目管理</title>
+<title>员工工资管理</title>
 <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
 <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
 <!--for 临时改变-->
@@ -41,12 +42,15 @@
                     <div class="hpanel">
                         <div class="panel-heading">
                             <h4 class="text-center font-bold">
-                                员工工资管理 
+                                员工薪酬档案管理
                             </h4>
                             <div class="text-right">
+                                <% if(RequestUtil.hasPower("salary_ba")){ %>
+                                <span class="text-defaults">请到薪酬方案管理-薪酬模板设置下载合适模板</span>
                                 <button class="btn btn-success btn-xs" type="button" data-target="[data-modal=induce]" data-toggle="modal">
-                                    <span class="bold">批量导入</span>
+                                    <span class="bold">批量调薪</span>
                                 </button>
+                                <% } %>
                             </div>
                             
                         </div>
@@ -126,6 +130,10 @@
                 </div>
             </div>
         </div> 
+
+         <select class="js-example-data-ajax form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+          <option value="3620194" selected="selected">select2/select2</option>
+        </select>
               
         <!--主要内容结束-->
 
@@ -140,12 +148,13 @@
                     <div class="color-line"></div>
                     <div class="modal-header">
                         <div class="row">
-                            <form class="form-horizontal" id="addForm">
+                            <form class="form-horizontal" id="addForm" action="">
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">员工号：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required">
-                                            <input type="text" class="form-control" id="jobNumber" name="jobNumber">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">员工：</label>
+                                            <input type="hidden" name="certId">
+                                            <input type="hidden" name="jobNumber">                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required">
+                                            <input type="text" class="form-control" name="employeeName">
                                             <span class="help-block" data-help-for="jobNumber" id="employeeNameSpan"></span>
                                         </div>
                                     </div>
@@ -166,9 +175,12 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">用途：</label>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-4">
+                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-4 form-required">
                                             <select class="form-control" id="usageFlagForAdd" name="usageFlag">
-                                                <option value="616">工资</option>
+                                                <option value="">请选择</option>
+                                                <c:forEach var="salaryType" items="${requestScope.salaryTypeList }" varStatus="status">
+                                                	<option value="${salaryType.baseDataId }">${salaryType.baseDataName }</option>
+                                                </c:forEach>
                                             </select>
                                         </div>   
                                     </div>
@@ -205,7 +217,10 @@
                                     <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">用途：</label>
                                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
                                             <select class="form-control" id="usageFlagForImport" name="usageFlag">
-                                                <option value="616">工资</option>
+                                                <option value="">请选择</option>
+                                                <c:forEach var="salaryType" items="${requestScope.salaryTypeList }" varStatus="status">
+                                                	<option value="${salaryType.baseDataId }">${salaryType.baseDataName }</option>
+                                                </c:forEach>
                                             </select>
                                         </div>   
                                     </div>
@@ -246,6 +261,7 @@
     <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
     <script src="static/bootstrap/vendor/jquery-ui/jquery-ui.min.js"></script>
     <script src="static/bootstrap/vendor/slimScroll/jquery.slimscroll.min.js"></script>
+
     <script src="static/bootstrap/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="static/bootstrap/vendor/jquery-flot/jquery.flot.js"></script>
     <script src="static/bootstrap/vendor/jquery-flot/jquery.flot.resize.js"></script>
@@ -268,24 +284,38 @@
     <!-- App scripts -->
     <script src="static/bootstrap/scripts/homer.js"></script>
     <script src="static/bootstrap/scripts/charts.js"></script>
+
     <!-- 表单验证 -->
     <script src="static/js/plugins/form.validation/js/formValidation.js"></script>
     <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
 
     <script src="static/js/common/ajaxfileupload.js"></script>
+    <script src="static/js/common/hashMap.js"></script>
     
 <script type="text/javascript">
+	var table, salaryTypeMap = new HashMap();
 	jQuery.prototype.serializeObject=function(){  
-	    var obj=new Object();  
-	    $.each(this.serializeArray(),function(index,param){  
-	      if(!(param.name in obj)){  
-	        obj[param.name]=param.value;  
-	      }  
-	    });  
-	    return obj;  
-	};
-
-	var table;
+        var obj=new Object();  
+        $.each(this.serializeArray(),function(index,param){  
+          if(!(param.name in obj)){  
+            obj[param.name]=param.value;  
+          }  
+        });  
+        return obj;  
+    };
+	
+	<c:forEach var="salaryType" items="${requestScope.salaryTypeList }" varStatus="status">
+		salaryTypeMap.put(${salaryType.baseDataId }, "${salaryType.baseDataName }");
+	</c:forEach>
+	
+	function getSalaryTypeName(type){
+		if(type){
+			return salaryTypeMap.get(type);
+		}
+		
+		return '';
+	}
+	
     $(function (){
     	$('#addForm')[0].reset();
     	$('#uploadForm')[0].reset();
@@ -306,36 +336,10 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                jobNumber: {
-                    trigger: 'blur',
-                    onError: function(e, data){
-                        var $field = $(e.target)
-                        $field.val('')
-                        $('[data-help-for='+ $field.attr('name') +']').text('')
-                    },
-                    onSuccess: function(e, data){
-                        var $field = $(e.target)
-                        if(data.validator == 'remote'){
-                            $('[data-help-for='+ $field.attr('name') +']')
-                            .text(data.result.person.employeeName)
-                        }
-                    },
+                employeeName: {
                     validators: {
                         notEmpty: {
                             message: '请填写必填项'
-                        },
-                        remote: {
-                            type: 'POST',
-                            url: 'employee/searchByJobNumber',
-                            dataType: 'json',
-                            data: function(validator, $field, value) {
-                                return {
-                                    jobNumber: value
-                                };
-                            },
-                            message: '员工不存在',
-                            // delay: 1000,
-                            validKey: 'success'
                         }
                     }
                 },
@@ -343,18 +347,110 @@
                     validators: {
                         notEmpty:{
                             message: '请填写必填项'
-                        },
-                        digits:{
-                            message: '请输入有效数字'
+                        }
+                    }
+                },
+                usageFlag: {
+                    validators: {
+                        notEmpty:{
+                            message: '请填写必填项'
                         }
                     }
                 }
                 
             }
         })
+        .on('success.form.fv', function(e){
+            e.preventDefault();
+            $.ajax({
+                url : "salary/editSalary",
+                data : $("#addForm").serialize(),
+                dataType:'json',
+                type : 'post',
+                success : function(message) {
+                    if(message.success){
+                        swal({
+                            title: "新增成功!",
+                            text: "",
+                            type: "success",
+                            confirmButtonText: "确定"
+                        },function(){
+                            //window.location.href='salary/toListSalary';
+                            mod(message.salaryId);
+                        });
+                        
+                    }else{
+                        swal({
+                            title: "新增失败!",
+                            text: message.msg,
+                            type: "error",
+                            confirmButtonText: "确定"
+                        },function(){
+
+                            $(e.target).formValidation('resetForm', true);
+                        });
+
+                    }
+                }
+            });
+        })
         
     });
     
+    $('[name="employeeName"]').on('keyup', function(event) {
+
+        var markup = '<div class="list-group col-sm-12" data-help-for="jobNumber">'
+
+        $.ajax({
+            url: 'employee/searchBySearch',
+            type: 'POST',
+            dataType: 'json',
+            data: {search: $(this).val()},
+            delay: 100
+        })
+        .done(function(d){
+            $.each(d, function(index, val){
+                markup += '<a href="javascript://" class="list-group-item" data-cert="'+val.certId+'" data-jobnumber="'+val.jobNumber+'" data-name="'+val.employeeName+'">'
+                markup += val.employeeName+'<span class="m-l-sm">'+(val.jobNumber?val.jobNumber:'')+'</span>'
+                markup += '<p class="m-n">'+(val.certId?val.certId:'')+'</p>'
+                markup += '</a>'
+            });
+            markup += '</div>'
+
+            $('[data-help-for="jobNumber"]').replaceWith(markup);
+
+        })
+        .always(function(d){
+            $('[data-help-for="jobNumber"]')
+            .css({
+                position: 'absolute',
+                zIndex: '996',
+                backgroundColor: '#fff',
+                maxHeight: '320px',
+                overflow: 'auto',
+                padding: 0
+            })
+            .find('.list-group-item')
+            .each(function(index, el) {
+                $(this).off().on('click', function(event){
+                    event.preventDefault()
+                    $(this).parent('[data-help-for="jobNumber"]').hide()
+                    $('[name=employeeName]').val( $(this).attr('data-name') )
+                    $('[name=certId]').val( $(this).attr('data-cert') )
+                    $('[name=jobNumber]').val( $(this).attr('data-jobnumber') )
+                });
+            });
+
+        });
+        
+
+
+
+
+    });
+
+
+
     function doSearch(){
     	loadTable($('#searchForm').serializeObject());
     }
@@ -365,7 +461,7 @@
         }
     	table = $('#salaryTable').DataTable({
             "dom": 
-                "<'row'<'col-sm-6'l><'col-sm-4'f><'col-sm-2'<'toolbar text-center'>>>" +
+                "<'row'<'col-sm-6'l><'col-sm-4'f><'col-sm-2'<'toolbar text-right'>>>" +
                 "<'row'<'col-sm-12 table-responsive'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
             
@@ -384,9 +480,7 @@
 	            { "data": "employeeName" },
 	            { "data": "templateName" },
 	            { "data": "usageFlag", "render": function(data, type, row, meta){
-	            	if(data == 616){
-	            		return "工资";
-	            	}
+	            	return getSalaryTypeName(data);
 	            }},
 	            { "data": "status", "render": function(data, type, row, meta){
 	            	if(data == 1){
@@ -402,9 +496,17 @@
 	            	}else{
 	            		payOff = '发放';
 	            	}
-	                return '<button class="btn btn-info btn-xs" type="button" onclick="changeStatus(' + row.salaryId + ',' + row.status + ');">' + payOff + '</button>&nbsp;' +
-	                	'<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.salaryId + ');">修改</button>&nbsp;' +
-	                    '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryId + ');">删除</button>';
+                    var strHtml = '';
+                    <% if(RequestUtil.hasPower("salary_rs")){ %>
+                    strHtml += '<button class="btn btn-info btn-xs" type="button" onclick="changeStatus(' + row.salaryId + ',' + row.status + ');">' + payOff + '</button>&nbsp;';
+                    <% } %>
+                    <% if(RequestUtil.hasPower("salary_ms")){ %>
+                    strHtml += '<button class="btn btn-success btn-xs" type="button" onclick="mod(' + row.salaryId + ');">修改</button>&nbsp;';
+                    <% } %>
+                    <% if(RequestUtil.hasPower("salary_ds")){ %>
+                    strHtml += '<button class="btn btn-danger btn-xs del-button" type="button" onclick="del(' + row.salaryId + ');">删除</button>';
+                    <% } %>
+	                return strHtml;
 	            }}
             ],
           	"columnDefs": [
@@ -425,14 +527,18 @@
                 }
             }
         });
-        
-        $(".toolbar").html('<button class="btn btn-info btn-sm pull-right" type="button" data-toggle="collapse" data-target="[data-toggle=search]" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>&nbsp<button class="btn btn-info btn-sm" type="button" data-target="[data-modal=addSalary]" data-toggle="modal">新增</button>');
+        var strHtml = '';
+        <% if(RequestUtil.hasPower("salary_as")){ %>
+        strHtml += '<button class="btn btn-info btn-sm" type="button" data-target="[data-modal=addSalary]" data-toggle="modal">新增</button>&nbsp';
+        <% } %>
+        strHtml += '<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="[data-toggle=search]" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>';
+        $(".toolbar").html(strHtml);
     }
     
     function changeStatus(id,status){
     	$.ajax({
             url : "salary/updateStatus",
-            data : {id:id, status: (status == 1 ? 2 : 1)},
+            data : {id:id, status: status ? 0 : 1},
             dataType:'json',
             type : 'post',
             success : function(message) {
@@ -466,10 +572,9 @@
     
     function save(){
         //校验
-        
         $.ajax({
             url : "salary/editSalary",
-            data : $("#addForm").serializeObject(),
+            data : $("#addForm").serialize(),
             dataType:'json',
             type : 'post',
             success : function(message) {
@@ -479,17 +584,19 @@
                         text: "",
                         type: "success",
                         confirmButtonText: "确定"
+                    },function(){
+                        window.location.href='salary/toListSalary';
                     });
                     
-                    //mod(message.salaryId);
-                    window.location.href='salary/toListSalary';
                 }else{
+                    console.log(message)
                     swal({
                         title: "新增失败!",
                         text: message.msg,
                         type: "error",
                         confirmButtonText: "确定"
                     });
+
                 }
             }
         });
@@ -576,7 +683,7 @@
                 return false;
             }
             $.ajaxFileUpload({
-                url: 'upload/uploadFile', 	//用于文件上传的服务器端请求地址
+                url: 'common/uploadFile', 	//用于文件上传的服务器端请求地址
                 secureuri: false, 			//是否需要安全协议，一般设置为false
                 fileElementId: ['uploadFile'], //文件上传域的ID    
                 async:false,
@@ -614,7 +721,7 @@
                                 }, function(){
                                     var msgs = message.rowMessagge,
                                         messager = []
-                                    if( msgs.length != 0 || msgs){
+                                    if( msgs ){
                                         $.map(msgs, function(item, index){
                                             messager[index] = '<p>第 '+item.row+' 行第 '+item.cell+' 列，'+item.msg+'</p>'
                                         });
@@ -647,6 +754,9 @@
 	    $(this).find(':file').trigger('click.file:selected')
 	});
 
+
+
 </script>
+
 </body>
 </html>

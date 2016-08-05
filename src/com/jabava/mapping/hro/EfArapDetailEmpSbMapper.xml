@@ -604,7 +604,7 @@
     p.card_id certId,
     p.card_type certType,p.work_city workLocation
     from ef_arap_detail_emp_sb sb 
-   join bd_emp_base_info p on sb.emp_id=p.base_info_id
+   left join bd_emp_base_info p on sb.emp_id=p.base_info_id
     where sb.is_deleted=0 and sb.bill_id = #{billId,jdbcType=BIGINT}     
   </select>
 	
@@ -614,4 +614,7 @@
     where bill_id = #{billId,jdbcType=BIGINT} 
     order by prod_id
   </select>
+  <delete id="deleteByBillId">
+  	delete from ef_arap_detail_emp_sb where bill_id=#{billId,jdbcType=BIGINT} 
+  </delete>
 </mapper>

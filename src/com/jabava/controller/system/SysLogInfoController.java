@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,34 +49,28 @@ public class SysLogInfoController {
 	@RequestMapping("dataTableSearch")
 	@ResponseBody
 	public Page<EhrSysLog> dataTableSearch(HttpServletRequest request, String userName, Integer start, Integer length,
-			String startDate, String endDate, String operateInfo) {
+			String startDate, String endDate, String operateInfo) throws Exception {
 		Page<EhrSysLog> page = new Page<>(start, length);	
 		EhrUser user = RequestUtil.getLoginUser(request);
-		Long companyId = user.getCompanyId();
-		List<EhrSysLog> list = null;
 		
 		String search = request.getParameter("search[value]");//search框的值
 		String order = request.getParameter("order[0][column]");//排序列的下标
 		order = request.getParameter("columns["+order+"][data]"); //排序列的名称
 		String according = request.getParameter("order[0][dir]");//升序或倒序
-		
-		java.text.DateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
-		try {
-			int isNumeric = JabavaUtil.isNumeric(search);
+		if(StringUtils.isEmpty(order)){		//默认按时间倒序排序
+			order = "operate_date";
+			according = "desc";
+		}else{
 			order = EhrSysLog.getColumnName(order);
-			SimpleDateFormat  df = new SimpleDateFormat("MM/dd/yyyy");
-			Date sDate = (startDate != null && !"".equals(startDate)) ? df.parse(startDate) : null;
-			Date eDate = (endDate != null && !"".equals(endDate)) ? df.parse(endDate) : null;
-			list = sysLogService.selectSysLog(userName, sDate, eDate,
-					operateInfo, companyId, search, order, according, isNumeric, page);
-			//List<EhrUser> userList = sysLogService.selectByUser(companyId);
-			for(EhrSysLog log : list){
-				log.setOperateDate1(format.format(log.getOperateDate()));
-			}
-			page.setData(list);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		int isNumeric = JabavaUtil.isNumeric(search);
+		SimpleDateFormat  df = new SimpleDateFormat("yyyy-MM-dd");
+		Date sDate = (startDate != null && !"".equals(startDate)) ? df.parse(startDate) : null;
+		Date eDate = (endDate != null && !"".equals(endDate)) ? df.parse(endDate) : null;
+		List<EhrSysLog> list = sysLogService.selectSysLog(userName, sDate, eDate,
+				operateInfo, user.getCompanyId(), search, order, according, isNumeric, page);
+		page.setData(list);
+		
 		return page; 
 	}
 

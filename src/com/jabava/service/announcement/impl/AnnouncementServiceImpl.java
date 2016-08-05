@@ -10,11 +10,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.jabava.controller.announcement.QeuryEhrInformation;
-import com.jabava.core.EnumConstents.HasDetail;
-import com.jabava.core.EnumConstents.HasRead;
-import com.jabava.core.EnumConstents.InformationRange;
-import com.jabava.core.EnumConstents.InformationType;
-import com.jabava.core.EnumConstents.IsDeleted;
+import com.jabava.utils.enums.JabavaEnum.HasDetail;
+import com.jabava.utils.enums.JabavaEnum.HasRead;
+import com.jabava.utils.enums.JabavaEnum.InformationRange;
+import com.jabava.utils.enums.JabavaEnum.InformationType;
+import com.jabava.utils.enums.JabavaEnum.IsDeleted;
 import com.jabava.dao.announcement.EhrInformationMapper;
 import com.jabava.pojo.announcement.EhrInformation;
 import com.jabava.service.announcement.AnnouncementService;

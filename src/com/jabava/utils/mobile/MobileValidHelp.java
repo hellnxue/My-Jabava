@@ -3,6 +3,7 @@ package com.jabava.utils.mobile;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.wondertek.esmp.esms.empp.EMPPConnectResp;
 import com.wondertek.esmp.esms.empp.EMPPData;
 import com.wondertek.esmp.esms.empp.EMPPObject;
@@ -23,14 +24,20 @@ public class MobileValidHelp {
 
 	private static EmppApi emppApi = null;
 
-	private static final String mhost = "211.136.163.68";
-	private static final String mport = "9981";
-	private static final String maccountId = "10657109030880";
-	private static final String mpassword = "Admin9097";
-	private static final String mserviceId = "1";
+	private static String mhost = "211.136.163.68";
+	private static String mport = "9981";
+	private static String maccountId = "10657109030880";
+	private static String mpassword = "Admin9095";
+	private static String mserviceId = "1";
 	private static MobileRecvListener listener;
 
 	static {
+		mhost = JabavaPropertyCofigurer.getProperty("mobile.server.host");
+		mport = JabavaPropertyCofigurer.getProperty("mobile.server.port");
+		maccountId = JabavaPropertyCofigurer.getProperty("mobile.server.account");
+		mpassword = JabavaPropertyCofigurer.getProperty("mobile.server.password");
+		mserviceId = JabavaPropertyCofigurer.getProperty("mobile.server.service");
+		
 		emppApi = new EmppApi();
 		listener = new MobileRecvListener(emppApi);
 		try {

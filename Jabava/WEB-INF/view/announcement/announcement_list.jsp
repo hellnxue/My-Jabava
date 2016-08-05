@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,35 +29,6 @@
   <!-- Main Wrapper -->
   <div id="wrapper">
 
-    <!--  请在这放主要内容 ，比如：导航条,搜索块，列表等  -->
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-<div class="panel-body"><!-- 
-<a class="small-header-action" href="">
-<div class="clip-header">
-<i class="fa fa-arrow-up"></i>
-</div>
-</a> -->
-
-<div id="hbreadcrumb" class="pull-right m-t-lg">
-  <ol class="hbreadcrumb breadcrumb">
-    <li><a href="to_index?jump=1">首页</a></li>
-    <li>
-      <span>信息公告</span>
-    </li>
-    <li class="active">
-      <span></span>
-    </li>
-  </ol>
-</div>
-<h2 class="font-light m-b-xs">
-  信息公告
-</h2>
-<small>待定</small>
-</div>
-</div>
-</div>
-
 <!-- 放主要内容 -->
 
 <div class="content animate-panel">
@@ -65,13 +36,16 @@
     <div class="col-lg-12">
       <div class="hpanel">
         <div class="panel-heading ">
-          <div class="pull-right">
+          <div class="text-right">
+            <%
+              if(RequestUtil.hasPower("index_announcement_ra")){
+            %>
             <button class="btn btn-success btn-xs" type="button" onclick="$('#addAnnouncementForm')[0].reset();" data-target="#addModal" data-toggle="modal">
               <i class="fa fa-group"></i> <span class="bold">发布公告</span>
             </button>
-          </div>
-          记录集 
-          <div>
+            <%
+              }
+            %>
           </div>
         </div>
 
@@ -418,7 +392,7 @@
           "dom":
 
           "<'row'<'col-sm-3'l><'col-sm-8'f><'col-sm-1'<'toolbar'>>>" +
-          "<'row'<'col-sm-12 table-responsive'tr>>" +
+          "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
 
@@ -431,7 +405,7 @@
 { "data": "last_modify_date", "visible": false },
 { "data": "information_id" },
 { "data": "informationTitle", "render": function(data, type, row, meta){
-  return '<div style="width:100%;"><a onclick="showUpdate(' + row.information_id + ');" data-target="#showModal" data-toggle="modal">' + row.information_title + '</a></div>';
+  return '<div style="width:100%;"><a onclick="showSelect(' + row.information_id + ');" data-target="#showModal" data-toggle="modal">' + row.information_title + '</a></div>';
 } },
 { "render": function render( data, type, row, meta ){						
   return '<div class="btn-group">'+
@@ -482,7 +456,7 @@
           var grid = $('#example2').dataTable({
             "dom":
             "<'row'<'col-sm-3'l><'col-sm-8'f><'col-sm-1'<'toolbar'>>>" +
-            "<'row'<'col-sm-12 table-responsive'tr>>" +
+            "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
 //json
@@ -508,14 +482,26 @@
 { "data": "last_modify_date", "visible": false },
 { "data": "information_id" },
 { "data": "informationTitle", "render": function(data, type, row, meta){
-  return '<div style="width:100%;"><a onclick="showUpdate(' + row.information_id + ');" data-target="#showModal" data-toggle="modal">' + row.information_title + '</a></div>';
+  return '<div style="width:100%;"><a onclick="showSelect(' + row.information_id + ');" data-target="#showModal" data-toggle="modal">' + row.information_title + '</a></div>';
 } },
 { "render": function render( data, type, row, meta ){						
   return '<div class="btn-group">'+
   '<button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">操作<span class="caret"></span></button>'+
   '<ul class="dropdown-menu">'+
+  <%
+    if(RequestUtil.hasPower("index_announcement_ma")){
+  %>
   "<li><a onclick='showUpdate("+row.information_id+")' data-target='#updateModal' data-toggle='modal'><i class='fa fa-check'></i>修改</a></li>"+
+  <%
+    }
+  %>
+  <%
+    if(RequestUtil.hasPower("index_announcement_da")){
+  %>  
   "<li><a onclick='deleteInformation("+row.information_id+")' class='demo4 '><i class='fa fa-times '></i> 删除</a></li>"+
+  <%
+    }
+  %>
   "</ul></div>";
 
 } }
@@ -678,9 +664,6 @@ function clearUpdate(){
 <!--恢复-->
 <script>
   function formatDate(time){
-//var JsonDateValue = new Date(time);		
-//var date = JsonDateValue.getFullYear()+"-"+(JsonDateValue.getMonth()+1)+"-"+JsonDateValue.getDate();
-//return date
 if(time && time.length >= 10){
   return time.substring(0,10);
 }else{
@@ -710,14 +693,26 @@ if(result.isPriority==1){//是否优先排列
 }
 
 if(result.hasDetail==1){
-//$("#updateHasDetail1").attr("checked",true);
 $('#updateHasDetail1').click();
-//$("#updateInformationContent").attr("readonly",false);
 }else{
-//$("#updateHasDetail2").attr("checked",false);
 $('#updateHasDetail2').click();
-//$("#updateInformationContent").attr("readonly",true);
 }
+}
+});
+}
+//公告详情窗口
+function  showSelect(informationId){
+  $.ajax({
+    type : 'post',
+    url : "announcement/showUpdate",
+    data : {informationId:informationId},
+    async : false,
+    dataType: "json",
+    success : function(result) {
+      $("#showInformationTitle").text(result.informationTitle);
+      $("#showStartDate").text(formatDate(result.startDate));			 	
+      $("#showFinishDate").text(formatDate(result.finishDate));
+      $("#showInformationContent").text(result.informationContent);
 }
 });
 }

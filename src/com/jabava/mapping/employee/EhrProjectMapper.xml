@@ -40,6 +40,7 @@
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     update ehr_project set is_delete=1  where project_id = #{projectId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrProject" >
@@ -204,6 +205,7 @@
       </if>
     </set>
     where project_id = #{projectId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrProject" >
     <!--
@@ -226,6 +228,7 @@
       last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where project_id = #{projectId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   	<select id="getByPersonId" resultMap="BaseResultMap">

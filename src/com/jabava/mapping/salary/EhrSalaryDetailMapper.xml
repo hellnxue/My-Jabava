@@ -179,4 +179,8 @@
 	update ehr_salary_detail
 	set ${name} = #{value} where salary_detail_id = #{pk}
   </update>
+  
+  <select id="countBySalaryItem" resultType="Integer">
+  	select count(1) from ehr_salary_detail where salary_item_id = #{salaryItemId,jdbcType=BIGINT}
+  </select>
 </mapper>

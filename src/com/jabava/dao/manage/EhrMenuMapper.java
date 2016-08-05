@@ -62,4 +62,6 @@ public interface EhrMenuMapper {
 	List<EhrMenu> searchMenu(@Param("menuName") String menuName,
 			@Param("menuType") Byte menuType, @Param("menuUrl") String menuUrl,
 			@Param("parentId") Long parentId);
+	
+	List<EhrMenu> selectAuthorizedChildren(@Param("parentId") Long parentId, @Param("userId") Long userId);
 }

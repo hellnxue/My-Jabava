@@ -50,11 +50,13 @@
     -->
     delete from ehr_assess
     where assess_id = #{assessId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   
   <update id="updateAssessByAssessId" parameterType="java.lang.Long">
      update ehr_assess set is_deleted=1
     where assess_id = #{assessId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrAssess" >
     <!--
@@ -212,6 +214,7 @@
       </if>
     </set>
     where assess_id = #{assessId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrAssess" >
     <!--
@@ -233,6 +236,7 @@
       last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
       evaluation_level = #{evaluationLevel,jdbcType=VARCHAR}
     where assess_id = #{assessId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   	<select id="getByPersonId" resultMap="BaseResultMap">

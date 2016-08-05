@@ -22,6 +22,9 @@
     <result column="new_report" property="newReport" jdbcType="VARCHAR" />
     <result column="new_location" property="newLocation" jdbcType="VARCHAR" />
     <result column="new_cost" property="newCost" jdbcType="VARCHAR" />
+    <result column="record_start_date" property="recordStartDate" jdbcType="DATE" />
+    <result column="record_end_date" property="recordEndDate" jdbcType="DATE" />
+    <result column="change_type" property="changeType" jdbcType="VARCHAR" />
     <result column="cause" property="cause" jdbcType="VARCHAR" />
     <result column="new_date" property="newDate" jdbcType="DATE" />
     <result column="is_change_salary" property="isChangeSalary" jdbcType="TINYINT" />
@@ -35,6 +38,7 @@
     <result column="is_change" property="isChange" jdbcType="TINYINT" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
+   <resultMap id="linkedHashMap" type="java.util.LinkedHashMap"></resultMap>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbggenerated
@@ -43,7 +47,7 @@
     -->
     post_id, person_id, source_department, source_post, source_rank, source_report, source_location, 
     source_long, source_cost, new_department, new_post, new_rank, new_report, new_location, 
-    new_cost, cause, new_date, is_change_salary, create_user_id, create_user_name, create_date, 
+    new_cost, record_start_date, record_end_date, cause, new_date, is_change_salary, create_user_id, create_user_name, create_date, 
     last_modify_user_id, last_modify_user_name, last_modify_date, memo, is_change,is_deleted
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -65,6 +69,7 @@
     -->
     delete from ehr_jobpost
     where post_id = #{postId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrJobpost" >
     <!--
@@ -76,7 +81,7 @@
       source_post, source_rank, source_report, 
       source_location, source_long, source_cost, 
       new_department, new_post, new_rank, 
-      new_report, new_location, new_cost, 
+      new_report, new_location, new_cost, record_start_date, record_end_date, change_type
       cause, new_date, is_change_salary, 
       create_user_id, create_user_name, create_date, 
       last_modify_user_id, last_modify_user_name, last_modify_date, 
@@ -85,7 +90,8 @@
       #{sourcePost,jdbcType=VARCHAR}, #{sourceRank,jdbcType=VARCHAR}, #{sourceReport,jdbcType=VARCHAR}, 
       #{sourceLocation,jdbcType=VARCHAR}, #{sourceLong,jdbcType=DATE}, #{sourceCost,jdbcType=VARCHAR}, 
       #{newDepartment,jdbcType=VARCHAR}, #{newPost,jdbcType=VARCHAR}, #{newRank,jdbcType=VARCHAR}, 
-      #{newReport,jdbcType=VARCHAR}, #{newLocation,jdbcType=VARCHAR}, #{newCost,jdbcType=VARCHAR}, 
+      #{newReport,jdbcType=VARCHAR}, #{newLocation,jdbcType=VARCHAR}, #{newCost,jdbcType=VARCHAR},  
+      #{recordStartDate,jdbcType=DATE}, #{recordEndDate,jdbcType=DATE}, #{changeType,jdbcType=VARCHAR},
       #{cause,jdbcType=VARCHAR}, #{newDate,jdbcType=DATE}, #{isChangeSalary,jdbcType=TINYINT}, 
       #{createUserId,jdbcType=BIGINT}, #{createUserName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{lastModifyUserId,jdbcType=BIGINT}, #{lastModifyUserName,jdbcType=VARCHAR}, #{lastModifyDate,jdbcType=TIMESTAMP}, 
@@ -140,6 +146,15 @@
       </if>
       <if test="newCost != null and  newCost!=''" >
         new_cost,
+      </if>
+      <if test="recordStartDate != null" >
+        record_start_date,
+      </if>
+      <if test="recordEndDate != null" >
+        record_end_date,
+      </if>
+      <if test="changeType != null" >
+        change_type,
       </if>
       <if test="cause != null and  cause!=''" >
         cause,
@@ -220,6 +235,15 @@
       </if>
       <if test="newCost != null and  newCost !=''" >
         #{newCost,jdbcType=VARCHAR},
+      </if>
+      <if test="recordStartDate != null" >
+        #{recordStartDate,jdbcType=DATE},
+      </if>
+      <if test="recordEndDate != null" >
+        #{recordEndDate,jdbcType=DATE},
+      </if>
+      <if test="changeType != null" >
+        #{changeType,jdbcType=VARCHAR},
       </if>
       <if test="cause != null  and  cause !=''" >
         #{cause,jdbcType=VARCHAR},
@@ -309,6 +333,16 @@
       <if test="newCost != null" >
         new_cost = #{newCost,jdbcType=VARCHAR},
       </if>
+      <if test="recordStartDate != null" >
+        record_start_date = #{recordStartDate,jdbcType=DATE},
+      </if>
+      <if test="recordEndDate != null" >
+        record_end_date = #{recordEndDate,jdbcType=DATE},
+      </if>
+      <if test="changeType != null" >
+        change_type = #{changeType,jdbcType=VARCHAR},
+      </if> 
+      
       <if test="cause != null" >
         cause = #{cause,jdbcType=VARCHAR},
       </if>
@@ -347,6 +381,7 @@
       </if>
     </set>
     where post_id = #{postId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrJobpost" >
     <!--
@@ -369,6 +404,9 @@
       new_report = #{newReport,jdbcType=VARCHAR},
       new_location = #{newLocation,jdbcType=VARCHAR},
       new_cost = #{newCost,jdbcType=VARCHAR},
+      record_start_date = #{recordStartDate,jdbcType=DATE},
+      record_end_date = #{recordEndDate,jdbcType=DATE},
+      change_type = #{changeType,jdbcType=VARCHAR},
       cause = #{cause,jdbcType=VARCHAR},
       new_date = #{newDate,jdbcType=DATE},
       is_change_salary = #{isChangeSalary,jdbcType=TINYINT},
@@ -381,8 +419,8 @@
       memo = #{memo,jdbcType=VARCHAR},
       is_change = #{isChange,jdbcType=TINYINT}
       is_deleted = #{isDeleted,jdbcType=INTEGER}
-     
     where post_id = #{postId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <resultMap id="PostResult" type="com.jabava.pojo.employee.EhrJobpostVO"  extends="BaseResultMap">
  		<association property="reportPersonNew" column="new_report" javaType="com.jabava.pojo.manage.EhrPerson" resultMap="PersonResultMap"/>
@@ -518,8 +556,64 @@
 	WHERE 		
   		 ehr_jobpost.person_id=#{personId,jdbcType=BIGINT}
   		 and ehr_jobpost.is_deleted=0
-  		 and sp.is_deleted=0
-  		 and np.is_deleted=0
   		  
   	</select>
+  	<!-- 根据personId查询出员工上一条的任职记录 -->
+	<select id="getPreviousRecordByPersonId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select <include refid="Base_Column_List" /> from ehr_jobpost record where
+		record.person_id=#{personId} and  record.is_deleted=0   and record.record_start_date is not null and record.record_end_date is null 
+  	</select>
+  	
+  	<!-- 根据personId查询员工所有的任职记录 -->
+	<select id="getAllRecordsByPersonId" resultMap="linkedHashMap" parameterType="java.lang.Long">
+	
+		select 
+		record.record_start_date  recordStartDate,record.record_end_date recordEndDate,company.company_name companyName,record.new_post newPostId, person.post_id oldPostId,record.change_type changeType 
+		,TIMESTAMPDIFF(MONTH,record.record_start_date,record.record_end_date) as intervalDate
+		from ehr_jobpost record 
+		
+		LEFT JOIN ehr_person person on record.person_id=person.person_id
+		
+		LEFT JOIN ehr_company company on person.company_id=company.company_id
+		
+		where 
+		
+		record.person_id=#{personId}  and  record.is_deleted=0 ORDER BY record.create_date desc
+  	</select>
+  	
+  	<!-- 根据personId查询员工的变动类型为入职的任职记录 -->
+	<select id="getEntryRecordByPersonId" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+	
+		select * from ehr_jobpost record  where  record.person_id=#{personId}    and record.is_deleted=0 and record.change_type=#{changeType}
+		
+  	</select>
+  	
+  	<!-- 批量新增员工入职的任职记录 --> 
+  	<insert id="insertBachForEntryRecords" parameterType="java.util.List">
+	   <![CDATA[
+		INSERT INTO ehr_jobpost
+	   	  ( person_id, source_department, 
+	      source_post, source_rank, source_report, 
+	      source_location, source_long, source_cost, 
+	      new_department, new_post, new_rank, 
+	      new_report, new_location, new_cost, record_start_date, record_end_date,change_type, 
+	      cause, new_date, is_change_salary, 
+	      create_user_id, create_user_name, create_date, 
+	      last_modify_user_id, last_modify_user_name, last_modify_date, 
+	      memo, is_change )
+   	      VALUES 
+   	    ]]>
+	 <foreach collection="list" item="item"  index="index" separator=",">
+		(  #{item.personId,jdbcType=BIGINT}, #{item.sourceDepartment,jdbcType=VARCHAR}, 
+	      #{item.sourcePost,jdbcType=VARCHAR}, #{item.sourceRank,jdbcType=VARCHAR}, #{item.sourceReport,jdbcType=VARCHAR}, 
+	      #{item.sourceLocation,jdbcType=VARCHAR}, #{item.sourceLong,jdbcType=DATE}, #{item.sourceCost,jdbcType=VARCHAR}, 
+	      #{item.newDepartment,jdbcType=VARCHAR}, #{item.newPost,jdbcType=VARCHAR}, #{item.newRank,jdbcType=VARCHAR}, 
+	      #{item.newReport,jdbcType=VARCHAR}, #{item.newLocation,jdbcType=VARCHAR}, #{item.newCost,jdbcType=VARCHAR},  
+	      #{item.recordStartDate,jdbcType=DATE}, #{item.recordEndDate,jdbcType=DATE}, #{item.changeType,jdbcType=VARCHAR},
+	      #{item.cause,jdbcType=VARCHAR}, #{item.newDate,jdbcType=DATE}, #{item.isChangeSalary,jdbcType=TINYINT}, 
+	      #{item.createUserId,jdbcType=BIGINT}, #{item.createUserName,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, 
+	      #{item.lastModifyUserId,jdbcType=BIGINT}, #{item.lastModifyUserName,jdbcType=VARCHAR}, #{item.lastModifyDate,jdbcType=TIMESTAMP}, 
+	      #{item.memo,jdbcType=VARCHAR}, #{item.isChange,jdbcType=TINYINT} )
+		</foreach>		
+	</insert> 
 </mapper>

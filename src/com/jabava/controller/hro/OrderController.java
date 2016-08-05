@@ -11,7 +11,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -22,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jabava.core.EnumConstents.HireStatus;
-import com.jabava.core.EnumConstents.OrderStatus;
-import com.jabava.core.EnumConstents.SbStatus;
+import com.jabava.utils.enums.JabavaEnum.HireStatus;
+import com.jabava.utils.enums.JabavaEnum.OrderStatus;
+import com.jabava.utils.enums.JabavaEnum.SbStatus;
 import com.jabava.pojo.hro.order.HsEmpOrd;
 import com.jabava.pojo.hro.order.HsEmpOrdDetailVO;
 import com.jabava.pojo.hro.order.HsEmpOrdNsbDetailRec;
@@ -143,10 +142,8 @@ public class OrderController {
 		Page<HsEmpOrdVO> page = new Page<HsEmpOrdVO>(start, length);
 		Map<String, Object> map =  new HashMap<String, Object>();		
 		EhrUser ehrUser = RequestUtil.getLoginUser(request);
-		map.put("companyId", ehrUser.getCompanyId());
-		
-		String search = request.getParameter("search[value]");// search框的值
-		
+		map.put("companyId", ehrUser.getCompanyId());		
+		String search = request.getParameter("search[value]");// search框的值		
 		String order = request.getParameter("order[0][column]");//排序列的下标
 		if(order == null || "".equals(order)){
 			map.put("orderBy", "send_time DESC");			
@@ -193,16 +190,15 @@ public class OrderController {
 		Date endDay  = null;//查询的结束时间
 		//选择了年月
 		if(StringUtils.isNotBlank(date)){
-			int firstDay  = Integer.parseInt(date.substring(0, 4));
-			int lastDay = 0 ;
+			int year  = Integer.parseInt(date.substring(0, 4));
+			int month = 0 ;
 			if(date.length()>6){
-				 lastDay = Integer.parseInt(date.substring(date.length()-2, date.length()));
+				month = Integer.parseInt(date.substring(date.length()-2, date.length()));
 			}else {
-				lastDay = Integer.parseInt(date.substring(date.length()-1, date.length()));				
-			}
-			//int lastDay  = Integer.parseInt(date.substring(5, 7));
-			startDay = JabavaDateUtils.firstDayOfMonth(firstDay, lastDay);
-			endDay = JabavaDateUtils.lastDayOfMonth(firstDay, lastDay);
+				month = Integer.parseInt(date.substring(date.length()-1, date.length()));				
+			}			
+			startDay = JabavaDateUtils.firstDayOfMonth(year, month);
+			endDay = JabavaDateUtils.lastDayOfMonth(year, month);
 		}else{
 			//上个月月第一天 00：00：00
 			 startDay  = JabavaDateUtils.previousMonth();
@@ -219,20 +215,9 @@ public class OrderController {
 			map.put("orderDateStart",startDay);
 		    map.put("orderDateEnd",endDay);
 		}
-	    
+	    //账单月
 	    map.put("billMonth",date);	   
-	    map.put("nowMonth","201604");	   
 		map.put("type", type);
-		//本月新增
-	/*	if("add".equals(type)){			
-			map.put("orderStatus",OrderStatus.ADD_CONFIRM.getValue());			
-		}else if("del".equals(type)){//本月减员			
-			orderStatusList.add(OrderStatus.CANCEL_REDUCE.getValue());
-			orderStatusList.add(OrderStatus.REDUCE_CONFIRM.getValue());
-			map.put("orderStatusList",orderStatusList);		
-		}else if("change".equals(type)){// 本月变更			
-			map.put("orderStatus",OrderStatus.CHANGE_CONFIRM.getValue());			
-		}*/
 		map.put("page", page);
 		List<HsEmpOrdVO> orderList =  orderService.findOrderListPage(map);	
 		log.debug(JSONObject.toJSON(orderList));
@@ -544,7 +529,7 @@ public class OrderController {
 		}
 		if(params.get("entryDateStart")!=null && StringUtils.isNotBlank(params.get("entryDateStart").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("entryDateStart").toString()+" 00:00:00");
 			} catch (ParseException e) {
@@ -554,7 +539,7 @@ public class OrderController {
 		}
 		if(params.get("entryDateEnd")!=null && StringUtils.isNotBlank(params.get("entryDateEnd").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("entryDateEnd").toString()+" 23:59:59");
 			} catch (ParseException e) {
@@ -564,7 +549,7 @@ public class OrderController {
 		}
 		if(params.get("leftDateStart")!=null && StringUtils.isNotBlank(params.get("leftDateStart").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("leftDateStart").toString()+" 00:00:00");
 			} catch (ParseException e) {
@@ -574,7 +559,7 @@ public class OrderController {
 		}
 		if(params.get("leftDateEnd")!=null && StringUtils.isNotBlank(params.get("leftDateEnd").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("leftDateEnd").toString()+" 23:59:59");
 			} catch (ParseException e) {
@@ -584,7 +569,7 @@ public class OrderController {
 		}
 		if(params.get("createOrderDateStart")!=null && StringUtils.isNotBlank(params.get("createOrderDateStart").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("createOrderDateStart").toString()+" 00:00:00");
 			} catch (ParseException e) {
@@ -594,7 +579,7 @@ public class OrderController {
 		}
 		if(params.get("createOrderDateEnd")!=null && StringUtils.isNotBlank(params.get("createOrderDateEnd").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("createOrderDateEnd").toString()+" 23:59:59");
 			} catch (ParseException e) {
@@ -604,7 +589,7 @@ public class OrderController {
 		}
 		if(params.get("reducestaffDateStart")!=null && StringUtils.isNotBlank(params.get("reducestaffDateStart").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("reducestaffDateStart").toString()+" 00:00:00");
 			} catch (ParseException e) {
@@ -614,7 +599,7 @@ public class OrderController {
 		}
 		if(params.get("reducestaffDateEnd")!=null && StringUtils.isNotBlank(params.get("reducestaffDateEnd").toString())){
 			Date date =new  Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			try {
 				date = dateFormat.parse(params.get("reducestaffDateEnd").toString()+" 23:59:59");
 			} catch (ParseException e) {

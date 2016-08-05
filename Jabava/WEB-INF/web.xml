@@ -10,8 +10,8 @@
 		<param-value>
 			classpath:com/jabava/resources/spring-mybatis.xml,
 			classpath:com/jabava/resources/applicationContext.xml,
-			classpath:com/jabava/resources/spring-security.xml
-			<!--classpath:com/jabava/resources/applicationContext-dubbo.xml-->
+			classpath:com/jabava/resources/spring-security.xml,
+			classpath:com/jabava/resources/applicationContext-dubbo.xml
 		</param-value>
 	</context-param>
 	<context-param>
@@ -75,6 +75,15 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+        <servlet-name>Kaptcha</servlet-name>
+        <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+        <servlet-name>Kaptcha</servlet-name>
+        <url-pattern>/kaptcha.jpg</url-pattern>
+	</servlet-mapping>
+		
 	<listener>
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
@@ -90,4 +99,19 @@
 		<!--welcome-file>/WEB-INF/view/common/index.jsp</welcome-file-->
 		<welcome-file>/welcome.jsp</welcome-file>
 	</welcome-file-list>
+	
+	<error-page>
+	    <error-code>404</error-code>
+	    <location>/common/404</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/common/500</location>
+	</error-page>
+	
+	<!--error-page>
+    	<exception-type>java.lang.Throwable</exception-type>
+    	<location>/common/uncaught</location>
+	</error-page-->
 </web-app>

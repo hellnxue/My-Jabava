@@ -11,69 +11,26 @@
 		<jdbcConnection driverClass="${dataSource.driver}" connectionURL="${dataSource.url}"
 			userId="${dataSource.username}" password="${dataSource.password}" />
 <!-- *************************** generate **************************-->
-		<javaModelGenerator targetPackage="com.jabava.pojo.manage"
+		  <javaModelGenerator targetPackage="com.jabava.controller.common"
 			targetProject="${mybatis.src}">
 			<property name="enableSubPackages" value="false" />
 			<property name="trimStrings" value="false" />
-		</javaModelGenerator>
-			<sqlMapGenerator targetPackage="com.jabava.mapping.manage"
+		</javaModelGenerator>  
+		
+		<sqlMapGenerator targetPackage="com.jabava.controller.common"
 			targetProject="${mybatis.src}">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
-		<javaClientGenerator targetPackage="com.jabava.dao.manage"
+		
+	 	<javaClientGenerator targetPackage="com.jabava.controller.common"
 			targetProject="${mybatis.src}" type="XMLMAPPER">
 			<property name="enableSubPackages" value="false" />
-		</javaClientGenerator>
-<!-- 		<table tableName="ehr_user" domainObjectName="EhrUser"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="ehr_menu" domainObjectName="EhrMenu"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="ehr_role_power" domainObjectName="EhrRolePower"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="ehr_company" domainObjectName="EhrCompany"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="ehr_button" domainObjectName="EhrButton"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
-<!-- 			<table tableName="ehr_sys_log" domainObjectName="EhrSysLog"  -->
-<!-- 				enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 				enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 				selectByExampleQueryId="false"> -->
-<!-- 			</table> -->
-			<table tableName="ehr_role" domainObjectName="EhrRole" 
-				enableCountByExample="false" enableUpdateByExample="false" 
-				enableDeleteByExample="false" enableSelectByExample="false" 
-				selectByExampleQueryId="false">
-			</table>
-			<table tableName="ehr_role_user" domainObjectName="EhrRoleUser" 
-				enableCountByExample="false" enableUpdateByExample="false" 
-				enableDeleteByExample="false" enableSelectByExample="false" 
-				selectByExampleQueryId="false">
-			</table>
+		</javaClientGenerator>  
 		
-<!-- 		<table tableName="hro_pact_info" domainObjectName="HroPactInfo"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="hro_order_send" domainObjectName="HroOrderSend"  -->
-<!-- 			enableCountByExample="false" enableUpdateByExample="false"  -->
-<!-- 			enableDeleteByExample="false" enableSelectByExample="false"  -->
-<!-- 			selectByExampleQueryId="false"> -->
-<!-- 		</table> -->
+		<table tableName="ehr_table_field_def" domainObjectName="EhrTableFieldDef" 
+			enableCountByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false" enableSelectByExample="false" 
+			selectByExampleQueryId="false">
+		</table>
   </context>
 </generatorConfiguration>

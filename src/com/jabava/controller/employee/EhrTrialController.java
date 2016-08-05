@@ -1,5 +1,6 @@
 package com.jabava.controller.employee;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,7 +62,7 @@ public class EhrTrialController {
 	 */
 	@RequestMapping("/addTrial")
 	@ResponseBody
-	public Map<String, Object> addTrial(EhrTrial trial, HttpServletRequest request, HttpServletResponse response){
+	public Map<String, Object> addTrial(@RequestBody EhrTrial trial,HttpServletRequest request){
 		EhrUser u = RequestUtil.getLoginUser(request);
 		Map<String, Object> data = new HashMap<>();
 		try {
@@ -91,7 +96,7 @@ public class EhrTrialController {
 	 */
 	@RequestMapping("/updateTrial")
 	@ResponseBody
-	public Map<String, Object> updateTrial(EhrTrial trial, HttpServletRequest request, HttpServletResponse response){
+	public Map<String, Object> updateTrial(@RequestBody EhrTrial trial, HttpServletRequest request){
 		EhrUser u = RequestUtil.getLoginUser(request);
 		Map<String, Object> data = new HashMap<>();
 		try {
@@ -139,4 +144,19 @@ public class EhrTrialController {
 		}
 		return data;
 	 }
+	/**
+	 * 格式化date 类型
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年3月30日 下午5:16:27 
+	 * </pre>
+	 *
+	 * @param binder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
 }

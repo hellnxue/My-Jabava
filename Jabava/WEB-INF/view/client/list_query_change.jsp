@@ -1,8 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <%
 String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html>
 <html>
@@ -45,10 +46,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div class="hpanel">
                         <div class="panel-heading ">
                             <div class="pull-right">
-                                <a href="client/upload_change">
-                                    <button class="btn btn-success btn-xs" type="button">
-                                        <i class="fa fa-group"></i> <span class="bold">上传增减变表</span>
-                                    </button>
+                                <a href="client/upload_change" class="btn btn-success btn-xs">
+                                	<i class="fa fa-group"></i> <span class="bold">上传增减变表</span>
                                 </a>                                                              
                             </div>
                             &nbsp; 
@@ -61,10 +60,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>批次号</th>
                                         <th>上传时间</th>
+                                        <th>增员人数</th>
+                                        <th>减员人数</th>
+                                        <th>变更人数</th>
                                         <th>备注</th>
                                         <th>附件</th>
+                                        <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -133,52 +136,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    $(function () {
 	   var table = $('#changeTable').dataTable({
 				
-					"dom" :
+			"dom" :
 
-					"<'row'<'col-sm-3'l><'col-sm-9'f>>"
-							+ "<'row'<'col-sm-12 table-responsive'tr>>"
-							+ "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-							
-					"processing": true,
-			        "serverSide": true,
-					"ajax": "change/findChange",
-					"sServerMethod": "POST",
-					"columns" : [
-							{
-								"data" : "hroOrderSendId"
-							},							
-							{ "render": function render( data, type, row, meta ){
-								return formatDate(row.sendTime);								
-							}
-							} ,
-							{
-								"data" : "remark"
-							},
-							{ "render": function render( data, type, row, meta ){								
-								var html ="<a onclick='downloadExcel(" +row.hroOrderSendId+")'"
-								+"class='anxin'>"+row.attachment+" <span class='glyphicon glyphicon-download-alt text-success'></span></a>";		
-							 return 	 html;
-							//	return row.attachment;
+			"<'row'<'col-sm-3'l><'col-sm-9'f>>"
+					+ "<'row'<'col-sm-12 table-responsive'tr>>"
+					+ "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 					
-							} 
-							}],
-
-					"language" : {
-						"search" : "过滤:",
-						"lengthMenu" : "每页显示 _MENU_ 条记录",
-						"zeroRecords" : "暂无数据 - 报歉啦〜",
-						"info" : "显示 第 _PAGE_ 页 共 _PAGES_ 页",
-						"infoEmpty" : "暂无数据",
-						"infoFiltered" : "(筛选自 _MAX_ 条记录)",
-						"paginate" : {
-							"first" : "首页",
-							"previous" : "前一页",
-							"next" : "后一页",
-							"last" : "尾页"
-						}
+			"processing": true,
+	        "serverSide": true,
+			"ajax": "change/findChange",
+			"sServerMethod": "POST",
+			"columns" : [
+				{"data" : "batchCode" },
+				{"render": function render( data, type, row, meta ){
+						return formatDate(row.sendTime);
 					}
+				},
+				{"data" : "numAdd" },
+				{"data" : "numSubtract" },
+				{"data" : "numChange" },
+				{"data" : "remark" },
+				{ "render": function render( data, type, row, meta ){
+						var html ="<a onclick='downloadExcel(" +row.hroOrderSendId+")'"
+							+"class='anxin'>"+row.attachment+" <span class='glyphicon glyphicon-download-alt text-success'></span></a>";
+						return html;
+					}
+				},
+				{"render": function render( data, type, row, meta ){
+					var strHtml = '';
+					<% if(RequestUtil.hasPower("ascquery_vi")){ %>
+					strHtml += '<a href="change/listDetail/' + row.hroOrderSendId + '/1" class="btn btn-xs btn-success">明细</a>';
+					<% } %>
+						return strHtml;
+					}
+				}
+			],
 
-				});
+			"language" : {
+				"search" : "过滤:",
+				"lengthMenu" : "每页显示 _MENU_ 条记录",
+				"zeroRecords" : "暂无数据 - 报歉啦〜",
+				"info" : "显示 第 _PAGE_ 页 共 _PAGES_ 页",
+				"infoEmpty" : "暂无数据",
+				"infoFiltered" : "(筛选自 _MAX_ 条记录)",
+				"paginate" : {
+					"first" : "首页",
+					"previous" : "前一页",
+					"next" : "后一页",
+					"last" : "尾页"
+				}
+			}
+
+		});
     }); 
 
 </script>

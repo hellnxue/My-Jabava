@@ -194,7 +194,7 @@ small.hong{ color:#868686 !important; padding-left:16px; font-size:100%;}
 small.hong span{ font-size:14px; color:#e74c3c; padding-left:5px; padding-right:5px; font-weight:900; cursor:pointer;}
 small.hong span:hover{ color:#3498db; text-decoration:underline;}
 div.rost_piliang{ cursor:pointer;}
-input.rost_daoru{ width:65px; height:20px; position:absolute; top:10px; opacity:0; cursor:pointer;}
+input.rost_daoru{ width:65px; height:30px; position:absolute; top:0px; opacity:0; cursor:pointer; margin-left:-9px}
 div.rost_time{ padding:0 15px !important; box-sizing:border-box;}
 label.rost_sousuo{ text-align:right; padding:0;}
 label.rost_sousuo_one{ text-align:right; margin-top:8px;}
@@ -231,7 +231,7 @@ button.rost_bt_two{ border-radius:3px !important;}
 	
 }
 div.service_new_one{ width:70%; float:left;}
-div.service_new_two{ width:28%; min-height:269px; float:right;}
+div.service_new_two{ width:28%; min-height:260px; float:right;}
 /*人事外包服务结束*/
 
 /*协议查询界面开始*/
@@ -334,3 +334,35 @@ center.index_center{ margin-top:10px;}
 .toolbar{  position:fixed; z-index:0; width: 8.3333%; box-sizing:border-box;}
 .dataTables_info
 .dataTables_paginate*/
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 428px;
+    }
+}
+
+.scrollspy-example {
+    position: relative;
+    height: 382px;
+    margin-top: 10px;
+    overflow: auto;
+}
+
+/*推送至微信*/
+.scrollspy-example-weixin {
+    height: 295px;
+    overflow: auto;
+}
+.news-push{
+    margin-top: 170px;
+}
+/*资讯管理*/
+.list-group-item{
+    padding:10px 15px;
+} 

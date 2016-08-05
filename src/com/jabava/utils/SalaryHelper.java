@@ -76,12 +76,12 @@ public final class SalaryHelper {
 //		person_passwordvarchar(100) NULL
 //		origin_placevarchar(100) NULL籍贯
 //		is_deletedint(11) NOT NULL删除标志
-		SALARY_CONSTANT_PERSON.put("用工性质",new EhrSalaryChangeDefItem("用工性质", "EmploymentType",1));
+		//SALARY_CONSTANT_PERSON.put("用工性质",new EhrSalaryChangeDefItem("用工性质", "EmploymentType",1));
 		SALARY_CONSTANT_PERSON.put("司龄",new EhrSalaryChangeDefItem("司龄", "InCompanyTime",2));
 		SALARY_CONSTANT_PERSON.put("年龄",new EhrSalaryChangeDefItem("年龄", "Age",2));
-		SALARY_CONSTANT_PERSON.put("最高学历",new EhrSalaryChangeDefItem("最高学历", "Degree",1));
-		SALARY_CONSTANT_PERSON.put("最高学位",new EhrSalaryChangeDefItem("最高学位", "Education",1));
-		SALARY_CONSTANT_PERSON.put("工作地点",new EhrSalaryChangeDefItem("工作地点", "WorkLocation",1));
+		//SALARY_CONSTANT_PERSON.put("最高学历",new EhrSalaryChangeDefItem("最高学历", "Degree",1));
+		//SALARY_CONSTANT_PERSON.put("最高学位",new EhrSalaryChangeDefItem("最高学位", "Education",1));
+		//SALARY_CONSTANT_PERSON.put("工作地点",new EhrSalaryChangeDefItem("工作地点", "WorkLocation",1));
 		SALARY_CONSTANT_PERSON.put("民族",new EhrSalaryChangeDefItem("民族", "Nationality",1));
 	}
 	
@@ -123,50 +123,90 @@ public final class SalaryHelper {
 		list.add(new EhrSalaryChangeDefItem("产假","maternity_leave",2));
 		list.add(new EhrSalaryChangeDefItem("陪产假","paternity_leave",2));
 		list.add(new EhrSalaryChangeDefItem("丧假","funeral_leave",2));
-		list.add(new EhrSalaryChangeDefItem("备注说明","memo",2));
+		//list.add(new EhrSalaryChangeDefItem("备注","memo",1));
 		return list;
 	}
 	
-	public static List<EhrSalaryChangeDefItem> getSocialInsuranceDefination() {
+	public static List<EhrSalaryChangeDefItem> getSocialSecurityDefination(){
 		List<EhrSalaryChangeDefItem> list = new ArrayList<EhrSalaryChangeDefItem>();
-		list.add(new EhrSalaryChangeDefItem("社保总计金额","total_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保企业合计","total_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("劳务费","laowu_fee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保管理费","fee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保合计","total_insurance_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保公司支付","insurance_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保个人支付","insurance_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("养老保险基数","yanglao_base",2));
-		list.add(new EhrSalaryChangeDefItem("养老企业缴纳","yanglao_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("养老个人缴纳","yanglao_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("失业保险基数","shiye_base",2));
-		list.add(new EhrSalaryChangeDefItem("失业企业缴纳","shiye_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("失业个人缴纳","shiye_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("工伤保险基数","gongshang_base",2));
-		list.add(new EhrSalaryChangeDefItem("工伤企业缴纳","gongshang_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("工伤个人缴纳","gongshang_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("生育保险基数","shengyu_base",2));
-		list.add(new EhrSalaryChangeDefItem("生育企业缴纳","shengyu_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("生育个人缴纳","shengyu_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("医疗基数","yiliao_base",2));
-		list.add(new EhrSalaryChangeDefItem("医疗企业缴纳","yiliao_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("医疗个人缴纳","yiliao_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("综合保险","zhonghe_amount",2));
-		list.add(new EhrSalaryChangeDefItem("重大疾病企业","dabing_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("重大疾病个人","dabing_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("残保金企业","canbao_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("五险合计企业","sum_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("五险合计个人","sum_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("五险小计","sum_amount",2));
-		list.add(new EhrSalaryChangeDefItem("住房公积金基数","gongjijin_base",2));
-		list.add(new EhrSalaryChangeDefItem("住房公积金企业缴纳","gongjijin_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("住房公积金个人缴纳","gongjijin_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保统筹基数","tongchou_base",2));
-		list.add(new EhrSalaryChangeDefItem("社保统筹企业","tongchou_company_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保统筹个人","tongchou_employee_amount",2));
-		list.add(new EhrSalaryChangeDefItem("社保备注","memo",1));
+		list.add(new EhrSalaryChangeDefItem("社保企业基数","hj_base_e",2));
+		list.add(new EhrSalaryChangeDefItem("社保个人基数","hj_base_p",2));
+		
+		list.add(new EhrSalaryChangeDefItem("社保企业汇缴总额","hj_amount_e",2));
+		list.add(new EhrSalaryChangeDefItem("社保个人汇缴总额","hj_amount_p",2));
+		list.add(new EhrSalaryChangeDefItem("社保汇缴总额","hj_amount",2));
+		
+		list.add(new EhrSalaryChangeDefItem("社保企业补缴总额","bj_amount_e",2));
+		list.add(new EhrSalaryChangeDefItem("社保个人补缴总额","bj_amount_p",2));
+		list.add(new EhrSalaryChangeDefItem("社保补缴总额","bj_amount",2));
+
+		list.add(new EhrSalaryChangeDefItem("社保企业缴费总额","amount_e",2));
+		list.add(new EhrSalaryChangeDefItem("社保个人缴费总额","amount_p",2));
+		list.add(new EhrSalaryChangeDefItem("社保缴费总额","amount",2));
+		
 		return list;
 	}
+	
+	public static List<EhrSalaryChangeDefItem> getAccumulationFundDefination(){
+		List<EhrSalaryChangeDefItem> list = new ArrayList<EhrSalaryChangeDefItem>();
+		list.add(new EhrSalaryChangeDefItem("公积金企业基数","hj_base_e",2));
+		list.add(new EhrSalaryChangeDefItem("公积金个人基数","hj_base_p",2));
+		
+		list.add(new EhrSalaryChangeDefItem("公积金企业汇缴总额","hj_amount_e",2));
+		list.add(new EhrSalaryChangeDefItem("公积金个人汇缴总额","hj_amount_p",2));
+		list.add(new EhrSalaryChangeDefItem("公积金汇缴总额","hj_amount",2));
+		
+		list.add(new EhrSalaryChangeDefItem("公积金企业补缴总额","bj_amount_e",2));
+		list.add(new EhrSalaryChangeDefItem("公积金个人补缴总额","bj_amount_p",2));
+		list.add(new EhrSalaryChangeDefItem("公积金补缴总额","bj_amount",2));
+
+		list.add(new EhrSalaryChangeDefItem("公积金企业缴费总额","amount_e",2));
+		list.add(new EhrSalaryChangeDefItem("公积金个人缴费总额","amount_p",2));
+		list.add(new EhrSalaryChangeDefItem("公积金缴费总额","amount",2));
+		
+		return list;
+	}
+	
+//	public static List<EhrSalaryChangeDefItem> getSocialInsuranceDefination() {
+//		List<EhrSalaryChangeDefItem> list = new ArrayList<EhrSalaryChangeDefItem>();
+//		list.add(new EhrSalaryChangeDefItem("社保总计金额","total_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保企业合计","total_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("劳务费","laowu_fee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保管理费","fee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保合计","total_insurance_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保公司支付","insurance_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保个人支付","insurance_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("养老保险基数","yanglao_base",2));
+//		list.add(new EhrSalaryChangeDefItem("养老企业缴纳","yanglao_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("养老个人缴纳","yanglao_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("失业保险基数","shiye_base",2));
+//		list.add(new EhrSalaryChangeDefItem("失业企业缴纳","shiye_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("失业个人缴纳","shiye_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("工伤保险基数","gongshang_base",2));
+//		list.add(new EhrSalaryChangeDefItem("工伤企业缴纳","gongshang_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("工伤个人缴纳","gongshang_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("生育保险基数","shengyu_base",2));
+//		list.add(new EhrSalaryChangeDefItem("生育企业缴纳","shengyu_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("生育个人缴纳","shengyu_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("医疗基数","yiliao_base",2));
+//		list.add(new EhrSalaryChangeDefItem("医疗企业缴纳","yiliao_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("医疗个人缴纳","yiliao_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("综合保险","zhonghe_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("重大疾病企业","dabing_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("重大疾病个人","dabing_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("残保金企业","canbao_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("五险合计企业","sum_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("五险合计个人","sum_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("五险小计","sum_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("住房公积金基数","gongjijin_base",2));
+//		list.add(new EhrSalaryChangeDefItem("住房公积金企业缴纳","gongjijin_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("住房公积金个人缴纳","gongjijin_employee_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保统筹基数","tongchou_base",2));
+//		list.add(new EhrSalaryChangeDefItem("社保统筹企业","tongchou_company_amount",2));
+//		list.add(new EhrSalaryChangeDefItem("社保统筹个人","tongchou_employee_amount",2));
+//		//list.add(new EhrSalaryChangeDefItem("社保备注","memo",1));
+//		return list;
+//	}
 	
 	public static void main(String args[]){
 		System.out.println(SalaryHelper.salaryConstantCommonToString());

@@ -1,9 +1,10 @@
 package com.jabava.service.hro;
 
 import java.util.List;
+import java.util.Map;
 
-import com.jabava.core.ReturnS;
 import com.jabava.pojo.hro.HroPactInfo;
+import com.jabava.pojo.manage.EhrUser;
 import com.jabava.utils.Page;
 
 public interface OutsourcingService {
@@ -17,7 +18,9 @@ public interface OutsourcingService {
 	 * @param hroPactInfo
 	 * @return
 	 */
-	List<HroPactInfo> queryProtocolPage(HroPactInfo hroPactInfo,Page<HroPactInfo> page);
+	List<HroPactInfo> queryProtocolPage(HroPactInfo hroPactInfo,String search,String order,Page<HroPactInfo> page);
+	
+	List<HroPactInfo> queryProtocolByCompany(Long companyId);
 	
 	/**
 	 * 申请开通
@@ -29,7 +32,14 @@ public interface OutsourcingService {
 	 * @param hroPactInfo
 	 * @return
 	 */
-	public  String addOutsourcing(HroPactInfo hroPactInfo,String companyName);
+	public Map<String,Object> addOutsourcing(HroPactInfo hroPactInfo, EhrUser user) throws Exception;
+	
+	public Map<String,Object> updateOutsourcing(HroPactInfo hroPactInfo, HroPactInfo exist, EhrUser user) throws Exception;
+	
+	public Map<String,Object> submitOutsourcing(HroPactInfo hroPactInfo, EhrUser user) throws Exception;
+
+	public Map<String,Object> addAndSubmitOutsourcing(HroPactInfo hroPactInfo, EhrUser user) throws Exception;
+	
 	/**
 	 * 查询协议
 	 * <pre> 
@@ -41,6 +51,7 @@ public interface OutsourcingService {
 	 * @return
 	 */
 	public List<HroPactInfo> queryProtocol(HroPactInfo hroPactInfo);
+	
 	/**
 	 * 查看协议内容
 	 * <pre>
@@ -52,6 +63,7 @@ public interface OutsourcingService {
 	 * @return HroPactInfo
 	 */
 	public HroPactInfo getProtocolByPactCode(String pactCode);
+	
 	/**
 	 * 更新协议状态
 	 * <pre>
@@ -63,7 +75,7 @@ public interface OutsourcingService {
 	 * @return
 	 */
 	public String updateProtocol(HroPactInfo hroPactInfo);
-	ReturnS updateProtocolState(HroPactInfo hroPactInfo);
+	
 	/**
 	 * 根据ID获取协议
 	 * <pre>
@@ -75,6 +87,7 @@ public interface OutsourcingService {
 	 * @return
 	 */	
 	HroPactInfo getProtocolById(Long id);
+	
 	/**
 	 * 获取协议号
 	 * <pre>
@@ -85,7 +98,31 @@ public interface OutsourcingService {
 	 * @return
 	 */
 	public List<HroPactInfo> queryPactInfoList();
-
 	
+	/**
+	 * 根据ID更新协议
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年4月1日 下午3:21:12 
+	 * </pre>
+	 *
+	 * @param hroPactInfo
+	 * @return
+	 */
+	int updateById(HroPactInfo hroPactInfo);
+	
+	/**
+	 * 根据参数查询协议
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年4月1日 下午4:04:32 
+	 * </pre>
+	 *
+	 * @param hroPactInfo
+	 * @return
+	 */
+	public List<HroPactInfo> queryProtocolByParams(HroPactInfo hroPactInfo);
+
+	Map<String, Object> deleteProtocol(HroPactInfo pactInfo) throws Exception;
 
 }

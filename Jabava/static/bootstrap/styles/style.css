@@ -1,4 +1,4 @@
-@import url("http://fonts.useso.com/css?family=Open+Sans:300,400,600,700");
+/*@import url("http://fonts.useso.com/css?family=Open+Sans:300,400,600,700");*/
 /* MARGINS & PADDINGS */
 .p-xxs {
   padding: 5px !important;
@@ -1574,6 +1574,7 @@ body {
   background-position: 50% 100%;
   background-repeat: no-repeat;
 }
+
 .fixed-navbar #header {
   width: 100%;
   position: fixed;

@@ -152,4 +152,8 @@
   	delete from ehr_tax_rate 
   	where company_id=#{companyId,jdbcType=BIGINT} and tax_rate_id=#{taxRateId,jdbcType=BIGINT}
   </delete>
+  
+  <select id="countByTaxRate" resultType="Integer">
+  	select count(1) from ehr_tax_rate where tax_rate_id = #{taxRateId,jdbcType=BIGINT}
+  </select>
 </mapper>

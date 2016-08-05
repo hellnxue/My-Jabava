@@ -15,233 +15,263 @@
 </head>
 <body >
 
-<!--splash screen-->
- <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
+  <!--splash screen-->
+  <jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
 
-<!--引入头文件 开始--> 
+  <!--引入头文件 开始--> 
   <jsp:include flush="true" page="../common/header.div.jsp"></jsp:include>
   <!--引入头文件 结束--> 
   <!--引入菜单文件 开始--> 
   <jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
   <!--引入菜单文件 结束--> 
- 
-<!-- 放主要内容  开始-->
 
-<!-- Main Wrapper -->
-<div id="wrapper" class="min-h">
-<div class="normalheader transition animated fadeIn small-header">
-    <div class="hpanel">
-        <div class="panel-body"><!-- 
-            <a class="small-header-action" href="">
-                <div class="clip-header">
-                    <i class="fa fa-arrow-up"></i>
-                </div>
-            </a> -->
+  <!-- 放主要内容  开始-->
 
-            <div id="hbreadcrumb" class="pull-right m-t-lg">
-                <ol class="hbreadcrumb breadcrumb">
-                    <li><a href="to_index?jump=1">首页</a></li>
-                    <li>
-                        <span>员工个人信息</span>
-                    </li>
-                    <li class="active">
-                        <span></span>
-                    </li>
-                </ol>
+  <!-- Main Wrapper -->
+  <div id="wrapper" class="min-h">
+    <!-- 放主要内容 -->
+    <div class="content animate-panel">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="hpanel">
+            <div class="panel-heading">
+              <h4 class="text-center font-bold">员工资料
+                <a href="" type="button" class="btn btn-default btn-sm btn-absolute">返　回</a>
+              </h4>
             </div>
-            <h2 class="font-light m-b-xs">
-                员工个人信息
-            </h2>
-            <small>待定</small>
-        </div>
-    </div>
-</div>
+            <!-- 放主要内容 -->
+            <!--引入员工信息导航 开始--> 
+            <jsp:include flush="true" page="employee_nav.jsp">
+            <jsp:param value="performance" name="type"/>
+            </jsp:include>
+            <!--引入员工信息导航 结束-->
 
-<!-- 放主要内容 -->
-  <!--引入员工信息导航 开始--> 
-  <jsp:include flush="true" page="employee_nav.jsp"></jsp:include>
-  <!--引入员工信息导航 结束-->
-        
-                      
-                             
-                           <!--绩效考核-->
-                           <div class="panel-body ji_xiao">
-                     	<div class="row ">
-                        	<div style="border-bottom:1px solid #33CCFF; margin:20px; line-height:32px; overflow:hidden;">
-                        	<h4 style="float:left; font-weight:normal">绩效考核</h4>
-                            <div style="float:right">
-                            	<button type="button" class="btn btn-success btn-xs kaohe"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                                <button type="button" class="btn btn-success btn-xs kaohe_update" style="display:none;"><i class="fa fa-plus"></i><span class="bold">继续添加</span></button>
-                               <button type="button" class="btn btn-success btn-xs jc_jl"><span class="bold">奖惩记录&gt;&gt;</span></button> 
-                            
-                            </div>
-                            </div>
-                             <input type="hidden" name="personId" value="${personId}" id="personId">
-<script type="text/html" id="jixiaoss">
-{{each list}}
-<form role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
-  <div class="text-right action-group">
-    <a href="javascript://" class="pe-7s-note pe-2x" data-action-motive="edit" ><span class="sr-only">修改</span></a>
-    <a href="javascript://" class="pe-7s-trash pe-2x" data-action-motive="del" data-action-id="{{$value.assessId}}"><span class="sr-only">删除</span></a>
-  </div>
-  <input type="hidden" name="assessId" value="{{$value.assessId}}">
+            <!--绩效考核-->
+            <div class="panel-body">
+                <div class="panel-heading">
+                  <h4 class="text-center font-bold">绩效考核</h4>
+                </div>
+                <div class="row m-b-lg">
+                <input type="hidden" name="personId" value="${personId}" id="personId">
+                <script type="text/html" id="jixiaoss">
+                  {{each list}}
 
-<!--考核年度-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核年度：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{if $value.createDate!=null}}
-            {{$value.createDate.time | dateFormat}}
-            {{/if}}
-            &nbsp;
-          </p>
-        </div>
-        <div class="input-group date">
-          <input type="text" required="required" class="form-control" name="createDate" value="{{if $value.createDate!=null}}{{$value.createDate.time | dateFormat}}{{/if}}">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-<!--考核结果-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核结果：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.evaluationResult}}
-            &nbsp;
-          </p>
-        </div>
-        <input type="text" required="required" class="form-control" name="evaluationResult" value="{{$value.evaluationResult}}">
-      </div>
-    </div>
-  </div>
-<!--考核人-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核人：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.assesser}}
-            &nbsp;
-          </p>
-        </div>
-        <input type="text" required="required" class="form-control" name="assesser" value="{{$value.assesser}}">
-      </div>
-    </div>
-  </div>
-<!--考核等级-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核等级：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.evaluationLevel}}
-            &nbsp;
-          </p>
-        </div>
-        <input type="text" class="form-control" name="evaluationLevel" value="{{$value.evaluationLevel}}">
-      </div>
-    </div>
-  </div>
-<!--考核评价-->
-  <div class="col-md-12 col-lg-12">
-    <div class="form-group">
-      <label for="" class="control-label col-md-2 col-lg-2">考核评价：</label>
-      <div class="col-md-10 col-lg-10">
-        <div class="input-group-static">
-          <p class="form-control-static">
-            {{$value.description}}
-            &nbsp;
-          </p>
-        </div>
-        <textarea class="form-control" name="description">{{$value.description}}</textarea>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center form-action">
-    <button type="submit" class="btn btn-info" data-action-motive="save">保存</button>
-    <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
-  </div>
-</form>
-{{/each}}
-</script> 
-                             <div class="hpanel" id="jixiao_div">
-                              </div> 
-                            <div class="panel-body" id="kaohe_body">
-<form role="form" method="post" class="form-horizontal col-md-12 col-lg-12 kao_he kao_he_form hidden" id="create_new"> 
-<!--考核年度-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核年度：</label>
-      <div class="col-md-6 col-lg-6">
-        <div class="input-group date">
-          <input type="text" required="required" class="form-control" name="createDate" value="">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        </div>
-      </div>
-    </div>
-  </div>
-<!--考核结果-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核结果：</label>
-      <div class="col-md-6 col-lg-6">
-        <input type="text" required="required" class="form-control" name="evaluationResult" value="">
-      </div>
-    </div>
-  </div>
-<!--考核人-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核人：</label>
-      <div class="col-md-6 col-lg-6">
-        <input type="text" required="required" class="form-control" name="assesser" value="">
-      </div>
-    </div>
-  </div>
-<!--考核等级-->
-  <div class="col-md-4 col-lg-4">
-    <div class="form-group">
-      <label for="" class="control-label col-md-6 col-lg-6">考核等级：</label>
-      <div class="col-md-6 col-lg-6">
-        <input type="text" class="form-control" name="evaluationLevel" value="">
-      </div>
-    </div>
-  </div>
-<!--考核评价-->
-  <div class="col-md-12 col-lg-12">
-    <div class="form-group">
-      <label for="" class="control-label col-md-2 col-lg-2">考核评价：</label>
-      <div class="col-md-10 col-lg-10">
-        <textarea class="form-control" name="description"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-12 col-md-12 text-center">
-    <button type="submit" class="btn btn-info">保存</button>
-  </div>
-</form>
+                  <div class="col-md-12 page-header m-t-md{{if $index == list.length-1}} no-borders{{/if}} ">
+                      <div class="panel-tools action-group">
+                        <ul class="list-inline">
+                           <li>
+                          <a href="javascript://" data-action-motive="hideOrshow" data-action-id="{{$value.assessId}}"><i class="pe-7s-angle-down-circle pe-2x text-info"></i><span class="sr-only">隐藏</span></a>
+                          </li>
+                          <li>
+                          <a href="javascript://" data-action-motive="edit" data-action-id="{{$value.assessId}}"><i class="pe-7s-note pe-2x text-info">
+                          </i><span class="sr-only">修改</span></a>
+                          </li>
+                          <li>
+                            <a href="javascript://" data-action-motive="del" data-action-id="{{$value.assessId}}"><i class="pe-7s-trash pe-2x text-info"></i><span class="sr-only">删除</span></a>
+                          </li>
+                        </ul>
+                      </div>
+                      <ul class="list-inline">
+                        <li><p class="form-control-static text-info font-bold">{{if $value.createDate!=null}}{{$value.createDate.time | dateFormat}}{{/if}}&nbsp;</p></li>   
+                        <li class="m-r"><p class="form-control-static text-info font-bold">{{$value.evaluationLevel}}&nbsp;</p></li>      
+                        <li> <p class="form-control-static text-info font-bold">{{$value.evaluationResult}}&nbsp;</p></li>    
+                     </ul>
+                    </div>
+
+                  <form data-form="{{$value.assessId}}" role="form" method="post" class="searchs-form form-horizontal col-md-12 col-lg-12  {{if $index>0}} jianju borders{{/if}}">
+                    <input type="hidden" name="assessId" value="{{$value.assessId}}">
+
+                    <!--考核年度-->
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核年度：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <div class="input-group-static">
+                                <p class="form-control-static">
+                                  {{if $value.createDate!=null}}
+                                  {{$value.createDate.time | dateFormat}}
+                                  {{/if}}
+                                  &nbsp;
+                                </p>
                               </div>
+                              <div class="form-required">
+                                <div class="input-group date" data-date-format="yyyy" data-date-min-view-mode="2">
+                                  <input type="text" required="required" class="form-control" name="createDate" value="{{if $value.createDate!=null}}{{$value.createDate.time | dateFormat}}{{/if}}">
+                                  <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
                               </div>
-                              </div>     
-                            <!--绩效考核 end-->  
-                              
-                          
-        
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--考核等级-->
+                      <div class="col-md-6 col-lg-6">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核等级：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <div class="input-group-static">
+                                <p class="form-control-static">
+                                  {{$value.evaluationLevel}}
+                                  &nbsp;
+                                </p>
+                              </div>
+                              <input type="text" class="form-control" name="evaluationLevel" value="{{$value.evaluationLevel}}">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--考核结果-->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核结果：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <div class="input-group-static">
+                                <p class="form-control-static">
+                                  {{$value.evaluationResult}}
+                                  &nbsp;
+                                </p>
+                              </div>
+                              <div class="form-required">
+                                <input type="text" required="required" class="form-control" name="evaluationResult" value="{{$value.evaluationResult}}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!--考核人-->
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核人：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <div class="input-group-static">
+                                <p class="form-control-static">
+                                  {{$value.assesser}}
+                                  &nbsp;
+                                </p>
+                              </div>
+                              <div class="form-required">
+                                <input type="text" required="required" class="form-control" name="assesser" value="{{$value.assesser}}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--考核评价-->
+                      <div class="col-md-6 col-lg-6">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核评价：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <div class="input-group-static">
+                                <p class="form-control-static">
+                                  {{$value.description}}
+                                  &nbsp;
+                                </p>
+                              </div>
+                              <textarea class="form-control" name="description" rows="3">{{$value.description}}</textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 text-center form-action">
+                      <button type="button" class="btn btn-info" data-action-motive="save">保存</button>
+                      <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                    </div>
+                  </form>
+                  {{/each}}
+                </script> 
+                <div class="hpanel" id="jixiao_div">
+                </div> 
 
-    <!-- Footer-->
-   <!-- Footer-->
-    <!-- 放页脚  开始-->
-<jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
-	<!-- 放页脚  结束-->
+                <div id="kaohe_body" data-form-target="content">
+                  <form role="form" method="post" data-form-type="base" class="form-horizontal col-md-12 col-lg-12 kao_he kao_he_form hidden" id="create_new"> 
+                    <!--考核年度-->
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核年度：</label>
+                            <div class="col-md-8 col-lg-8 form-required">
+                              <div class="input-group date">
+                                <input type="text" required="required" class="form-control" name="createDate" value="">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--考核结果-->
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核结果：</label>
+                            <div class="col-md-8 col-lg-8 form-required">
+                              <input type="text" required="required" class="form-control" name="evaluationResult" value="">
+                            </div>
+                          </div>
+                        </div>
+                        <!--考核人-->
+                      <div class="col-md-12 col-lg-12">
+                        <div class="form-group">
+                          <label for="" class="control-label col-md-4 col-lg-4">考核人：</label>
+                          <div class="col-md-8 col-lg-8 form-required">
+                            <input type="text" required="required" class="form-control" name="assesser" value="">
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+
+                      <!--考核等级-->
+                      <div class="col-md-6 col-lg-6">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="control-label col-md-4 col-lg-4">考核等级：</label>
+                            <div class="col-md-8 col-lg-8">
+                              <input type="text" class="form-control" name="evaluationLevel" value="">
+                            </div>
+                          </div>
+                        </div>
+                         <!--考核评价-->
+                        <div class="col-md-12 col-lg-12">
+                        <div class="form-group">
+                          <label for="" class="control-label col-md-4 col-lg-4">考核评价：</label>
+                          <div class="col-md-8 col-lg-8">
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                    <!--保存-->
+                    <div class="col-lg-12 col-md-12 text-right">
+                      <button type="submit" class="btn btn-success">保存</button>
+                      <button type="button" class="btn btn-default" data-action-motive="cancel">取消</button>
+                    </div>
+                  </form>
+                </div>
+                </div>
+                <!--添加-->
+              <div class="text-center row">
+                <a class="adds" data-form-action="add" href="javascript://"><i class=" pe-7s-plus pe-5x text-muted"></i><br><span class="text-muted">添加新记录</span></a>
+              </div>
+            </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--绩效考核 end-->  
+
+  <!-- Footer-->
+  <!-- Footer-->
+  <!-- 放页脚  开始-->
+  <jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
+  <!-- 放页脚  结束-->
 </div>
 
 <!-- Vendor scripts -->
@@ -270,21 +300,62 @@
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 
+<script src="static/js/plugins/form.validation/js/formValidation.js"></script>
+<script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
 <script src="static/js/template.js"></script>
 <script src="static/js/yuangong.js"></script>
-<script src="static/js/common.js"></script>
+<script src="static/js/commonH3.js"></script>
 <script type="text/javascript">
 var personId = $("#personId").val();
 var url="employee/assessInfo?personId="+personId;
   templateFillData('jixiaoss', $('#jixiao_div'), url,'employee/delJobpost.do?postId=');
-</script>
 
-<script>
+//校验
+var validateOptions = {
+      err: {
+          container: 'tooltip'
+      },
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      locale: 'zh_CN',
+      
+      fields: {
+          createDate: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  },
+                  date: {
+                    format: 'YYYY-MM-DD',
+                    message: '该日期是无效的'
+                  }
+              }
+          },
+          evaluationResult: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
+          },
+          assesser: {
+              validators: {
+                  notEmpty: {
+                      message: '请填写必填项目'
+                  }
+              }
+          }
+      }
+  };
 
 
-    <!--删除-->
+//删除
      function deleteBtnInfo(){
 	  $('.demo4').click(function () {
             swal({
@@ -306,7 +377,7 @@ var url="employee/assessInfo?personId="+personId;
                     });
         });
 	}
-  <!--取消效果-->
+//取消效果
   $(".guanbi").click(function(){
 	  
 	 $("#myModal7").modal('hide');
@@ -314,9 +385,9 @@ var url="employee/assessInfo?personId="+personId;
 	 $("#myModal9").modal('hide');
 	  
   })
-</script>
-<!--日历-->
-<script>
+
+//日历
+
 
         $(function(){
 			deleteBtnInfo();
@@ -435,9 +506,9 @@ var url="employee/assessInfo?personId="+personId;
 
         });
 
-    </script>
-<!--删除-->
-<script>
+
+//删除
+
     $(function () {
         $('.demo4').click(function () {
             swal({
@@ -462,57 +533,22 @@ var url="employee/assessInfo?personId="+personId;
 
     });
 
-</script>
 
-<script>
   $(".guanbi").click(function(){
 	  
 	 $("#myModal7").modal('hide');
 	  
   })
-</script>
- <!--订单信息与订单费用信息-->
- <script>
- 
- $(function(){
-	 
-	$(".dingdan_one").click(function(){
-		
-		$(".dingdan_two").removeClass("btn-info").addClass("information_button");
-		$(".dingdan_one").removeClass("information_button").addClass("btn-info");
-		$(".order_infor").show();
-		$(".order_infor_two").hide();
-		
-	}) 
-	 
- })
- 
- </script>
- <script>
- $(function(){
-	 
-	$(".dingdan_two").click(function(){
-		
-		$(".dingdan_two").removeClass("information_button").addClass("btn-info");
-		$(".dingdan_one").removeClass("btn-info").addClass("information_button");
-		$(".order_infor").hide();
-		$(".order_infor_two").show();
-		
-	}) 
-	 
- })
- </script>
- 
- <!--全部导出-->
-    <script>
+
+//全部导出
+
 	  $(".jxdc").click(function(){
 		 $(".modal-content").hide();
 		 $(".modal-backdrop").hide();
 	  })
-	  </script>
+
 	  
-		<!--导出通讯录-->
-			<script>
+//导出通讯录
 	function downMB(moban) {
 			window.open(moban);
 		}
@@ -535,8 +571,6 @@ var url="employee/assessInfo?personId="+personId;
 			document.OrderSendForm.action = "hroorderSend.do";
 			document.OrderSendForm.submit();
 		}
-	  </script>
-      
-
+</script>
 </body>
 </html>

@@ -14,16 +14,22 @@ import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.jabava.pojo.manage.EhrBaseData;
 import com.jabava.pojo.manage.EhrBaseDataType;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.system.IBaseDataService;
 import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.JabavaUtil;
+import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
+import com.jabava.utils.enums.SystemEnum;
+import com.jabava.utils.enums.SystemEnum.Module;
 /**
  * 
  * @author panfei
@@ -72,7 +78,7 @@ public class BaseDataController {
 			order = EhrBaseData.getColumnName(order);
 			list = baseDataService.searchBaseData(map, search, order, according,isNumeric,page);
 			page.setData(list);
-			sysLogSercice.addSysLog(user, "查询基础数据列表");
+			//sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Select, SystemEnum.Module.SystemManagement, "查询基础数据列表");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -102,7 +108,7 @@ public class BaseDataController {
 			info.setLastModifyUserName(user.getUserName());
 			info.setLastModifyDate(new Date());
 			data = baseDataService.insertBaseData(info);
-			sysLogSercice.addSysLog(user,
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, SystemEnum.Module.SystemManagement,
 					"新增基础数据,基础数据名称:" + info.getBaseDataName());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,7 +163,7 @@ public class BaseDataController {
 			info.setLastModifyUserName(user.getUserName());
 			info.setIsValid(Byte.valueOf("1"));
 			data = baseDataService.updateBaseData(info);
-			sysLogSercice.addSysLog(user,
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.SystemManagement,
 					"修改基础数据,基础数据名称:" + info.getBaseDataName());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -180,10 +186,10 @@ public class BaseDataController {
 				data.put("msg", "失败");
 			}
 			if(isValid == 1){//有效
-				sysLogSercice.addSysLog(user,
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.SystemManagement,
 						"基础数据管理,有效基础数据ID:" + id);
 			}if(isValid == 0){//无效
-				sysLogSercice.addSysLog(user,
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Update, SystemEnum.Module.SystemManagement,
 						"基础数据管理,无效基础数据ID:" + id);
 			}
 			response.getWriter().print(JSONArray.fromObject(data).toString());
@@ -193,5 +199,39 @@ public class BaseDataController {
 		return null;
 	} 
 
-
+ 	@RequestMapping("listBaseDataByType")
+ 	@ResponseBody
+ 	public List<EhrBaseData> listBaseDataByType(HttpServletRequest request,HttpServletResponse response,Integer baseDataType){
+ 		EhrUser user = RequestUtil.getLoginUser(request);
+ 		if(baseDataType == null){
+ 			return null;
+ 		}
+ 		
+ 		return baseDataService.selectBaseData(user.getCompanyId(), baseDataType);
+ 	}
+ 	/**
+ 	 * 批量导入基础数据
+ 	 * @param response
+ 	 * @param request
+ 	 * @param multipartFile
+ 	 * @param data
+ 	 * @return
+ 	 * @throws Exception
+ 	 */
+ 	@RequestMapping("importBaseData")
+ 	@ResponseBody
+ 	public Map<String,Object> importBaseData(HttpServletResponse response,HttpServletRequest request,@RequestParam("importFile") CommonsMultipartFile multipartFile) {
+ 		    Map<String,Object> map=new HashMap<String,Object>();
+ 			EhrUser user = RequestUtil.getLoginUser(request);
+ 			try {
+				map = baseDataService.resolveBaseData(multipartFile);
+				map = baseDataService.importBaseData(map,user);
+				map = baseDataService.moreInsert(map);
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Add, Module.SystemManagement, "批量导入基本信息");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return MessageUtil.errorMessage(e.toString());
+			}
+ 			return map;
+ 	}
 }

@@ -13,39 +13,98 @@ $(function(){
 	
 	
 	/**
-	 * 继续添加表单---添加一个空表单
+	 * 继续添加表单---添加一个空表单 
 	 */
-	 $('[data-form-action="add"]').on('click',
-					function(event) {
+	 $('[data-form-action="add"]').on('click', function(event) {
 						mf++;
-						
-						var getBaseForm = $('[data-form-type="base"]'), strHtml = '', content = $('[data-form-target="content"]');
-						
-						strHtml = getBaseForm.clone().removeAttr( 'data-form-type').removeClass("hidden") .addClass("jianju borders").removeAttr( "style id") .attr("name", "add_new_form");
 
-						$(strHtml).find("[name=myfiles]").attr("id","myfiles" + mf);
-						content.append(strHtml);
+						var getBaseForm = $('[data-form-type="base"]'),
+						strHtml = '',
+						content = $('[data-form-target="content"]');
 						 
+						strHtml = getBaseForm.clone(true)
+									.removeAttr( 'data-form-type')
+									.removeClass("hidden")
+									.addClass("jianju borders")
+									.removeAttr( "style id disabled")
+									.attr("name", "add_new_form");
+						
+						$(strHtml).find("[name=myfiles]").attr("id","myfiles" + mf);
+						
+						$(strHtml).find(":submit").off();//取消模板复制后的保存按钮click事件
 
-						setCalenderFormat();
-						$(strHtml).find(":button.btn-info").on("click", function() {
-
-							var $form = $(strHtml);
-
-							commonSaveBefore($form);
+						$(strHtml)[0].reset();//清空form
+						$(strHtml).find('[data-toggle="select2"]').select2();
+						 
+						$(strHtml).find('[data-toggle="datepicker"]')
+						.datepicker({
+							format: "yyyy-mm-dd",
+							autoclose: true
+						})
+						.on('changeDate', function(e){
+							var $fv = $('[data-form-validator="validator"]');
+							if($(this).hasClass('input-daterange')){
+								$(e.target).each(function(index, el) {
+									$fv.formValidation('revalidateField', $(this).attr('name'));
+								});
+								
+							}else{
+								var getEleName = $(e.target).find(':text').attr('name');
+								$fv.formValidation('revalidateField', getEleName);
+							}
 
 						});
-						$(strHtml)[0].scrollIntoView(); 
+						
+						content.append(strHtml);
+						var $form = $(strHtml);
+                    	$form.find('[data-action-motive="cancel"],[data-action-motive="remove"]').on('click', function(event) {
+                    		console.log("取消");
+                    		 event.preventDefault();
+                    		$form.hide().remove();
+                    	});
+						$form.formValidation(validateOptions)
+	                    .on('success.form.fv', function(e){
+	                        e.preventDefault();
+	                        if( $form.attr('data-form') != 'job-transfer' ){
+	                        	commonSaveBefore($form);
+	                        }else{
+	                        	addJobPost($form);
+	                        }
+	                    });
+
+						$(strHtml)[0].scrollIntoView();
 					});
 	
 
 	/**
 	 * 新增信息---页面待添加信息的表单添加
 	 */
-	$("#create_new").find("button").on("click", function() {
+	
+/*	if($("#create_new").attr('data-form-validator') == 'addDimission'){
+		$("#create_new").formValidation(validateOptions)
+		.on('success.form.fv',function(e){
+			e.preventDefault();
+			add($("#create_new").attr('id'))
+		})
+	}*/
+	/**
+	 * 添加表单模板的按钮保存
+	 */
+/*	$("#create_new").find("button")
+	.not('[data-action-motive="dimission"],[data-action-motive="remove"],[data-action-motive="cancel"], input:submit')
+	.on("click", function(event) {
+		event.preventDefault();
 		var $form = $("#create_new");
-		commonSaveBefore($form, "PC");
-	});
+		if($form.attr('data-form-validator') != 'addDimission'){
+			console.log("why go here........");
+            $('[data-form-validator="validator"').formValidation(validateOptions)
+            .on('success.form.fv', function(e){
+                e.preventDefault();
+				commonSaveBefore($form);
+            });			
+		}
+
+	});*/
 	
 });
 
@@ -59,7 +118,11 @@ function setCalenderFormat(){
 		language : "zh-CN",
 		autoclose : true
 
-	});
+	})
+	 .on('changeDate', function(e){
+          var getEleName = $(e.target).find(':text').attr('name');
+          $('[data-form-validator="validator"]').formValidation('revalidateField', getEleName);
+      });
 }
 
 
@@ -644,7 +707,7 @@ $(".fm_cy_update").click(function(){
 $(".laodong_ht").click(function(){
 	var html=$(".hetong").clone().removeClass("hetong hetong_form hidden").addClass("jianju borders add-hetong-form").removeAttr("style id");
 	$("#hetong_body").append(html);
-	$('.input-group.date').datepicker({ });	
+	$(html).find('.input-group.date').datepicker();	
 	deleteBtnInfo();
 	})
 	/*劳动合同修改界面---添加工*/
@@ -802,3 +865,34 @@ $.fn.extend({
                     });
         });
 	}
+     
+ /*
+  *  
+  * 初始化添加表单模板的基础数据
+  * @param jsonObj页面查询列表的json对象
+  * @param baseDataTypeObj  页面添加表单收集的需要初始化的基础数据列表名称数组
+  * 备注（后台的基础数据列表的key需要与页面上下拉列表的base-data-type值相等，后缀是List   例如base-data-type=education  后台基础数据的key: educationList）
+  */
+  function initBaseDataOptions(jsonObj,baseDataTypeObj){
+	
+	 $.each(baseDataTypeObj,function(i,item){
+		 var baseType=item;
+		 var html="";
+		 var baseArry=jsonObj[baseType+"List"];
+		 $("[base-data-type='"+baseType+"']").html("");
+		 if(baseArry&&baseArry.length>0){
+			 $.each(baseArry,function(i,obj){
+				 $("[base-data-type='"+baseType+"']").append("<option value='"+obj.baseDataCode+"'>"+obj.baseDataName+"</option>");
+				 
+			 });
+		 }
+		 
+		 
+	 });
+     
+	
+	 
+ }    
+     
+ 
+     

@@ -39,7 +39,7 @@ table{ width:100% !important;}
 .tuichu h5{line-height:48px;color:#fff; margin-left:20px;}
 .tuichu h5 span{font-weight:normal; color:#fff;vertical-align:middle; margin-left:10px;}
 .inform{ overflow:hidden; zoom:1; margin-top:20px;}
-.inform .inleft{ float:left; width:80%; text-align:center;}
+.inform .inleft{ float:left; /*width:90%;*/ text-align:center;}
 .imgs{ float:left;}
 .xinxi{ float:left; margin-top:16px; margin-left:14px;}
 .qi{ text-align:left;}
@@ -48,8 +48,20 @@ table{ width:100% !important;}
 /*列表*/
 .liebiao{ width:100%; color:#0033FF;}
 .liebiao ul{ list-style:none;}
-.liebiao ul li{ border-bottom:1px solid #D7D7D7; font-size:16px; height:48px; line-height:48px; background:#fff; margin-top:8px; padding-left:10px;}
+.liebiao ul li{ border-bottom:1px solid #D7D7D7; font-size:16px; background:#fff; margin-top:8px; padding-left:10px;
+}
 .liebiao ul li span{ float:right; color:#0033FF; font-size:24px; cursor:pointer; padding-right:10px;}
+.liebiao ul li a {
+    height:48px;
+    background: #fff url(../img/repeat-holder.png) repeat-x 0 0;
+    line-height:48px; 
+    display: block;
+    border:1px solid #fff;
+}
+.liebiao ul li a,
+.liebiao ul li a:link {
+    color:#0033FF;
+}
 /*教育背景*/
 .displays{ display:inline-table;}
 .inlines{ display:inline;}

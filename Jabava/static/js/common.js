@@ -40,10 +40,10 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
             var html = template(templateID, json);
                 html = $(html);
             // form init
-            var getDomStaticTarget = html.find('.input-group-static'),
-                getDomTarget = getDomStaticTarget.siblings(),
-                getDomFormAction = html.find('.form-action');
-            
+            var  getDomStaticTarget = html.find('.input-group-static'),
+                 getDomTarget = getDomStaticTarget.siblings().not('small,i'),
+                 getDomFormAction = html.find('.form-action');
+
             getDomTarget.hide();
             getDomFormAction.hide();
             
@@ -56,7 +56,7 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
                 var getAction = $(this).data('actionMotive'),
                     $form = $(this).parents('form'),
                     $getDomStaticTarget = $form.find('.input-group-static'),
-                    $getDomTarget = $getDomStaticTarget.siblings(),
+                    $getDomTarget = $getDomStaticTarget.siblings().not('small,i'),
                     $getDomFormAction = $form.find('.form-action');
 
                 switch(getAction){
@@ -111,17 +111,25 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
 
                 var $form = $(this).parents('form'),
                     $getDomStaticTarget = $form.find('.input-group-static'),
-                    $getDomTarget = $getDomStaticTarget.siblings(),
+                    $getDomTarget = $getDomStaticTarget.siblings().not('small,i'),
                     $getDomFormAction = $form.find('.form-action');
-                
                 var getAction = $(this).data('actionMotive');
                 switch(getAction){
                     
                     case 'save':
                     	
                     	// alert("save...");
-                    	
-                    	commonUpdateSaveBefore($form,metaKey,uploadFileType);
+                    	//在此处验证
+                        $('[data-form-validator]').formValidation(validateOptions)
+                        .on('success.form.fv', function(e){
+                            e.preventDefault();
+                            if($(e.target).attr('data-form-validator') == 'updateDimission'){
+                                save( $(e.target).attr( 'data-form-id' ) )
+                            }else{
+                    	       commonUpdateSaveBefore($form,metaKey,uploadFileType);
+                            }
+                        })
+                        //
                     	 
                     	 break;
                     case 'cancel':
@@ -144,6 +152,8 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
 
             // insert DOM
             $(containerID).empty().prepend(html);
+
+            
             
             setCalenderFormat();
 
@@ -195,17 +205,28 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
 			      } 
 				});
 	    	
-	    } else{
-	    	 commonSave(formObject);
-	    }
+	    } 
+     //    else{
+     //        $('[data-form-validator]').formValidation(validateOptions)
+     //        .on('success.form.fv', function(e){
+     //            e.preventDefault();
+     //             console.log($(e.target).attr('data-form-validator') == 'addDimission')
+     //             return ;
+     //            if($(e.target).attr('data-form-validator') == 'addDimission'){
+     //                add( $(e.target).attr('id') );
+     //            } else{
+     //                //console.log(222)
+	    // 	      commonSave(formObject);
+     //            }
+     //        })
+	    // }
 		  
 		 
 	}
 
  function commonSave(formObject,tt){
-		
 		var jsonObject=JSON.stringify(formObject);
-		//console.log("hehehehehe="+jsonObject);
+	//	console.log("hehehehehe="+jsonObject);
 		$.ajax({
 			type:"post",
 			url:addURL,
@@ -220,7 +241,7 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
 					//if(from=="PC"){//PC端处理
 						
 					 	 $(addFormSelector).remove();
-						 $(initFormSelector).addClass("hidden");
+						 //$(initFormSelector).addClass("hidden");
 						 containerID.html("");
 						//重新渲染
 						 templateFillData(templateID, containerID, listURL,delsURL,"",tt);
@@ -245,7 +266,7 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
 			
 		}); 
 		  
-		 
+		  
 	}
  
  

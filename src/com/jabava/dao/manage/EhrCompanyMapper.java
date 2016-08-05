@@ -61,8 +61,27 @@ public interface EhrCompanyMapper {
      */
     EhrCompany getZeroCompany();
     
+    /**
+     * 查询所有公司(如果flag为1，则包含平台公司)
+     * @param flag
+     * @return
+     */
+    List<EhrCompany> getAllCompany(Integer flag);
+    
     EhrCompany getCompanyIdByName(String companyName);
     
     Integer getMaxCompanyId();
+    /**
+	 * 根据用户Code  获取公司信息
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年4月20日 下午2:51:56 
+	 * </pre>
+	 *
+	 * @param userName
+	 * @return
+	 */
+	public EhrCompany getCompanysByUserName(String userName);
+
     
 }

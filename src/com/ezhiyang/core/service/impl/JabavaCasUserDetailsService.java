@@ -10,6 +10,7 @@ import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.validation.Assertion;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.cas.userdetails.AbstractCasAssertionUserDetailsService;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,10 +19,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.ezhiyang.core.model.MyUser;
-import com.jabava.utils.Config;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.pojo.manage.EhrUser;
+import com.jabava.service.manage.IUserService;
+import com.jabava.core.config.JabavaPropertyCofigurer;
+import com.jabava.utils.enums.JabavaEnum;
 import com.service.provider.CenterUserService;
 import com.service.provider.entity.CenterSysUser;
 import com.service.provider.entity.ReturnS;
@@ -94,21 +99,50 @@ public class JabavaCasUserDetailsService extends AbstractCasAssertionUserDetails
 		com.service.provider.entity.OrgUser orgUser = centerSysUser.getOrgUser();
 		
 		MyUser myUser = new MyUser();
+		EhrUser user = null;
 		try {
 			BeanUtils.copyProperties(myUser, orgUser);
 
 //			//生成自己的User、加载权限并保存到Session
 //			HttpServletRequest request = ((ServletRequestAttributes)   
 //	                RequestContextHolder.currentRequestAttributes()).getRequest();
-//			WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+			WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+			IUserService userService = wac.getBean(IUserService.class);
+			user = userService.selectUserById(Long.valueOf(orgUser.getIdentity()));
+			
 //			UserController uc = wac.getBean(UserController.class);
 //			uc.doLogin(orgUser.getIdentity(), orgUser.getOrgId(), request);
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+		//} catch (IllegalAccessException e) {
+		//} catch (InvocationTargetException e) {
 		}catch (Exception e) {
-			
+			e.printStackTrace();
+			throw new AuthenticationServiceException(e.getMessage());
 		}
 
+		if(user == null){
+			throw new UsernameNotFoundException(principalName);
+		}
+		//如果是普通用户，则退出
+		if(user.getUserType().equals(JabavaEnum.UserTypeEnum.COMMON.getValue())){
+			log.error("用户的登录请求被拒绝：" + orgUser.getIdentity());
+			throw new DisabledException(principalName);
+		}
+		//如果用户已无效，则退出
+		if(user.getIsValid() == 0){
+			log.error("用户已无效：" + orgUser.getIdentity());
+			throw new DisabledException(principalName);
+		}
+		//如果用户已锁定，则退出
+		if(user.getIsLocked() == 1){
+			log.error("用户已锁定：" + orgUser.getIdentity());
+			throw new DisabledException(principalName);
+		}
+		//如果用户已删除，则退出
+		if(user.getIsDeleted() == 1){
+			log.error("用户已删除：" + orgUser.getIdentity());
+			throw new DisabledException(principalName);
+		}
+		
 		return myUser;
 	}
 

@@ -7,6 +7,8 @@ import com.jabava.pojo.manage.EhrCompany;
 import com.jabava.pojo.manage.EhrSysLog;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.utils.Page;
+import com.jabava.utils.enums.SystemEnum.LogOperateType;
+import com.jabava.utils.enums.SystemEnum.Module;
 
 /***
  * 
@@ -32,4 +34,5 @@ public interface IEhrSysLogSercice {
 
 	
 	public int addSysLog(EhrUser user, String operation) throws Exception;
+	public int addSysLog(EhrUser user, LogOperateType operation ,Module module,String operationInfo) throws Exception;
 }

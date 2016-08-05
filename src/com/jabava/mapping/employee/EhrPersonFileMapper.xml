@@ -38,6 +38,7 @@
     -->
     delete from ehr_person_file
     where file_id = #{fileId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </delete>
   <insert id="insert" parameterType="com.jabava.pojo.employee.EhrPersonFile" >
     <!--
@@ -131,6 +132,7 @@
       </if>
     </set>
     where file_id = #{fileId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jabava.pojo.employee.EhrPersonFile" >
     <!--
@@ -145,6 +147,7 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where file_id = #{fileId,jdbcType=BIGINT}
+    	${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
   </update>
   
   <select id="searchFile" resultMap="BaseResultMap">
@@ -176,5 +179,6 @@
           <foreach collection="list" item="item" index="index"  open= "(" close =")"  separator="," >  
         	 #{item.fileType,jdbcType=BIGINT}    
         </foreach>
+        ${@com.jabava.utils.privilege.AuthorisedPersonUtil@getUserAuthorisedPersonList("person_id")}
 	</update>
 </mapper>

@@ -508,18 +508,18 @@ public class EhrBaseData {
 			return "base_data_code";
 		} else if ("baseDataName".equals(colmun)) {
 			return "base_data_name";
-		} else if ("isValid".equals(colmun)) {
+		} else if ("valid".equals(colmun)) {
 			return "is_valid";
 		} else if ("memo".equals(colmun)) {
 			return "memo";
 		} else if ("lastModifyUserName".equals(colmun)) {
 			return "last_modify_user_name";
 		} else if ("lastModifyDate".equals(colmun) || "lastModifyDate1".equals(colmun)) {
-			return "operate_date";
+			return "last_modify_date";
 		}else if ("baseDataTypeName".equals(colmun) || "lastModifyDate1".equals(colmun)) {
 			return "base_data_type_name";
 		}
-		return "baseDataCode";
+		return "base_data_code";
 	}
     
 }

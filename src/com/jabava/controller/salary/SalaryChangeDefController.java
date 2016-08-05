@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,20 +27,25 @@ import com.jabava.pojo.manage.EhrUser;
 import com.jabava.pojo.salary.EhrSalaryChangeDef;
 import com.jabava.pojo.salary.EhrSalaryChangeDefItem;
 import com.jabava.service.salary.ISalaryChangeDefService;
+import com.jabava.service.system.IEhrSysLogSercice;
 import com.jabava.utils.Constants;
 import com.jabava.utils.FileUtil;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.MessageUtil;
 import com.jabava.utils.Page;
 import com.jabava.utils.RequestUtil;
 import com.jabava.utils.SalaryHelper;
 import com.jabava.utils.enums.SalaryEnum;
+import com.jabava.utils.enums.SystemEnum;
 import com.jabava.utils.excel.ExcelUtil;
 
 @Controller
 @RequestMapping("/salaryChangeDef")
 public class SalaryChangeDefController {
 	private static Logger log = Logger.getLogger(SalaryChangeDefController.class);
+	
+	@Resource
+	private IEhrSysLogSercice sysLogSercice;
 	
 	@Autowired
 	private ISalaryChangeDefService salaryChangeDefService;
@@ -55,6 +61,7 @@ public class SalaryChangeDefController {
 		EhrUser user = RequestUtil.getLoginUser(request);
 				
 		List<EhrSalaryChangeDef> list = salaryChangeDefService.listSalaryChangeDef(user.getCompanyId());
+			//sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Select, SystemEnum.Module.Salary, "查询公司id为"+user.getCompanyId()+"薪资方案管理");
 		Page<EhrSalaryChangeDef> page = new Page<EhrSalaryChangeDef>(0,Constants.MAX_RECORD_SIZE);
 		page.setData(list);
 		return page;
@@ -75,8 +82,9 @@ public class SalaryChangeDefController {
 	}
 	
 	@RequestMapping("toViewSalaryChangeDef")
-	public String toViewSalaryChangeDef(HttpServletRequest request, HttpServletResponse response, Long id){
+	public String toViewSalaryChangeDef(HttpServletRequest request, HttpServletResponse response, Long id) throws Exception{
 		EhrSalaryChangeDef salaryChangeDef = salaryChangeDefService.selectByPrimaryKey(id);
+		//sysLogSercice.addSysLog(RequestUtil.getLoginUser(), SystemEnum.LogOperateType.Select, SystemEnum.Module.Salary, "查询id为"+id+"外部定义数据");
 		request.setAttribute("salaryChangeDef", salaryChangeDef);
 		return "salary/viewSalaryChangeDef";
 	}
@@ -85,10 +93,12 @@ public class SalaryChangeDefController {
 	@ResponseBody
 	public Page<EhrSalaryChangeDefItem> loadSalaryChangeDefItem(HttpServletRequest request, HttpServletResponse response, Long id){
 		List<EhrSalaryChangeDefItem> itemList = null;
-		if(SalaryEnum.SystemChangeTable.EhrAttendance.getId() == id){
+		if(SalaryEnum.SystemChangeTable.Attendance.getId().equals(id)){
 			itemList = SalaryHelper.getAttendanceDefination();
-		}else if(SalaryEnum.SystemChangeTable.EhrSocialInsurance.getId() == id){
-			itemList = SalaryHelper.getSocialInsuranceDefination();
+		}else if(SalaryEnum.SystemChangeTable.SocialSecurity.getId().equals(id)){
+			itemList = SalaryHelper.getSocialSecurityDefination();
+		}else if(SalaryEnum.SystemChangeTable.AccumulationFund.getId().equals(id)){
+			itemList = SalaryHelper.getAccumulationFundDefination();
 		}else{
 			itemList = salaryChangeDefService.queryItemList(id);
 		}
@@ -105,7 +115,7 @@ public class SalaryChangeDefController {
 	@RequestMapping("uploadSalaryChangeDef")
 	@ResponseBody
 	public Map<String,Object> uploadSalaryChangeDef(HttpServletRequest request, HttpServletResponse response,
-			EhrSalaryChangeDef changeDef){
+			EhrSalaryChangeDef changeDef) throws Exception{
 		EhrUser user = RequestUtil.getLoginUser(request);
 		String cover = request.getParameter("cover");
 		String filePath = request.getParameter("filePath");
@@ -135,6 +145,10 @@ public class SalaryChangeDefController {
 		}else{
 			String path = JabavaPropertyCofigurer.getProperty("UPLOAD_PATH") + filePath;
 			FileUtil.deleteFile(path);
+			
+				sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Upload, 
+						SystemEnum.Module.Salary, "上传一个名称为"+changeDef.getName()+"外部数据定义");
+			
 			return MessageUtil.successMessage("上传成功");
 		}
 	}
@@ -169,7 +183,7 @@ public class SalaryChangeDefController {
 	}
 
 	private String readSheet(XSSFSheet sheet, EhrSalaryChangeDef changeDef) throws Exception {
-		int columns = Integer.parseInt(JabavaPropertyCofigurer.getProperty("salary.change.def.columns"));
+		int columns = Integer.parseInt(JabavaPropertyCofigurer.getProperty(Constants.SALARY_CHANGE_DEF_COLUMNS));
 		Map<String, Object> map = new HashMap<String, Object>();
 		XSSFRow row = sheet.getRow(0);	//只取第一行
 		int i = 0;
@@ -215,11 +229,14 @@ public class SalaryChangeDefController {
 	
 	@RequestMapping("deleteSalaryChangeDef")
 	@ResponseBody
-	public Map<String,Object> deleteSalaryChangeDef(HttpServletRequest request, HttpServletResponse response, Long id){
+	public Map<String,Object> deleteSalaryChangeDef(HttpServletRequest request, HttpServletResponse response, Long id) throws Exception{
 		EhrUser user = RequestUtil.getLoginUser(request);
+		EhrSalaryChangeDef ehrSalaryChangeDef = salaryChangeDefService.selectByPrimaryKey(id);
 		if(salaryChangeDefService.deleteById(user.getCompanyId(), id) == 0){
 			return MessageUtil.errorMessage("删除失败");
 		}else{
+			sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Delete, SystemEnum.Module.Salary, "删除一个id为"+id+"名字为"+ehrSalaryChangeDef.getName()+"外部数据定义");
+
 			return MessageUtil.successMessage("删除成功");
 		}
 	}
@@ -228,19 +245,29 @@ public class SalaryChangeDefController {
 	public void exportSalaryChangeDef(HttpServletRequest request, HttpServletResponse response, Long id) {
 		EhrUser user = RequestUtil.getLoginUser(request);
 		
-		EhrSalaryChangeDef changeDef = salaryChangeDefService.selectByPrimaryKey(id);
-		if(changeDef == null || changeDef.getCompanyId() != user.getCompanyId()){
-			log.error("没有权限操作此定义：" + id);
-			return ;
+		List<EhrSalaryChangeDefItem> defItemList = null;
+		if(id == -1){
+			defItemList = SalaryHelper.getAttendanceDefination();
+			defItemList.add(0,new EhrSalaryChangeDefItem("姓名","employee_name",1));
+			defItemList.add(1,new EhrSalaryChangeDefItem("工号","job_number",1));
+		}else{
+			EhrSalaryChangeDef changeDef = salaryChangeDefService.selectByPrimaryKey(id);
+			if(changeDef == null || !changeDef.getCompanyId().equals(user.getCompanyId())){
+				log.error("没有权限操作此定义：" + id);
+				return ;
+			}
+			//需要补充其它列，如姓名；)
+			defItemList = salaryChangeDefService.queryItemList(id);
+			defItemList.add(0,new EhrSalaryChangeDefItem("姓名","employee_name",1));
 		}
 		
 		Map<String,Object> datas = new HashMap<String,Object>();
-		
-		Map<String,Object> def = new HashMap<String,Object>();
-		for(EhrSalaryChangeDefItem item : salaryChangeDefService.queryItemList(id)){
-			def.put(item.getColumnName(), item.getDisplayName());
-		}
-		datas.put("def", def);
+//		Map<String,Object> def = new HashMap<String,Object>();
+//		for(EhrSalaryChangeDefItem item : defItemList){
+//			def.put(item.getColumnName(), item.getDisplayName());
+//		}
+//		datas.put("def", def);
+		datas.put("defItemList", defItemList);
 		
 		response.setContentType("APPLICATION/OCTET-STREAM;charset=UTF-8");
 		response.setHeader("Content-Disposition","attachment; filename=" + new String("salaryChangeDef.xlsx"));

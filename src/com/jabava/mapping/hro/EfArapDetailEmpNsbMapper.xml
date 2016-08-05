@@ -478,4 +478,7 @@
     where is_deleted=0 and bill_id = #{billId,jdbcType=BIGINT} 
     order by prod_id
   </select>
+  <delete id="deleteByBillId">
+  	delete from ef_arap_detail_emp_nsb where bill_id=#{billId,jdbcType=BIGINT} 
+  </delete>
 </mapper>

@@ -10,10 +10,10 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.pojo.hro.EfArap;
 import com.jabava.pojo.hro.EfArapDetailEmpNsb;
 import com.jabava.pojo.hro.EfArapDetailEmpSb;
@@ -22,8 +22,8 @@ import com.jabava.service.hro.IEfArapService;
 import com.jabava.service.hro.IHroPactInfoService;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
+import com.jabava.utils.enums.JabavaEnumUtil;
 
 /**
  * 定时导入账单数据
@@ -88,70 +88,75 @@ public class GetBill {
 //				+ "/open/rest", fetchToken);
 //		return requestService;
 //	}
-
-	/**
-	 * 执行定时任务
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	public void execute() throws Exception {
-		logger.info("ImportBillTask Started .................");
-		
-		//获取协议号
-		List<HroPactInfo> pactCodeList = pactInfoService.queryPactInfoList();
-
-//		List<String> pactCodeList = new ArrayList<String>();
-//		pactCodeList.add("ZY-DH-20150721-0001");
 //
-//		List<String> billMonthList = new ArrayList<String>();
-//		billMonthList.add("201405");
-		
-		getBill(pactCodeList);
-		
-		logger.info("ImportBillTask Finished .................");
-	}
+//	/**
+//	 * 执行定时任务
+//	 * 
+//	 * @throws Exception
+//	 */
+//	@Test
+//	public void execute() throws Exception {
+//		logger.info("ImportBillTask Started .................");
+//		
+//		//获取协议号
+//		List<HroPactInfo> pactCodeList = pactInfoService.queryPactInfoList();
+//
+////		List<String> pactCodeList = new ArrayList<String>();
+////		pactCodeList.add("ZY-DH-20150721-0001");
+////
+////		List<String> billMonthList = new ArrayList<String>();
+////		billMonthList.add("201405");
+//		
+//		getBill(pactCodeList);
+//		
+//		logger.info("ImportBillTask Finished .................");
+//	}
 	
 	public void executeWithPactInfo(HroPactInfo pactInfo) throws Exception{
-		List<String> billMonthList = TaskUtil.getMonthList("month.sync.hro.bill");
-		if(billMonthList == null || billMonthList.isEmpty()){
-			return ;
-		}
-		for (String billMonth : billMonthList) {
-			this.getBill(pactInfo, billMonth);
-		}
+		logger.info("ImportBillTaskWithPactInfo Started .................");
+//		List<String> billMonthList = TaskUtil.getMonthList("month.sync.hro.bill");
+//		if(billMonthList == null || billMonthList.isEmpty()){
+//			return ;
+//		}
+//		for (String billMonth : billMonthList) {
+//			this.getBill(pactInfo, billMonth);
+//		}
+		
+		this.getBill(pactInfo, null);
+		
+		logger.info("ImportBillTaskWithPactInfo Finished .................");
 	}
 
-	/**
-	 * 账单查询
-	 * 
-	 * @param pactCodeList
-	 *            协议号-list
-	 * @return
-	 */
-	private void getBill(List<HroPactInfo> pactCodeList) throws Exception{
-		if(pactCodeList==null ||pactCodeList.size()<1){
-			return ;
-		}
-		// 循环协议号
-		for (HroPactInfo pactInfo : pactCodeList) {
-//			//查询是否存在该协议号的账单。无-第一次，不需要指定账单月；有-非第一次，取当前月及上月
-//			if (!efArapService.isBillExist(pactInfo.getPactCode())) {
-//				this.getBill(pactInfo, null);
-//			} else {
-				// 循环年月
-				List<String> billMonthList = TaskUtil.getMonthList("month.sync.hro.bill");
-				if(billMonthList == null || billMonthList.isEmpty()){
-					continue ;
-				}
-				for (String billMonth : billMonthList) {
-					this.getBill(pactInfo, billMonth);
-				}
-//			}
-//			//账单可能作废，所以全部同步(也可以在SQL中根据支付情况过滤)
-//			this.getBill(pactInfo, null);
-		}
-	}
+//	/**
+//	 * 账单查询
+//	 * 
+//	 * @param pactCodeList
+//	 *            协议号-list
+//	 * @return
+//	 */
+//	private void getBill(List<HroPactInfo> pactCodeList) throws Exception{
+//		if(pactCodeList==null ||pactCodeList.size()<1){
+//			return ;
+//		}
+//		// 循环协议号
+//		for (HroPactInfo pactInfo : pactCodeList) {
+////			//查询是否存在该协议号的账单。无-第一次，不需要指定账单月；有-非第一次，取当前月及上月
+////			if (!efArapService.isBillExist(pactInfo.getPactCode())) {
+////				this.getBill(pactInfo, null);
+////			} else {
+//				// 循环年月
+//				List<String> billMonthList = TaskUtil.getMonthList("month.sync.hro.bill");
+//				if(billMonthList == null || billMonthList.isEmpty()){
+//					continue ;
+//				}
+//				for (String billMonth : billMonthList) {
+//					this.getBill(pactInfo, billMonth);
+//				}
+////			}
+////			//账单可能作废，所以全部同步(也可以在SQL中根据支付情况过滤)
+////			this.getBill(pactInfo, null);
+//		}
+//	}
 	
 	private boolean getBill(HroPactInfo pactInfo,String billMonth){
 		StringBuffer sb = new StringBuffer();
@@ -278,15 +283,15 @@ public class GetBill {
 			try {
 				if(entitie.get("DATE_BILL_CREATE_FIRST")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CREATE_FIRST").toString())){
 					efArap.setDateBillCreateFirst(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CREATE_FIRST").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CREATE_FIRST").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("DATE_BILL_CREATE")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CREATE").toString())){
 					efArap.setDateBillCreate(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CREATE").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CREATE").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("DATE_BILL_CONFIRM")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CONFIRM").toString())){
 					efArap.setDateBillConfirm(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CONFIRM").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CONFIRM").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("PAY_DAY")!=null && StringUtils.isNotBlank(entitie.get("PAY_DAY").toString())){
 					efArap.setPayDay(JabavaUtil.formatDate(entitie.get(
@@ -294,15 +299,15 @@ public class GetBill {
 				}
 				if(entitie.get("CREATE_DT")!=null && StringUtils.isNotBlank(entitie.get("CREATE_DT").toString())){
 					efArap.setCreateDate(JabavaUtil.formatDate(entitie.get(
-							"CREATE_DT").toString(), "yyyyMMddhhmmss"));
+							"CREATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("UPDATE_DT")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_DT").toString())){
 					efArap.setUpdateDate(JabavaUtil.formatDate(entitie.get(
-							"UPDATE_DT").toString(), "yyyyMMddhhmmss"));
+							"UPDATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("DATE_BILL_CANCEL")!=null && StringUtils.isNotBlank(entitie.get("DATE_BILL_CANCEL").toString())){
 					efArap.setDateBillCancel(JabavaUtil.formatDate(entitie.get(
-							"DATE_BILL_CANCEL").toString(), "yyyyMMddhhmmss"));
+							"DATE_BILL_CANCEL").toString(), "yyyyMMddHHmmss"));
 				}
 				
 			} catch (Exception e) {
@@ -381,9 +386,19 @@ public class GetBill {
 					+ ", 账单总额: TotalAmount=" + efArap.getAmountTotal());
 			
 			// 根据账单id获取是否存在此数据
-			int isExitBill = efArapService.isExitBill(efArap.getBillCode());
-			if (isExitBill > 0) {	// 修改账单
-				int res = efArapService.updateByPrimaryKey(efArap);
+//			int isExitBill = efArapService.isExitBill(efArap.getBillCode());
+//			if (isExitBill > 0) {	// 修改账单
+			EfArap exist = efArapService.findByBillCode(efArap.getBillCode());
+			if(exist != null){
+				int res = -1;
+				if(!exist.getBillId().equals(efArap.getBillId())){
+					//如果同一账单号重新生成了账单，则需要先删除再插入
+					efArapService.deleteById(exist);
+					res = efArapService.insertSelective(efArap);
+				}else{
+					res = efArapService.updateByPrimaryKey(efArap);
+				}
+				
 				if (res > 0) {
 					updsusccess ++;
 				} else {
@@ -557,14 +572,14 @@ public class GetBill {
 				}
 				if(entitie.get("CREATE_DT")!=null && StringUtils.isNotBlank(entitie.get("CREATE_DT").toString())){
 					arapDetailEmp.setCreateDate(JabavaUtil.formatDate(entitie.get(
-							"CREATE_DT").toString(), "yyyyMMddhhmmss"));
+							"CREATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("UPDATE_BY")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_BY").toString())){
 					arapDetailEmp.setUpdateUserId(Long.parseLong(entitie.get("UPDATE_BY").toString()));
 				}
 				if(entitie.get("UPDATE_DT")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_DT").toString())){
 					arapDetailEmp.setUpdateDate(JabavaUtil.formatDate(entitie.get(
-							"UPDATE_DT").toString(), "yyyyMMddhhmmss"));
+							"UPDATE_DT").toString(), "yyyyMMddHHmmss"));
 				}
 				if(entitie.get("QUOT_TYPE")!=null && StringUtils.isNotBlank(entitie.get("QUOT_TYPE").toString())){
 					arapDetailEmp.setQuotType(Integer.parseInt(entitie.get("QUOT_TYPE").toString()));
@@ -576,10 +591,8 @@ public class GetBill {
 					arapDetailEmp.setCertId(entitie.get("CARD_ID").toString());
 				}
 				if(entitie.get("CARD_TYPE")!=null && StringUtils.isNotBlank(entitie.get("CARD_TYPE").toString())){
-					arapDetailEmp.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
-				}
-				if(entitie.get("CARD_TYPE")!=null && StringUtils.isNotBlank(entitie.get("CARD_TYPE").toString())){
-					arapDetailEmp.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					//arapDetailEmp.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					arapDetailEmp.setCertType(Integer.valueOf(JabavaEnumUtil.transformCardType(entitie.get("CARD_TYPE").toString())));
 				}
 				if(entitie.get("EMPLOYEE_REC_ID")!=null && StringUtils.isNotBlank(entitie.get("EMPLOYEE_REC_ID").toString())){
 					arapDetailEmp.setEmployeeRecId(Long.parseLong(entitie.get("EMPLOYEE_REC_ID").toString()));
@@ -735,13 +748,13 @@ public class GetBill {
 					arapDetailEmpSb.setCreateUserId(Long.parseLong(entitie.get("CREATE_BY").toString()));
 				}
 				if(entitie.get("CREATE_DT")!=null && StringUtils.isNotBlank(entitie.get("CREATE_DT").toString())){
-					arapDetailEmpSb.setCreateDate(JabavaUtil.formatDate(entitie.get("CREATE_DT").toString(),"yyyyMMddhhmmss"));
+					arapDetailEmpSb.setCreateDate(JabavaUtil.formatDate(entitie.get("CREATE_DT").toString(),"yyyyMMddHHmmss"));
 				}
 				if(entitie.get("UPDATE_BY")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_BY").toString())){
 					arapDetailEmpSb.setUpdateUserId(Long.parseLong(entitie.get("UPDATE_BY").toString()));
 				}
 				if(entitie.get("UPDATE_DT")!=null && StringUtils.isNotBlank(entitie.get("UPDATE_DT").toString())){
-					arapDetailEmpSb.setUpdateDate(JabavaUtil.formatDate(entitie.get("UPDATE_DT").toString(),"yyyyMMddhhmmss"));
+					arapDetailEmpSb.setUpdateDate(JabavaUtil.formatDate(entitie.get("UPDATE_DT").toString(),"yyyyMMddHHmmss"));
 				}
 				if(entitie.get("ORDER_ID")!=null && StringUtils.isNotBlank(entitie.get("ORDER_ID").toString())){
 					arapDetailEmpSb.setOrderId(Long.parseLong(entitie.get("ORDER_ID").toString()));
@@ -750,7 +763,8 @@ public class GetBill {
 					arapDetailEmpSb.setCertId(entitie.get("CARD_ID").toString());
 				}
 				if(entitie.get("CARD_TYPE")!=null && StringUtils.isNotBlank(entitie.get("CARD_TYPE").toString())){
-					arapDetailEmpSb.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					//arapDetailEmpSb.setCertType(TaskUtil.transformCardTypeFromHro(entitie.get("CARD_TYPE").toString()));
+					arapDetailEmpSb.setCertType(Integer.valueOf(JabavaEnumUtil.transformCardType(entitie.get("CARD_TYPE").toString())));
 				}
 				if(entitie.get("EMPLOYEE_REC_ID")!=null && StringUtils.isNotBlank(entitie.get("EMPLOYEE_REC_ID").toString())){
 					arapDetailEmpSb.setEmployeeRecId(Long.parseLong(entitie.get("EMPLOYEE_REC_ID").toString()));

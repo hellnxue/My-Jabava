@@ -1,9 +1,10 @@
+<%@ page contentType="text/html; charset=utf-8"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
@@ -11,12 +12,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <base href="<%=basePath%>">
-<%@ page contentType="text/html; charset=utf-8"%>
-<meta charset="utf-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<base href="${pageContext.request.contextPath}/">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Page title -->
     <title>查看工资变动定义</title>
@@ -53,20 +52,20 @@
                             <div class="col-md-5 col-md-offset-3">
                                 <form role="form" id="searchForm" class="form-horizontal"> 
                                     <div class="form-group">
-                                        <label for="name" class="control-label col-sm-9 col-md-3 col-lg-3 font-bold">名称：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <label for="name" class="control-label col-sm-9 col-md-4 col-lg-4 font-bold">名称：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
                                             <input type="text" name="name" class="form-control" value="${salaryChangeDef.name }" readonly/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="keyInfo" class="control-label col-sm-9 col-md-3 col-lg-3 font-bold">主键列：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <label for="keyInfo" class="control-label col-sm-9 col-md-4 col-lg-4 font-bold">身份识别列标题：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
                                             <input type="text" name="keyInfo" class="form-control" value="${salaryChangeDef.keyInfo }" readonly/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="keyType" class="control-label col-sm-9 col-md-3 col-lg-3 font-bold">主键类型：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <label for="keyType" class="control-label col-sm-9 col-md-4 col-lg-4 font-bold">主键类型：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
                                             <select class="form-control" id="keyType" name="keyType" data-field="component" disabled="disabled">
 												<option value="0">--------</option>
 												<option value="1">身份证</option>
@@ -75,8 +74,17 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="description" class="control-label col-sm-9 col-md-3 col-lg-3 font-bold">描述：</label>
-                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                        <label for="keyType" class="control-label col-sm-9 col-md-4 col-lg-4 font-bold">是否月度信息：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
+                                            <select class="form-control" id="isMonthly" name="isMonthly" data-field="component" disabled="disabled">
+												<option value="1">是</option>
+												<option value="0">否</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="control-label col-sm-9 col-md-4 col-lg-4 font-bold">描述：</label>
+                                        <div class="col-sm-8 col-md-8 col-lg-8">
                                             <textarea class="form-control" id="description" name="description" readonly>${salaryChangeDef.description }</textarea>
                                         </div>
                                     </div>
@@ -190,6 +198,7 @@
     	});
       	
       	$('#keyType').val(${salaryChangeDef.keyType });
+      	$('#isMonthly').val(${salaryChangeDef.isMonthly });
     }); 
 
 </script>

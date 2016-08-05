@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -195,22 +196,17 @@
 			"columns": [
 				{ "data": "billId", "visible":false },
 				{ "data": "billYm" },
-				//{ "data": "paymentSettlement", "render": function render( data, type, row, meta ){
-        		//	if(data == 0){
-        		//		return '实做反馈型';
-        		//	}else{
-				//		return '先结算后实做型';
-        		//	}
-				//}},
 		    	{ "data": "billCode","render": function render( data, type, row, meta ){
-                        var htmlLink = '<td><a href="javascript://" onclick="showDetail(\'' + row.billId + '\',\'' + row.billYm + '\',\''+data+'\')">' + data + '</a></td>'
+              var htmlLink = '';
+              <% if(RequestUtil.hasPower("bill_bd")){ %>
+              htmlLink += '<td><a href="javascript://" onclick="showDetail(\'' + row.billId + '\',\'' + row.billYm + '\',\''+data+'\')">' + data + '</a></td>'
+              <% }else{ %>
+              htmlLink += '<td>' + data + '</td>';
+              <% } %>
             			return htmlLink;
 					} 
 				},
-				// { "data": "paymentDay" },
-				// { "data": "paymentLockDay" },
-				// { "data": "dateBillCreateFirst" },
-				// { "data": "dateBillCreate" },
+
 				{ "data": "amount" },
 				// { "data": "amountTotal" },
 				{ "data": "payDay" ,"render": function render( data, type, row, meta ){

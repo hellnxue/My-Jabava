@@ -1,6 +1,7 @@
 package com.jabava.service.system;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jabava.pojo.manage.EhrOrganization;
 import com.jabava.pojo.manage.EhrOrganizationHistory;
@@ -15,6 +16,8 @@ import com.jabava.pojo.manage.EhrUser;
 public interface IEhrOrganizationService {
 	
 	public List<EhrOrganization> loadTree(Long companyId);
+	
+	public List<EhrOrganization> loadAuthorisedTree(Long companyId);
 	
 	public int inserTop(EhrUser user, String companyName);
 	
@@ -31,6 +34,10 @@ public interface IEhrOrganizationService {
 	public List<EhrOrganization> getTreeByParent(Long parentId);
 	
 	public EhrOrganization findTopOrganization(Long companyId);
+	
+	public List<EhrOrganization> findByLevel(Long companyId, Integer level);
+	
+	public List<EhrOrganization> getHierarchicalAncestors(Map<Long, EhrOrganization> orgMap, Long organizationId);
 	
 	/**
 	 * 组织机构查询
@@ -79,7 +86,7 @@ public interface IEhrOrganizationService {
 	    */
 	 boolean selectOrganorganizationId(Long organizationId)throws Exception;
 	 
-	 public List<EhrPerson> selectPersonByOrganization(EhrOrganization org);
+	 public List<EhrPerson> selectPersonByOrganization(Long organizationId);
 	   
 	   /**
 	    * 删除组织
@@ -116,4 +123,19 @@ public interface IEhrOrganizationService {
 	 * @return
 	 */
 	List<EhrOrganization> findOrganizationByCompanyId(Long companyId);
+	
+	Map<Long, EhrOrganization> findOrganizationMap(Long companyId);
+	
+	/**
+	 * 查询该部门下的人员，不包含子部门
+	 * <pre>
+	 * @author steven.chen
+	 * @date 2016年5月31日 下午1:46:06 
+	 * </pre>
+	 *
+	 * @param organizationId
+	 * @return
+	 */
+	List<EhrPerson> findPersonByOrganizationId(Long organizationId);
+
 }

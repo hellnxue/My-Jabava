@@ -1,5 +1,5 @@
 // JavaScript Document
-<!--按钮权限-菜单权限转换-->
+//按钮权限-菜单权限转换
 function f_show_one(obj){
 	
 	if(obj==button_authority){
@@ -21,7 +21,7 @@ function f_show_one(obj){
 }
 
 
-<!--按钮权限树状图-->
+//按钮权限树状图
     $(function () {
 
         var updateOutput = function (e) {

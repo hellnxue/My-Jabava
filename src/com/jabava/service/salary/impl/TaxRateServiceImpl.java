@@ -3,6 +3,8 @@ package com.jabava.service.salary.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,13 @@ import com.jabava.pojo.manage.EhrUser;
 import com.jabava.pojo.salary.EhrTaxLevel;
 import com.jabava.pojo.salary.EhrTaxRate;
 import com.jabava.service.salary.ITaxRateService;
+import com.jabava.service.system.IEhrSysLogSercice;
+import com.jabava.utils.enums.SystemEnum;
 
 @Service
 public class TaxRateServiceImpl implements ITaxRateService{
 	@Autowired
 	private EhrTaxRateMapper taxRateMapper;
-	
 	@Autowired
 	private EhrTaxLevelMapper taxLevelMapper;
 	

@@ -7,6 +7,7 @@
 <%@page import="java.util.concurrent.Executors"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <!-- Page title -->
-<title>工资项目管理</title>
+<title>工资项目管理-新增/修改工资项目</title>
 <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
 <!--for 临时改变-->
 <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
@@ -51,20 +52,20 @@
                             </h4>
                         </div>
                         <div class="panel-body">
-                            <form class="form-horizontal" id="itemForm">
+                            <form class="form-horizontal" id="itemForm" data-form="addSalaryItem">
                             	<input type="hidden" name="salaryItemId" value="${salaryItem.salaryItemId }">
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">工资项目名称：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">工资项目名称：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-required">
                                             <input type="text" class="form-control" name="salaryItemName" value="${salaryItem.salaryItemName}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">计税方法：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">计税方法：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <select class="form-control" id="taxRule" name="taxRule" onchange="relateTaxRate();">
                                                 <option value="1">合并计税</option>
                                                 <option value="2">独立计税</option>
@@ -74,8 +75,8 @@
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">适用税率：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">适用税率：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <select class="form-control" id="taxRateId" name="taxRateId" disabled>
                                                 <option value="">无</option>
                                                 <c:forEach var="rate" items="${requestScope.taxRateList }" varStatus="status">     
@@ -87,8 +88,8 @@
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">计税规则：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">计税规则：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <select class="form-control" id="calculateRule" name="calculateRule">
                                                 <option value="1">税前计入</option>
                                                 <option value="2">税后计入</option>
@@ -98,8 +99,8 @@
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">项目类别：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">项目类别：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <select class="form-control" id="itemType" name="itemType">
                                                 <option value="1">加项</option>
                                                 <option value="2">减项</option>
@@ -109,23 +110,23 @@
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">项目标识：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">项目标识：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <select class="form-control" id="yearlyFlag" name="yearlyFlag">
                                                 <option value="0">普通项目</option>
-                                                <option value="1">年终奖项目</option>
+                                                <!--option value="1">年终奖项目</option>
                                                 <option value="2">养老项目</option>
                                                 <option value="3">医疗项目</option>
                                                 <option value="4">事业项目</option>
-                                                <option value="5">公积金项目</option>
+                                                <option value="5">公积金项目</option-->
                                             </select>
                                         </div>   
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">变动表：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">变动表：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <select class="form-control" id="salaryChangeDefId" name="salaryChangeDefId" onchange="loadChangeDefItem();">
                                                 <option value="" selected>无</option>
                                                 <c:forEach var="def" items="${requestScope.changeDefList }" varStatus="status">     
@@ -137,25 +138,25 @@
                                 </div>
                                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">变动计算公式：</label>
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-3">变动计算公式：</label>
+                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                                             <input class="form-control" type="text" name="changeFormula" value="${salaryItem.changeFormula}" placeholder="您可以使用下面通用项，员工项，中间项中的项目定义公式，注意不能循环引用。">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">显示顺序：</label>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">显示顺序：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-required">
                                             <input class="form-control" type="text" name="displayOrder" value="${salaryItem.displayOrder}">
                                         </div>   
                                     </div>
                                     
                                 </div>
-                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">是否中间项：</label>
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">是否中间项：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <div class="radio radio-info radio-inline">
                                                 <input class="form-control" type="radio" id="isTransitionYes" name="isTransition" value="1">
                                                 <label for="inlineRadio1">是</label>
@@ -167,48 +168,65 @@
                                         </div>   
                                     </div>
                                 </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-6">是否工资条项：</label>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="radio radio-info radio-inline">
+                                                <input class="form-control" type="radio" id="isSalarySlipItemYes" name="isSalarySlipItem" value="1">
+                                                <label for="inlineRadio1">是</label>
+                                            </div>
+                                            <div class="radio radio-info radio-inline">
+                                                <input class="form-control" type="radio" id="isSalarySlipItemNo" checked name="isSalarySlipItem" value="0">
+                                                <label for="inlineRadio1">否</label>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>
                                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-lg-pull-4 col-md-pull-4 col-sm-pull-4 col-xs-pull-4">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">备注：</label>
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-3">备注：</label>
+                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                                             <textarea class="form-control" type="text" name="itemMemo" value="${salaryItem.itemMemo}">${salaryItem.itemMemo}</textarea>
                                         </div>   
                                     </div>
                                 </div>
                                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                     <div class="form-group m-b-none">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">通用项：</label>
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-3">通用项：</label>
+                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                                             <p class="form-control-static">${requestScope.commonItem }</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <%--div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                     <div class="form-group m-b-none">
                                         <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">员工项：</label>
                                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
                                             <p class="form-control-static">${requestScope.personItem }</p>
                                         </div>
                                     </div>
-                                </div>
+                                </div--%>
                                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">中间项：</label>
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-3">中间项：</label>
+                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                                             <p class="form-control-static">${requestScope.transitionItem }</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                     <div class="form-group">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2 col-change-label"></label>
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-3 col-change-label"></label>
+                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                                             <p class="form-control-static p-change-content"></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                                    <% if(RequestUtil.hasPower("salaryitem_edit_si")){ %>
                                     <button type="submit" class="btn btn-info btn-sm btn-edit-item">确　定</button>
+                                    <% } %>
                                     <a class="btn btn-default btn-sm" href="salaryItem/toListSalaryItem">取　消</a>
                                     
                                 </div>
@@ -279,11 +297,16 @@
 			$('#yearlyFlag').val(${salaryItem.yearlyFlag });
 			$('#salaryChangeDefId').val(${salaryItem.salaryChangeDefId });
     		var isTransition = '${salaryItem.isTransition }';
-        	console.log(isTransition);
     		if(isTransition == 'true'){
     			$('#isTransitionYes').prop('checked', true);
     		}else{
     			$('#isTransitionNo').prop('checked', true);
+    		}
+    		var isSalarySlipItem = '${salaryItem.isSalarySlipItem }';
+    		if(isSalarySlipItem == 'true'){
+    			$('#isSalarySlipItemYes').prop('checked', true);
+    		}else{
+    			$('#isSalarySlipItemNo').prop('checked', true);
     		}
     		
     		//关联税率
@@ -312,11 +335,31 @@
                         }
                     }
                 },
+               salaryChangeDefId: {
+                    enabled: false,
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项目'
+                        }
+                    }
+                },
+                changeFormula: {
+                    enabled: false,
+                    validators: {
+                        notEmpty: {
+                            message: '请填写必填项目'
+                        }
+                    }
+                }, 
                 displayOrder: {
                     validators: {
                         greaterThan: {
                             message: '请输入大于等于0的数值',
                             value: 0
+                        },
+                        lessThan: {
+                            message: '请输入小于等于9999的数值',
+                            value: 9999
                         },
                         notEmpty:{
                             message: '请填写必填项目'
@@ -326,12 +369,29 @@
                 
             }
         })
+        .on('change', '[name=salaryChangeDefId]', function(event){
+
+            var isEmpty=$(this).val()=='';
+            
+            $('[data-form="addSalaryItem"]')
+            .formValidation('enableFieldValidators','salaryChangeDefId',!isEmpty)
+            .formValidation('enableFieldValidators','changeFormula',!isEmpty)
+            if($(this).val().length!=''){
+                $('[name=changeFormula]').val('').prop('readonly', false)
+                $('[data-form="addSalaryItem"]')
+                .formValidation('validateField','salaryChangeDefId')
+                .formValidation('validateField','changeFormula')
+            }else{
+                $('[name=changeFormula]').val('').prop('readonly', true)
+            }
+        })
         .on('success.form.fv', function(e){
             e.preventDefault();
-            save();
-        });
 
-    })
+
+            save();
+        })
+    });
        
     function relateTaxRate(){
     	if($('#taxRule').val() == 2){
@@ -401,10 +461,7 @@
 		});
 	}
     </script>
-    <script>
 
-    
-</script>
 
 </body>
 </html>

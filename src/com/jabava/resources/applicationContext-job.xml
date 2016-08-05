@@ -43,8 +43,8 @@
 			<ref bean="importOrderJobFactory" />
 		</property>
 		<property name="cronExpression">
-			<value>0 0/1 * * * ?</value>
-		</property>
+			<value>0 44 18 * * ?</value>
+		</property>		
 	</bean>
 
 	<!-- 定制抓取账单 -->
@@ -59,7 +59,7 @@
 		</property>
 		<property name="concurrent">
 			<value>false</value>
-		</property>
+		</property>		
 	</bean>
 	<bean id="importBillTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail">
@@ -139,17 +139,62 @@
 			<value>0 0/5 * * * ?</value>
 		</property>
 	</bean>
-	
+	<!-- 定时任务: 获取政策包数据  -->
+	<bean id="importPolicyGroupJob" class="com.jabava.task.ImportPolicyGroupTask" />
+	<bean id="importPolicyGroupJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="importPolicyGroupJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="importPolicyGroupJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="importPolicyGroupJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 04 17 * * ?</value>
+		</property>
+	</bean>
+	<!-- 定时任务: 把用户推送到用户中心  -->
+	<bean id="syncUserInfoTaskJob" class="com.jabava.task.SyncUserInfoTask" />
+	<bean id="syncUserInfoTaskJobFactory"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="syncUserInfoTaskJob" />
+		</property>
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+		<property name="concurrent">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="syncUserInfoTaskJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="syncUserInfoTaskJobFactory" />
+		</property>
+		<property name="cronExpression">
+			<value>0 35 13 * * ?</value>
+		</property>
+	</bean>
 	<!-- 配置调度工厂 -->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-			   <!--  <ref local="importOrderJobTrigger" />
-				<ref local="importSalaryInfoJobTrigger" />
+			   	<!-- <ref local="importOrderJobTrigger" />
+			    <ref local="importSalaryInfoJobTrigger" />
 				<ref local="importBillTaskTrigger" />				
 				<ref local="importReceiptOwnedJobTrigger" />
 				<ref local="importProcotolJobTrigger" />
-				<ref local="importPolicyPackageJobTrigger" />  -->  
+				<ref local="importPolicyPackageJobTrigger" />     
+				<ref local="importPolicyGroupJobTrigger" />
+				<ref local="syncUserInfoTaskJobTrigger" /> -->
 			</list>
 		</property>
 	</bean>

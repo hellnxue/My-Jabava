@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONArray;
-import com.jabava.core.EnumConstents.IsDeleted;
+import com.jabava.utils.enums.JabavaEnum.IsDeleted;
 import com.jabava.dao.hro.BdEmpBaseInfoMapper;
 import com.jabava.dao.hro.BdEmpRecInfoMapper;
 import com.jabava.dao.hro.BdSbMapper;
@@ -34,7 +34,7 @@ import com.jabava.service.hro.BdSbService;
 import com.jabava.service.hro.OutsourcingService;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 
 /**
  * 导入社保公积金信息以及详情信息
@@ -58,7 +58,7 @@ public class ImportPolicyPackageTask {
 	private HROFetchService requestService;
 	private static final Logger logger = Logger.getLogger(ImportOrderTask.class);
 	// String server="http://king.ezhiyang.com";
-	SimpleDateFormat format=new SimpleDateFormat("yyyyMMddhhmmss");
+	SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
 	SimpleDateFormat format2=new SimpleDateFormat("yyyy-MM-dd");
 	JSONArray jsonList = null;
 	JSONObject resultData = null;

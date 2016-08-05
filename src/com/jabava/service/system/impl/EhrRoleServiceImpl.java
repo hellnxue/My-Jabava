@@ -9,21 +9,26 @@ import java.util.Map;
 import java.util.Stack;
 
 import javax.annotation.Resource;
+import javax.swing.ButtonModel;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jabava.dao.manage.EhrButtonMapper;
 import com.jabava.dao.manage.EhrRoleMapper;
 import com.jabava.dao.manage.EhrRolePowerMapper;
 import com.jabava.dao.manage.EhrRoleUserMapper;
 import com.jabava.dao.manage.EhrUserMapper;
+import com.jabava.pojo.manage.EhrButton;
 import com.jabava.pojo.manage.EhrRole;
 import com.jabava.pojo.manage.EhrRolePower;
 import com.jabava.pojo.manage.EhrRoleUser;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.pojo.manage.RolePower;
 import com.jabava.service.system.IEhrRoleService;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
+import com.jabava.utils.Constants;
 import com.jabava.utils.Page;
 
 @Service("roleService")
@@ -37,6 +42,8 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 	public EhrRoleUserMapper roleUserMapper;
 	@Resource
 	public EhrRolePowerMapper rolePowerMapper;
+	@Autowired
+	public EhrButtonMapper buttonMapper;
 
 	@Override
 	public List<EhrRole> searchEhrRole(Long companyId, String search,
@@ -55,15 +62,12 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 
 	@Override
 	public boolean insertRole(EhrRole role) throws Exception {
-		boolean result = false;
-		try {
-			int count = ehrRoleMapper.insertSelective(role);
-			result = (1 == count);
-		} catch (Exception e) {
-			e.printStackTrace();
-			result = false;
+		EhrRole exist = ehrRoleMapper.selectByRoleName(role.getCompanyId(),role.getRoleName());
+		if(exist != null){
+			throw new Exception("角色名称重复");
 		}
-		return result;
+		int count = ehrRoleMapper.insertSelective(role);
+		return (1 == count);
 	}
 
 	@Override
@@ -81,15 +85,12 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 
 	@Override
 	public boolean updateRole(EhrRole role) throws Exception {
-		boolean result = false;
-		try {
-			int count=ehrRoleMapper.updateByPrimaryKeySelective(role);
-			result = (1 == count);
-		} catch (Exception e) {
-			e.printStackTrace();
-			result=false;
+		EhrRole exist = ehrRoleMapper.selectByRoleName(role.getCompanyId(),role.getRoleName());
+		if(exist != null && !role.getRoleId().equals(exist.getRoleId())){
+			throw new Exception("角色名称重复");
 		}
-		return result;
+		int count=ehrRoleMapper.updateByPrimaryKeySelective(role);
+		return (1 == count);
 	}
 
 	@Override
@@ -179,6 +180,10 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 		this.addRoleUser("企业管理员", user);
 	}
 	
+	public void addAdminRoleUser(EhrUser user){
+		this.addRoleUser("企业管理员", user);
+	}
+	
 	public void addCommonRoleUser(EhrUser user){
 		this.addRoleUser("普通用户", user);
 	}
@@ -207,7 +212,24 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 				rp.setPowerId(Long.valueOf(power));
 				rp.setType(1);
 				rolePowerMapper.insertSelective(rp);
+				
+				this.addButtonPower(role, Long.parseLong(power));
 			}
+			
+			if("企业管理员".equals(roleName) || "HR".equals(roleName)){
+				this.addButtonPower(role, Constants.TOP_MENU_ID);
+			}
+		}
+	}
+	
+	private void addButtonPower(EhrRole role, Long menuId){
+		//添加按钮权限
+		for(EhrButton btn : buttonMapper.queryButtonByMenuId(menuId)){
+			EhrRolePower rButton = new EhrRolePower();
+			rButton.setRoleId(role.getRoleId());
+			rButton.setPowerId(btn.getButtonId());
+			rButton.setType(2);
+			rolePowerMapper.insertSelective(rButton);
 		}
 	}
 	
@@ -334,14 +356,13 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
     }
 	
 	public void buttonPowerTree(Map<RolePower, List<RolePower>> menuMap, Map<String, List<RolePower>> pageMap, Map<String, List<RolePower>> buttonMap, RolePower mdl,long[] buttonPower) throws Exception{
-		if(mdl.getMenuType().intValue() == 31 || mdl.getMenuType().intValue() == 30 ||mdl.getMenuType().intValue() == 1){
-			int type = 0;
+		if(mdl.getMenuType().intValue() == 31 || mdl.getMenuType().intValue() == 30 || mdl.getMenuType().intValue() == 1){
+			int type = 0;	//非叶节点
 			if(mdl.getMenuType().intValue() == 30){
-				type=1;
+				type=1;		//叶节点
 			}
-			List<RolePower> v = menuMap.get(mdl);
 			
-			if(type == 1){
+			if(type == 1 || mdl.getMenuType().intValue() == 1){	//只有叶节点和根节点才有page
 				List<RolePower> pages = pageMap.get(mdl.getId().toString());
 				if(pages!=null){
 					for(int i=0;i<pages.size();i++){
@@ -359,10 +380,12 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 							page.setNodes(buttons);
 						}
 					}
-					mdl.setNodes(pages);				
+					//mdl.setNodes(pages);
+					mdl.addNodes(pages);
 				}
 			}
 
+			List<RolePower> v = menuMap.get(mdl);
 			if(v != null && v.size() > 0){
 				List<RolePower> list = new ArrayList<RolePower>();
 				for(int i = 0; i < v.size(); i++){
@@ -371,7 +394,8 @@ public class EhrRoleServiceImpl implements IEhrRoleService {
 					}
 					buttonPowerTree(menuMap, pageMap, buttonMap, v.get(i), buttonPower);
 				}
-				mdl.setNodes(list);
+				//mdl.setNodes(list);
+				mdl.addNodes(list);
 			}
 		}	
 	}

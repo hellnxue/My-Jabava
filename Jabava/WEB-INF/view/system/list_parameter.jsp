@@ -1,8 +1,10 @@
+<%@ page contentType="text/html; charset=utf-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="com.jabava.utils.RequestUtil"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
+	String basePath = "//"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
@@ -10,11 +12,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<base href="<%=basePath%>">
-<%@ page contentType="text/html; charset=utf-8" %>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<base href="${pageContext.request.contextPath}/">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<!-- Page title -->
 	<title>Jabava | V1.0（系统参数设置）</title> 
 	<jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
@@ -37,34 +38,22 @@
 	<!-- 放主要内容  开始-->
 	<!-- Main Wrapper -->
 	<div id="wrapper">
-		<div class="normalheader transition animated fadeIn small-header">
-			<div class="hpanel">
-				<div class="panel-body">
-					<div id="hbreadcrumb" class="pull-right m-t-lg">
-						<ol class="hbreadcrumb breadcrumb">
-							<li><a href="to_index?jump=1">首页</a></li>
-							<li><span>系统管理</span></li>
-							<li class="active"><span>参数设置</span></li>
-						</ol>
-					</div>
-					<h2 class="font-light m-b-xs">参数设置</h2>
-					<small>待&nbsp;定</small>
-				</div>
-			</div>
-		</div>
 		<!-- 放主要内容 -->
 		<div class="content animate-panel">
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="hpanel">
 						<div class="panel-heading ">
-							<div class="pull-right">
+							<h4 class="text-center font-bold">
+                                系统参数配置
+                            </h4>
+							<div class="text-right">
+								<% if(RequestUtil.hasPower("index_parameter_ap")){ %>
 								<button class="btn btn-success btn-xs" type="button" data-target="#myModal7" data-toggle="modal">
 									<i class="fa fa-group"></i> <span class="bold">新增参数</span>
 								</button>
+								<% } %>
 							</div>
-							系统参数配置
-							<div></div>
 						</div>
 						<!--表格start-->
 						<div class="panel-body">
@@ -232,13 +221,25 @@
     			"columns":[
 		             {"data":"id"},
 		             {"render":function render( data, type, row, meta ){
+		             	<% if(RequestUtil.hasPower("index_parameter_ap")){ %>
 		            	return "<a flag=\"key\" aid=\""+row.id+"\" origKey=\""+row.argumentKey+"\" data-type=\"text\" data-pk=\"1\" data-placement=\"right\" data-placeholder=\"Required\" class=\"editable editable-click\">"+row.argumentKey+"</a>";
+		            	<% }else{ %>
+	                    return row.argumentKey;
+	                    <% } %>
 		             }},
 		             {"render":function render( data, type, row, meta ){
-			            return "<a flag=\"value\" aid=\""+row.id+"\" data-type=\"text\" data-pk=\"1\" data-placement=\"right\" data-placeholder=\"Required\" class=\"editable editable-click\">"+row.argumentValue+"</a>"; 
+		             	<% if(RequestUtil.hasPower("index_parameter_ap")){ %>
+			            return "<a flag=\"value\" aid=\""+row.id+"\" data-type=\"text\" data-pk=\"1\" data-placement=\"right\" data-placeholder=\"Required\" class=\"editable editable-click\">"+row.argumentValue+"</a>";
+			            <% }else{ %>
+	                    return row.argumentValue;
+	                    <% } %>
 		             }},
 		             {"render":function render( data, type, row, meta ){
+		             	<% if(RequestUtil.hasPower("index_parameter_mp")){ %>
 			            return "<button class=\"btn btn-danger  btn-xs demo4\" type=\"button\" onClick=\"delArgument("+row.id+");\"><i class=\"fa fa-trash-o\"></i></button>"; 
+			            <% }else{ %>
+			            return '';
+			            <% } %>
 		             }},
     			 ],
                 "language": {

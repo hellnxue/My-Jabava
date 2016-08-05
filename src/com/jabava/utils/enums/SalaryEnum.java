@@ -38,6 +38,42 @@ public class SalaryEnum {
 	}
 
 	/**
+	 * 工资变动项主键类型
+	 * 1-身份证
+	 * 2-工号
+	 */
+	public enum SalaryChangeDefKeyType {
+		/** 1-身份证 */
+		ID(1, "cert_id"),
+		/** 2-工号 */
+		JobNumber(2, "job_number");		
+		
+		private Integer value;
+		private String fieldName;
+		SalaryChangeDefKeyType(Integer value, String fieldName) {
+			this.value = value;
+			this.fieldName = fieldName;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		public void setValue(Integer value) {
+			this.value = value;
+		}
+
+		public String getFieldName() {
+			return fieldName;
+		}
+
+		public void setFieldName(String fieldName) {
+			this.fieldName = fieldName;
+		}
+		
+	}
+
+	/**
 	 * 计税方法
 	 * 1-合并计税
 	 * 2-独立计税
@@ -152,13 +188,16 @@ public class SalaryEnum {
 	/**
 	 * 系统变动表
 	 * -1-ehr_attendance-考勤表
-	 * -2-ehr_social_insurance-社保表
+	 * -2-ss_payment_bill_person-社保表
+	 * -3-af_payment_bill_person-公积金表
 	 */
 	public enum SystemChangeTable {
 		/** -1-ehr_attendance-考勤表 */
-		EhrAttendance("ehr_attendance",-1L,"考勤表"),
-		/** -2-ehr_social_insurance-社保表 */
-		EhrSocialInsurance("ehr_social_insurance",-2L,"社保表");
+		Attendance("ehr_attendance",-1L,"考勤表"),
+		/** -2-ss_payment_bill_person-社保表 */
+		SocialSecurity("ss_payment_bill_person",-2L,"社保表"),
+		/** -3-af_payment_bill_person-公积金表 */
+		AccumulationFund("af_payment_bill_person",-3L,"公积金表");
 		
 		private String tableName;
 		private Long id;

@@ -41,14 +41,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	}
 	
 	@Override
-	public List<EhrPerson> searchAllAddress(Long CompanyId,String search) {
-		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("companyId", CompanyId);
-		params.put("search", search);
-		List<EhrPerson> list = personMapper.selectByCompanyId(params);
-		return list;
-	}
-	@Override
 	public List<EhrPerson> searchPersonByEmployeeNameAndCompanyId(Long companyId,String employeeName){
 		EhrPerson person = new EhrPerson();
 		person.setCompanyId(companyId);
@@ -66,7 +58,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public List<EhrPerson> searchPerson(EhrPerson person, Long userId,
 			long companyid, String distinguish) {
-		if(person.getOrganizationId() != null && !person.getOrganizationId().equals("") && person.getOrganizationId() != 0){
+		if(person.getOrganizationId() != null && person.getOrganizationId() != 0){
 			String totalCode = orgMapper.selectByPrimaryKey(person.getOrganizationId()).getTotalOrganizationCode();
 			person.setTotalCode(totalCode);
 		}
@@ -81,6 +73,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public EhrPerson searchPersonByJobNumber(Long companyId, String jobNumber) {
 		return personMapper.searchPersonByJobNumber(companyId, jobNumber);
+	}
+	
+	@Override
+	public EhrPerson searchPersonByCertId(Long companyId, String certId) {
+		return personMapper.searchPersonByCertId(companyId, certId);
 	}
 
 	public String getPersonPowerSqlStr(Long userId, String prefix, int functionId) {

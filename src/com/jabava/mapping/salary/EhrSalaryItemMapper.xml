@@ -28,6 +28,7 @@
     <result column="last_modify_user_id" property="lastModifyUserId" jdbcType="BIGINT" />
     <result column="last_modify_user_name" property="lastModifyUserName" jdbcType="VARCHAR" />
     <result column="last_modify_date" property="lastModifyDate" jdbcType="TIMESTAMP" />
+    <result column="is_salary_slip_item" property="isSalarySlipItem" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
@@ -38,7 +39,7 @@
     salary_item_id, company_id, salary_item_name, salary_change_def_id, change_table_name, 
     is_transition, tax_rule, tax_rate_id, calculate_rule, item_type, change_formula, 
     item_memo, display_order, yearly_flag, create_user_id, create_user_name, create_date, 
-    last_modify_user_id, last_modify_user_name, last_modify_date
+    last_modify_user_id, last_modify_user_name, last_modify_date, is_salary_slip_item
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     <!--
@@ -72,14 +73,14 @@
       item_type, change_formula, item_memo, 
       display_order, yearly_flag, create_user_id, 
       create_user_name, create_date, last_modify_user_id, 
-      last_modify_user_name, last_modify_date)
+      last_modify_user_name, last_modify_date, is_salary_slip_item)
     values (#{salaryItemId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{salaryItemName,jdbcType=VARCHAR}, 
       #{salaryChangeDefId,jdbcType=BIGINT}, #{changeTableName,jdbcType=VARCHAR}, #{isTransition,jdbcType=BIT}, 
       #{taxRule,jdbcType=INTEGER}, #{taxRateId,jdbcType=BIGINT}, #{calculateRule,jdbcType=INTEGER}, 
       #{itemType,jdbcType=INTEGER}, #{changeFormula,jdbcType=VARCHAR}, #{itemMemo,jdbcType=VARCHAR}, 
       #{displayOrder,jdbcType=INTEGER}, #{yearlyFlag,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT}, 
       #{createUserName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{lastModifyUserId,jdbcType=BIGINT}, 
-      #{lastModifyUserName,jdbcType=VARCHAR}, #{lastModifyDate,jdbcType=TIMESTAMP})
+      #{lastModifyUserName,jdbcType=VARCHAR}, #{lastModifyDate,jdbcType=TIMESTAMP}, #{isSalarySlipItem,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.jabava.pojo.salary.EhrSalaryItem" >
     <!--
@@ -149,6 +150,9 @@
       <if test="lastModifyDate != null" >
         last_modify_date,
       </if>
+      <if test="isSalarySlipItem != null" >
+        is_salary_slip_item,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="salaryItemId != null" >
@@ -210,6 +214,9 @@
       </if>
       <if test="lastModifyDate != null" >
         #{lastModifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSalarySlipItem != null" >
+        #{isSalarySlipItem,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -278,6 +285,9 @@
       <if test="lastModifyDate != null" >
         last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="isSalarySlipItem != null" >
+        is_salary_slip_item = #{isSalarySlipItem,jdbcType=BIT},
+      </if>
     </set>
     where salary_item_id = #{salaryItemId,jdbcType=BIGINT}
   </update>
@@ -306,7 +316,8 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       last_modify_user_id = #{lastModifyUserId,jdbcType=BIGINT},
       last_modify_user_name = #{lastModifyUserName,jdbcType=VARCHAR},
-      last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP}
+      last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
+      is_salary_slip_item = #{isSalarySlipItem,jdbcType=BIT}
     where salary_item_id = #{salaryItemId,jdbcType=BIGINT}
   </update>
   
@@ -357,5 +368,14 @@
   	<if test="exceptId != null" >
   		and item.salary_item_id != #{exceptId,jdbcType=BIGINT}
   	</if>
+  </select>
+  <select id="listByMonthlySalaryId" resultMap="BaseResultMap">
+  	select * from ehr_salary_item 
+  	where salary_item_id in (
+  		select d.salary_item_id from ehr_monthly_salary_person p,ehr_monthly_salary_detail d 
+		where p.monthly_salary_person_id=d.monthly_salary_person_id and 
+			p.monthly_salary_id=#{monthlySalaryId,jdbcType=BIGINT}
+	) 
+	order by display_order,salary_item_id
   </select>
 </mapper>

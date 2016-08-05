@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.jabava.core.EnumConstents.GjjStatus;
-import com.jabava.core.EnumConstents.IsDeleted;
+import com.jabava.utils.enums.JabavaEnum.GjjStatus;
+import com.jabava.utils.enums.JabavaEnum.IsDeleted;
 import com.jabava.dao.hro.BdEmpBaseInfoMapper;
 import com.jabava.dao.hro.BdEmpRecInfoMapper;
 import com.jabava.dao.hro.order.HsEmpOrdMapper;
@@ -40,7 +40,7 @@ import com.jabava.pojo.hro.order.HsEmpOrdVO;
 import com.jabava.service.hro.OutsourcingService;
 import com.jabava.utils.HROFetchService;
 import com.jabava.utils.HROFetchToken;
-import com.jabava.utils.JabavaPropertyCofigurer;
+import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.utils.JabavaUtil;
 
 /**
@@ -85,7 +85,7 @@ public class GetOrder {
 	}
 	
 	private static final Logger logger = Logger.getLogger(GetOrder.class);
-	SimpleDateFormat format=new SimpleDateFormat("yyyyMMddhhmmss");
+	SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
 	SimpleDateFormat format2=new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
@@ -145,7 +145,7 @@ public class GetOrder {
 			Map<String, Object> parameter = new HashMap<String, Object>();
 			/*Long orderTotal  = hsEmpOrdMapper.getOrderTotalByProcotolCode(hroPactInfo.getPactCode());
 			if(orderTotal>0){//增加时间条件只获取最近两个月的订单
-				SimpleDateFormat format3=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				SimpleDateFormat format3=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				//上个月第一天 00：00：00
 				Date startDate = JabavaDateUtils.previousMonth();
 				//本月最后一天 23：59：59
@@ -503,7 +503,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("CREATE_DT"))){
 			try {
-				hsEmpOrdSbDetail.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdSbDetail.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -516,7 +516,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("UPDATE_DT"))){
 			try {
-				hsEmpOrdSbDetail.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdSbDetail.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -589,7 +589,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("CREATE_DT"))){
 			try {
-				hsEmpOrdNsbDetail.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdNsbDetail.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -602,7 +602,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("UPDATE_DT"))){
 			try {
-				hsEmpOrdNsbDetail.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdNsbDetail.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -688,7 +688,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("CREATE_DT"))){
 			try {
-				hsEmpOrdNsbDetailRec.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdNsbDetailRec.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -698,7 +698,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("UPDATE_DT"))){
 			try {
-				hsEmpOrdNsbDetailRec.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdNsbDetailRec.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -779,7 +779,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("CREATE_DT"))){
 			try {
-				hsEmpOrdSbDetailRec.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdSbDetailRec.setCreateDate(JabavaUtil.formatDate(json.getString("CREATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -789,7 +789,7 @@ public class GetOrder {
 		}
 		if(StringUtils.isNotBlank(json.getString("UPDATE_DT"))){
 			try {
-				hsEmpOrdSbDetailRec.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddhhmmss"));
+				hsEmpOrdSbDetailRec.setUpdateDate(JabavaUtil.formatDate(json.getString("UPDATE_DT").toString(),"yyyyMMddHHmmss"));
 			} catch (Exception e) {
 				logger.error("", e);
 			}

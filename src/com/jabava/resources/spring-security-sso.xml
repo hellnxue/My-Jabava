@@ -11,8 +11,31 @@
 	<http pattern="/welcome.jsp" security="none" />
 	<http pattern="/to_register" security="none" />
 	<http pattern="/register" security="none" />
+	<http pattern="/kaptcha.jpg" security="none" />
 	<http pattern="/checkMobile" security="none" />
+	<http pattern="/checkGraphics" security="none" />
+	<http pattern="/login" security="none" />
+	<http pattern="/index/index" security="none" />
+	
+	<http pattern="/to_forgetPwd" security="none" />
+	<http pattern="/newPassword" security="none" />
+	<http pattern="/toSetPassword/**" security="none" />
+	<http pattern="/setPassword" security="none" />
+	
+	<http pattern="/employee/login_mobile" security="none"/>
+	<http pattern="/employee/mobile_login" security="none"/>
+	<http pattern="/employee/mobileInfoCollect/*" security="none"/>
+	<http pattern="/employee/updatePerson" security="none"/>
+	<http pattern="/employee/mobileBaseData/*" security="none"/>
+	<http pattern="/employee/uploadToHRO" security="none"/>
+	<http pattern="/employee/savePersonFiles" security="none"/>
+	
+	<http pattern="/common/404" security="none" />
+	<http pattern="/common/500" security="none" />
     <http pattern="/common/error" security="none" />
+    <http pattern="/common/noPermission" security="none" />
+    <http pattern="/common/maintain" security="none" />
+	<http pattern="/common/online_frame" security="none" />
 	<http pattern="/api/**" security="none" />
     
 	<!--http pattern="/nosec/**" security="none" />

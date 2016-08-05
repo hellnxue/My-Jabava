@@ -54,4 +54,6 @@ public interface EhrButtonMapper {
     int updateByPrimaryKey(EhrButton record);
     
     List<EhrButton> queryButtonByUserId(long userId);
+    
+    List<EhrButton> queryButtonByMenuId(long menuId);
 }

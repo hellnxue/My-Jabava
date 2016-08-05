@@ -56,6 +56,10 @@ public class OrderModel {
 	private Integer handleType;//办理方类型    增员必填	1、 大户；	2、 单立户
 	
 	private Integer operateType;//操作类型1 、 增员	2、 变更	3、 减员
+	
+	private BigDecimal gjjComRatio;
+	private BigDecimal gjjIndRatio;
+	private String sendRemark;
 
 	public String getEmployeeName() {
 		return employeeName;
@@ -225,7 +229,28 @@ public class OrderModel {
 		this.operateType = operateType;
 	}
 
+	public BigDecimal getGjjComRatio() {
+		return gjjComRatio;
+	}
 
-	
+	public void setGjjComRatio(BigDecimal gjjComRatio) {
+		this.gjjComRatio = gjjComRatio;
+	}
+
+	public BigDecimal getGjjIndRatio() {
+		return gjjIndRatio;
+	}
+
+	public void setGjjIndRatio(BigDecimal gjjIndRatio) {
+		this.gjjIndRatio = gjjIndRatio;
+	}
+
+	public String getSendRemark() {
+		return sendRemark;
+	}
+
+	public void setSendRemark(String sendRemark) {
+		this.sendRemark = sendRemark;
+	}
 
 }
