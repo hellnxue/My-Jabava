@@ -16,4 +16,14 @@ public interface IEhrFieldDisplayConfigService {
     public Map<String,Object> insertAutomateCol(List<EhrFieldDisplayConfig> ehrFieldDispiay);
     
     public List<EhrFieldDisplayConfig> selectDisplayCol(Map<String, Object> map);
+    
+    /**
+     * 获取花名册的自定义字段显示项列表 
+     * @return
+     */
+    Map<String, Object> handlerDisplayCol(EhrTableFieldDefService  ehrTableFieldDefService,Map<String, Object> params);
+    
+    public Map<String,Object> deleteAndinsert(Map<String, Object> map);
+    
+    public int deleteColumnName(Map<String, Object> map);
 }

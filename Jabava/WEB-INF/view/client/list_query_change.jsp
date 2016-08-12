@@ -34,12 +34,21 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
     <!--引入菜单文件 开始--> 
     <jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
     <!--引入菜单文件 结束--> 
-
     <!-- 放主要内容  开始-->
-
+	
     <!-- 放主要内容 -->
     <div id="wrapper">
-        
+        <div class="normalheader transition animated fadeIn small-header">
+        	<div class="hpanel">
+            	<div class="panel-body">
+                	<div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                    	<h2 class="font-normal m-b-xs text-center">
+                        	订单增减变反馈
+                    	</h2>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">

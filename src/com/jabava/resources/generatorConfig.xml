@@ -11,26 +11,38 @@
 		<jdbcConnection driverClass="${dataSource.driver}" connectionURL="${dataSource.url}"
 			userId="${dataSource.username}" password="${dataSource.password}" />
 <!-- *************************** generate **************************-->
-		  <javaModelGenerator targetPackage="com.jabava.controller.common"
+		  <javaModelGenerator targetPackage="com.jabava.pojo.individual"
 			targetProject="${mybatis.src}">
 			<property name="enableSubPackages" value="false" />
 			<property name="trimStrings" value="false" />
 		</javaModelGenerator>  
 		
-		<sqlMapGenerator targetPackage="com.jabava.controller.common"
+		<sqlMapGenerator targetPackage="com.jabava.mapping.individual"
 			targetProject="${mybatis.src}">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		
-	 	<javaClientGenerator targetPackage="com.jabava.controller.common"
+	 	<javaClientGenerator targetPackage="com.jabava.dao.individual"
 			targetProject="${mybatis.src}" type="XMLMAPPER">
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>  
 		
-		<table tableName="ehr_table_field_def" domainObjectName="EhrTableFieldDef" 
+		<table tableName="idv_roster_batch" domainObjectName="IdvTosterBatch" 
 			enableCountByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false" enableSelectByExample="false" 
 			selectByExampleQueryId="false">
 		</table>
+		
+		<!-- <table tableName="idv_roster_batch_detail" domainObjectName="IdvRosterBatchDetail" 
+			enableCountByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false" enableSelectByExample="false" 
+			selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="idv_set_table" domainObjectName="IdvSetTable" 
+			enableCountByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false" enableSelectByExample="false" 
+			selectByExampleQueryId="false">
+		</table> -->
   </context>
 </generatorConfiguration>

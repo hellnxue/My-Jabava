@@ -78,7 +78,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center m-b-lg">
                 <button type="button" class="btn btn-success m-r" data-action="save">保存</button>
-                <button type="button" class="btn btn-default" data-action="cancel">取消</button>
+                <button type="button" class="btn btn-default hidden" data-action="cancel">取消</button>
             </div>
         </div>
     </div> 
@@ -144,26 +144,43 @@
                     return ShowListAttr;
                 });
                 var a=JSON.stringify(ShowListAttr);
-                $.ajax({
-                    url: 'system/addDisplayCol',
-                    type: 'POST',
-                    dataType: 'json',
-                    async: false,
-                    data: {"list1": a, "function":"EmployeeList", "module":"Organization"}
-                })
-                .done(function(d) {
-                    if(d.success){
-                        swal({
-                            title: d.msg,
-                            type: "success"
-                        })
-                    }else{
-                        swal({
-                            title: d.msg,
-                            type: "warning"
-                        })
-                    }
-                })
+                var getShowListAttrLength = ShowListAttr.length;
+                var postAjax = function(){
+                    $.ajax({
+                        url: 'system/addDisplayCol',
+                        type: 'POST',
+                        dataType: 'json',
+                        async: false,
+                        data: {"list1": a, "function":"EmployeeList", "module":"Organization"}
+                    })
+                    .done(function(d) {
+                        if(d.success){
+                            swal({
+                                title: d.msg,
+                                type: "success"
+                            })
+                        }else{
+                            swal({
+                                title: d.msg,
+                                type: "warning"
+                            })
+                        }
+                    })
+                }
+                if(getShowListAttrLength <= 0){
+                    swal({
+                            title: "列表显示字段为空，是否保存?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "保存",
+                            cancelButtonText: "取消"
+                        },function(){
+                            postAjax();
+                        });
+                }else{
+                    postAjax();
+                }
             });
         };
         function cancel(){

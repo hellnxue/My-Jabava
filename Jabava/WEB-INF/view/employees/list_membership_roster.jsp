@@ -34,6 +34,17 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 <!-- 放主要内容  开始-->
 <!-- Main Wrapper -->
 <div id="wrapper">
+		<div class="normalheader transition animated fadeIn small-header">
+          <div class="hpanel">
+            <div class="panel-body">
+              <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                <h2 class="font-normal m-b-xs text-center">
+                  员工花名册
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
 <!-- 放主要内容 -->
 		<div class="content animate-panel mem_content">
 			<div class="row">
@@ -176,11 +187,10 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				</div>
 				<!--全部导出弹框 end--> 
 			  
-				  <div class="panel-heading">
-					<h4 class="text-center font-bold">
+				<div class="panel-heading m-b">
+					<h4>
 						<a href="static/xls/Jabava_roll_list_template.1.0.5.xlsx" class="pull-right small"><span class="text-info">下载花名册模板</span></a>
-						员工花名册
-					</h4>     
+					</h4>
 				</div>
 				<div class="panel-body" id="allcheck">
 				<table id="example2" class="table table-striped table-bordered table-hover rost_table" style=" width:100%;">
@@ -1246,10 +1256,10 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 										dataType : "json",
 										success : function(data) {
 											if (data.success == 1) {
-												swal("删除成功.", "该用户信息已经被删除.", "success");
+												swal("删除成功", "该用户信息已经被删除.", "success");
 												window.location.reload();
 											}else if(data.success == 3){
-												swal("a", "已有工资记录，删除失败.", "error");
+												swal("删除失败", "已有工资记录，删除失败.", "error");
 											}
 										}
 									});
@@ -1264,11 +1274,11 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				"processing": true,
 				"serverSide": true,
 		    	"bDestroy": true,
-				"sort":true,
+				"sort":false,
 				"columns": column,
 				"columnDefs": [
-				    			{defaultContent: '', targets: '_all'}
-							],
+	    			{defaultContent: '', targets: '_all'}
+				],
 				"language": {
 					"search": "过滤:",
 					"processing":"数据加载中",
@@ -1360,7 +1370,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                 strHtml += '  </button>';
                 strHtml += '  <ul class="dropdown-menu">';
                 strHtml += '    <li><a href="system/toListFieldDisplayConfig">列表显示设置</a></li>';
-                strHtml += '    <li><a href="javascript://">卡片显示设置</a></li>';
+                //strHtml += '    <li><a href="javascript://">卡片显示设置</a></li>';
                 strHtml += '  </ul>';
                 strHtml += '</div>';
             <% if(RequestUtil.hasPower("roster_im")){ %>

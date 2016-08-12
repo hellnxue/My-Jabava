@@ -240,15 +240,21 @@
                                         <h5>参数设置</h5>
                                     </a>
                                 </td>
+                                <%
+                                    }
+                                %>
                                 <td>
-                                    <a href="javascript://">
+                                    <a href="system/toListTableFieldDef">
+                                        <i class="pe pe-7s-plug text-info"></i>
+                                        <h5>信息项扩展</h5>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="system/to_mailConfig">
                                         <i class="pe pe-7s-mail text-info"></i>
                                         <h5>企业邮箱配置</h5>
                                     </a>
                                 </td>
-                                <%
-                                    }
-                                %>
                             </tr>
                             </tbody>
                         </table>

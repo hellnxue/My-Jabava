@@ -21,7 +21,9 @@ import com.jabava.common.exception.JabavaServiceException;
 import com.jabava.core.config.JabavaPropertyCofigurer;
 import com.jabava.dao.accumulationfund.AfPaymentBillPersonMapper;
 import com.jabava.dao.hro.HroPactInfoMapper;
+import com.jabava.dao.manage.EhrArgumentInfoMapper;
 import com.jabava.dao.manage.EhrAttendanceMapper;
+import com.jabava.dao.manage.EhrCompanyMapper;
 import com.jabava.dao.manage.EhrPersonMapper;
 import com.jabava.dao.salary.EhrMonthlySalaryDetailMapper;
 import com.jabava.dao.salary.EhrMonthlySalaryMapper;
@@ -36,7 +38,9 @@ import com.jabava.dao.salary.EhrSalaryTemplateMapper;
 import com.jabava.dao.salary.EhrTaxLevelMapper;
 import com.jabava.dao.salary.EhrTaxRateMapper;
 import com.jabava.dao.socialsecurity.SsPaymentBillPersonMapper;
+import com.jabava.dao.system.EHrMailConfigMapper;
 import com.jabava.pojo.hro.HroPactInfo;
+import com.jabava.pojo.manage.EhrArgumentInfo;
 import com.jabava.pojo.manage.EhrOrganization;
 import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
@@ -51,6 +55,7 @@ import com.jabava.pojo.salary.EhrSalaryItem;
 import com.jabava.pojo.salary.EhrSalaryTemplate;
 import com.jabava.pojo.salary.EhrTaxLevel;
 import com.jabava.pojo.salary.EhrTaxRate;
+import com.jabava.pojo.system.EHrMailConfig;
 import com.jabava.service.salary.IMonthlySalaryService;
 import com.jabava.service.salary.ISalaryDateService;
 import com.jabava.service.system.IEhrOrganizationService;
@@ -108,6 +113,10 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
 	private AfPaymentBillPersonMapper afPaymentBillPersonMapper;
 	@Autowired
 	private HroPactInfoMapper hroPactInfoMapper;
+	@Autowired
+	private EhrArgumentInfoMapper argumentInfoMapper;
+	@Autowired
+	private EHrMailConfigMapper mailConfigMapper;
 	
 	private HROFetchService hroFetchService;
 	private HROFetchService getHROFetchService(){
@@ -387,7 +396,8 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
     		monthlyPerson.setWithholdingHeTax(monthlyPerson.getWithholdingHeTax().add(coalescentTaxAmount));
     		monthlyPerson.setAfterTaxIncome(monthlyPerson.getTaxableIncome().subtract(monthlyPerson.getWithholdingTax()));
     		monthlyPerson.setTakeHomeIncome(monthlyPerson.getAfterTaxIncome().add(new BigDecimal(takeHomeIncome)));
-    		monthlySalaryPersonMapper.updateByPrimaryKey(monthlyPerson);
+    		//monthlySalaryPersonMapper.updateByPrimaryKey(monthlyPerson);
+    		monthlySalaryPersonMapper.updateByPrimaryKeySelective(monthlyPerson);
     	}
     	
 //    	//关闭线程池，处理结果
@@ -943,6 +953,11 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
 
 	@Override
 	public Map<String, Object> sendSalarySlip(EhrMonthlySalary monthlySalary, String personIds) throws Exception{
+		EHrMailConfig mailConfig = mailConfigMapper.findByCompanyId(monthlySalary.getCompanyId());
+		if(mailConfig == null){
+			return MessageUtil.errorMessage("请先配置企业邮箱");
+		}
+		
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("monthlySalaryId", monthlySalary.getMonthlySalaryId());
 		params.put("sendStatus", 0);
@@ -964,18 +979,21 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
 			dataSb.delete(0, dataSb.length());
 			
 			//组织公共列
+			EhrArgumentInfo ai = argumentInfoMapper.selectByKey(monthlySalary.getCompanyId(), "STATIC_FIELDS_IN_SALARY_SLIP");
 			headerSb.append("<td>员工工号</td>");
 			dataSb.append("<td>").append(msp.get("job_number")).append("</td>");
 			headerSb.append("<td>员工姓名</td>");
 			dataSb.append("<td>").append(msp.get("employee_name")).append("</td>");
-			headerSb.append("<td>应税工资</td>");
-			dataSb.append("<td>").append(msp.get("taxable_income")).append("</td>");
-			headerSb.append("<td>代扣税</td>");
-			dataSb.append("<td>").append(msp.get("withholding_tax")).append("</td>");
-			headerSb.append("<td>税后工资</td>");
-			dataSb.append("<td>").append(msp.get("after_tax_income")).append("</td>");
-			headerSb.append("<td>实发工资</td>");
-			dataSb.append("<td>").append(msp.get("take_home_income")).append("</td>");
+			if(ai == null || "1".equals(ai.getArgumentValue())){
+				headerSb.append("<td>应税工资</td>");
+				dataSb.append("<td>").append(msp.get("taxable_income")).append("</td>");
+				headerSb.append("<td>代扣税</td>");
+				dataSb.append("<td>").append(msp.get("withholding_tax")).append("</td>");
+				headerSb.append("<td>税后工资</td>");
+				dataSb.append("<td>").append(msp.get("after_tax_income")).append("</td>");
+				headerSb.append("<td>实发工资</td>");
+				dataSb.append("<td>").append(msp.get("take_home_income")).append("</td>");
+			}
 			
 			Long monthlySalaryPersonId = Long.valueOf(msp.get("monthly_salary_person_id").toString());
 			List<EhrMonthlySalaryDetail> detailList = monthlySalaryDetailMapper.selectForSalarySlip(monthlySalaryPersonId);
@@ -994,7 +1012,8 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
 			
 			MailVO mailVo = new MailVO();
 			mailVo.setSubject(JabavaStringUtils.formatString(subject, formatParams));
-			mailVo.setFrom(JabavaPropertyCofigurer.getProperty("JABAVA_MAIL"));
+			//mailVo.setFrom(JabavaPropertyCofigurer.getProperty("JABAVA_MAIL"));
+			mailVo.setFrom(mailConfig.getSendTo());
 			if(!StringUtils.isEmpty((String)msp.get("email_e"))){
 				mailVo.setTo(msp.get("email_e").toString());
 			}else if(!StringUtils.isEmpty((String)msp.get("email"))){
@@ -1008,7 +1027,7 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
 		}
 		
 		//发送并统计结果
-		Map<String, Integer> sendResult = Tools.mailSend(mailVOMap);
+		Map<String, Integer> sendResult = Tools.mailSend(mailVOMap, mailConfig);
 		int successNum = 0;
 		int failNum = 0;
 		for(String key : sendResult.keySet()){
@@ -1022,6 +1041,11 @@ public class MonthlySalaryServiceImpl implements IMonthlySalaryService{
 			}
 		}
 		
-		return MessageUtil.successMessage("发送成功："  + successNum + "， 发送失败：" + failNum);
+		StringBuffer sb = new StringBuffer();
+		sb.append("发送成功：").append(successNum).append("， 发送失败：").append(failNum);
+		if(failNum > 0){
+			sb.append("\n").append("请检查未发送员工邮箱后重新发送");
+		}
+		return MessageUtil.successMessage(sb.toString());
 	}
 }

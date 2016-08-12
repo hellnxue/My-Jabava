@@ -42,8 +42,12 @@ public class JabavaInterceptor extends HandlerInterceptorAdapter {
 		
 		//if(handler instanceof HandlerMethod){
 		if(!handler.getClass().isAssignableFrom(HandlerMethod.class)){
+			//是否拦截jsp请求
+			if(!"1".equals(JabavaPropertyCofigurer.getProperty("intercept_jsp_switch"))){
+				return super.preHandle(request, response, handler);
+			}
+			
 			//对非Controller方法进行控制
-			log.info(request.getServletPath());
 			//可以设置白名单，保存仅需要登录不需要权限的(比如每个页面都包含的公共页面，index等)；需要权限的只允许通过Controller方法请求
 			//嵌入的页面不应被访问(不单独请求)，如employee_nav.jsp
 			if(!request.getServletPath().equals("/index/index") &&
@@ -54,6 +58,7 @@ public class JabavaInterceptor extends HandlerInterceptorAdapter {
 					!request.getServletPath().equals("/common/noPermission") &&
 					!request.getServletPath().equals("/common/online_frame") &&
 					!request.getServletPath().startsWith("/common/direct/")){
+				log.info("请求jsp被拒绝：" + request.getServletPath());
 				response.sendRedirect(request.getContextPath() + "/common/noPermission");
 				return false;
 			}

@@ -337,4 +337,19 @@ public class BaseDataServiceImpl implements IBaseDataService {
 		EhrBaseDataType ehrBaseDataType = ehrBaseDataTypeMapper.selectByPrimaryKey(baseDataType);
 		return ehrBaseDataType;
 	}
+	@Override
+	public  Map<String, Object>  getBaseDataMap(Long companyId, int baseDataType, String baseDataName) {
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		List<EhrBaseData> baseDataList=dataMapper.selectBaseData(companyId, baseDataType, baseDataName);
+		
+		if(baseDataList!=null&&baseDataList.size()>0){
+			for(EhrBaseData baseData:baseDataList){
+				dataMap.put(baseData.getBaseDataCode(), baseData.getBaseDataName());
+			}
+			return dataMap;
+		}
+		
+		return dataMap;
+	}
 }

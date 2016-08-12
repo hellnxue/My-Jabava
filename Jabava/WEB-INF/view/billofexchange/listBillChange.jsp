@@ -25,17 +25,27 @@
   
 <!-- Main Wrapper -->
 <div id="wrapper">
+  <div class="normalheader transition animated fadeIn small-header">
+        <div class="hpanel">
+          <div class="panel-body">
+            <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+              <h2 class="font-normal m-b-xs text-center">
+                ${requestScope.afPaymentBill.accumulationFundAccountName}${requestScope.afPaymentBill.month}月清单明细-公积金本月变更
+              </h2>
+            </div>
+          </div>
+        </div>
+    </div>
 
   <!-- 放主要内容 -->
   <div class="content animate-panel">
     <div class="row">
         <div class="col-lg-12">
             <div class="hpanel">
-                <div class="panel-heading">
-                    <h4 class="text-center font-bold">
-                      <a href="javascript: void(0);" type="button" class="btn btn-success btn-sm pull-left btn-return m-r-md">返回</a>
-                     ${requestScope.afPaymentBill.accumulationFundAccountName}${requestScope.afPaymentBill.month}月清单明细-公积金本月变更
-                    </h4>
+                <div class="panel-heading m-b-lg">
+                  <h4>
+                    <a href="javascript: void(0);" type="button" class="btn btn-success btn-sm pull-left btn-return m-r-md">返回</a>
+                  </h4>
                 </div>
       <ul role="tabList" class="nav nav-tabs m-t-md" id="">
           <li role="payDetails">

@@ -33,7 +33,17 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
-        
+        <div class="normalheader transition animated fadeIn small-header">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                        <h2 class="font-normal m-b-xs text-center">
+                            员工薪酬档案管理
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- 放主要内容 -->
         <div class="content animate-panel">
@@ -41,9 +51,6 @@
                 <div class="col-lg-12">
                     <div class="hpanel">
                         <div class="panel-heading">
-                            <h4 class="text-center font-bold">
-                                员工薪酬档案管理
-                            </h4>
                             <div class="text-right">
                                 <% if(RequestUtil.hasPower("salary_ba")){ %>
                                 <span class="text-defaults">请到薪酬方案管理-薪酬模板设置下载合适模板</span>

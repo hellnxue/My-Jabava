@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Page title -->
-    <title>人员信息</title>
+    <title>应用中心</title>
     <jsp:include flush="true" page="../common/styles.jsp"></jsp:include>
     <link rel="stylesheet" href="static/js/plugins/form.validation/css/formValidation.css">
     <link rel="stylesheet" href="static/bootstrap/vendor/blueimp-gallery/css/blueimp-gallery.min.css" />
@@ -52,81 +52,35 @@
 	            	</div> -->
 	            	
 	            	<div class="panel-body">
-	            		<div class="col-lg-12 ">
+	            		<div class="col-lg-12 " id="openedApp">
 	            			<div class="ngRow m-b-lg">
 	            				<p class="os-text-head"><strong>已开通</strong></p>
 	            			</div>
 		            		<div class="col-lg-12">
-		            			<ul class="list-inline text-left">
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="社保代理" src="static/img/index/icon_7.png">
-		            					</a>
-		            					<p class="text-center m-t">社保代理</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">关闭服务</a>
-		            				</li>
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="薪资代缴" src="static/img/index/icon_8.png">
-		            					</a>
-		            					<p class="text-center m-t">薪资代缴</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">关闭服务</a>
-		            				</li>
+		            			<ul class="list-inline text-left" data-type="data">
+		            				
 		            			</ul>
 		            		</div>
 	            		</div>
 	            		
-	            		<div class="col-lg-12 m-t-lg">
+	            		<div class="col-lg-12 m-t-lg" id="unOpenedApp">
 	            			<div class="ngRow m-b-lg">
 	            				<p class="os-text-head"><strong>待开通</strong></p>
 	            			</div>
 		            		<div class="col-lg-12">
-		            			<ul class="list-inline text-left">
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="福利" src="static/img/index/icon_9.png">
-		            					</a>
-		            					<p class="text-center m-t">福利</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">关闭服务</a>
-		            				</li>
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="测评" src="static/img/index/icon_11.png">
-		            					</a>
-		            					<p class="text-center m-t">测评</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">关闭服务</a>
-		            				</li>
+		            			<ul class="list-inline text-left" data-type="data">
+		            				
 		            			</ul>
 		            		</div>
 	            		</div>
 	            		
-	            		<div class="col-lg-12 m-t-lg list">
+	            		<div class="col-lg-12 m-t-lg list" id="offLineApp">
 	            			<div class="ngRow m-b-lg">
 	            				<p class="os-text-head"><strong>敬请期待</strong></p>
 	            			</div>
 		            		<div class="col-lg-12">
-		            			<ul class="list-inline text-left">
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="问卷调查" src="static/img/index/icon_13.png">
-		            					</a>
-		            					<p class="text-center m-t">问卷调查</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">敬请期待</a>
-		            				</li>
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="招聘" src="static/img/index/icon_12.png">
-		            					</a>
-		            					<p class="text-center m-t">招聘</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">敬请期待</a>
-		            				</li>
-		            				<li class="m-r-xl m-l">
-		            					<a href="#">
-		            						<img alt="背景调查" src="static/img/index/icon_10.png">
-		            					</a>
-		            					<p class="text-center m-t">背景调查</p>
-		            					<a href="#" class="btn btn-default btn-xs btn-block">敬请期待</a>
-		            				</li>
+		            			<ul class="list-inline text-left" data-type="data">
+		            				
 		            			</ul>
 		            		</div>
 	            		</div>
@@ -139,6 +93,38 @@
 	<jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
 	<!-- 放页脚  结束-->
 </div>
+
+<!-- 模板区域 -->
+<!-- 已开通应用显示模板 -->
+<script id="appTemplateOpened" type="text/template">
+	<li class="m-r-xl m-l" appId="{{appId}}">
+		<a href="javascript:void(0);" onclick="gotoApp({{systemId}}, '{{openedUrl}}');">
+			<img alt="{{appName}}" src="{{iconPath}}">
+		</a>
+		<p class="text-center m-t">{{appName}}</p>
+		<!--<a href="javascript:void(0);" onclick="gotoApp({{systemId}}, '{{openedUrl}}');" class="btn btn-default btn-xs btn-block">进入应用</a>-->
+	</li>
+</script>
+<!-- 未开通应用显示模板 -->
+<script id="appTemplateUnOpened" type="text/template">
+	<li class="m-r-xl m-l" appId="{{appId}}">
+		<a href="javascript:void(0);" onclick="applyToOpenApp({{systemId}}, '{{unOpenedUrl}}');">
+			<img alt="{{appName}}" src="{{iconPath}}">
+		</a>
+		<p class="text-center m-t">{{appName}}</p>
+		<!--<a href="javascript:void(0);" onclick="applyToOpenApp({{systemId}}, '{{unOpenedUrl}}');" class="btn btn-default btn-xs btn-block">申请开通</a>-->
+	</li>
+</script>
+<!-- 未上线应用显示模板 -->
+<script id="appTemplateOffLine" type="text/template">
+	<li class="m-r-xl m-l" appId="{{appId}}">
+		<a href="javascript:void(0);">
+			<img alt="{{appName}}" src="{{iconPath}}">
+		</a>
+		<p class="text-center m-t">{{appName}}</p>
+		<!--<a href="javascript:void(0);" class="btn btn-default btn-xs btn-block">敬请期待</a>-->
+	</li>
+</script>
 
 <!-- Vendor scripts -->
 <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
@@ -168,6 +154,130 @@
 
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
-<script src="static/js/yuangong.js"></script>
+<!-- <script src="static/js/yuangong.js"></script> -->
+<script>
+	var $ele = ['openedApp', 'unOpenedApp', 'offLineApp'];
+	//页面渲染时的操作
+	(function($){
+		//隐藏相关数据区域
+		jQuery($ele).each(function(index){
+			jQuery("#" + $ele[index]).hide();
+		});
+	})(jQuery);
+
+	//页面加载完成后的操作
+	jQuery(document).ready(function(){
+		var apps = getAppData();
+		if (apps) {
+			showDataArea(apps);
+		};
+	});
+
+	//显示数据区域
+	function showDataArea(data) {
+		if (!data) return;
+		//克隆模板
+		var openedAppTem = jQuery("#appTemplateOpened").clone(),
+			offLineAppTem = jQuery("#appTemplateOffLine").clone(),
+			unOpenedAppTem = jQuery("#appTemplateUnOpened").clone();
+
+		//常量化字段替换符
+		var repStrArr = ['appId', 'appName', 'iconPath', 'systemId', 'openedUrl', 'unOpenedUrl'];
+
+		//遍历数据
+		var offLineCount = 0, opendCount = 0, unOpenedCount = 0;
+		jQuery(data).each(function(index, element) {
+			var isOnline = element.isOnline;
+			//敬请期待应用
+			if (isOnline == 0) {				
+				showDataDiv(++offLineCount, $ele[2]);
+				jQuery("#offLineApp").find("ul[data-type='data']").append(
+					replaceTemp(repStrArr, element, offLineAppTem.html()));
+				return 1;
+			};
+			var systemId = element.systemId;
+			if (hasOpenService(systemId)) {
+				//已开通应用
+				showDataDiv(++opendCount, $ele[0]);
+				jQuery("#openedApp").find("ul[data-type='data']").append(
+					replaceTemp(repStrArr, element, openedAppTem.html()));
+				return 1;
+			} else {
+				//未开通应用
+				showDataDiv(++unOpenedCount, $ele[1]);
+				jQuery("#unOpenedApp").find("ul[data-type='data']").append(
+					replaceTemp(repStrArr, element, unOpenedAppTem.html()));
+				return 1;
+			}
+		});
+	}
+
+	//获取应用信息
+	function getAppData() {
+		var url = "appStore/getAppInfo";
+		var params = {};
+		return post(url, params);
+	}
+
+	//查询应用是否已经开通
+	function hasOpenService(systemIdVal) {
+		var url = "hasOpenService";
+		var params = {systemId : systemIdVal};
+		return post(url, params) == "1";
+	}
+
+	//进入应用申请开通页面
+	function applyToOpenApp(systemId, unOpenedUrl) {
+		window.location.href = unOpenedUrl;
+	}
+
+	//进入应用页面
+	function gotoApp(systemId, openedUrl) {
+		window.location.href = openedUrl;
+	}
+
+	//发送ajax-post请求
+	function post(url, params) {
+		var rslt = null;
+		$.ajax({
+			url : url,
+			data : params,
+			dataType : 'json',
+			type : 'post',
+			async : false,
+			success : function(data) {
+				rslt = data;
+			},
+			error : function(data) {
+				swal({
+					title : '网络连接失败！',
+					text : '网络连接失败，请稍候重试！',
+					type : 'error',
+					confirmButtonText : '确定'
+				});
+			}
+		});
+		return rslt;
+	}
+
+	//替换相应模板中的占位符(占位符列表，实际替换数据对象，模板文本)
+	function replaceTemp(repStrArr, valData, data) {
+		var _data = data;
+		jQuery(repStrArr).each(function(index, element) {
+			var _name = repStrArr[index];
+			var repStr = "{{" + _name + "}}";
+			var repVal = valData[_name];
+			_data = _data.replace(new RegExp(repStr, "gm"), repVal);
+		});
+		return _data;
+	}
+
+	//显示某项数据区域(应用个数，元素标记)
+	function showDataDiv(count, element) {
+		if (count == 1) {
+			jQuery("#" + element).show();
+		}
+	}
+</script>
 </body>
 </html>

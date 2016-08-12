@@ -24,10 +24,14 @@
   
 <!-- Main Wrapper -->
 <div id="wrapper">
-    <div class="small-header transition animated fadeIn">
+    <div class="normalheader transition animated fadeIn small-header">
         <div class="hpanel">
-            <div class="panel-body text-center">
-                服务单查询
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                    <h2 class="font-normal m-b-xs text-center">
+                        服务单查询
+                    </h2>
+                </div>
             </div>
         </div>
     </div>

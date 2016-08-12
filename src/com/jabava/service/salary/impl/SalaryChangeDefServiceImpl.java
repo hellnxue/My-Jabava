@@ -40,6 +40,7 @@ public class SalaryChangeDefServiceImpl implements ISalaryChangeDefService{
 			result.setName(ct.getDisplayName());
 			result.setKeyInfo("工号");
 			result.setKeyType(SalaryEnum.SalaryChangeDefKeyType.JobNumber.getValue());
+			result.setIsMonthly(1);	//考勤为月度信息
 			if(withItem && result != null){
 				List<EhrSalaryChangeDefItem> itemList = new ArrayList<EhrSalaryChangeDefItem>();
 				itemList.addAll(SalaryHelper.getAttendanceDefination());

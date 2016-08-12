@@ -33,17 +33,23 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <div class="normalheader transition animated fadeIn small-header">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                        <h2 class="font-normal m-b-xs text-center">
+                            外部数据导入
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel">
-                        <div class="panel-heading">
-                            <h4 class="text-center font-bold">
-                                外部数据导入
-                            </h4>
-                        </div>
                         <div class="panel-body"> 
                             <form class="form-horizontal" id="editForm">
                             	<input type="hidden" id="filePath" name="filePath">
@@ -305,7 +311,7 @@
                     $('#editForm').formValidation(validators.download)
                     .on('success.form.fv', function(e){
                         e.preventDefault();
-                        console.log($('#salaryChangeDefId').val())
+                        // console.log(['download', $('#salaryChangeDefId').val()]);
                         $('#changeDefId').val($('#salaryChangeDefId').val());
                         $('#templateForm').attr('action','salaryChangeDef/exportSalaryChangeDef');
                         $('#templateForm').submit();
@@ -447,11 +453,11 @@
             minViewMode:1,
             forceParse: false, 
             language: 'zh-CN'
-        })
-        .on('changeDate', function(e){
+        });
+        /*.on('changeDate', function(e){
             var getEleName = $(e.target).find(':text').attr('name');
             $('#editForm').formValidation('revalidateField', getEleName);
-        });
+        });*/
 
     }); //(function(){})()
 	

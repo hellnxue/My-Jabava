@@ -72,6 +72,15 @@ public interface IBaseDataService {
 	
 	List<EhrBaseData> selectBaseData(Long companyId, int baseDataType, String baseDataName) throws Exception;
 	
+	/**
+	 * 根据基础数据类型获取基础数据Map列表 Map(code,name)
+	 * @param companyId
+	 * @param baseDataType
+	 * @param baseDataName
+	 * @return
+	 */
+	Map<String,Object>  getBaseDataMap(Long companyId, int baseDataType, String baseDataName);
+	
 	List<EhrBaseData> selectBaseData(Long companyId, int baseDataType);
 	/**
 	 * 批量取值

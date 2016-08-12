@@ -101,9 +101,9 @@ public class PersonPost implements IPersonImport, IPersonExport {
 			if("".equals(certId)){
 				throw new JabavaServiceException(sheetName,i,"证件号码数据错误",certId);
 			}
-			if(!IDCard.IDCardValidate(certId.toUpperCase())){
-				throw new JabavaServiceException(sheetName,i,"身份证号码数据错误",certId);
-			}
+//			if(!IDCard.IDCardValidate(certId.toUpperCase())){
+//				throw new JabavaServiceException(sheetName,i,"身份证号码数据错误",certId);
+//			}
 			person.setCertId(certId.toUpperCase());
 			
 			// 部门名称数据

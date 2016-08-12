@@ -1,5 +1,6 @@
 package com.jabava.service.system.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +13,11 @@ import com.jabava.dao.common.EhrCommonDataMapper;
 import com.jabava.dao.manage.EhrBaseDataMapper;
 import com.jabava.dao.system.EhrTableDataMapper;
 import com.jabava.dao.system.EhrTableFieldDefMapper;
-import com.jabava.pojo.common.EhrCommonData;
 import com.jabava.pojo.manage.EhrBaseData;
 import com.jabava.pojo.system.EhrTableData;
 import com.jabava.pojo.system.EhrTableFieldDef;
 import com.jabava.service.system.EhrTableFieldDefService;
-import com.jabava.utils.constants.CommonDataConstants;
+import com.jabava.service.system.IEhrFieldDisplayConfigService;
 
 @Service
 public class EhrTableFieldDefServiceImpl implements EhrTableFieldDefService {
@@ -33,6 +33,9 @@ public class EhrTableFieldDefServiceImpl implements EhrTableFieldDefService {
 	
 	@Resource
 	EhrCommonDataMapper commonDataMapper;
+	
+	@Resource
+	IEhrFieldDisplayConfigService fieldDisplayConfigService;
 	
 	@Override
 	public List<EhrTableFieldDef> selectCustomFieldAndData(Long companyId, Map<String, Object> params) {
@@ -99,15 +102,16 @@ public class EhrTableFieldDefServiceImpl implements EhrTableFieldDefService {
 			}
 			return list;
 		}
-		return null;
+		
+		return new ArrayList<EhrTableFieldDef>();
 	}
 
 
 	@Override
-	public List<EhrTableFieldDef> selectCoustomFieldByPage(
+	public List<Map<String, Object>> selectCoustomFieldByPage(
 			Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		List<EhrTableFieldDef> list = tableFieldDefMapper.selectByPage(map);
+		List<Map<String, Object>> list = tableFieldDefMapper.selectByPage(map);
 		return list;
 	}
 
@@ -149,17 +153,18 @@ public class EhrTableFieldDefServiceImpl implements EhrTableFieldDefService {
 
 
 	@Override
-	public Map<String,Object> deleteByPrimaryKey(Long tableFieldDefId) {
+	public Map<String,Object> deleteByPrimaryKey(Long tableFieldDefId,Map<String,Object> map) {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String,Object>();
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+		fieldDisplayConfigService.deleteColumnName(map);
 		int result =tableFieldDefMapper.deleteByPrimaryKey(tableFieldDefId);
 		if(result>0){
-			map.put("success", true);
-			map.put("msg", "删除成功");
+			resultMap.put("success", true);
+			resultMap.put("msg", "自定义数据删除成功");
 		}else{
-			map.put("success", false);
-			map.put("msg", "删除失败");
+			resultMap.put("success", false);
+			resultMap.put("msg", "自定义数据删除失败");
 		}
-		return map;
+		return resultMap;
 	}
 }

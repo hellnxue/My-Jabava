@@ -3,7 +3,6 @@ package com.jabava.controller.employee;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.alibaba.dubbo.common.json.JSONArray;
 import com.alibaba.fastjson.JSON;
 import com.jabava.pojo.common.EhrCommonData;
 import com.jabava.pojo.employee.EhrContract;
@@ -66,7 +64,6 @@ import com.jabava.utils.constants.BaseDataConstants;
 import com.jabava.utils.constants.CommonDataConstants;
 import com.jabava.utils.enums.SystemEnum;
 import com.jabava.utils.excel.ExcelUtil;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 @Controller
 @RequestMapping("employee")
@@ -203,7 +200,7 @@ public class EhrPersonController {
 	@ResponseBody
 	public Map<String, Object> getCustomFieldAndFieldDisplay(HttpServletRequest request,HttpServletResponse response) {
 		EhrUser user = RequestUtil.getLoginUser(request);
-		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> data = null;
 		try {
 			
 			//取得所有的显示列，拼displayName
@@ -211,63 +208,10 @@ public class EhrPersonController {
 			Map<String, Object> params = new HashMap<>();
 			params.put("companyId", user.getCompanyId());
 			
-			//所有的自定列-动态列
-			List<EhrTableFieldDef> customFieldList = ehrTableFieldDefService.selectCustomField(params);
-			
-			params.put("function",FieldCol.getFunction("EmployeeList"));
-			params.put("module", FieldCol.getMoudle("Organization"));
-			
-			//配置的显示列 原始数据
-			List<EhrFieldDisplayConfig> displayColList= fieldDisplayConfigService.selectDisplayCol(params);
-			
-			//所有固定列
-			List<Map<String, Object>> listCol = (List<Map<String, Object>>) FieldCol.getField("ehr_person",1).get("ehr_person");
-			
-			//Map<String, Object> customFieldMap = new HashMap<String, Object>();
-			
-			//将动态列的字段加入固定列中
-			for(int i = 0; i<customFieldList.size();i++){
-				Map<String, Object> mapCol=new HashMap<String, Object>();
-				mapCol.put("columnName", customFieldList.get(i).getColumnName());
-				mapCol.put("displayName", customFieldList.get(i).getDisplayName());
-				listCol.add(mapCol);
-				
-				//customFieldMap.put(customFieldList.get(i).getColumnName(), customFieldList.get(i));
-			}
-			
-			Map<String, Object> allFiledsMap=new HashMap<String,Object>();
-			
-			for(Map<String, Object> colmap:listCol){
-				allFiledsMap.put((String)colmap.get("columnName"), colmap.get("displayName"));
-			}
-			
-			//含有displayName与columnName的显示列
-			List<Map<String, Object>> displayList = new ArrayList<Map<String, Object>>();
-			
-			Map<String, Object> xs=null;
-			
-			//遍历显示列  获取displayName
-			if(displayColList!=null&&displayColList.size()>0 ){
-				for(EhrFieldDisplayConfig fieldDisplayConfig:displayColList){
-					
-					String columnName=fieldDisplayConfig.getColumnName();
-					String displayName=(String) allFiledsMap.get(columnName);
-					 xs=new HashMap<String,Object>();
-					xs.put("columnName", columnName);
-					xs.put("displayName", displayName);
-	 				displayList.add(xs);
-					
-				}
-				data.put("Fileds", displayList);
-			}else{
-				//没有显示列的情况下，显示默认字段
-				List<Map<String, Object>> defaultCol = (List<Map<String, Object>>) FieldCol.getField("ehr_person",0).get("ehr_person");
-				data.put("Fileds", displayList);
-			}
-			
-			data.put("linkFiled", "employee_name");//设置超链接字段
+			 data=fieldDisplayConfigService.handlerDisplayCol(ehrTableFieldDefService,params);
 			
 		} catch (Exception e) {
+			data = new HashMap<>();
 			e.printStackTrace();
 			data.put("error", e.toString());
 		}
@@ -378,7 +322,7 @@ public class EhrPersonController {
 			map.put("daysContractExpiring", 30);
 			
 			//list = ehrPersonService.searchPerson(map, user,start,length, search, order, according,isNumeric,page);
-			list=ehrPersonService.searchPerson(map, user, start, length, search, order, according, isNumeric, page);
+			list=ehrPersonService.searchPerson(map, user, start, length, search, order, according, isNumeric, page,baseDataService, commonDataService);
 			page.setData(list);
 			//sysLogSercice.addSysLog(user, SystemEnum.LogOperateType.Select, SystemEnum.Module.Organization, "查询花名册列表");
 		} catch (Exception e) {

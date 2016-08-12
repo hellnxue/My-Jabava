@@ -259,8 +259,9 @@
   </select>
 
   <!-- 分页查询扩展字段  -->
-  <select id="selectByPage" resultMap="BaseResultMap" parameterType="java.util.HashMap">
-  	select fieldDef.* from 
+  <select id="selectByPage" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+  	select fieldDef.table_field_def_id tableFieldDefId , fieldDef.data_type dataType,fieldDef.display_name displayName,
+  	fieldDef.ref_id refId,fieldDef.is_necessary isNecessary,fieldDef.is_using isUsing,fieldDef.column_name columnName, def.key_table keyTable from 
   	ehr_table_field_def fieldDef 
   	left join ehr_table_def def on fieldDef.table_def_id = def.table_def_id 
   	

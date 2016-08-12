@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jabava.dao.system.EHrMailConfigMapper" >
+
+  <resultMap id="BaseResultMap" type="com.jabava.pojo.system.EHrMailConfig" >
+    <id column="mail_config_id" property="mailConfigId" jdbcType="BIGINT" />
+    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="mail_type" property="mailType" jdbcType="VARCHAR" />
+    <result column="send_to" property="sendTo" jdbcType="VARCHAR" />
+    <result column="mail_password" property="mailPassword" jdbcType="VARCHAR" />
+    <result column="mail_server" property="mailServer" jdbcType="VARCHAR" />
+    <result column="safe_flag" property="safeFlag" jdbcType="INTEGER" />
+    <result column="mail_port" property="mailPort" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="DATE" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="DATE" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >    
+    mail_config_id, company_id, mail_type, send_to, mail_password, mail_server, safe_flag, mail_port, create_at, 
+    create_by, update_at, update_by
+  </sql>
+  
+  <insert id="saveMailConfig" parameterType="com.jabava.pojo.system.EHrMailConfig" useGeneratedKeys="true" keyProperty="mailConfigId">
+       insert into ehr_company_mail_config(mail_config_id, company_id, mail_type, send_to, mail_password, mail_server,
+      		 safe_flag, mail_port, create_at,create_by)
+    	values(#{mailConfigId},#{companyId},#{mailType},#{sendTo},#{mailPassword},#{mailServer},#{safeFlag},
+    	   #{mailPort},now(),#{createBy})  
+    	ON DUPLICATE KEY UPDATE	
+    	   send_to=values(send_to),
+    	   mail_password=values(mail_password),
+    	   mail_server=values(mail_server),
+           safe_flag=values(safe_flag),
+           mail_port=values(mail_port),
+           update_by=values(create_by),
+           update_at=now()    	      
+  </insert>
+  
+  <select id="findByCompanyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List"/>
+  	FROM ehr_company_mail_config
+  	WHERE COMPANY_ID=#{compabyId,jdbcType=BIGINT}
+  </select>
+</mapper>

@@ -56,6 +56,12 @@
   	 company_id = #{companyId,jdbcType=BIGINT} and 
   	   module =#{module,jdbcType=INTEGER} 
   </delete>
+  <!-- 根据列名删除数据  -->
+  <delete id="deleteByColumnName" parameterType="java.util.HashMap">
+    delete from ehr_field_display_config 
+    where column_name = #{columnName,jdbcType=VARCHAR} and 
+  	 company_id = #{companyId,jdbcType=BIGINT} 
+  </delete>
   <insert id="insert" parameterType="com.jabava.pojo.system.EhrFieldDisplayConfig" >
     <!--
       WARNING - @mbggenerated
@@ -167,4 +173,5 @@
       sort = #{sort,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
 </mapper>

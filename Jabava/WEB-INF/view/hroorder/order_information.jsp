@@ -32,6 +32,17 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <div class="normalheader transition animated fadeIn small-header">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                        <h2 class="font-normal m-b-xs text-center">
+                            <span data-order="date">@orderDate</span> <span data-order="name">@orderName</span> 个人订单明细
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- 放主要内容 -->
 
@@ -40,10 +51,9 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel">
-                        <div class="panel-heading">
-                            <h4 class="text-center font-bold">
-                            <a href="order/toOrderList?yearmonth=${paymentMonth}" class="btn btn-success btn-sm pull-left">　返回　</a>
-                            <span data-order="date">@orderDate</span> <span data-order="name">@orderName</span> 个人订单明细
+                        <div class="panel-heading m-b-lg">
+                            <h4>
+                                <a href="order/toOrderList?yearmonth=${paymentMonth}" class="btn btn-success btn-sm pull-left">　返回　</a>
                             </h4>
                         </div>
                         <!--订单信息开始-->

@@ -49,4 +49,6 @@ public interface EhrArgumentInfoMapper {
 	
 	List<String> selectAllKey(Long companyId);
 	
+	EhrArgumentInfo selectByKey(@Param("companyId")Long companyId, @Param("argumentKey")String argumentKey);
+	
 }

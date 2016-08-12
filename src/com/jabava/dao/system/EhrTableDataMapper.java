@@ -72,5 +72,11 @@ public interface EhrTableDataMapper {
      * @return
      */
     int updateBachForEhrTableData(List<EhrTableData> tdlist);
+    /**
+     * 查询自定义列的值
+     * @param tableFieldDefId
+     * @return
+     */
+    List<EhrTableData> selectByTableFieldDefId  (Long tableFieldDefId);
     
 }

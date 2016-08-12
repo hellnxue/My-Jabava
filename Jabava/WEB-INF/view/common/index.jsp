@@ -219,7 +219,7 @@
                         </div>
                         <div class="m-l m-r m-b-none">
                             <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.miaoshichang")%>" target="_blank">
-                                <img src="static/img/index/mm.jpg" width="70%" alt="">
+                                <img src="static/img/index/mm.png" width="70%" alt="">
                             </a>
                         </div>
                     </div>

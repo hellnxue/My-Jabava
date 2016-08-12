@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -20,6 +21,7 @@ import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
 import com.jabava.service.employee.EhrPersonService;
 import com.jabava.utils.JabavaUtil;
+import com.jabava.utils.constants.BaseDataConstants;
 import com.jabava.utils.constants.CommonDataConstants;
 import com.jabava.utils.employee.IPersonExport;
 import com.jabava.utils.employee.IPersonImport;
@@ -223,25 +225,31 @@ public class PersonBase implements IPersonImport, IPersonExport {
 			}else{
 				data.put("positiveDate", person.getPositiveDate());
 			}
-			if(JabavaUtil.isNumeric(person.getWorkLocation()) == 2){
-				EhrBaseData baseData = baseDataMapper.selectByPrimaryKey(Long.valueOf(person.getWorkLocation()));
+			//if(JabavaUtil.isNumeric(person.getWorkLocation()) == 2){
+			if(!StringUtils.isEmpty(person.getWorkLocation())){
+				//EhrBaseData baseData = baseDataMapper.selectByPrimaryKey(Long.valueOf(person.getWorkLocation()));
+				EhrBaseData baseData = baseDataMapper.selectBaseDataByCode(person.getCompanyId(), 
+						BaseDataConstants.BASE_DATA_CITY, person.getWorkLocation());
 				if(baseData != null){
 					data.put("workLocation", baseData.getBaseDataName());
 				}else{
 					data.put("workLocation", person.getWorkLocation());
 				}
 			}else{
-				data.put("workLocation", person.getWorkLocation());
+				//data.put("workLocation", person.getWorkLocation());
 			}
-			if(JabavaUtil.isNumeric(person.getPayrollLocation()) == 2){
-				EhrBaseData baseData = baseDataMapper.selectByPrimaryKey(Long.valueOf(person.getPayrollLocation()));
+			//if(JabavaUtil.isNumeric(person.getPayrollLocation()) == 2){
+			if(!StringUtils.isEmpty(person.getPayrollLocation())){
+				//EhrBaseData baseData = baseDataMapper.selectByPrimaryKey(Long.valueOf(person.getPayrollLocation()));
+				EhrBaseData baseData = baseDataMapper.selectBaseDataByCode(person.getCompanyId(), 
+						BaseDataConstants.BASE_DATA_CITY, person.getPayrollLocation());
 				if(baseData != null){
 					data.put("payrollLocation", baseData.getBaseDataName());
 				}else{
 					data.put("payrollLocation", person.getPayrollLocation());
 				}
 			}else{
-				data.put("payrollLocation", person.getPayrollLocation());
+				//data.put("payrollLocation", person.getPayrollLocation());
 			}
 			if(JabavaUtil.isNumeric(person.getSocialSecurityLocation()) == 2){
 				EhrBaseData baseData = baseDataMapper.selectByPrimaryKey(Long.valueOf(person.getSocialSecurityLocation()));
@@ -254,10 +262,10 @@ public class PersonBase implements IPersonImport, IPersonExport {
 				data.put("socialSecurityLocation", person.getSocialSecurityLocation());
 			}
 			if (person.getIsPayrollFlag()!=null) { 
-				if (person.getIsPayrollFlag()==0) { 
+				if (person.getIsPayrollFlag()==1) { 
 					data.put("isPayrollFlag", "停发");
 				} else {
-					data.put("isPayrollFlag", "为停发");
+					data.put("isPayrollFlag", "未停发");
 				}
 			} else {
 				data.put("isPayrollFlag", JabavaUtil.BLANK);

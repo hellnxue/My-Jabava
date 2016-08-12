@@ -32,16 +32,26 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <div class="normalheader transition animated fadeIn small-header">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                        <h2 class="font-normal m-b-xs text-center">
+                            员工工资修改
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel">
-                        <div class="panel-heading">
-                            <h4 class="text-center font-bold">
+                        <div class="panel-heading m-b-lg">
+                            <h4>
                                 <a href="salary/toListSalary" type="button" class="btn btn-success btn-sm pull-left">返　回</a>
-                                员工工资修改
                             </h4>
                         </div>
                         

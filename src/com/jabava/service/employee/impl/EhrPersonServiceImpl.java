@@ -58,15 +58,18 @@ import com.jabava.pojo.manage.EhrUser;
 import com.jabava.pojo.manage.EhrUserBusinessPower;
 import com.jabava.pojo.manage.EhrUserPersonPowerValue;
 import com.jabava.pojo.system.EhrTableFieldDef;
+import com.jabava.service.common.ICommonDataService;
 import com.jabava.service.dclient.CenterUserClientService;
 import com.jabava.service.employee.EhrJobpostService;
 import com.jabava.service.employee.EhrPersonService;
 import com.jabava.service.system.EhrTableFieldDefService;
+import com.jabava.service.system.IBaseDataService;
 import com.jabava.service.system.IEhrRoleService;
 import com.jabava.utils.FileUtil;
 import com.jabava.utils.JabavaStringUtils;
 import com.jabava.utils.Page;
 import com.jabava.utils.Tools;
+import com.jabava.utils.constants.BaseDataConstants;
 import com.jabava.utils.constants.CommonDataConstants;
 import com.jabava.utils.employee.IPersonExport;
 import com.jabava.utils.employee.IPersonImport;
@@ -143,7 +146,7 @@ public class EhrPersonServiceImpl implements EhrPersonService {
 	@Override
 	public List<Map<String, Object>> searchPerson(Map<String, Object> map, EhrUser user,
 			Integer start, Integer length, String search, String order,
-			String according, int isNumeric, Page<Map<String, Object>> page)
+			String according, int isNumeric, Page<Map<String, Object>> page,IBaseDataService baseDataService,ICommonDataService commonDataService)
 			throws Exception {
 		String where = " and  " + getPersonPowerSqlStr(user.getUserId(), "", 1) + "";
 		map.put("where", where);
@@ -157,14 +160,59 @@ public class EhrPersonServiceImpl implements EhrPersonService {
 		customMap.put("companyId", user.getCompanyId());
 		//所有的自定义字段&数据
 		List<EhrTableFieldDef> customFieldList=tableFieldDefService.selectCustomFieldAndData(user.getCompanyId(),customMap);
-		System.out.println(JSON.toJSON(customFieldList));
-		
+	//	System.out.println(JSON.toJSON(customFieldList));
+		//员工列表
 		List<Map<String, Object>> personList=personMapper.searchEhrPersonPage(map);
+		
+		//最高学历
+		Map<String, Object> degreeMap=baseDataService.getBaseDataMap(user.getCompanyId(),BaseDataConstants.BASE_DATA_DEGREE, null);
+		
+		//最高学位
+		Map<String, Object> educationMap=baseDataService.getBaseDataMap(user.getCompanyId(),BaseDataConstants.BASE_DATA_EDUCATION, null);
+		
+		//开户行
+		Map<String, Object> levelMap=baseDataService.getBaseDataMap(user.getCompanyId(),BaseDataConstants.BASE_DATA_LEVEL, null);
+		
+		//政治面貌
+		Map<String, Object> politicsStatusMap=baseDataService.getBaseDataMap(user.getCompanyId(),BaseDataConstants.BASE_DATA_POLITICS_STATUS, null);
+		
+		//证件类型
+		 Map<String, Object> certTypeMap=commonDataService.getByCommonDataTypeMap(CommonDataConstants.COMMON_DATA_CERT_TYPE);
+		
 		
 		for(Map<String, Object> pmap:personList){
 			Long personId=(Long) pmap.get("person_id");
 			
-			//将N个自定义字段 添加到每个人的列中
+			//处理关联基础数据code的字段值--------------------
+			
+			String degreeCode=  (String) pmap.get("degree");				//最高学历
+			String educationCode=  (String) pmap.get("education");			//最高学位
+			String bankNameCode=  (String) pmap.get("bank_name");			//银行
+			String politicsStatusCode=  (String) pmap.get("politics_status");//政治面貌
+			Integer certTypeCode=  (Integer) pmap.get("cert_type");		 //证件类型
+			
+			if(degreeCode!=null&&!degreeCode.equals ("")){
+				pmap.put("degree", degreeMap.get(degreeCode));
+			}
+			
+			if(educationCode!=null&&!educationCode.equals ("")){
+				pmap.put("education", educationMap.get(degreeCode));
+			}
+			
+			if(bankNameCode!=null&&!bankNameCode.equals ("")){
+				pmap.put("bank_name", levelMap.get(degreeCode));
+			}
+			
+			if(politicsStatusCode!=null&&!politicsStatusCode.equals ("")){
+				pmap.put("politics_status", politicsStatusMap.get(degreeCode));
+			}
+			
+			if(certTypeCode!=null){
+				pmap.put("cert_type", certTypeMap.get(certTypeCode.toString()));
+			}
+			
+			
+			//将N个自定义字段 添加到每个人的行中
 			for(EhrTableFieldDef tableFieldDef:customFieldList){
 				//自定义字段的数据
 				Map<String, Object> customData=tableFieldDef.getCustomMeta();
@@ -189,11 +237,14 @@ public class EhrPersonServiceImpl implements EhrPersonService {
 				}
 				pmap.put(tableFieldDef.getColumnName(), value);//拼自定字段列名+列值
 			}
+			
+			
 			 
 		}
 		
 		return personList;
 	}
+	
 
 	public String getPersonPowerSqlStr(Long userId, String prefix,
 			int functionId) throws Exception {
@@ -432,7 +483,7 @@ public class EhrPersonServiceImpl implements EhrPersonService {
 			Tools.mailSend(person.getEmail(), emailSubject, emailTemplate, null);
 			
 			// 发送提示短信
-			String smsTemplate = "您好!{admin}通过Jabava系统邀请您填写个人信息。" +"您的用户名为 {account},密码为：{password}，请尽快登录{url}补全资料。";
+			String smsTemplate = "您好!{admin}通过Jabava系统邀请您填写个人信息。" +"您的用户名为 {account},密码为：{password}，请尽快登录{url} 补全资料。";
 			smsTemplate = smsTemplate.replace("{admin}", user.getUserName());
 			smsTemplate = smsTemplate.replace("{account}", person.getMobile());
 			smsTemplate = smsTemplate.replace("{password}", password);
@@ -562,7 +613,7 @@ public class EhrPersonServiceImpl implements EhrPersonService {
 		if(StringUtils.isNotBlank(person.getEmail())){
 			String emailSubject = "请完善您的个人信息~";
 			String emailTemplate = "{name}, 您好,<br><br>"
-					+ "{company}{admin}通过智阳HR Saas（Jabava）您的用户名为:{account},登录密码为:{password} 系统邀请您登录({url})填写个人信息资料。<br>"							
+					+ "{company}{admin}通过智阳HR Saas（Jabava）您的用户名为:{account},登录密码为:{password} 系统邀请您登录({url}) 填写个人信息资料。<br>"							
 					+ "祝您工作愉快!<br><br>"
 					+ "Jabava系统邮件组<br><br>"
 					+ "****本邮件由系统自动发送，请勿直接回复。***";
@@ -584,7 +635,7 @@ public class EhrPersonServiceImpl implements EhrPersonService {
 		//如果手机号码不为空,发送短信
 		if(StringUtils.isNotBlank(person.getMobile())){
     	    int mobileRes = 1;//短信是否发送成功 1 成功
-			String smsTemplate = "您好!{admin}通过Jabava系统邀请您填写个人信息。" +"用户名 {account},密码：{password}请登录{url}";
+			String smsTemplate = "您好!{admin}通过Jabava系统邀请您填写个人信息。" +"用户名 {account},密码：{password}请登录{url} ";
 			smsTemplate = smsTemplate.replace("{admin}", user.getUserName());
 			smsTemplate = smsTemplate.replace("{account}", person.getMobile());		
 			smsTemplate = smsTemplate.replace("{password}", password);

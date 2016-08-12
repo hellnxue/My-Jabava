@@ -15,4 +15,6 @@ public interface IArgumentService {
 	public boolean updateArgument(EhrArgumentInfo argument) throws Exception;
 
 	public List<String> selectAllKey(Long companyId) throws Exception;
+	
+	public EhrArgumentInfo selectByKey(Long companyId, String argumentKey);
 }

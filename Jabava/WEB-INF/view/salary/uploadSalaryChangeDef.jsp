@@ -32,17 +32,23 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <div class="normalheader transition animated fadeIn small-header">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                        <h2 class="font-normal m-b-xs text-center">
+                            上传定义
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel clearfix">
-                        <div class="panel-heading">
-                            <h4 class="text-center font-bold">
-                                上传定义
-                            </h4>
-                        </div>
                         <div class="panel-body">
                             <div class="col-md-5 col-md-offset-3">
                                 <form id="uploadForm" class="form-horizontal">

@@ -24,7 +24,7 @@ public interface EhrTableFieldDefService {
      * @param map
      * @return
      */
-    List<EhrTableFieldDef> selectCoustomFieldByPage( Map<String,Object> map);
+    List<Map<String, Object>> selectCoustomFieldByPage( Map<String,Object> map);
 
     Map<String, Object> insertOrUpdataFiledDef(EhrTableFieldDef ehrTableFieldDef);
     /**
@@ -38,6 +38,6 @@ public interface EhrTableFieldDefService {
      * @param tableFieldDefId
      * @return
      */
-    Map<String, Object> deleteByPrimaryKey(Long tableFieldDefId);
+    Map<String, Object> deleteByPrimaryKey(Long tableFieldDefId,Map<String,Object> map);
   
 }

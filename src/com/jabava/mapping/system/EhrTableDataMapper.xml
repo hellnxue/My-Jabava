@@ -31,6 +31,12 @@
     from ehr_table_data
     where table_data_id = #{tableDataId,jdbcType=BIGINT}
   </select>
+  <select id="selectByTableFieldDefId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  	select 
+    <include refid="Base_Column_List" />
+    from ehr_table_data
+    where  table_field_def_id  = #{tableFieldDefId,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     <!--
       WARNING - @mbggenerated

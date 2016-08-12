@@ -37,66 +37,69 @@ public class FieldDisplayConfigController {
 	}
 	@RequestMapping("listFieldDisplayConfig")
 	@ResponseBody
-	public Map<String, Object> displayCol(HttpServletRequest request , HttpServletResponse response ,String keyTable,String keyField,
-			String function,String module){
+	public Map<String, Object> displayCol(HttpServletRequest request , HttpServletResponse response,
+			String keyTable,String keyField, String function,String module){
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		EhrUser user = RequestUtil.getLoginUser();
 		Map<String,Object> selectMap = new HashMap<String, Object>();
 		selectMap.put("companyId", user.getCompanyId());
-		selectMap.put("keyTable",keyTable);
-		selectMap.put("keyField", keyField);
+		/*selectMap.put("keyTable",keyTable);
+		selectMap.put("keyField", keyField);*/
 		selectMap.put("function",FieldCol.getFunction(function));
 		selectMap.put("module", FieldCol.getMoudle(module));
+		
 		//所有动态列
-		List<EhrTableFieldDef> list = ehrTableFieldDefService.selectCustomField(selectMap);
+		List<EhrTableFieldDef> dynamicList = ehrTableFieldDefService.selectCustomField(selectMap);
+		
 		//显示列
 		List<EhrFieldDisplayConfig> displayColList= fieldDisplayConfigService.selectDisplayCol(selectMap);
+		Map<String,EhrFieldDisplayConfig> displayColMap = new HashMap<String,EhrFieldDisplayConfig>();
+		for(EhrFieldDisplayConfig config : displayColList){
+			displayColMap.put(config.getColumnName(), config);
+		}
 		
-		if(displayColList !=null&&displayColList.size()>0){
-			
+		List<Map<String, Object>> hiddenList = null;
+		List<Map<String, Object>> displayList = null;
+		if(displayColList != null && displayColList.size() > 0){
 			//所有固定列
 			List<Map<String, Object>> listCol = (List<Map<String, Object>>) FieldCol.getField(keyTable,1).get(keyTable);
-			
-			//将动态列的字段加入固定列中
-			for(int i = 0; i<list.size();i++){
-				Map<String, Object> mapCol=new HashMap<String, Object>();
-				mapCol.put("columnName", list.get(i).getColumnName());
-				mapCol.put("displayName", list.get(i).getDisplayName());
+			for(EhrTableFieldDef def : dynamicList){
+				Map<String, Object> mapCol = new HashMap<String, Object>();
+				mapCol.put("columnName", def.getColumnName());
+				mapCol.put("displayName", def.getDisplayName());
+				//加上所有动态列
 				listCol.add(mapCol);
 			}
 			
-			//显示的列
-			List<Map<String, Object>> displayList = new ArrayList<Map<String, Object>>();
-			
-			for(int j = 0;j<displayColList.size();j++){
-				int z=0;
-				for(int i = 0;i<listCol.size();i++){
-					if(displayColList.get(j).getColumnName().equals(listCol.get(i).get("columnName"))){
-						displayList.add(listCol.get(i));
-						listCol.remove(i);
-						}
-					
+			hiddenList = new ArrayList<Map<String, Object>>();
+			displayList = new ArrayList<Map<String, Object>>();
+			for(Map<String, Object> col : listCol){
+				if(displayColMap.containsKey(col.get("columnName"))){
+					displayList.add(col);
+				}else{
+					hiddenList.add(col);
 				}
 			}
-			map.put("hiddenCol", listCol);
-			map.put("displayCol", displayList);
-			return map;
 		}else{
 			//所有固定列
-			Map<String, Object> listCol = FieldCol.getField(keyTable,0);
-			List<Map<String, Object>> hiddenCol= (List<Map<String, Object>>) listCol.get("hiddenCol"); 
-			List<Map<String, Object>> displayName= (List<Map<String, Object>>) listCol.get("defaultCol"); 
-			for(int i = 0; i<list.size();i++){
-				Map<String, Object> mapCol=new HashMap<String, Object>();
-				mapCol.put("columnName", list.get(i).getColumnName());
-				mapCol.put("displayName", list.get(i).getDisplayName());
-				hiddenCol.add(mapCol);
+			Map<String, Object> colMap = FieldCol.getField(keyTable,0);
+			//隐藏的固定列
+			hiddenList = (List<Map<String, Object>>) colMap.get("hiddenCol");
+			//显示的固定列
+			displayList = (List<Map<String, Object>>) colMap.get("defaultCol"); 
+			for(EhrTableFieldDef def : dynamicList){
+				Map<String, Object> mapCol = new HashMap<String, Object>();
+				mapCol.put("columnName", def.getColumnName());
+				mapCol.put("displayName", def.getDisplayName());
+				//加上所有动态列
+				hiddenList.add(mapCol);
 			}
-			map.put("hiddenCol", hiddenCol);
-			map.put("displayCol", displayName);
-			return map;
 		}
+		
+		map.put("hiddenCol", hiddenList);
+		map.put("displayCol", displayList);
+		return map;
 	}
 	
 	
@@ -112,7 +115,6 @@ public class FieldDisplayConfigController {
 		deleteMap.put("companyId", user.getCompanyId());
 		deleteMap.put("function", FieldCol.getFunction(function));
 		deleteMap.put("module", FieldCol.getMoudle(module));
-		fieldDisplayConfigService.deleteByFunction(deleteMap);
 		for(int i =0;i<list.size();i++){
 			ehrFieldDisplayConfig = new EhrFieldDisplayConfig();
 			ehrFieldDisplayConfig.setColumnName(list.get(i));
@@ -121,7 +123,8 @@ public class FieldDisplayConfigController {
 			ehrFieldDisplayConfig.setModule(FieldCol.getMoudle(module));
 			addList.add(ehrFieldDisplayConfig);
 		}
-		map = fieldDisplayConfigService.insertAutomateCol(addList);
+		deleteMap.put("addList", addList);
+		map = fieldDisplayConfigService.deleteAndinsert(deleteMap);
 		return map;
 	}
 }

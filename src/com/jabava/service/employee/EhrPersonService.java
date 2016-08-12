@@ -13,6 +13,8 @@ import com.jabava.pojo.employee.EhrContract;
 import com.jabava.pojo.manage.EhrBaseData;
 import com.jabava.pojo.manage.EhrPerson;
 import com.jabava.pojo.manage.EhrUser;
+import com.jabava.service.common.ICommonDataService;
+import com.jabava.service.system.IBaseDataService;
 import com.jabava.utils.Page;
 
 public interface EhrPersonService {
@@ -21,7 +23,7 @@ public interface EhrPersonService {
 
 	public List<Map<String, Object>> searchPerson(Map<String, Object> map,EhrUser user,
 			Integer start, Integer length, String search, String order,
-			String according, int isNumeric, Page<Map<String, Object>> page)
+			String according, int isNumeric, Page<Map<String, Object>> page,IBaseDataService baseDataService,ICommonDataService commonDataService)
 			throws Exception;
 	/**
 	 *  获取所有在职的，手机号码不是空的职员工信息

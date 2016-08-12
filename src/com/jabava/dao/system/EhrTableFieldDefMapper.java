@@ -65,5 +65,5 @@ public interface EhrTableFieldDefMapper {
      * @param map
      * @return
      */
-    List<EhrTableFieldDef> selectByPage(Map<String,Object> map);
+    List<Map<String, Object>> selectByPage(Map<String,Object> map);
 }

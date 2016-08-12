@@ -65,4 +65,10 @@ public interface EhrFieldDisplayConfigMapper {
      * @return
      */
     List<EhrFieldDisplayConfig> selectByFunction(Map<String, Object> map);
+    /**
+     * 根据列名删除数据
+     * @param map
+     * @return
+     */
+    int deleteByColumnName(Map<String, Object> map);
 }

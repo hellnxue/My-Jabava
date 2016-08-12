@@ -185,4 +185,8 @@
     	where COMPANY_ID = #{companyId,jdbcType=BIGINT}
   </select>
   
+  <select id="selectByKey" resultMap="BaseResultMap">
+  	select * from ehr_argument_info
+  	where COMPANY_ID = #{companyId,jdbcType=BIGINT} and ARGUMENT_KEY = #{argumentKey,jdbcType=VARCHAR}
+  </select>
 </mapper>

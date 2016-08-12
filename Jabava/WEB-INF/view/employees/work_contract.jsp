@@ -31,13 +31,24 @@
 
   <!-- Main Wrapper -->
   <div id="wrapper" class="min-h">
+    <div class="normalheader transition animated fadeIn small-header">
+        <div class="hpanel">
+          <div class="panel-body">
+            <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+              <h2 class="font-normal m-b-xs text-center">
+                员工资料
+              </h2>
+            </div>
+          </div>
+        </div>
+    </div>
     <div class="content animate-panel">
       <div class="row">
         <div class="col-lg-12">
           <div class="hpanel">
-            <div class="panel-heading">
-              <h4 class="text-center font-bold">员工资料
-                <button onclick="toEmployeeList()" class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
+            <div class="panel-heading m-b-lg">
+              <h4>
+                <a onclick="toEmployeeList()"  type="button" class="btn btn-default btn-sm btn-absolute">返　回</a>
               </h4>
             </div>
             <!-- 放主要内容 -->

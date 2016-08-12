@@ -80,4 +80,9 @@ public class ArgumentServiceImpl implements IArgumentService {
 		keys = argumentMapper.selectAllKey(companyId);
 		return keys;
 	}
+	
+	@Override
+	public EhrArgumentInfo selectByKey(Long companyId, String argumentKey){
+		return argumentMapper.selectByKey(companyId, argumentKey);
+	}
 }

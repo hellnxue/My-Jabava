@@ -45,9 +45,9 @@
                                 员工薪酬档案管理
                             </h4> -->
                             <div class="text-right">
-                               <button class="btn btn-info btn-sm" type="button" data-action="add" data-target="[data-modal=addSalary]" data-toggle="modal">新增</button>
-                               <button class="btn btn-info btn-sm" type="button" data-action="edit" data-target="[data-modal=alterSalary]" data-toggle="modal">修改</button>
-                               <button class="btn btn-danger btn-sm del" type="button">删除</button>
+                               <button class="btn btn-info btn-sm" type="button" data-action="add" data-target="[data-modal=add]" data-toggle="modal">新增</button>
+                               <button class="btn btn-info btn-sm" type="button" data-action="edit" data-target="[data-modal=edit]" data-toggle="modal">修改</button>
+                               <button class="btn btn-danger btn-sm del" type="button" data-action="remove">删除</button>
                             </div> 
                         </div>
 
@@ -59,6 +59,7 @@
                                     <th>信息项名称</th>
                                     <th>信息项类型</th>
                                     <th>参照项</th>
+                                    <th>关联表</th>
                                     <th>是否必填</th>
                                     <th>是否启用</th>
                                 </tr>
@@ -79,7 +80,7 @@
         <!-- 放页脚  结束-->
 
         <!-- 新增弹框 -->
-        <div class="modal fade hmodal-success form-row" data-modal="addSalary" tabindex="-1">
+        <div class="modal fade hmodal-success form-row" data-modal="add" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="color-line"></div>
@@ -87,22 +88,21 @@
                         <div class="row" data-id="add" data-target="clearHtml">
                             <script type="text/html" id="addFieldDisplayConfig">
                                 <form class="form-horizontal" id="addForm" action="">
-                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="form-group">
                                             <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">关联表：</label>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-4 ">
                                                 <select class="form-control" id="tableDefId" name="tableDefId">
                                                     <option value="">----------</option>
-                                                    {{each linkList as $item}}
-                                                    <option value="{{$item.tableDefId}}">{{$item.memo}}</option>
-                                                    {{/each}}
+                                                    <option value="ehr_person" keyField="person_id" relation="1">个人信息表</option>
+                                                    <option value="ehr_position" keyField="post_id" relation="1">岗位信息表</option>
                                                 </select>
                                             </div>   
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-group">
-                                            <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">信息项名称：</label>                                   
+                                            <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">信息项名称：</label>                    
                                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
                                                 <input type="text" class="form-control" name="displayName" id="displayName">
                                             </div>
@@ -115,7 +115,7 @@
                                                 <select class="form-control" id="dataType" name="dataType">
                                                     <option value="">----------</option>
                                                     {{each commonDataList as $item}}
-                                                    <option value="{{$item.commonDataCode}}">{{$item.commonDataName}}</option>
+                                                    <option {{if $item.commonDataCode ==1}}selected="selected"{{/if}} value="{{$item.commonDataCode}}">{{$item.memo}}</option>
                                                     {{/each}}
                                                 </select>
                                             </div>
@@ -125,7 +125,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">参照项：</label>
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
-                                                <select class="form-control" id="refId" name="refId">
+                                                <select class="form-control" id="refId" name="refId" disabled="disabled">
                                                     <option value="">----------</option>
                                                     {{each consultList as $item}}
                                                     <option value="{{$item.baseDataType}}">{{$item.baseDataTypeName}}</option>
@@ -169,32 +169,25 @@
                 </div>
             </div>
         </div>
+        
         <!-- 新增弹框结束 -->
         <!-- 修改弹框 -->
-        <div class="modal fade hmodal-success form-row" data-modal="alterSalary" tabindex="-1">
+        <div class="modal fade hmodal-success form-row" data-modal-for="transfer" data-modal="edit" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="color-line"></div>
                     <div class="modal-header">
-                        <div class="row" data-id="" data-target="clearHtml">
+                        <div class="row" data-id="edit" data-target="clearHtml">
+                          <script type="text/html" id="editFieldDisplayConfig">
                             <form class="form-horizontal" id="modifyForm" action="">
-                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3 col-sm-3 col-md-3 col-lg-2">关联表：</label>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-4 ">
-                                            <select class="form-control" id="tableDefId" name="tableDefId" disabled="disabled">
-                                                <option value="">----------</option>
-                                                <option>个人信息</option>
-                                                <option>工作信息</option>
-                                            </select>
-                                        </div>   
-                                    </div>
-                                </div>
+                                <input type="hidden" name="dataType" value="{{ehrTableFieldDef.dataType}}">
+                                <input type="hidden" name="refId" value="{{ehrTableFieldDef.refId}}">
+                                <input type="hidden" name="tableDefId" value="{{ehrTableFieldDef.tableDefId}}">
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">信息项名称：</label>                                   
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
-                                            <input type="text" class="form-control" name="displayName"  readonly="">
+                                            <input type="text" class="form-control" name="displayName" readonly="readonly" value="{{ehrTableFieldDef.displayName}}">
                                         </div>
                                     </div>
                                 </div>
@@ -204,9 +197,9 @@
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
                                             <select class="form-control" id="dataType" name="dataType" disabled="disabled">
                                                 <option value="">----------</option>
-                                                <option>字符</option>
-                                                <option>参照</option>
-                                                <option>日期</option>
+                                                {{each commonDataList as $item}}
+                                                    <option value="{{$item.commonDataCode}}" {{if $item.commonDataCode==ehrTableFieldDef.dataType}} selected="selected"{{/if}}>{{$item.memo}}</option>
+                                                {{/each}}
                                             </select>
                                         </div>
                                     </div>
@@ -217,21 +210,21 @@
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
                                             <select class="form-control" id="refId" name="refId"  disabled="disabled">
                                                 <option value="">----------</option>
-                                                <option>字符</option>
-                                                <option>参照</option>
-                                                <option>日期</option>
+                                                 {{each consultList as $item}}
+                                                    <option value="{{$item.baseDataType}}" {{if $item.baseDataType==ehrTableFieldDef.refId}} selected="selected"{{/if}}>{{$item.baseDataTypeName}}</option>
+                                                 {{/each}}
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">是否必填：</label>
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
                                             <select class="form-control" id="isNecessary" name="isNecessary">
                                                 <option value="">----------</option>
-                                                <option value="1">是</option>
-                                                <option value="0">否</option>
+                                                <option {{if (1 == ehrTableFieldDef.isNecessary)}}selected="selected"{{/if}} value="1">是</option>
+                                                <option {{if (0 == ehrTableFieldDef.isNecessary)}}selected="selected"{{/if}} value="0">否</option>
                                             </select>
                                         </div>
                                     </div>
@@ -242,17 +235,18 @@
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 ">
                                             <select class="form-control" id="isUsing" name="isUsing" >
                                                 <option value="">----------</option>
-                                                <option value="1">是</option>
-                                                <option value="0">否</option>
+                                                <option {{if (1 == ehrTableFieldDef.isUsing)}}selected="selected"{{/if}} value="1">是</option>
+                                                <option {{if (0 == ehrTableFieldDef.isUsing)}}selected="selected"{{/if}} value="0">否</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                                    <button type="submit" class="btn btn-info btn-sm">确　定</button>
+                                    <button type="submit" class="btn btn-info btn-sm" data-action="sure">确　定</button>
                                     <button type="button" class="btn btn-info btn-sm" data-id="cancel">取　消</button>
                                 </div>
                             </form>
+                            </script>
                         </div>   
                     </div>
                 </div>
@@ -298,9 +292,8 @@
     <script src="static/js/template.js"></script>
     
 <script type="text/javascript">
-	
     $(function (){
-    	$.fn.extend({
+        $.fn.extend({
             serializeObject:function(){
                    if(this.length>1){
                           return false;
@@ -313,9 +306,9 @@
                    return obj;
             }
         });
-    	loadTable();
-        editformValidation();
+        loadTable();
         add();
+        edit();
         remove();
     });
 
@@ -370,6 +363,7 @@
                                 }
                             },
                             refId: {
+                                enabled: false,
                                 validators: {
                                     notEmpty:{
                                         message: '请填写必填项'
@@ -392,69 +386,158 @@
                             }
 
                         }
-                }) 
+                })
+                .on('change', '#dataType', function(e) {
+                    var getThisValue = $(this).val(),
+                        $getForm = $(this).parents('form'),
+                        $getRefId = $getForm.find('[name="refId"]'),
+                        fv = $getForm.data('formValidation');
+
+                    if(getThisValue == 2){
+                        $getRefId.prop({
+                            disabled: false
+                        });
+                        fv.enableFieldValidators('refId', true)
+                    }else{
+                        fv
+                        .resetField($getRefId)
+                        .enableFieldValidators('refId', false)
+
+                        $getRefId
+                        .val('')
+                        .prop({
+                            disabled: true
+                        })
+                    }
+                })
                 .on('success.fv.form', function(e) {
                     e.preventDefault();
                     var getThisForm = $(e.target).serializeObject();
-                    console.log(getThisForm)
+                    var $select=$("#tableDefId option:selected");
+                    var ehrTableDef={
+                        keyTable:$select.val(),
+                        keyField:$select.attr("keyfield"),
+                        relation:$select.attr("relation"),
+                    }; 
+                    getThisForm.ehrTableDef=ehrTableDef;
+                    delete getThisForm.tableDefId;
                     $.ajax({
                         url: 'system/addOrUpdataFieldDef',
                         type: 'POST',
+                        contentType: 'application/json', 
                         dataType: 'json',
                         async: false,
-                        data: {'tableFieldDef': getThisForm}
+                        data: JSON.stringify(getThisForm)
                     })
                     .done(function(d) {
-                        console.log(d)
+                        swal({
+                            title: "新增字段成功!",
+                            text: data.msg,
+                            type: "success"
+                        },function(){
+                            window.location.reload();
+                        });
+
                     })
                 });
             })
         });
     }
-    // 取消按钮
+
+    // 修改表单
+    function edit(){
+        $('[data-action="edit"]').on('click', function(e) {
+            var len = $(":checked[name='checkAll']").length;
+            if(len == 0 || len > 1){
+                alert("请选择一个清单！");
+             return false;
+            }
+            var getActionData = $(this).attr('data-action'),
+                getEditItemsId = $('[data-modal="'+getActionData+'"]').data('itemsId');
+
+            $.ajax({
+                url: 'system/selectFieldDef',
+                type: 'POST',
+                dataType: 'json',
+                async: false,
+                data: {'tableFieldDefId': getEditItemsId}
+            })
+            .done(function(d) {
+                var data = {
+                    commonDataList: d.commonDataList,
+                    consultList: d.consultList,
+                    ehrTableFieldDef: d.ehrTableFieldDef
+                };
+                html = template('editFieldDisplayConfig', data);
+                $('[data-id="edit"]').prepend(html);
+                cancel();
+                $('#modifyForm').formValidation({
+                        err: {
+                            container: 'tooltip'
+                        },
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            isNecessary: {
+                                validators: {
+                                    notEmpty:{
+                                        message: '请填写必填项'
+                                    }
+                                }
+                            },
+                            isUsing: {
+                                validators: {
+                                    notEmpty:{
+                                        message: '请填写必填项'
+                                    }
+                                }
+                            } 
+
+                        }
+                    })   
+                .on('success.fv.form', function(e) {
+                    e.preventDefault();
+                    var getThisForm = $(e.target).serializeObject();
+                    var tableFieldId =  getEditItemsId;
+                   
+                    getThisForm.tableFieldDefId = tableFieldId;
+                    $.ajax({
+                        url: 'system/addOrUpdataFieldDef',
+                        type: 'POST',
+                        contentType: 'application/json', 
+                        dataType: 'json',
+                        async: false,
+                        data: JSON.stringify(getThisForm)
+                    })
+                    .done(function(d) {
+                        swal({
+                            title: "修改字段成功!",
+                            text: data.msg,
+                            type: "success"
+                        },function(){
+                            window.location.reload();
+                        });
+                    })
+                });
+            })
+        });
+    }
+
+     // 取消按钮
     function cancel(){
         $('[data-id="cancel"]').on('click', function(e) {
            $(e.target).parents('.modal').modal('hide');
         });
         $('[data-modal]').on('hide.bs.modal', function(e) {
             var getTargetClear = $(e.target).find('[data-target=clearHtml]');
-
             getTargetClear.empty();
-            // console.log(getTargetClear)
         });
     }
-    // 修改表单验证
-     function editformValidation(){ 
-        $('#modifyForm').formValidation({
-            err: {
-                container: 'tooltip'
-            },
-            icon: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                isNecessary: {
-                    validators: {
-                        notEmpty:{
-                            message: '请填写必填项'
-                        }
-                    }
-                },
-                isUsing: {
-                    validators: {
-                        notEmpty:{
-                            message: '请填写必填项'
-                        }
-                    }
-                } 
-
-            }
-        })   
-     }
     function loadTable(params){
-    	table = $('#customizeTable').DataTable({
+        table = $('#customizeTable').DataTable({
             "dom": 
                 "<'row'<'col-sm-6'l><'col-sm-2'<'toolbar text-right'>>>" +
                 "<'row'<'col-sm-12 table-responsive'tr>>" +
@@ -466,43 +549,82 @@
             "bDestroy": true,
             "ordering": false,
             "ajax": {
-            	"url":"system/listTableFieldDef",
-            	"type":"post",
-            	"dataType": "json"
+                "url":"system/listTableFieldDef",
+                "type":"post",
+                "dataType": "json"
             },
             "columns": [
-	           { "data": "tableDefId", render: function(data, type, row, meta){
-                        var strHtml = '<input type="checkbox" name="" data-check="item" value="'+data+'">';
+               { "data": "tableDefId", render: function(data, type, row, meta){
+                // console.log(row.tableFieldDefId)
+                        var strHtml = '<input type="checkbox" name="checkAll" data-check="item" value="'+row.tableFieldDefId+'">';
                         return strHtml;
+                    },
+                    createdCell: function (td, cellData, rowData, row, col){
+                        var ueSelected = function($o, bSelectLast){
+                            bSelectLast = bSelectLast === undefined? true : bSelectLast;
+                            var getAllVal = [];
+                            if(bSelectLast){
+                                $('[data-check="item"]').not($o).prop('checked', false);
+                                getAllVal.push( $o.val() );
+                            }else{
+                                $.each($('[data-check="item"]:checked'), function(index, item) {
+                                    getAllVal.push( $(this).val() );
+                                });
+                            }
+                            getAllVal = getAllVal.join(',');
+                            return getAllVal;
+                        };
+                        $(td).on('click', '[data-check="item"]', function(event) {
+                            var $getCheckItem = $(this);
+                            if( $getCheckItem.prop('checked') ){
+                                var getIDs = ueSelected($getCheckItem);
+                                var getColumnName = rowData.columnName
+                                $('[data-modal-for="transfer"]').data('itemsId', getIDs);
+                                $('[data-action="remove"]').data('itemsId', getIDs);
+                                $('[data-action="remove"]').data('columnName', getColumnName);
+                            }else{
+                                $('[data-modal-for="transfer"]').removeData('itemsId');
+                                $('[data-action="remove"]').removeData('itemsId');
+                                $('[data-action="remove"]').removeData('columnName');
+                            }
+                        });
+                    }
+                },
+                { "data": "displayName" },
+                { "data": "dataType",render: function(data, type, row, meta){
+                    if(data == 1){
+                        return "文本";
+                    }else if(data == 2){
+                        return "参照";
+                    }else if(data == 3){
+                        return "日期";
+                    }
+                } },
+                { "data": "refName"},
+                {"data":"keyTable",render: function(data, type, row, meta){
+                    if(data =="ehr_person"){
+                        return "个人信息表";
+                    }else{
+                        return "岗位信息表";
+                    }
                 }},
-	            { "data": "displayName" },
-	            { "data": "dataType",render: function(data, type, row, meta){
-	            	if(data == 19){
-	            		return "text";
-	            	}else if(data == 20){
-	            		return "select";
-	            	}else if(data == 21){
-	            		return "datepicker";
-	            	}
-	            } },
-	            { "data": "refName"},
-	            { "data": "isNecessary", render: function(data, type, row, meta){
-	            	if(data == 1){
-	            		return "是";
-	            	}else{
-	            		return "否";
-	            	}
-	            } },
-	             { "data": "isUsing",render: function(data, type, row, meta){
-	            	 if(data == 1){
-		            		return "是";
-		            	}else{
-		            		return "否";
-		            	}
-	             } }
+                { "data": "isNecessary", render: function(data, type, row, meta){
+                    if(data == 1){
+                        return "是";
+                    }else{
+                        return "否";
+                    }
+                } },
+                 { "data": "isUsing",render: function(data, type, row, meta){
+                     if(data == 1){
+                            return "是";
+                        }else{
+                            return "否";
+                        }
+                 } }
             ],
-          	"columnDefs": [
-            	{defaultContent: '', targets: '_all'}
+            "columnDefs": [
+                {defaultContent: '', targets: '_all'}
             ],
             "language": {
                 "search": "过滤:",
@@ -522,24 +644,64 @@
     }
     // 删除
     function remove(){
-      $('.del').click(function () {
+        $('.del').click(function () {
+            var len = $(":checked[name='checkAll']").length;
+                if(len == 0 || len > 1){
+                    alert("请选择一个清单！");
+                return false;
+            }
+            var getEditItemsId = $('[data-action="remove"]').data('itemsId');
+            var getColumnName = $('[data-action="remove"]').data('columnName');
+            
+            
             swal({
-                    title: "确定要删除此用户吗?",
-                    text: "注意：用户删除后将不可登录!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "是,请删除该用户!",
-                    cancelButtonText: "不, 放弃此操作!",
-                    closeOnConfirm: false,
-                    closeOnCancel: false },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal("删除成功!", "该用户已经被删除.", "success");
-                    } else {
-                        swal("已取消", "用户未删除。你这逗我玩呢 :)", "error");
+                title: "确定要删除此信息项吗?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是,请删除!",
+                cancelButtonText: "不, 放弃此操作!",
+                closeOnConfirm: false,
+                closeOnCancel: false },
+            	function (isConfirm) {
+                    if(isConfirm){
+                    	$.ajax({
+                            url: 'system/deleteFieldDef',
+                            type: 'POST',
+                            dataType: 'json',
+                            async: false,
+                            data: { tableFieldDefId: getEditItemsId, columnName: getColumnName}
+                        })
+                        .done(function(data){
+                        	if (data) {
+                                if(data.success == true){
+                                    swal({
+                                        title: "删除成功!",
+                                        text: data.msg,
+                                        type: "success"
+                                    },function(){
+                                        window.location.reload();
+                                    });
+                                }else{
+                                    swal({
+                                        title: "删除失败!",
+                                        text: data.msg,
+                                        type: "warning"
+                                    },function(){
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                           
+                        });
+                    	
+                    }else{
+                    	
+                    	 swal("已取消", "信息项未删除。", "error");
                     }
-                });
+                    
+            });
+            
         });  
     }
 </script>

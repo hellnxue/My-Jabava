@@ -939,15 +939,48 @@
   	</select>
   	
   	<select id="searchEhrPersonPage" resultType="java.util.HashMap" parameterType="java.util.Map">
-  		select 
-  			ep.*,eo.organization_name org,ebd.base_data_name post,
-  			ep.job_number as employeeNumber
-		from 
-			ehr_person ep	  
-	    left join ehr_organization eo on ep.organization_id =eo.organization_id
-	    left join ehr_base_data ebd on ep.post_id = ebd.base_data_id
-		where 
-			 ep.company_id=#{companyId,jdbcType=BIGINT} and ep.is_deleted=0
+	select
+
+	ep.*,eo.organization_name org,
+	
+	ebd.base_data_name post,
+	
+	zj.base_data_name rankName,
+
+	ep.job_number as employeeNumber ,
+
+	reportPerson.employee_name reportObject,
+	
+	case ep.sex when 1 THEN '男' else '女' end hsex ,
+	
+	case ep.marital when 1 THEN '未婚' else '已婚' end hmarital ,
+	
+	case ep.is_foreign when 1 THEN '是' else '否' end isForeign ,
+	
+	case ep.study_abroad when 1 THEN '是' else '否' end studyAbroad ,
+	
+	case ep.is_payroll_flag when 1 THEN '停发' else '未停发' end isPayrollFlag ,
+	
+	case ep.key_person when 1 THEN '是' else '否' end keyPerson ,
+	
+	case ep.register_type when 1 THEN '本地城镇' when 2 THEN '本地农村' when 3 THEN
+	'外地城镇' when 4 THEN '外地农村' else '' end registerType,
+	
+	case ep.status when 1 THEN '在职' when 2 THEN '离职' when 3 THEN '-停职' when 4
+	THEN '退休' when 5 THEN '再入职' else '' end hstatus
+
+	from ehr_person ep
+
+	left join ehr_organization eo on ep.organization_id =eo.organization_id
+
+	left join ehr_base_data ebd on ep.post_id = ebd.base_data_id
+	
+	left join ehr_base_data zj on ep.rank_id = zj.base_data_id
+
+	left JOIN ehr_person reportPerson on ep.report_object=reportPerson.person_id
+
+	where
+	ep.company_id=#{companyId,jdbcType=BIGINT} and ep.is_deleted=0
 			<if test="distinguish != null and distinguish != ''">
 				 and ep.organization_id in (select organization_id from ehr_organization where total_organization_code like CONCAT(CONCAT('%', #{distinguish, jdbcType=VARCHAR}), '%') )
 			</if>

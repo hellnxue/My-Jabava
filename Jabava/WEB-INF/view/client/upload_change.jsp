@@ -54,10 +54,10 @@
 					  <div class="tab-content">
 					    <div role="tabpanel" class="tab-pane active" id="home">
 					    	<div class="panel-heading hbuilt jabava-built p-lg">
-					    		<h4 class="m-n font-bold">上传增减变表
+					    		<h4 class="m-n font-bold">
 					    		<p class="small font-light m-t-md">企业可下载增减变表模版，将该月需要或不需要缴纳社保人员信息以及需要更改社保人员信息等整理到模版中，上传到HRO客户端，无需联系客服操作。</p>
 					    		</h4>
-					    	</div>
+					    	</div> 
 					        <div class="panel-body">
 					            <div class="col-md-7 col-md-offset-2">
 					            	<form class="form-horizontal" id="uploadForm">

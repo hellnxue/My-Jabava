@@ -86,6 +86,9 @@ public interface EhrBaseDataMapper {
     
     List<EhrBaseData> getByCompanyId(@Param("companyId") Long companyId);
 
+    EhrBaseData selectBaseDataByCode(@Param("companyId") Long companyId,
+			@Param("baseDataType") int baseDataType,
+			@Param("baseDataCode") String baseDataCode);
 
     List<EhrBaseData> selectBaseData(@Param("companyId") Long companyId,
 			@Param("baseDataType") int baseDataType,

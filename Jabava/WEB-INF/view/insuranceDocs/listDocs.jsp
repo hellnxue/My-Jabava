@@ -31,17 +31,27 @@
 	<jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
 
 	<div id="wrapper">
+		<div class="normalheader transition animated fadeIn small-header">
+          <div class="hpanel">
+            <div class="panel-body">
+              <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                <h2 class="font-normal m-b-xs text-center">
+                  员工社保档案
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
 		<div id='zy-ss-profile-list' class="content animate-panel">
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="hpanel">
-						<div class="panel-heading">
-						<h4 class="text-center font-bold">
+						<div class="panel-heading m-b">
+						<h4>
 							<!-- <a class="pull-right small " data-toggle="modal" data-target="[data-modal=download]">
 								<span class="text-info">下载社保档案模板</span>
 							</a> -->
 							<a href="static/xls/Jabava_person_security_profile_list_template.1.0.1.xlsx" class="pull-right small"><span class="text-info">下载员工社保档案模板</span></a>
-							员工社保档案
 						</h4>
 						</div>
 

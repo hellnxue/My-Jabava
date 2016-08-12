@@ -36,15 +36,23 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
   <!-- 放主要内容  开始-->
   <!-- Main Wrapper -->
   <div id="wrapper">
+    <div class="normalheader transition animated fadeIn small-header">
+      <div class="hpanel">
+        <div class="panel-body">
+          <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+            <h2 class="font-normal m-b-xs text-center">
+              业务基础数据
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
     <!--请在这放主要内容 ，比如：导航条,搜索块，列表等-->
     <div class="content animate-panel">
       <div class="row">
         <div class="col-lg-12">
           <div class="hpanel">
             <div class="panel-heading ">
-              <h4 class="text-center font-bold">
-                业务基础数据
-              </h4>
               <div class="text-right">
               	<a href="static/xls/baseDataTemplate.xlsx" class="m-r-sm">下载基础数据模板</a>
                 <div class="btn btn-success btn-xs" data-id="importBasicData">

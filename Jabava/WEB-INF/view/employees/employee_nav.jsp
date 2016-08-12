@@ -4,15 +4,15 @@
     <div class="pull-left m-r">
         <img id="navEmployeePhoto" src="static/img/nobody.png">
     </div>  
-     <div class="col-sm-9 col-md-9 col-lg-9 font-normal m-t fonts-sizes">
+     <div class="col-sm-10 col-md-10 col-lg-10 font-normal m-t fonts-sizes">
       <p>姓名：<span id="navEmployeeName"></span>
         <% if(RequestUtil.hasPower("roster_navi_iv")){ %>
-        <a href="javascript://" class="btn btn-info btn-xs m-l-xs hidden" id="perfectInfoLink" data-send-notify="${personId}">邀请用户完善信息</a>
+        <a href="javascript://" class="btn btn-warning btn-xs m-l-xs hidden pull-right" id="perfectInfoLink" data-send-notify="${personId}">邀请用户完善信息</a>
         <% } %>
       </p>
       <p>手机：<span id="navEmployeePhone"></span></p>
      </div>
-     <div class="board col-sm-9 col-md-9 col-lg-10">
+     <div class="board col-sm-10 col-md-10 col-lg-10">
         <div class="liner"></div>
         <div class="slicks">
             <!-- <div class="order">

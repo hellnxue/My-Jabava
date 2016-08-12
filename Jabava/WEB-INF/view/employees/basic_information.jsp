@@ -27,15 +27,25 @@
 <!-- 放主要内容  开始-->
 <!-- Main Wrapper -->
 <div id="wrapper" class="min-h">
+	<div class="normalheader transition animated fadeIn small-header">
+      <div class="hpanel">
+        <div class="panel-body">
+          <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+            <h2 class="font-normal m-b-xs text-center">
+              员工资料
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
          <!-- 放主要内容 -->
           <div class="content animate-panel">
             <div class="row">
               <div class="col-lg-12">
                 <div class="hpanel">
-                  <div class="panel-heading">
-                      <h4 class="text-center font-bold">
+                  <div class="panel-heading m-b-lg">
+                      <h4>
                           <button onclick="toEmployeeList()" class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
-                          <span>员工资料</span>
                       </h4>
                   </div>
                   <!--引入员工信息导航 开始--> 
@@ -440,60 +450,59 @@
 
                             {{if customFieldList}}
                             {{each customFieldList as $field}}
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6{{if $field.displayType!==1}} sr-only{{/if}}">
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6{{if $field.isUsing!==1}} sr-only{{/if}}">
                               <div class="form-group">
                                 <label for="" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">{{$field.displayName}}：</label>
                                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                    <div class="input-group-static">
+                                      <p class="form-control-static">{{$field.displayValue}}&nbsp;</p>
+                                    </div>
+                                    {{if $field.isNecessary==1}}
+                                    <div class="form-required">
+                                    {{/if}}
 
                                   {{if $field.dataType == 'text'}}
-                                  <div class="input-group-static">
-                                    <p class="form-control-static">{{$field.value}}</p>
-                                  </div>
                                   <input type="text" class="form-control" 
-                                  name="{{$field.columnName}}" 
-                                  value="{{$field.value}}" 
-                                  data-custom-field="1" 
-                                  data-tabledataid="{{$field.tableDataId}}" 
-                                  data-keyvalue="{{person.personId}}" 
-                                  data-tablefielddefid="{{$field.tableFieldDefId}}">
+                                    name="{{$field.columnName}}" 
+                                    value="{{$field.value}}" 
+                                    {{if $field.isNecessary==1}}
+                                    data-fv-notempty="true" 
+                                    data-fv-notempty-message="请填写必填项目" 
+                                    {{/if}}
+                                    data-custom-field="1" 
+                                    data-tabledataid="{{$field.tableDataId}}" 
+                                    data-keyvalue="{{person.personId}}" 
+                                    data-tablefielddefid="{{$field.tableFieldDefId}}">
                                   {{/if}}
 
                                   {{if $field.dataType == 'select'}}
-                                  <div class="input-group-static">
-                                    <p class="form-control-static">
-                                    {{if $field.refId}}
-                                      {{each $field.baseDataList as $item}}
-                                        {{if $item.baseDataCode == $field.refId}}
-                                          {{$item.baseDataName}}
-                                        {{/if}}
-                                      {{/each}}
-                                    {{else}}
-                                      {{$field.value}}
-                                    {{/if}}
-                                    </p>
-                                  </div>
                                   <select class="form-control" 
-                                  name="{{$field.columnName}}" 
-                                  data-custom-field="1" 
-                                  data-tabledataid="{{$field.tableDataId}}" 
-                                  data-keyvalue="{{person.personId}}" 
-                                  data-tablefielddefid="{{$field.tableFieldDefId}}">
+                                    name="{{$field.columnName}}" 
+                                    {{if $field.isNecessary==1}}
+                                    data-fv-notempty="true" 
+                                    data-fv-notempty-message="请填写必填项目" 
+                                    {{/if}}
+                                    data-custom-field="1" 
+                                    data-tabledataid="{{$field.tableDataId}}" 
+                                    data-keyvalue="{{person.personId}}" 
+                                    data-tablefielddefid="{{$field.tableFieldDefId}}">
                                   {{if $field.refId}}
                                     {{each $field.baseDataList as $item}}
-                                    <option{{if $item.baseDataCode == $field.refId}} selected="selected"{{/if}} value="{{$item.baseDataCode}}">{{$item.baseDataName}}</option>
+                                    <option{{if $item.baseDataCode == $field.value}} selected="selected"{{/if}} value="{{$item.baseDataCode}}">{{$item.baseDataName}}</option>
                                     {{/each}}
                                   {{/if}}
                                   </select>
                                   {{/if}}
 
                                   {{if $field.dataType == 'datepicker'}}
-                                  <div class="input-group-static">
-                                    <p class="form-control-static">{{$field.value}}</p>
-                                  </div>
                                   <div class="input-group date">
                                     <input type="text" class="form-control" 
                                     name="{{$field.columnName}}" 
                                     value="{{$field.value}}" 
+                                    {{if $field.isNecessary==1}}
+                                    data-fv-notempty="true" 
+                                    data-fv-notempty-message="请填写必填项目" 
+                                    {{/if}}
                                     data-custom-field="1" 
                                     data-tabledataid="{{$field.tableDataId}}" 
                                     data-keyvalue="{{person.personId}}" 
@@ -501,6 +510,10 @@
                                     <span class="input-group-addon" style=""><i class="glyphicon glyphicon-th"></i></span>
                                   </div>
 
+                                  {{/if}}
+
+                                  {{if $field.isNecessary==1}}
+                                  </div>
                                   {{/if}}
 
                                 </div>
@@ -657,7 +670,15 @@ $(function(){
                 // item.dataType = _fieldType[index];
                 if(item.customMeta){
                   item.keyValue = item.customMeta.keyValue;
-                  item.value = item.customMeta.value;
+                  item.displayValue = item.value = item.customMeta.value;
+                  if(item.dataType==='select' && item.baseDataList){
+                    $.each(item.baseDataList, function(index, baseData) {
+                      if(baseData.baseDataCode==item.value){
+                        item.displayValue = baseData.baseDataName;
+                        return false;
+                      }
+                    });
+                  }
                   item.tableDataId = item.customMeta.tableDataId;
                 }else{
                   item.keyValue = null;
@@ -735,14 +756,14 @@ $(function(){
               })
 
                 $('.input-group.date')
-              .datepicker({
-                 format: "yyyy-mm-dd",
-               autoclose: true
-              })
-              .on('changeDate', function(e){
+                .datepicker({
+                    format: "yyyy-mm-dd",
+                    autoclose: true
+                })
+                .on('changeDate', function(e){
                   var getEleName = $(e.target).find(':text').attr('name');
                   $('[data-form="validator"]').formValidation('revalidateField', getEleName);
-              });
+                });
 
               if(data.person.personId == ''){
                   getDomFormAction.parent('form').hide();

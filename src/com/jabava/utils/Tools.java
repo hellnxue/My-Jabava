@@ -29,9 +29,12 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.jabava.common.exception.DefaultException;
 import com.jabava.core.config.JabavaPropertyCofigurer;
+import com.jabava.pojo.system.EHrMailConfig;
 import com.jabava.utils.mail.MailVO;
+import com.jabava.utils.security.ThreeDesUtils;
 
 public class Tools {
+	private final static String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 	
 	public static String encryptPassword(String password) throws Exception {
 		//return new BCryptPasswordEncoder(9).encode(password);
@@ -198,18 +201,30 @@ public class Tools {
 		}
 	}
 	
-	public static Map<String, Integer> mailSend(Map<String, MailVO> mailVOMap) throws Exception{
+	public static Map<String, Integer> mailSend(Map<String, MailVO> mailVOMap, EHrMailConfig mailConfig) throws Exception{
 		Transport transport = null;
 		Map<String, Integer> result = new HashMap<String, Integer>();
 		try {
+			Properties properties = new Properties();
+		    properties.put("mail.smtp.auth", "true");
+		    properties.put("mail.smtp.host", mailConfig.getMailServer());
+		    properties.put("mail.smtp.port", mailConfig.getMailPort()); 
+		    if(StringUtils.equals(mailConfig.getSafeFlag(), "1")){
+		    	properties.put("mail.smtp.ssl.enable", "true");
+			    properties.put("mail.smtp.socketFactory.class", SSL_FACTORY);  //使用JSSE的SSL socketfactory来取代默认的socketfactory
+			    properties.put("mail.smtp.socketFactory.fallback", "false");  // 只处理SSL的连接,对于非SSL的连接不做处理
+			    properties.put("mail.smtp.socketFactory.port", mailConfig.getMailPort());
+		    }
+		    
 			//初始化Session
 			Session session = Session.getInstance(new Properties());
 			session.setDebug(false);// 开启后有调试信息
 
 			transport = session.getTransport("smtp");
-			transport.connect(JabavaPropertyCofigurer.getProperty("JABAVA_SMTP"),
-					JabavaPropertyCofigurer.getProperty("JABAVA_MAIL"),
-					JabavaPropertyCofigurer.getProperty("JABAVA_MAIL_PWD"));
+//			transport.connect(JabavaPropertyCofigurer.getProperty("JABAVA_SMTP"),
+//					JabavaPropertyCofigurer.getProperty("JABAVA_MAIL"),
+//					JabavaPropertyCofigurer.getProperty("JABAVA_MAIL_PWD"));
+			transport.connect(mailConfig.getMailServer(), mailConfig.getSendTo(), ThreeDesUtils.decryptMode(mailConfig.getMailPassword()));
 			
 			//多线程发送邮件
 			ExecutorService executor = Executors.newCachedThreadPool();

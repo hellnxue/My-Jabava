@@ -28,7 +28,17 @@
 <!-- 放主要内容  开始-->
 <!-- Main Wrapper -->
 <div id="wrapper" class="min-h">
-
+  <div class="normalheader transition animated fadeIn small-header">
+    <div class="hpanel">
+      <div class="panel-body">
+        <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+          <h2 class="font-normal m-b-xs text-center">
+            员工资料
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- 放主要内容 -->
                 
             <!--工作履历-->
@@ -36,12 +46,11 @@
             <div class="row ">
                <div class="col-lg-12">
               <div class="hpanel">
-                <div class="panel-heading">
-                      <h4 class="text-center font-bold">
-                          <button onclick="toEmployeeList()" class="btn btn-default btn-sm btn-absolute" type="button">　返回　</button>
-                          <span>员工资料</span>
-                      </h4>
-                  </div>
+                <div class="panel-heading m-b-lg">
+                  <h4>
+                    <a onclick="toEmployeeList()"  type="button" class="btn btn-default btn-sm btn-absolute">返　回</a>
+                  </h4>
+                </div>
                 <!--引入员工信息导航 开始--> 
                 <jsp:include flush="true" page="employee_nav.jsp">
                 	<jsp:param value="experience" name="type"/>

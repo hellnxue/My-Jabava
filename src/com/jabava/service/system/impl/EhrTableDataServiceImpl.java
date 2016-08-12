@@ -46,6 +46,13 @@ public class EhrTableDataServiceImpl implements EhrTableDataService {
 		}
 		
 	}
+
+	@Override
+	public List<EhrTableData> selectByTableFieldDefId(Long tableFieldDefId) {
+		// TODO Auto-generated method stub
+		List<EhrTableData> ehrTableDataList = tableDataMapper.selectByTableFieldDefId(tableFieldDefId);
+		return ehrTableDataList;
+	}
 	
  
 

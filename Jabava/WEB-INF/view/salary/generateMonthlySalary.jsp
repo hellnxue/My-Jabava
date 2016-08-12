@@ -33,15 +33,25 @@
     <!-- 放主要内容  开始-->
     <!-- Main Wrapper -->
     <div id="wrapper">
+        <div class="normalheader transition animated fadeIn small-header">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                        <h2 class="font-normal m-b-xs text-center">
+                            生成
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- 放主要内容 -->
         <div class="content animate-panel">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hpanel">
-                        <div class="panel-heading">
-                            <h4 class="text-center font-bold">
-                                生成
+                        <div class="panel-heading m-b-lg">
+                            <h4>
                                 <a href="salary/listMonthlySalary" class="pull-left btn btn-success">
                                     返　回
                                 </a>
@@ -243,6 +253,7 @@
                 data : $('#generateForm').serialize(),
                 dataType:'json',
                 type : 'post',
+                async: false,
                 success : function(message) {
                     if(message.success){
                         swal({

@@ -53,6 +53,17 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 
   <!-- Main Wrapper -->
   <div id="wrapper">
+    <div class="normalheader transition animated fadeIn small-header">
+      <div class="hpanel">
+        <div class="panel-body">
+          <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+            <h2 class="font-normal m-b-xs text-center">
+              组织架构
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 放主要内容 -->
     <div class="content animate-panel">
       <div class="row">

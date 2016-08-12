@@ -12,5 +12,11 @@ public interface EhrTableDataService {
 	 * @return
 	 */
 	public void handleCustomData(List<EhrTableData> list);
+	/**
+	 * 查询自定义字段的值
+	 * @param tableFieldDefId
+	 * @return
+	 */
+	public List<EhrTableData> selectByTableFieldDefId(Long tableFieldDefId);
 
 }

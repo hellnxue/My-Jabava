@@ -27,18 +27,22 @@
   
 <!-- Main Wrapper -->
 <div id="wrapper">
-
+  <div class="normalheader transition animated fadeIn small-header">
+    <div class="hpanel">
+      <div class="panel-body">
+        <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+          <h2 class="font-normal m-b-xs text-center">
+            ${year} 订单
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- 放主要内容 -->
   <div class="content animate-panel check_hide">
     <div class="row">
       <div class="col-lg-12">
         <div class="hpanel">
-          <div class="panel-heading">
-            <h4 class="text-center font-bold orderYear">
-            ${year} 订单
-            </h4>
-            
-          </div>
           <div class="panel-body">
             <table id="billTable" class="table table-bordered table-hover" width="100%">
               <thead>

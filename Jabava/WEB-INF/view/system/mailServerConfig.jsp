@@ -26,13 +26,17 @@
   
 <!-- Main Wrapper -->
 <div id="wrapper">
-    <!-- <div class="small-header transition animated fadeIn">
+    <div class="normalheader transition animated fadeIn small-header">
         <div class="hpanel">
-            <div class="panel-body text-center">
-                
+            <div class="panel-body">
+                <div id="hbreadcrumb" class="m-t-xs m-b-xs">
+                    <h2 class="font-normal m-b-xs text-center">
+                        发信箱设置
+                    </h2>
+                </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- 放主要内容 -->
     <div class="content animate-panel">
         <div class="row">
@@ -40,7 +44,6 @@
                 <div class="hpanel">
                     <div class="panel-heading hbuilt jabava-built p-lg text-center">
                         <h4 class="m-n font-bold">
-                            发信箱设置
                             <p class="small font-light m-t-md"> 
                                 （该邮箱用于公司工资单推送消息同时发送给员工时的发件邮箱使用）
                             </p>
@@ -48,7 +51,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-3 col-sm-6 col-md-6 col-lg-6">
-                            <form class="form-horizontal" action="" data-id="validate">
+                            <form class="form-horizontal" action="" data-id="validate" id="mailConfigId">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4 col-md-4 col-lg-4">邮箱类型：</label>
                                     <div class="col-sm-8 col-md-8 col-lg-8">
@@ -60,19 +63,19 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4 col-md-4 col-lg-4">发信箱：</label>
                                     <div class="col-sm-8 col-md-8 col-lg-8 form-required">
-                                        <input type="text" placeholder="请输入公司邮箱账号" name="email" class="form-control">
+                                        <input type="text" placeholder="请输入公司邮箱账号" name="sendTo" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4 col-md-4 col-lg-4">邮箱密码：</label>
                                     <div class="col-sm-8 col-md-8 col-lg-8 form-required">
-                                        <input type="password" name="password" placeholder="请输入公司邮箱密码" class="form-control">
+                                        <input type="password" name="mailPassword" placeholder="请输入公司邮箱密码" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4 col-md-4 col-lg-4">发信箱服务器：</label>
                                     <div class="col-sm-8 col-md-8 col-lg-8 form-required">
-                                        <input type="text" name="server" placeholder="例如：smtp.163.com" class="form-control">
+                                        <input type="text" name="mailServer" placeholder="例如：smtp.163.com" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -80,11 +83,11 @@
                                     <div class="col-sm-8 col-md-8 col-lg-8">
                                         <div class="form-control-static">
                                           <div class="radio radio-info radio-inline">
-                                              <input type="radio" value="1" name="bo" class="form-control">
+                                              <input type="radio" value="1" name="safeFlag" class="form-control">
                                               <label for="inlineRadio1">是</label>
                                           </div>
                                           <div class="radio radio-info radio-inline">
-                                              <input type="radio" value="2" name="bo" class="form-control">
+                                              <input type="radio" value="0" name="safeFlag" class="form-control" checked="true">
                                               <label for="inlineRadio1">否</label>
                                           </div>
                                         </div>
@@ -93,7 +96,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4 col-md-4 col-lg-4">端口：</label>
                                     <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <input type="text" name="" value="25" class="form-control">
+                                        <input type="text" name="mailPort" value="25" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group text-center">
@@ -147,7 +150,7 @@
                     locale: 'zh_CN',
 
                     fields: {
-                        email: {
+                    	sendTo: {
                             validators: {
                                 notEmpty: {
                                     message: '请填写必填项目'
@@ -158,14 +161,21 @@
                                 }
                             }
                         },
-                        password: {
+                        mailPassword: {
                             validators: {
                                 notEmpty: {
                                     message: '请填写必填项目'
                                 }
                             }
                         },
-                        server: {
+                        mailServer: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写必填项目'
+                                }
+                            }
+                        },
+                        mailPort:{
                             validators: {
                                 notEmpty: {
                                     message: '请填写必填项目'
@@ -175,22 +185,74 @@
                     }
                 };
 
-            $('[data-id="validate"]')
-            .formValidation(validateOptions)
-            .on('success.form.fv', function(e) {
+            $('[data-id="validate"]').formValidation(validateOptions).on('success.form.fv', function(event) {
                 event.preventDefault();
-                console.log(e.target)
+                saveMail();
             });
 
             $('[data-action="reset"]').on('click', function(e) {
                 var getForm = $('[data-id="validate"]');
-
                 getForm.formValidation('resetForm');
                 getForm[0].reset();
             });
+            
+            initMailMsg();
         };
         init();
-    })(jQuery)
+    })(jQuery);
+    
+	function initMailMsg(){
+		$.ajax({
+            url : "system/loadMailConfig",
+            dataType:'json',
+            type : 'post',
+            success : function(data) {
+            	if(data.success){
+            		var result=data.result;
+            		var checked=data.safeFlag;
+            		$("input[name='sendTo']").val(result.sendTo);
+            		$("input[name='mailPassword']").val(result.mailPassword);
+            		$("input[name='mailServer']").val(result.mailServer);
+            		$("input[name='safeFlag'][value="+checked+"]").attr("checked",true); 
+            		$("input[name='mailPort']").val(result.mailPort);
+            	}
+            	
+            }
+        });
+	}
+	
+     function saveMail(){
+            var resetForm = function(){
+                var getForm = $('[data-id="validate"]');
+                getForm.formValidation('resetForm');
+            }
+            $.ajax({
+                url : "system/saveMailConfig",
+                data : $("#mailConfigId").serialize(),
+                dataType:'json',
+                type : 'post',
+                async : false
+            })
+            .done(function(data){
+                if (data.success) {
+                    swal({
+                        title: '',
+                        text: data.msg,
+                        type: "success"
+                    },function(d){
+                        resetForm();
+                    })
+                }else{
+                    swal({
+                        title: '',
+                        text: data.msg,
+                        type: "error"
+                    },function(d){
+                        resetForm();
+                    })
+                }
+            })
+        };
 </script>
 </body>
 </html>

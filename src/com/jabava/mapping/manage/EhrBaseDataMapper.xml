@@ -293,6 +293,12 @@
 		select base_data_id,base_data_type,base_data_name from ehr_base_data where company_id=#{companyId,jdbcType=BIGINT} and is_valid=1
 	</select>
 	
+	<select id="selectBaseDataByCode" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from ehr_base_data where is_valid=1 and company_id = #{companyId,jdbcType=BIGINT}
+			and base_data_type = #{baseDataType,jdbcType=INTEGER}
+			and base_data_code = #{baseDataCode,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="selectBaseData" resultMap="BaseResultMap">
 		select <include refid="Base_Column_List" /> from ehr_base_data where is_valid=1 and company_id = #{companyId,jdbcType=BIGINT}
 		
