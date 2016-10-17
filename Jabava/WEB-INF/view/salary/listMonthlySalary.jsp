@@ -101,6 +101,7 @@
                                     </div>
                                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                                         <a class="btn btn-info btn-sm btn-ms-query">查　询</a>
+                                        <button class="btn btn-default m-l" type="reset">重置</button>
                                     </div>
                                 </form>
                             </div>
@@ -288,7 +289,7 @@
         strHtml += '<a class="btn btn-info btn-sm btn-ms-generate m-r-sm">生  成</a>';
         <% } %>
         <% if(RequestUtil.hasPower("monthlysalary_ex")){ %>
-        strHtml += '<a href="report/commonGenReport?reportId=5" class="btn btn-info btn-sm" data-toggle="modal" data-target="[data-modal=confReport]">导出</a>';
+        strHtml += '<a href="report/commonGenReport?reportId=5" class="btn btn-warning btn-sm" data-toggle="modal" data-target="[data-modal=confReport]">导出</a>';
         <% } %>
         $('.toolbar').html(strHtml);
         $('.btn-ms-generate').on('click', function(){

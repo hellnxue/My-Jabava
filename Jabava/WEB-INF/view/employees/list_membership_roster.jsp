@@ -23,13 +23,13 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 	<!--splash screen-->
 	<jsp:include flush="true" page="../common/splashscreen.div.jsp"></jsp:include>
 
-	<!--引入头文件 开始--> 
+	<!--引入头文件 开始-->
 	<jsp:include flush="true" page="../common/header.div.jsp"></jsp:include>
 	<!--引入头文件 结束-->
-	 
-	<!--引入菜单文件 开始--> 
+
+	<!--引入菜单文件 开始-->
 	<jsp:include flush="true" page="../common/menu.div.jsp"></jsp:include>
-	<!--引入菜单文件 结束--> 
+	<!--引入菜单文件 结束-->
 
 <!-- 放主要内容  开始-->
 <!-- Main Wrapper -->
@@ -50,15 +50,15 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="hpanel">
-					
+
 					<!-- 高级搜索 复杂查询开始 -->
 					  <div class="collapse out" id="collapseExample" aria-expanded="false" >
 						<div class="well well-lg " >
 							<div class="row">
 								  <form role="form" class="search-form" id="searchForm">
-								 
+
 								  <div class="clearfix">
-								  
+
 									 <div class="form-group search-unit">
 										<label for="exampleInputName2" class="col-lg-4 rost_sousuo">工号：</label>
 										<div class="col-lg-8">
@@ -76,7 +76,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 										<div class="col-lg-8">
 											<input type="text" class="form-control" id="exampleInputName5" name="organizationName">
 										</div>
-									</div> 
+									</div>
 									<div class="form-group search-unit">
 										<label for="" class="col-lg-4 rost_sousuo">工作地：</label>
 										<div class="col-lg-8">
@@ -84,7 +84,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 											 <option value="">全部</option>
 										</select>
 										</div>
-									</div> 
+									</div>
 									<div class="form-group search-unit">
 										<label class="col-lg-4 rost_sousuo">发薪地：</label>
 										<div class="col-lg-8">
@@ -92,7 +92,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 											<option value="">全部</option>
 										</select>
 										</div>
-									</div> 
+									</div>
 									 <div class="form-group search-unit">
 										<label class="col-lg-4 rost_sousuo">入职时间：</label>
 										<div class="input-group date col-lg-8 rost_time">
@@ -111,7 +111,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 												<span class="input-group-addon">-</span>
 												<input type="text" class="input-sm form-control" name="positiveDateEnd" />
 											</div>
-											
+
 										</div>
 									</div>
 									<div class="form-group search-unit">
@@ -135,7 +135,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 											<option value="5">再入职</option>
 										</select>
 										</div>
-									</div> 
+									</div>
 									<div class="form-group search-unit">
 										<label class="col-lg-4 rost_sousuo">停发标志：</label>
 										<div class="col-lg-8">
@@ -145,15 +145,15 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 											<option value="1">停发</option>
 										</select>
 										</div>
-									</div> 
-									
+									</div>
+
 									<div class="form-group search-unit">
 										<label for="" class="col-lg-4 rost_sousuo">证书名称：</label>
 										<div class="col-lg-8">
 										<input type="text" class="form-control" id="" name="certificate">
 										</div>
 									</div>
-								   
+
 									</div>
 									<center style=" margin-top:10px;">
 									 <button class="btn btn-info" type="button" id="show" onclick="search()">高级搜索</button>
@@ -163,7 +163,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 						</div>
 				<!-- 高级搜索 复杂查询结束 -->
 
-					 <!--全部导出弹框-->    
+					 <!--全部导出弹框-->
 				   <div class="modal fade hmodal-success form-row" id="myModal7" tabindex="-1" role="dialog"  aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -175,21 +175,21 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 									<img src="static/img/daochu.png" width="220" height="220" style=" margin-left:146px; margin-bottom:40px;">
 									<center>
 								   <button class="btn btn-warning jxdc" data-dismiss="modal" type="button" onclick="return exportPerson();" title="员工信息导出模板">继续导出</button>&nbsp;&nbsp;
-								  
+
 									<button class="btn btn-info guanbi" type="button">取消</button>
 									</center>
 							  </form>
 							  </div>
-							</div>   
+							</div>
 						</div>
 					</div>
 				</div>
 				</div>
-				<!--全部导出弹框 end--> 
-			  
+				<!--全部导出弹框 end-->
+
 				<div class="panel-heading m-b">
 					<h4>
-						<a href="static/xls/Jabava_roll_list_template.1.0.5.xlsx" class="pull-right small"><span class="text-info">下载花名册模板</span></a>
+					<!--  	<a href="static/xls/Jabava_roll_list_template.1.0.5.xlsx" class="pull-right small"><span class="text-info">下载花名册模板</span></a>-->
 					</h4>
 				</div>
 				<div class="panel-body" id="allcheck">
@@ -206,7 +206,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				</tr>
 				</thead>
 				<tbody>
-				
+
 				</tbody>
 				</table>
 
@@ -216,7 +216,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 
 	</div>
 	</div>
-	
+
 	<!--转正界面开始-->
 	<div class="modal fade hmodal-success form-row" id="myModal8" tabindex="-1" role="dialog"  aria-hidden="true">
 		<div class="modal-dialog">
@@ -229,12 +229,12 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 						<img src="static/img/daochu.png" width="220" height="220" style=" margin-left:146px; margin-bottom:40px;">
 						<center>
 					   <button class="btn btn-warning jxdc" data-dismiss="modal" type="button" onclick="downMB('employee/exportPositiveList');" title="员工信息导出模板">继续导出</button>&nbsp;&nbsp;
-					  
+
 						<button class="btn btn-info guanbi" type="button">取消</button>
 						</center>
 				  </form>
 				  </div>
-				</div>   
+				</div>
 			  </div>
 		  </div>
 		</div>
@@ -242,11 +242,11 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 
 
 	<div class="content animate-panel mem_zhuanzheng">
-	
+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="hpanel">
-					
+
 						<div class="panel-heading clearfix">
 							<div class="pull-right">
 								<button class="btn btn-warning btn-xs" type="button" data-target="#myModal8" data-toggle="modal">
@@ -257,9 +257,9 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 								</button>
 							</div>
 						</div>
-						
+
 						<div class="panel-body" id="allcheck2">
-							
+
 							<table id="example3" class="table table-striped table-bordered table-hover rost_table" style=" width:100%;">
 								<thead>
 									<tr>
@@ -274,19 +274,19 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 									</tr>
 								</thead>
 								<tbody>
-									
+
 								</tbody>
 							</table>
-			
+
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
 	</div>
 <!--转正界面结束-->
-	
-	
+
+
 <!--合同到期界面开始-->
 	<div class="modal fade hmodal-success form-row" id="myModal9" tabindex="-1" role="dialog"  aria-hidden="true">
 		<div class="modal-dialog">
@@ -299,12 +299,12 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 						<img src="static/img/daochu.png" width="220" height="220" style=" margin-left:146px; margin-bottom:40px;">
 						<center>
 					   <button class="btn btn-warning jxdc" type="button" data-dismiss="modal" onclick="downMB('employee/exportContractList');" title="员工信息导出模板">继续导出</button>&nbsp;&nbsp;
-					  
+
 						<button class="btn btn-info guanbi" type="button">取消</button>
 						</center>
 				  </form>
 				  </div>
-				</div>   
+				</div>
 			  </div>
 		  </div>
 		</div>
@@ -314,7 +314,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="hpanel">
-						
+
 						<div class="panel-heading clearfix">
 							<div class="pull-right">
 								<button class="btn btn-warning btn-xs" type="button" data-target="#myModal9" data-toggle="modal">
@@ -325,7 +325,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 								</button>
 							</div>
 						</div>
-						
+
 						<div class="panel-body" id="allcheck3">
 							<table id="example4" class="table table-striped table-bordered table-hover rost_table" style=" width:100%;">
 								<thead>
@@ -342,18 +342,18 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 									</tr>
 								</thead>
 								<tbody>
-									
+
 								</tbody>
 							</table>
-			
+
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
 	</div>
 <!--合同到期界面结束-->
-	
+
 <!--今天员工生日界面开始-->
 
 	<div class="modal fade hmodal-success form-row" id="myModal10" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -367,12 +367,12 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 						<img src="static/img/daochu.png" width="220" height="220" style=" margin-left:146px; margin-bottom:40px;">
 						<center>
 					   <button class="btn btn-warning jxdc" type="button" data-dismiss="modal" onclick="downMB('employee/birthdayList');" title="员工信息导出模板">继续导出</button>&nbsp;&nbsp;
-					  
+
 						<button class="btn btn-info guanbi" type="button">取消</button>
 						</center>
 				  </form>
 				  </div>
-				</div>   
+				</div>
 			  </div>
 		  </div>
 		</div>
@@ -382,7 +382,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="hpanel">
-						
+
 						<div class="panel-heading clearfix">
 							<div class="pull-right">
 								<button class="btn btn-warning btn-xs" type="button" data-target="#myModal10" data-toggle="modal">
@@ -393,7 +393,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 								</button>
 							</div>
 						</div>
-						
+
 						<div class="panel-body" id="allcheck4">
 							<table id="example5" class="table table-striped table-bordered table-hover rost_table" style=" width:100%;">
 								<thead>
@@ -409,12 +409,12 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 									</tr>
 								</thead>
 								<tbody>
-									
+
 								</tbody>
 							</table>
-			
+
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
@@ -494,24 +494,40 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-8 col-md-8 col-lg-8 m-t" id="sopstatus">
+							<div class="col-sm-8 col-md-8 col-lg-8 m-t">
+								<div class="form-group">
+									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label" for="">性别</label>
+									<div class="col-sm-9 col-md-9 col-lg-9 form-control-static" >
+										<label class="checkbox-inline no-padding">
+											<input type="radio" value="" name="sex" checked="checked"> 全部
+										</label>
+										<label class="checkbox-inline no-padding">
+											<input type="radio" value="1" name="sex"> 男
+										</label>
+										<label class="checkbox-inline no-padding">
+											<input type="radio" value="2" name="sex"> 女
+										</label>
+									</div>
+								</div>
+   						  	</div>
+							<div class="col-sm-8 col-md-8 col-lg-8" id="sopstatus">
 								<div class="form-group">
 									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label" for="">在职状态</label>
 								<div class="col-sm-9 col-md-9 col-lg-9 form-control-static"  >
-									<label class="checkbox-inline ">							
-										<input type="checkbox"   value="1" name="status"> 在职						
-									</label>								   
-									<label class="checkbox-inline ">							
+									<label class="checkbox-inline ">
+										<input type="checkbox"   value="1" name="status"> 在职
+									</label>
+									<label class="checkbox-inline ">
 										<input type="checkbox"   value="2" name="status"> 离职
-									</label>								   
+									</label>
 									<label class="checkbox-inline ">
 										<input type="checkbox"   value="3" name="status"> 停职
 									</label>
-									<label class="checkbox-inline ">							
-										<input type="checkbox"   value="4" name="status"> 退休							
-									</label>								   
-									<label class="checkbox-inline ">							
-										<input type="checkbox"   value="5" name="status"> 再入职							
+									<label class="checkbox-inline ">
+										<input type="checkbox"   value="4" name="status"> 退休
+									</label>
+									<label class="checkbox-inline ">
+										<input type="checkbox"   value="5" name="status"> 再入职
 									</label>
 								</div>
 							</div>
@@ -520,18 +536,18 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 								<div class="form-group">
 									<label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label" for="">停发状态</label>
 									<div class="col-sm-9 col-md-9 col-lg-9 form-control-static" >
-										<label class="checkbox-inline ">									
-											<input type="checkbox"   value="0" name="isPayrollFlag"> 未停发
-										</label>										   
-										<label class="checkbox-inline ">									
-											<input type="checkbox"   value="1" name="isPayrollFlag"> 停发									
+										<label class="checkbox-inline">
+											<input type="checkbox" value="0" name="isPayrollFlag"> 未停发
+										</label>
+										<label class="checkbox-inline">
+											<input type="checkbox" value="1" name="isPayrollFlag"> 停发
 										</label>
 									</div>
 								</div>
-	   						  </div>
-							 
+   						  	</div>
 							<div class="col-sm-4 col-md-4 col-lg-4 m-b text-right btn-myself">
 								<button class="btn btn-success " type="submit">搜索</button>
+								<button class="btn btn-default " type="reset">重置</button>
 							</div>
 						</div>
 					</div>
@@ -540,54 +556,20 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 		</div>
 	</form>
     <!-- UI Components -->
+    <!-- 批量转正 -->
     <div class="modal fade" data-modal="trial" data-modal-for="transfer">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form action="" method="POST" class="form-horizontal" role="form">
-                    <input type="hidden" name="contractId" data-trial="contractID">
-                    <input type="hidden" name="personId" data-trial="personID">
+                     <input type="hidden" name="contractIdList" data-trial="contractIdList">
+                    <input type="hidden" name="personIdList" data-trial="personIdList">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">姓名：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-trial="name"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">部门：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-trial="orgName"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">手机：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-trial="mobile"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">岗位：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-trial="position" data-base-data="positionList" data-base-id="traverseId"></p>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="" class="control-label col-md-3">计划转正时间：</label>
+                                    <label for="" class="control-label col-md-3">姓名：</label>
                                     <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input type="date" class="form-control" readonly="readonly" data-trial="planPositiveDate">
-                                            <div class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div>
-                                        </div>
+                                        <p class="form-control-static" data-trial="name"></p>
                                     </div>
                                 </div>
                             </div>
@@ -596,7 +578,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                                     <label for="" class="control-label col-md-3">实际转正时间：</label>
                                     <div class="col-md-9 form-required">
                                         <div class="input-group date">
-                                            <input type="text" class="form-control" name="factPositiveDate">
+                                            <input type="text" class="form-control" name="positiveDate">
                                             <div class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div>
                                         </div>
                                     </div>
@@ -604,7 +586,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                             </div>
                             <div class="col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="" class="control-label col-md-3">备注</label>
+                                    <label for="" class="control-label col-md-3">备注：</label>
                                     <div class="col-md-9">
                                         <textarea class="form-control" name="memo"></textarea>
                                     </div>
@@ -619,166 +601,71 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
             </div>
         </div>
     </div>
-
+	<!-- 批量调动 -->
     <div class="modal fade" data-modal="jobtransfer" data-modal-for="transfer">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <form action="" method="POST" class="form-horizontal" role="form">
-                	<input type="hidden" name="personId" data-jobtransfer="personId">
+                	<input type="hidden" name="personIdList" data-jobtransfer="personIdList">
                     <div class="modal-body">
                         <div class="row">
-                        	<div class="col-md-6 col-lg-6">
-                        		<div class="col-md-12 col-lg-12">
-                        			<div class="form-group">
-                        				<label class="control-label col-md-4 col-lg-4" for="">原部门：</label>
-                        				<div class="col-md-7 col-lg-7">
-                        					<p class="form-control-static" data-jobtransfer="organizationName"></p>
-                    					</div>
-                    				</div>
-                    			</div>
-                    			<div class="col-md-12 col-lg-12">
-                    				<div class="form-group">
-                    					<label class="control-label col-md-4 col-lg-4" for="">原岗位：</label>
-                    					<div class="col-md-7 col-lg-7">
-                    						<p class="form-control-static" data-jobtransfer="positionId" data-base-data="post" data-base-id="traverseId"></p>
-                    					</div>
+                            <div class="col-md-12 col-lg-12">
+                    			<div class="form-group">
+                    				<label class="control-label col-md-3 col-lg-3" for="">姓名：</label>
+                    				<div class="col-md-9 col-lg-9">
+                    					<p class="form-control-static" data-jobtransfer="employeeName"></p>
                 					</div>
                 				</div>
-                				<div class="col-md-12 col-lg-12">
-                					<div class="form-group">
-                						<label class="control-label col-md-4 col-lg-4" for="">原职级：</label>
-                						<div class="col-md-7 col-lg-7">
-                							<p class="form-control-static" data-jobtransfer="levelId" data-base-data="rank" data-base-id="traverseId"></p>
-                						</div>
-            						</div>
-            					</div>
-        						<div class="col-md-12 col-lg-12">
-        							<div class="form-group">
-        								<label class="control-label col-md-4 col-lg-4" for="">原汇报对象：</label>
-        								<div class="col-md-7 col-lg-7">
-        									<p class="form-control-static" data-jobtransfer="reportPerson"></p>
+                			</div>
+                            <div class="col-md-12 col-lg-12">
+        						<div class="form-group">
+        							<label class="control-label col-md-3 col-lg-3" for="">调动后部门：</label>
+        							<div class="col-md-9 col-lg-9">
+        								<div class="form-required">
+        									<input type="hidden" value="162" name="newDepartment" data-department-id="">
+        									<div class="input-group">
+        										<input type="text" readonly="readonly" name="addNewDepartment" class="form-control">
+        										<span class="input-group-btn">
+        											<button data-target="[data-modal=organization]" data-toggle="modal" class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+        										</span>
+        									</div>
         								</div>
         							</div>
         						</div>
-        						<div class="col-md-12 col-lg-12">
-        							<div class="form-group">
-        								<label class="control-label col-md-4 col-lg-4" for="">原工作地：</label>
-        								<div class="col-md-7 col-lg-7">
-            								<p class="form-control-static" data-jobtransfer="workLocation" data-base-data="city"></p>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
+        					</div>
+        					<div class="col-md-12 col-lg-12">
             						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">原成本中心：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<p class="form-control-static" data-jobtransfer="costCenterId" data-base-data="cost" data-base-id="traverseId"></p>
+            							<label class="control-label col-md-3 col-lg-3" for="">当前汇报对象：</label>
+            							<div class="col-md-9 col-lg-9">
+											<input type="hidden" name="newReport">
+											<input type="text" class="form-control" name="reportObjectName">
+											<span class="help-block" data-help-for="reportObject"></span>
             							</div>
             						</div>
-            					</div>
             				</div>
-            				<div class="col-md-6 col-lg-6">
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">现部门：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<div class="form-required">
-            									<input type="hidden" value="" name="newDepartment" data-department-id="">
-            									<div class="input-group">
-            										<input type="text" readonly="readonly" name="addNewDepartment" class="form-control">
-            										<span class="input-group-btn">
-            											<button data-target="[data-modal=organization]" data-toggle="modal" class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-            										</span>
-            									</div>
-            								</div>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">现岗位：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<select name="newPost" class="form-control" data-jobtransfer="newPost" data-base-data="post" data-base-id="traverseId">
-            								</select>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">现职级：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<select name="newRank" class="form-control" data-jobtransfer="newRank" data-base-data="rank" data-base-id="traverseId">
-            								</select>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">当前汇报对象：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<input type="text" name="newReport" id="" class="form-control">
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">岗位调整日期：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<div class="input-group date" data-init-start-date="1">
-            									<input type="text" name="newDate" id="" class="form-control">
-            									<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-            								</div>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">当前工作地：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<select data-toggle="select2" name="newLocation" class="form-control" data-jobtransfer="newLocation" data-base-data="city">
-            								</select>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-4 col-lg-4" for="">当前成本中心：</label>
-            							<div class="col-md-7 col-lg-7">
-            								<select name="newCost" class="form-control" data-jobtransfer="newCost" data-base-data="cost" data-base-id="traverseId"> 
-            								</select>
-            							</div>
-            						</div>
-            					</div>
-                            </div>
+        					<div class="col-md-12 col-lg-12">
+        						<div class="form-group">
+        							<label class="control-label col-md-3 col-lg-3" for="">岗位调整日期：</label>
+        							<div class="col-md-9 col-lg-9">
+        								<div class="input-group date form-required" data-init-start-date="1">
+        									<input type="text" name="newDate" class="form-control">
+        									<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        								</div>
+        							</div>
+        						</div>
+        					</div>
                             <div class="col-md-12 col-lg-12">
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-2 col-lg-2" for="">是否调薪：</label>
-            							<div class="col-md-10 col-lg-10">
-            								<div class="radio-group form-control-static">
-            									<label class="radio-inline">
-            										<input type="radio" checked="checked" value="1" name="isChangeSalary"> 是
-            									</label>
-            									<label class="radio-inline">
-            										<input type="radio" value="0" name="isChangeSalary"> 否
-            									</label>
-            								</div>
-            							</div>
-            						</div>
-            					</div>
-            					<div class="col-md-12 col-lg-12">
-            						<div class="form-group">
-            							<label class="control-label col-md-2 col-lg-2" for="">岗位调动原因：</label>
-            							<div class="col-md-10 col-lg-10">
-            								<textarea name="cause" class="form-control" rows="3"></textarea>
-            							</div>
-            						</div>
-            					</div>
+                            	<div class="form-group">
+        							<label class="control-label col-md-3 col-lg-3" for="">岗位调动原因：</label>
+									<div class="col-md-9 col-lg-9">
+										<textarea name="cause" class="form-control" rows="3"></textarea>
+									</div>
+        						</div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">确认办理</button>
+                        <button type="submit" class="btn btn-danger">确认办理</button>
                     </div>
                 </form>
             </div>
@@ -789,54 +676,44 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="color-line"></div>
-                <div class="modal-body">
-                    <div class="dd" id="nestable_third">
-
-                        <div class="zTreeDemoBackground">
-                            <ul id="orgTree" class="ztree"></ul>
-                        </div>
-                    </div>
+                <div class="modal-body form-horizontal clearfix">
+                	<div class="col-md-12 col-lg-12">
+                		<div class="form-group">
+                			<label class="control-label col-md-2 col-lg-2" for="">过滤：</label>
+                			<div class="col-md-10 col-lg-10">
+			                	<input type="text" id="key" value="" class="form-control empty">
+			                    <input type="radio" id="name" name="keyType" class="radio first hidden" checked />
+			                    <input type="radio" id="getNodesByParamFuzzy" name="funType" class="radio hidden" checked />
+			                </div>
+		                </div>
+	                </div>
+	                <div class="col-md-12 col-lg-12">
+	                    <div class="dd" id="nestable_third">
+	                        <div class="zTreeDemoBackground">
+	                            <ul id="orgTree" class="ztree"></ul>
+	                        </div>
+	                    </div>
+	                </div>
                 </div>
             </div>
         </div>
     </div>
-
+	<!-- 批量离职 -->
     <div class="modal fade" data-modal="dimission" data-modal-for="transfer">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form action="" method="POST" class="form-horizontal" role="form">
-                	<input type="hidden" name="personId" data-dimission="personId">
+                	<input type="hidden" name="personIdList" data-dimission="personIdList">
+					<div class="modal-header1">
+						人员变动 - 离职
+					</div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">姓名：</label>
-                                    <div class="col-md-6">
+                            <div class="col-md-12 col-lg-12">
+                            	<div class="form-group">
+                                    <label for="" class="control-label col-md-3">姓名：</label>
+                                    <div class="col-md-9">
                                         <p class="form-control-static" data-dimission="employeeName"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">部门：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-dimission="organizationName"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">手机：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-dimission="mobile"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="" class="control-label col-md-6">岗位：</label>
-                                    <div class="col-md-6">
-                                        <p class="form-control-static" data-dimission="postId" data-base-data="positionList" data-base-id="traverseId"></p>
                                     </div>
                                 </div>
                             </div>
@@ -862,23 +739,43 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-12">
+                             <div class="col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="" class="control-label col-md-3">离职原因：</label>
                                     <div class="col-md-9 form-required">
-                                        <select name="dimissionCause" class="form-control" data-dimission="dimissionCause" data-base-data="dimissionCauseList" data-base-id="traverseId" > 
+                                        <select name="dimissionCause" class="form-control" data-dimission="dimissionCause" data-base-data="dimissionCauseList" data-base-id="traverseId" >
             							</select>
                                     </div>
                                 </div>
                             </div>
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="" class="control-label col-md-3">社保停办月：</label>
+									<div class="col-md-4 form-shoufei">
+										<select class="form-control">
+											<option value="">当月收费</option>
+											<option value="">当月不收费</option>
+										</select>
+									</div>
+									<div class="col-md-5 form-required">
+										<div class="input-group date">
+											<input type="text" class="form-control" name="salarySettleDate">
+											<div class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div>
+										</div>
+									</div>
+								</div>
+							</div>
                             <div class="col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="" class="control-label col-md-3">备注</label>
-                                    <div class="col-md-9">
+                                    <label for="" class="control-label col-md-3 col-lg-3">备注：</label>
+                                    <div class="col-md-9 col-lg-9">
                                         <textarea class="form-control" name="memo"></textarea>
                                     </div>
                                 </div>
                             </div>
+							<div>
+								<input type="checkbox" checked class="yghelp"><span class="input-span yghelp1">关闭员工帮手</span>
+							</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -890,14 +787,13 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
     </div>
     <!-- // UI Components -->
 
-    
+
 	<!-- Footer-->
 	<!-- 放页脚  开始-->
 	<jsp:include flush="true" page="../common/foot.div.jsp"></jsp:include>
 	<!-- 放页脚  结束-->
-	
-<!-- 员工停发标志 -->
- 
+	<!-- 员工停发标志 -->
+
 </div>
 
 <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
@@ -921,31 +817,32 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 <script src="static/bootstrap/vendor/moment/moment.js"></script>
 <script src="static/bootstrap/vendor/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="static/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="static/bootstrap/vendor/nestable/jquery.nestable.js"></script>
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 <script src="static/js/plugins/form.validation/js/formValidation.js"></script>
 <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
-<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
+<script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script>
 <script src="static/bootstrap/scripts/homer.js"></script>
-	<script src="static/js/template.js"></script>
+<script src="static/js/template.js"></script>
 <script src="static/js/list_membership_roster.js"></script>
-<script type="text/javascript" src="static/js/zTreeJs/zTreeJs/jquery.ztree.core-3.5.js"></script>
-<script type="text/javascript" src="static/js/zTreeJs/zTreeJs/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="static/js/zTreeJs/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="static/js/zTreeJs/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="static/js/zTreeJs/zTreeJs/jquery.ztree.exedit-3.5.js"></script>
 	<script>
 		var table;
 		var initParamJson={};//搜索对象
 		var searchColumn=null;//搜索时的动态列参数
-		
-		
-		
-		
+
+
+
+
 		// 程序主入口
 		$(function () {
-			
+
 			//获取动态初始化dataTable
 			getDynamicFields();
-			
-			
+
+
 			initParamJson.data=JSON.stringify($('#searchForm').serializeObject());
 			initParamJson.searchData=JSON.stringify($('#highSearch').serializeObject());
 			// 跳转到员工详情页
@@ -954,10 +851,11 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				var href = 'employee/employeeInformation?personId='+personId;
 				window.location.href=href;
 			});
-		
+
 			/* table = buildExample2DataTable(initParamJson); */
 
-			  importExport();  
+			  importExport();
+			  dropdownselfbtnClick();
 			// 删除选中的ITEM
 			$("div.toolbar").on('click','.del-button',function(e){
 				var $items =$('#example2').find('input[name="checkAll"]:checked');
@@ -967,21 +865,6 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 					ids.push($item.val());
 				});
 			});
-
-
-			$.ajax({
-				cache:true,
-				type:"POST",
-				url:"employee/searchPositive.do",
-				dataType:'json',
-				async:false,
-				success: function(data){	 
-					$("#zhuanzheng").html(data.positiveCount);
-					$("#daoqi").html(data.contractCount);
-					$("#birthD").html(data.birthCount);
-					$("#birthT").html(data.birthTCount);
-			  	}
-	    	});
 
 			$('.mem_fanhui').click(function(){
 				$('.content').hide();
@@ -1031,25 +914,25 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				boostat: 5,
 				maxboostedstep: 10,
 			});
-	
+
 			$("#demo2").TouchSpin({
 				verticalbuttons: true
 			});
-	
+
 			$("#demo3").TouchSpin({
 				postfix: '%'
 			});
-	
+
 			$("#demo4").TouchSpin({
 				postfix: "a button",
 				postfix_extraclass: "btn btn-default"
 			});
-	
+
 			$(".js-source-states").select2();
 			$(".js-source-states-2").select2();
 			$.fn.editable.defaults.mode = 'inline';
 			$.fn.editable.defaults.url = '#';
-	
+
 			//editables
 			$('#username').editable({
 				url: '#',
@@ -1058,7 +941,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				name: 'username',
 				title: 'Enter username'
 			});
-			
+
 			$('#sex').editable({
 				prepend: "not selected",
 				source: [
@@ -1068,7 +951,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				display: function(value, sourceData) {
 					var colors = {"": "gray", 1: "green", 2: "blue"},
 							elem = $.grep(sourceData, function(o){return o.value == value;});
-	
+
 					if(elem.length) {
 						$(this).text(elem[0].text).css("color", colors[value]);
 					} else {
@@ -1076,20 +959,20 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 					}
 				}
 			});
-	
+
 			$('#dob').editable();
-	
+
 			$('#event').editable({
 				placement: 'right',
 				combodate: {
 					firstItem: 'name'
 				}
 			});
-	
+
 			$('#comments').editable({
 				showbuttons: 'bottom'
 			});
-	
+
 			$('#fruits').editable({
 				pk: 1,
 				limit: 3,
@@ -1101,7 +984,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 					{value: 5, text: 'orange'}
 				]
 			});
-	
+
 			$('#user .editable').on('hidden', function(e, reason){
 				if(reason === 'save' || reason === 'nochange') {
 					var $next = $(this).closest('tr').next().find('.editable');
@@ -1114,93 +997,107 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 					}
 				}
 			});
-	
+
 
 		});
-		
+
 
 		// 写到公共的库中去
-		$.fn.serializeObject = function(){  
-		    var o = {};  
+		$.fn.serializeObject = function(){
+		    var o = {};
 		    var a = this.serializeArray();
-	
-		    $.each(a, function() {  
-			   if (o[this.name]) {  
-				   if (!o[this.name].push) {  
-					   o[this.name] = [o[this.name]];  
-				   }  
-				   o[this.name].push(this.value || '');  
-			   } else {  
-				   o[this.name] = this.value || '';  
+
+		    $.each(a, function() {
+			   if (o[this.name]) {
+				   if (!o[this.name].push) {
+					   o[this.name] = [o[this.name]];
+				   }
+				   o[this.name].push(this.value || '');
+			   } else {
+				   o[this.name] = this.value || '';
 			   }
 		    });
-	
-		    return o;  
-		}; 
-		
+
+		    return o;
+		};
+
 		/**
 		  获取动态配置的显示列
 		**/
 		function getDynamicFields(){
-			 
+
 			$.getJSON("employee/getCustomFieldAndDisplayConfig").done(function(data){
-				
+				console.log(data)
 				if(data&&data.Fileds){
 					initDetailTable(data);
 				}
 			}) ;
-			
+
 		}
 		/**
 		 根据动态列组装表头和column
 		**/
 		function initDetailTable(filedDataObj){
 			var columns=[
-		                    { "data": "person_id", render: function(data, type, row, meta){
-		                        var strHtml = '<input type="checkbox" name="" data-check="item" value="'+data+'">';
-		                        return strHtml;
-		                    },
-		                    createdCell: function (td, cellData, rowData, row, col){
-		                        var ueSelected = function($o, bSelectLast){
-		                        	// bSelectLast: default true [single] (Other values: false [multiple] )
-		                            bSelectLast = bSelectLast === undefined? true : bSelectLast;
-		                            var getAllVal = [];
-		                            if(bSelectLast){
-		                                $('[data-check="item"]').not($o).prop('checked', false);
-		                                getAllVal.push( $o.val() );
-		                            }else{
-		                                $.each($('[data-check="item"]:checked'), function(index, item) {
-		                                	getAllVal.push( $(this).val() );
-		                                });
-		                            }
-		                            getAllVal = getAllVal.join(',');
-		                            return getAllVal;
-		                        };
-		                        $(td).on('click', '[data-check="item"]', function(event) {
-		                            var $getCheckItem = $(this);
-		                            if( $getCheckItem.prop('checked') ){
-		                                var getIDs = ueSelected($getCheckItem);
-		                            	$('[data-modal-for="transfer"]').data('itemsId', getIDs);
-		                            }else{
-		                            	$('[data-modal-for="transfer"]').removeData('itemsId');
-		                            }
-		                        });
-		                    }},
-						 
-							             
-						];
-			
-			
+                    { "data": "person_id", render: function(data, type, row, meta){
+                        var strHtml = '<input type="checkbox"  name="" data-check="item" data-employee-name="'+row.employee_name+'" value="'+data+'">';
+                        return strHtml;
+                    },
+                    createdCell: function (td, cellData, rowData, row, col){
+                        var ueSelected = function($o, bSelectLast){
+                        	// bSelectLast: default true [single] (Other values: false [multiple] )
+                            // bSelectLast = bSelectLast === undefined? true : bSelectLast;
+                            var getAllVal = {
+                            		personIdAry:[],
+                            		personNameAry:[]
+                            };
+
+                            // if(bSelectLast){
+                            //     $('[data-check="item"]').not($o).prop('checked', false);
+                            //     getAllVal.push( $o.val() );
+                            // }else{
+                            //     $.each($('[data-check="item"]:checked'), function(index, item) {
+                            //     	getAllVal.push( $(this).val() );
+                            //     });
+                            // }
+                            var val ;
+                            var name;
+                            $.each($('[data-check="item"]:checked'), function(index, item) {
+                            	val = Number($(this).val());
+                            	name=$(this).data("employeeName");;
+                            	getAllVal.personIdAry.push( val );
+                            	getAllVal.personNameAry.push( name );
+                            });
+
+                            return getAllVal;
+                        };
+                        $(td).on('click', '[data-check="item"]', function(event) {
+
+                            var $getCheckItem = $(this);
+                            var getIDs = ueSelected($getCheckItem);
+                           	if(getIDs.personIdAry.length!=0){
+
+                           		$('[data-modal-for="transfer"]').data('itemsId', getIDs.personIdAry);
+                                $('[data-modal-for="transfer"]').data('itemsName', getIDs.personNameAry);
+                           	}else{
+                           		$('[data-modal-for="transfer"]').removeData('itemsId');
+                               	$('[data-modal-for="transfer"]').removeData('itemsName');
+                           	}
+
+                        });
+                    }},
+
+				];
+
 			//表头&列信息
 			$.each(filedDataObj.Fileds,function(index,obj){
-				
+
 				$("[data-table='list']").append("<th>"+obj.displayName+"</th>");
-				
+
 				 var columnObj={
-						
 						data:obj.columnName
-				};  
-				
+				};
+
 				//超链接字段设置
 				if(filedDataObj.linkFiled&&(obj.columnName===filedDataObj.linkFiled)){
 					columnObj.render=function(data, type, row, meta){
@@ -1212,30 +1109,29 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 						<% } %>
 					};
 				}
-				
+
 				columns.push(columnObj);
-				 
+
 			});
-			
+
 			searchColumn=columns;
 			table = buildExample2DataTable(initParamJson,columns);
 		}
-		
+
 		//初始化列表
 		// TODO 需要重构
 		function buildExample2DataTable(params,column){
 			var getAdvancedSearchTemplate = $('[data-template=advanced-search]');
 			if(table){
 				table.destroy();
-				
 			}
 			table = $('#example2').DataTable({
 				"dom":
                 "<'row'<'col-sm-3'l><'col-sm-4 advanced-search'><'col-sm-5'<'toolbar text-right'>>>" +
-                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-3 nestable-tree'><'col-sm-9 table-responsive'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 				drawCallback:function(){
-					$('.demo4').click(function () {
+					$('.demo4').click(function (){
 						var personId = $(this).attr("personId");
 						swal({
 							title: "确定要删除此用户信息吗?",
@@ -1266,10 +1162,10 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 								} else {
 									swal("已取消", "用户信息未删除。", "error");
 								}
-								
-							});
+
 						});
-					},
+					});
+				},
 				/*删除结束*/
 				"processing": true,
 				"serverSide": true,
@@ -1299,73 +1195,123 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 					"type":"POST",
 					"data": params ? params : {}
 
-				}   
+				}
 			});
-			
+			$('.nestable-tree').html('<div class="dd" id="nestable"><ul id="orgTreeRoster" class="ztree"></ul></div>')
+			loadTreeData();
 			highSearch(getAdvancedSearchTemplate);
-
 			return table;
-			
+
 		}
-		
+		function loadTreeData(){
+			var setting = {
+				view: {
+					dblClickExpand: false,
+					showLine:false
+				},
+				callback: {
+					onClick: zTreeOnClick
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				treeNode:{
+					nocheck:true
+				}
+			};
+
+	        //组织架构树引用json
+	        $.ajax({
+	            url:"system/loadTree",
+	            type : "POST",
+	            dataType:'json'
+
+	        })
+	        .done(function(d){
+	            var zNodes = $.map(d.data, function(item, index){
+	                return {
+	                    id: item.organizationId,
+	                    pId: item.parentId,
+	                    organizationId: item.organizationId,
+	                    name: item.organizationName,
+	                    code: item.organizationCode,
+	                    memo: item.memo,
+	                    authorized: item.authorized? true:false,
+	                    open: true
+	                };
+	            });
+	            $.fn.zTree.init($('#orgTreeRoster'), setting, zNodes);
+	        });
+	    };
+		function zTreeOnClick(event, treeId, treeNode){
+	    	initParamJson.parentId=treeNode.organizationId;
+	    	buildExample2DataTable(initParamJson,searchColumn);
+	    }
 		/**
 		 筛选框搜索功能
 		**/
 		function highSearch(getAdvancedSearchTemplate){
-			
-			 //初始化筛选部分html
-			 $('.advanced-search').html( getAdvancedSearchTemplate );
-			 
-			  
+
+			//初始化筛选部分html
+			$('.advanced-search').html( getAdvancedSearchTemplate );
+
+
 				$('.input-group.date').datepicker({
 					autoclose: true
 				});
 				$('.input-daterange').datepicker({ });
-			 
-			  //筛选按钮点击事件
-			  $('.dropdown').on('click', '.dropdownselfbtn', function(event) {
+
+			$('[data-template=advanced-search]').removeClass('hidden');
+			importExport();
+		}
+
+		//筛选按钮点击事件
+		var dropdownselfbtnClick = function(){
+			$('.dropdown').on('click', '.dropdownselfbtn', function(event) {
 				event.preventDefault();
 				var getParent = $(this).parents('.dropdown');
+
 				!getParent.hasClass('open') ? getParent.addClass('open'): getParent.removeClass('open');
-			});  
-			$('[data-template=advanced-search]').removeClass('hidden');
-			
-			//高级搜索
-			  $("#highSearch").on("submit",function(event){
-					event.preventDefault();
-					
-					$('.dropdownself').removeClass('open');
-					
-				    initParamJson.searchValue=$("#highInput").val();
-				    
-				    var formJson=$("#highSearch").serializeObject();
-				    
-				    initParamJson.searchData=JSON.stringify(formJson);
-				    
-				    var $getToolbar = $('.toolbar').children();
-				    buildExample2DataTable(initParamJson,searchColumn);
-				    highSearch($('[data-template=advanced-search]'));
-				    $('.toolbar').html($getToolbar);
-				    
-			}); 
-			
-			  importExport(); 
-			
-		}
-		
+			});
+		};
+
+		//高级搜索
+		var highSearchSubmit = function(){
+			$("#highSearch").on("submit",function(event){
+				event.preventDefault();
+
+				$('.dropdownself').removeClass('open');
+
+			    initParamJson.searchValue=$("#highInput").val();
+
+			    var formJson=$("#highSearch").serializeObject();
+
+			    initParamJson.searchData=JSON.stringify(formJson);
+
+			    var $getToolbar = $('.toolbar').children();
+			    buildExample2DataTable(initParamJson,searchColumn);
+			    $('.toolbar').html($getToolbar);
+			    // highSearch($('[data-template=advanced-search]'));
+			    // dropdownselfbtnClick();
+			});
+		}();
+
+
 		//导入导出按钮
 		function importExport(){
 			var strHtml = '';
-                strHtml += '<div class="btn-group">';
-                strHtml += '  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-modal-related="transfer">人员变动 <span class="caret"></span>';
+                strHtml += '<div class="btn-group   m-r-xs">';
+                strHtml += '  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-modal-related="transfer">批量变动 <span class="caret"></span>';
                 strHtml += '  </button>';
                 strHtml += '  <ul class="dropdown-menu">';
-                strHtml += '    <li><a href="javascript://" data-modal-toggle="manually" data-target="[data-modal=trial]">人员转正</a></li>';
-                strHtml += '    <li><a href="javascript://" data-modal-toggle="manually" data-target="[data-modal=jobtransfer]">人员调配</a></li>';
-                strHtml += '    <li><a href="javascript://" data-modal-toggle="manually" data-target="[data-modal=dimission]">人员离职</a></li>';
+                strHtml += '    <li><a href="javascript://" data-modal-toggle="manually" data-target="[data-modal=trial]">批量转正</a></li>';
+                strHtml += '    <li><a href="javascript://" data-modal-toggle="manually" data-target="[data-modal=jobtransfer]">批量调动</a></li>';
+                strHtml += '    <li><a href="javascript://" data-modal-toggle="manually" data-target="[data-modal=dimission]">批量离职</a></li>';
                 strHtml += '  </ul>';
                 strHtml += '</div>';
-                strHtml += '	<div class="btn-group">';
+                strHtml += '	<div class="btn-group m-r-xs">';
                 strHtml += '  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-modal-related="transfer">显示设置 <span class="caret"></span>';
                 strHtml += '  </button>';
                 strHtml += '  <ul class="dropdown-menu">';
@@ -1373,17 +1319,23 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                 //strHtml += '    <li><a href="javascript://">卡片显示设置</a></li>';
                 strHtml += '  </ul>';
                 strHtml += '</div>';
-            <% if(RequestUtil.hasPower("roster_im")){ %>
-            strHtml += '&nbsp;<div class="btn btn-success btn-sm  rost_piliang">批量导入<form id="ppp"><input id="importFile" name="importFile" class="rost_daoru" type="file" onchange="upload();" multiple></form></div>&nbsp;';
-            <% } %>
+           		strHtml += '<div class="btn-group m-r-xs">';
+                strHtml += '  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-modal-related="transfer">批量操作<span class="caret"></span>';
+                strHtml += '  </button>';
+                strHtml += '  <ul class="dropdown-menu">';
+                strHtml += '    <li><a href="employee/empBatchAddUpload?type=insert">批量上传信息</a></li>';
+                strHtml += '    <li><a href="employee/empBatchAddUpload?type=update">批量修改信息</a></li>';
+                strHtml += '    <li><a href="employee/empBatchSubUpload">批量上传子集信息</a></li>';
+                strHtml += '  </ul>';
+                strHtml += '</div>';
             <% if(RequestUtil.hasPower("roster_ex")){ %>
-			strHtml += '<button class="btn btn-info btn-sm" type="button" data-target="#myModal7"  data-toggle="modal"><i class=""></i> <span class="bold">导　 出</span></button>';
+			strHtml += '<button class="btn btn-warning btn-sm" type="button" data-target="#myModal7"  data-toggle="modal"><i class=""></i> <span class="bold">导　 出</span></button>';
 			<% } %>
 			 $("div.toolbar").html(strHtml);
 			 window.renderReady = true;
 		}
 
-		
+
 	    function search(){
 			$('#example2').dataTable().api().ajax.reload();
 		}
@@ -1391,7 +1343,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 		function positive(){
 			$('#example3').dataTable().api().ajax.reload();
 			$(".content").hide();
-			$(".mem_zhuanzheng").show();	
+			$(".mem_zhuanzheng").show();
 		}
 
 		function contract() {
@@ -1413,7 +1365,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				url:"employee/updateFalg.do",
 				dataType:'json',
 				data:{"contractId":id},
-				success: function(data){	 
+				success: function(data){
 					$('#example4').dataTable().api().ajax.reload();
 					var daoqi =  $('#daoqi').text();
 					var hetong = parseInt(daoqi);
@@ -1421,7 +1373,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				}
 			});
 		}
-	
+
 		function upload(){
 			var ajaxCallUrl = "employee/employeeImport";
 
@@ -1451,7 +1403,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 				}).fail(function(data) {
 					swal("花名册导入异常!");
 					$('#importFile').val("");
-				}); 
+				});
 		}
 
 		function exportPerson(){
@@ -1462,29 +1414,78 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 			var day = $("#birthInput").val();
 			window.open(moban+"?day="+day);
 		}
-	 	
+
 		function sendOrderMail() {
 			if (document.getElementById("file").value == "") {
 				alert("请选择要上传的附件");
 				return false;
 			}
-	
+
 			var path = document.getElementById("file").value;
-			var isIE = (document.all) ? true : false; 3           
-			var isIE9 = isIE && (navigator.userAgent.indexOf('MSIE 9.0') != -1);  
-			var isIE10 = isIE && (navigator.userAgent.indexOf('MSIE 10.0') != -1);  
-			var isIE11 = isIE && (navigator.userAgent.indexOf('MSIE 11.0') != -1); 
-			var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1 
-			
+			var isIE = (document.all) ? true : false; 3
+			var isIE9 = isIE && (navigator.userAgent.indexOf('MSIE 9.0') != -1);
+			var isIE10 = isIE && (navigator.userAgent.indexOf('MSIE 10.0') != -1);
+			var isIE11 = isIE && (navigator.userAgent.indexOf('MSIE 11.0') != -1);
+			var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1
+
 			if(isIE9 || isIE10 || isIE11 || isChrome){
 				path = path.substring(path.lastIndexOf("\\")+1,path.length);
 			}
-			
+
 			document.OrderSendForm.saction.value = "sendMail";
 			document.OrderSendForm.attachment.value = path;
 			document.OrderSendForm.action = "hroorderSend.do";
 			document.OrderSendForm.submit();
 		}
+</script>
+
+<!--汇报对象-->
+<script>
+	$(function () {
+
+		$('[name="reportObjectName"]').on('keyup', function (event) {
+			var markup = '<div class="list-group col-sm-11" data-help-for="reportObject">'
+
+			$.ajax({
+				url: 'employee/searchBySearch',
+				type: 'POST',
+				dataType: 'json',
+				data: {search: $(this).val()},
+				delay: 100
+			})
+					.done(function (d) {
+						$.each(d, function (index, val) {
+							markup += '<a href="javascript://" class="list-group-item"  data-personId="' + val.personId + '" data-name="' + val.employeeName + '">';
+							markup += val.employeeName + '<span class="m-l-sm">' + (val.postName ? val.postName : '') + '</span>';
+							markup += '</a>'
+						});
+						markup += '</div>';
+						$('[data-help-for="reportObject"]').replaceWith(markup);
+
+					})
+					.always(function (d) {
+						$('[data-help-for="reportObject"]')
+								.css({
+									position: 'absolute',
+									zIndex: '996',
+									backgroundColor: '#f7f9fa',
+									maxHeight: '100px',
+									overflow: 'auto',
+									padding: 0
+								})
+								.find('.list-group-item')
+								.each(function (index, el) {
+									$(this).off().on('click', function (event) {
+										event.preventDefault();
+										$(this).parent('[data-help-for="reportObject"]').hide();
+										$('[name="reportObjectName"]').val($(this).attr('data-name'));
+										$('[name="newReport"]').val($(this).attr('data-personId'))
+									});
+								});
+
+					});
+		});
+	});
 </script>
 </body>
 </html>

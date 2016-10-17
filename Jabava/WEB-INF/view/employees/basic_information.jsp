@@ -107,8 +107,8 @@
                                         </div>
                                         <div class="form-required">
                                             <select class="form-control" name="isPayrollFlag">
-                                                <option {{if (person.isPayrollFlag == 0)}} select="true" {{/if}} value="0">未停发</option>
-                                                <option {{if (person.isPayrollFlag == 1)}} select="true" {{/if}} value="1">停发</option>
+                                                <option {{if (person.isPayrollFlag == 0)}} selected="true" {{/if}} value="0">未停发</option>
+                                                <option {{if (person.isPayrollFlag == 1)}} selected="true" {{/if}} value="1">停发</option>
                                             </select>
                                         </div>
                                     </div>
@@ -450,7 +450,7 @@
 
                             {{if customFieldList}}
                             {{each customFieldList as $field}}
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6{{if $field.isUsing!==1}} sr-only{{/if}}">
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6{{if $field.isUsing!==1}} hidden{{/if}}">
                               <div class="form-group">
                                 <label for="" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">{{$field.displayName}}：</label>
                                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
@@ -736,9 +736,9 @@ $(function(){
                      //      // updateSave($form);
                      // break;
                       case 'cancel':
-                          $form.formValidation('resetForm');
+                          //$form.formValidation('resetForm');
                           $form[0].reset();
-                          $form.formValidation('destroy');
+                          //$form.formValidation('destroy');
                           $getDomStaticTarget.show();
                           $getDomTarget.hide();
                           $getDomFormAction.hide();

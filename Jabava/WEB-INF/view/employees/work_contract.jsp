@@ -265,11 +265,15 @@
                             <label for="" class="control-label col-md-4 col-lg-4">合同结束日期：</label>
                             <div class="col-md-8 col-lg-8">
                                 <div class="input-group-static">
-                                    <p class="form-control-static">{{$value.contractEndDate.substr(0,10)}}&nbsp;</p>
+                                    <p class="form-control-static">
+									{{if $value.contractEndDate}}
+										{{$value.contractEndDate.substr(0,10)}}
+									{{/if}}&nbsp;
+									</p>
                                 </div>
                                 <div class="form-required">
                                     <div class="input-group date" data-toggle="datepicker" data-data-format="yyy-mm-dd">
-                                        <input type="text" class="form-control" name="contractEndDate" value="{{$value.contractEndDate.substr(0,10)}}">
+                                        <input type="text" class="form-control" name="contractEndDate" value="{{if $value.contractEndDate}}{{$value.contractEndDate.substr(0,10)}}{{/if}}">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                     </div>
                                 </div>

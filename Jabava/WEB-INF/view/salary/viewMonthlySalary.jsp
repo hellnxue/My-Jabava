@@ -218,14 +218,19 @@
     	
     	//动态添加表头
 		var firstRow = $("<tr></tr>");
+    	var ele;
     	$.each(data,function(){
-   			var ele = '<th>' + this.showName + '</th>';
-   			firstRow.append($(ele));
-   			if(this.fieldName == 'monthlySalaryPersonId' || this.fieldName == 'monthlySalaryId' || this.fieldName == 'personId'){
-   				columns.push({"data":this.fieldName, "visible":false});
+   			if(this.fieldName == 'monthlySalaryPersonId'){
+   				columns.push({"data":this.fieldName, "render":selectRender});
+   				ele = '<th><input type="checkbox" id="selAll" data-check="checkAll"></th>';
+   			}else if(this.fieldName == 'monthlySalaryId' || this.fieldName == 'personId'){
+   				columns.push({"data":this.fieldName, "visible": false});
+   	   			ele = '<th>' + this.showName + '</th>';
    			}else{
    				columns.push({"data":this.fieldName});
+   	   			ele = '<th>' + this.showName + '</th>';
    			}
+   			firstRow.append($(ele));
     	});
     	
     	// append header to the table
@@ -234,6 +239,18 @@
     	$('#detailTable').append(header);
     	
     	initTable(columns, monthlySalaryId);
+    	
+    	$('[data-check="checkAll"]').on('click', function(event) {
+            var getState = $(this).prop('checked');
+            var $getCheckItems = $('[data-check="item"]');
+            $getCheckItems.prop('checked', getState);
+        });
+    }
+    
+    function selectRender(data, type, row, meta){
+    	//var html = '<input type="checkbox" value="' + data + '" data-id="' + data + '" name="itemId[]" data-check="item">';
+    	var html = '<input type="checkbox" value="' + row.personId + '" data-id="' + row.personId + '" name="itemId[]" data-check="item">';
+		return html;
     }
     
     function initTable(columns, monthlySalaryId){
@@ -332,9 +349,19 @@
     }
     
     function sendSlip(){
+    	var $getCheckItems = $('[data-check="item"]:checked');
+        var personIds = '';
+    	if($getCheckItems){
+	        var personIdArray = $.map($getCheckItems, function(item, index) {
+	            return $(item).val();
+	        });
+	        if(personIdArray.length > 0){
+	        	personIds = personIdArray.join(',');
+	        }
+        }
     	$.ajax({
             url : "monthlySalary/sendSalarySlip",
-            data : {monthlySalaryId: ${monthlySalary.monthlySalaryId}},
+            data : {monthlySalaryId: ${monthlySalary.monthlySalaryId}, personIds: personIds},
             dataType:'json',
             type : 'post',
             async : false,

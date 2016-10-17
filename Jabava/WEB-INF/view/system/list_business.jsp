@@ -36,23 +36,18 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
   <!-- 放主要内容  开始-->
   <!-- Main Wrapper -->
   <div id="wrapper">
-    <div class="normalheader transition animated fadeIn small-header">
-      <div class="hpanel">
-        <div class="panel-body">
-          <div id="hbreadcrumb" class="m-t-xs m-b-xs">
-            <h2 class="font-normal m-b-xs text-center">
-              业务基础数据
-            </h2>
-          </div>
-        </div>
-      </div>
-    </div>
     <!--请在这放主要内容 ，比如：导航条,搜索块，列表等-->
     <div class="content animate-panel">
       <div class="row">
         <div class="col-lg-12">
           <div class="hpanel">
+            <h4 class="text-center font-bold">               
+                业务基础数据
+            </h4>
             <div class="panel-heading ">
+              <div class="text-left m-b">
+                <a class="btn btn-success btn-sm pull-left" type="button" href="system/listBasicType">返回</a>
+              </div>
               <div class="text-right">
               	<a href="static/xls/baseDataTemplate.xlsx" class="m-r-sm">下载基础数据模板</a>
                 <div class="btn btn-success btn-xs" data-id="importBasicData">
@@ -100,6 +95,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                   </div>
                   <center>
                     <button class="btn btn-info" type="button" onclick="search()">高级搜索</button>
+                    <button class="btn btn-default m-l" type="reset">重置</button>
                   </center>
                 </form>
                 </div>
@@ -288,7 +284,12 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 	   return o;  
 	};
 
+	var baseDataType="${param.baseDataType}";//基础数据类型
+	 
 	$(function (){
+		
+		
+		
 	  $.ajax({
 		  url:"system/selBaseDataType.do",
 	      dataType:'json',
@@ -304,65 +305,69 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 			   $('#update_type').html(html);
 			   $('#add_baseDataType').html(html);
 			   $('#search_Type').append(html);
+			   
+			   $("#search_Type").val(baseDataType);//基础数据类型下拉框赋值
+			    
 	      }
+	   }).done(function(data){
+		   $('#example2').DataTable( {
+			    "dom":
+		    		"<'row'<'col-sm-6'l><'col-sm-5'f><'col-sm-1'<'toolbar'>>>" +
+		    		"<'row'<'col-sm-12'tr>>" +
+		    		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			    	"processing": true,
+			        "serverSide": true,
+			        "sort":true,
+			        
+					"columns":[
+						{ "data": "baseDataCode" },
+						{ "data": "baseDataName" },
+						{ "data": "baseDataTypeName" },
+						{ "data": "memo" },
+						{ "data": "valid" },
+						{ "data": "lastModifyUserName" },
+						{ "data": "lastModifyDate1"},
+			            { "render": function render( data, type, row, meta ){
+								return   '<div class="btn-group"> <button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">操作<span class="caret"></span></button>'+
+										 '<ul class="dropdown-menu">'+
+		                 <% if(RequestUtil.hasPower("index_basedata_md")){ %>
+										 '<li><a onclick="update('+row.baseDataId+',this)" data-toggle="modal" ><i class="fa fa-check" ></i>修改</a></li>'+
+		                 <% } %>
+		                 <% if(RequestUtil.hasPower("index_basedata_ms")){ %>
+										 '<li><a href="javascript:;" class="demo4 " onclick="del('+row.baseDataId+',0)" ><i class="fa fa-times "></i> 失效</a></li> '+
+										 '<li><a href="javascript:;" class="demo4_1" onclick="resume('+row.baseDataId+',1)"><i class="fa fa-history "></i> 生效</a></li> '+
+		                 <% } %>
+									     '</ul></div>';
+							    } }
+		             ],
+		            "language": {
+		   			 	"search": "过滤:",
+		   			 	"processing":"数据加载中",
+			            "lengthMenu": "每页显示 _MENU_ 条记录",
+			            "zeroRecords": "暂无数据 - 报歉啦?",
+			            "info": "显示 第 _PAGE_ 页 共 _PAGES_ 页",
+			            "infoEmpty": "暂无数据",
+			            "infoFiltered": "(筛选自 _MAX_ 条记录)",
+						"paginate":{
+							"first":"首页",
+							"previous":"前一页",
+							"next":"后一页",
+							"last":"尾页"
+						}
+		   			 },
+		   			   "ajax":{
+		  	            "url": "system/besedataTableSearch",
+		  	            "type":"POST",
+		  	            "data": function ( d ) {
+			    			d.data = JSON.stringify($('#searchForm').serializeObject());
+		  	            }
+		  	        }   
+			    });
+		   
+		   $("div.toolbar").html('<button class="btn btn-info  btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>');
+
+		   
 	   });
-
-	    $('#example2').DataTable( {
-	    "dom":
-    		"<'row'<'col-sm-6'l><'col-sm-5'f><'col-sm-1'<'toolbar'>>>" +
-    		"<'row'<'col-sm-12'tr>>" +
-    		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-	    	"processing": true,
-	        "serverSide": true,
-	        "sort":true,
-	        
-			"columns":[
-				{ "data": "baseDataCode" },
-				{ "data": "baseDataName" },
-				{ "data": "baseDataTypeName" },
-				{ "data": "memo" },
-				{ "data": "valid" },
-				{ "data": "lastModifyUserName" },
-				{ "data": "lastModifyDate1"},
-	            { "render": function render( data, type, row, meta ){
-						return   '<div class="btn-group"> <button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">操作<span class="caret"></span></button>'+
-								 '<ul class="dropdown-menu">'+
-                 <% if(RequestUtil.hasPower("index_basedata_md")){ %>
-								 '<li><a onclick="update('+row.baseDataId+',this)" data-toggle="modal" ><i class="fa fa-check" ></i>修改</a></li>'+
-                 <% } %>
-                 <% if(RequestUtil.hasPower("index_basedata_ms")){ %>
-								 '<li><a href="javascript:;" class="demo4 " onclick="del('+row.baseDataId+',0)" ><i class="fa fa-times "></i> 失效</a></li> '+
-								 '<li><a href="javascript:;" class="demo4_1" onclick="resume('+row.baseDataId+',1)"><i class="fa fa-history "></i> 生效</a></li> '+
-                 <% } %>
-							     '</ul></div>';
-					    } }
-             ],
-            "language": {
-   			 	"search": "过滤:",
-   			 	"processing":"数据加载中",
-	            "lengthMenu": "每页显示 _MENU_ 条记录",
-	            "zeroRecords": "暂无数据 - 报歉啦〜",
-	            "info": "显示 第 _PAGE_ 页 共 _PAGES_ 页",
-	            "infoEmpty": "暂无数据",
-	            "infoFiltered": "(筛选自 _MAX_ 条记录)",
-				"paginate":{
-					"first":"首页",
-					"previous":"前一页",
-					"next":"后一页",
-					"last":"尾页"
-				}
-   			 },
-   			   "ajax":{
-  	            "url": "system/besedataTableSearch",
-  	            "type":"POST",
-  	            "data": function ( d ) {
-	    			d.data = JSON.stringify($('#searchForm').serializeObject());
-  	            }
-  	        }   
-	    });
-	    
-	    $("div.toolbar").html('<button class="btn btn-info  btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>');
-
     //校验
     var validateOptions = {
           framework: 'bootstrap',

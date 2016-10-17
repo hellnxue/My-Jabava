@@ -20,7 +20,7 @@
 	}
 	
 	Date today = JabavaDateUtils.parseDate(JabavaDateUtils.formatDate("yyyy-MM-dd"), "yyyy-MM-dd");
-	Date festival = JabavaDateUtils.parseDate("2016-09-15", "yyyy-MM-dd");
+	Date festival = JabavaDateUtils.parseDate("2016-12-25", "yyyy-MM-dd");
 	long days = JabavaDateUtils.getDiffDays(today, festival);
 %>
 
@@ -55,13 +55,18 @@
             <div class="col-sm-9 col-md-9 col-lg-9">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="hpanel text-center">
+                        <div class="hpanel text-center hpanel1">
                             <div id="myCarousel" class="carousel slide pad_010 b_k" data-ride="carousel">
                                 <!-- 轮播（Carousel）项目 -->
                                 <div class="carousel-inner bor_btm">
-                                    <div class="item active" >
+                                    <!--div class="item active" >
                                         <div class="pic">
                                             <a target="_blank" href="http://i.maka.im/pcviewer/BM3OWKDD"><img src="static/img/index/index-barner.png" width="100%"></a>
+                                        </div>
+                                    </div-->
+                                    <div class="item active" >
+                                        <div class="pic">
+                                            <a target="_blank" href="static/activity/activity.html"><img src="static/img/index/index-barner-formtalk.png" width="100%"></a>
                                         </div>
                                     </div>
                                     <div class="item" >
@@ -85,7 +90,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="hpanel m-b">
+                        <div class="hpanel hpanel2">
                             <div class="panel-body p-xs">
                                 <div class="pull-left m-l-sm">
                                     <img src="static/img/index/icon_1.png" alt="">
@@ -98,7 +103,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="hpanel m-b">
+                        <div class="hpanel hpanel2">
                             <div class="panel-body p-xs">
                                 <div class="pull-left m-l-sm">
                                     <img src="static/img/index/icon_2.png" alt="">
@@ -111,7 +116,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="hpanel m-b">
+                        <div class="hpanel hpanel2">
                             <div class="panel-body p-xs">
                                 <div class="pull-left m-l-sm">
                                     <img src="static/img/index/icon_3.png" alt="">
@@ -124,7 +129,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="hpanel m-b">
+                        <div class="hpanel hpanel2">
                             <div class="panel-body p-xs">
                                 <div class="pull-left m-l-sm">
                                     <img src="static/img/index/icon_4.png" alt="">
@@ -137,7 +142,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="hpanel m-b">
+                        <div class="hpanel hpanel2">
                             <div class="panel-body p-xs">
                                 <div class="pull-left m-l-sm">
                                     <img src="static/img/index/icon_5.png" alt="">
@@ -150,14 +155,14 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div class="hpanel m-b">
+                        <div class="hpanel hpanel2">
                             <div class="panel-body p-xs">
                                 <div class="pull-left m-l-sm">
                                     <img src="static/img/index/icon_6.png" alt="">
                                 </div>
                                 <div class="text-center">
                                     <a class="text-danger" href="<%=JabavaPropertyCofigurer.getProperty("outerlink.rui")%>" target="_blank"><span class="f-s-20" data-employee-count="toNextFestival"><%=days %></span>天</a>
-                                    <p class="m-t-xs m-b-none">距离中秋节 挑选节日福利</p>
+                                    <p class="m-t-xs m-b-none">距离圣诞节 挑选节日福利</p>
                                 </div>
                             </div>
                         </div>
@@ -166,25 +171,25 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="hpanel">
-                            <div class="panel-body p-xs">
-                                <ul class="list-inline text-center">
-                                    <li class="m-r-xl m-l">
+                            <div class="panel-body p-xs-s">
+                                <ul class="list-inline">
+                                    <li class="m-r-md m-l">
                                         <a href="outsourcing/toServiceOpen"><img src="static/img/index/icon_7.png" alt=""></a>
                                         <p class="text-center m-t">社保代理</p>
                                     </li>
-                                    <li class="m-r-xl m-l">
+                                    <li class="m-r-md m-l">
                                         <a href="outsourcing/toServiceOpen"><img src="static/img/index/icon_8.png" alt=""></a>
                                         <p class="text-center m-t">薪资代缴</p>
                                     </li>
-                                    <li class="m-r-xl m-l">
+                                    <li class="m-r-md m-l">
                                         <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.rui")%>" target="_blank"><img src="static/img/index/icon_9.png" alt=""></a>
                                         <p class="text-center m-t">福利</p>
                                     </li>
-                                    <li class="m-r-xl m-l">
+                                    <li class="m-r-md m-l">
                                        <a href="javascript://" onclick="gotoWenJuan();"><img src="static/img/index/icon_11.png" alt=""></a> 
                                        <p class="text-center m-t">测评</p>
                                     </li>
-                                    <li class="m-r-xl m-l">
+                                    <li class="m-r-md m-l">
                                         <a href="javascript://" onclick="gotoFormtalk();"><img src="static/img/index/icon_13.png" alt=""></a>
                                         <p class="text-center m-t">云表单</p>
                                     </li>
@@ -196,30 +201,30 @@
             </div>
             <div class="col-sm-3 col-md-3 col-lg-3">
                 <div class="hpanel">
-                    <div class="panel-body text-center">
+                    <div class="panel-body text-center right-aside">
                         <div class="m-l m-b m-r">
                             <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.store")%>?hroOrgId=${sessionScope.RECEIVE_ORG_ID}" target="_blank">
-                                <img src="static/img/index/zhen.png" width="70%" alt="">
+                                <img src="static/img/index/zhen.png" width="85%" alt="">
                             </a>
                         </div>
                         <div class="m-l m-b m-r">
                             <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.rui")%>" target="_blank">
-                                <img src="static/img/index/rui.png" width="70%" alt="">
+                                <img src="static/img/index/rui.png" width="85%" alt="">
                             </a>
                         </div>
                         <div class="m-l m-b m-r">
                             <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.quanxinbao")%>" target="_blank">
-                                <img src="static/img/index/quan.png" width="70%" alt="">
+                                <img src="static/img/index/quan.png" width="85%" alt="">
                             </a>
                         </div>
                         <div class="m-l m-b m-r">
                             <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.zixun")%>" target="_blank">
-                                <img src="static/img/index/HR.png" width="70%" alt="">
+                                <img src="static/img/index/HR.png" width="85%" alt="">
                             </a>
                         </div>
-                        <div class="m-l m-r m-b-none">
+                        <div class="m-l m-r m-b">
                             <a href="<%=JabavaPropertyCofigurer.getProperty("outerlink.miaoshichang")%>" target="_blank">
-                                <img src="static/img/index/mm.png" width="70%" alt="">
+                                <img src="static/img/index/mm.png" width="85%" alt="">
                             </a>
                         </div>
                     </div>

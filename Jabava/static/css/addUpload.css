@@ -1,0 +1,52 @@
+@charset 'utf-8';
+/* bootstrap extend */
+.clearfix{
+  clear:both;
+  zoom:1;
+}
+.liner{
+  background: #ddd none repeat scroll 0 0;
+  height: 2px;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  top: 26%;
+  width: 58%;
+}
+.slicks p{
+  font-size:14px;
+}
+.uploadPreview{
+ border-top: 1px solid #797979;
+ margin-top:140px;
+}
+.empBatchAddUpload ul,.empBatchUpdateUpload ul,.empBatchSubUpload ul{
+  list-style: none;
+}
+.empBatchAddUpload li,.empBatchUpdateUpload li,.empBatchSubUpload li{
+  line-height: 40px;
+}
+.panels{
+  height: 50px;
+}
+.btn-file{
+ position: absolute;
+ width:100px;
+}
+.btn-file input[type="file"] {
+    background: transparent none repeat scroll 0 0;
+    cursor: inherit;
+    display: block;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    width:100px;
+}
+
+
+
+
+ 

@@ -5,9 +5,9 @@
 (function(power){
 	var table;
 
-	const _MAIN_TABLE_DOM = "<'row'<'col-sm-6'l><'col-sm-4'f><'col-sm-2'<'toolbar text-right'>>>\
+	const _MAIN_TABLE_DOM = "<'row'<'col-sm-6'<'toolbar-l'>><'col-sm-6'f>>\
 				<'row'<'col-sm-12 table-responsive'tr>>\
-				<'row'<'col-sm-5'i><'col-sm-7'p>>";
+				<'row'<'col-sm-5'<l>><'col-sm-7'p>>";
 
 	$('#wrapper_editor').hide();
 
@@ -152,6 +152,37 @@
 		        },
 		        locale: 'zh_CN',
 		        fields: {
+                    securityType: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
+                    securityCreateType: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
+                    securityStartTime: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },securityActivateTime: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
 		        	securityIndividualBase: {
 		        		enabled: true,
 		                validators: {
@@ -168,6 +199,38 @@
 		                    }
 		                }
 		            },
+                    gongjijinType: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
+                    gongjijinCreateType: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
+                    gongjijinStartTime: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
+                    gongjijinActivateTime: {
+                        enabled: true,
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项目'
+                            }
+                        }
+                    },
 		            gongjijinIndividualBase: {
 		            	enabled: true,
 		                validators: {
@@ -197,7 +260,7 @@
 				});
 		})
 		.formValidation(validateOptions)
-		.on('change','[data-checkbox-target]',function(e){
+		/*.on('change','[data-checkbox-target]',function(e){
 			var getCheckbox = $(this),
 				getCheckboxTarget = getCheckbox.data('checkboxTarget'),
 				getBox = $('[data-box='+getCheckboxTarget+']'),
@@ -209,13 +272,29 @@
 				switch(getCheckboxTarget){
 					case 'paySocialSecurity':
 						fv
-						.enableFieldValidators('securityIndividualBase',true)
+                        .enableFieldValidators('securityType',true)
+                        .revalidateField('securityType')
+                        .enableFieldValidators('securityType',true)
+                        .revalidateField('securityCreateType')
+						.enableFieldValidators('securityCreateType',true)
+                        .revalidateField('securityStartTime')
+                        .enableFieldValidators('securityStartTime',true)
+                        .revalidateField('securityActivateTime')
+                        .enableFieldValidators('securityActivateTime',true)
 						.revalidateField('securityIndividualBase')
 						.enableFieldValidators('securityOrgBase',true)
 						.revalidateField('securityOrgBase');
 						break;
 					case 'payProvidentFund':
 						fv
+                        .enableFieldValidators('gongjijinType',true)
+                        .revalidateField('gongjijinType')
+                        .enableFieldValidators('gongjijinCreateType',true)
+                        .revalidateField('gongjijinCreateType')
+                        .enableFieldValidators('gongjijinStartTime',true)
+                        .revalidateField('gongjijinStartTime')
+                        .enableFieldValidators('gongjijinActivateTime',true)
+                        .revalidateField('gongjijinActivateTime')
 						.enableFieldValidators('gongjijinIndividualBase',true)
 						.revalidateField('gongjijinIndividualBase')
 						.enableFieldValidators('gongjijinOrgBase',true)
@@ -227,6 +306,14 @@
 				switch(getCheckboxTarget){
 					case 'paySocialSecurity':
 						fv
+                        .enableFieldValidators('securityType',false)
+                        .revalidateField('securityType')
+                        .revalidateField('securityCreateType')
+                        .enableFieldValidators('securityCreateType',false)
+                        .revalidateField('securityStartTime')
+                        .enableFieldValidators('securityStartTime',false)
+                        .revalidateField('securityActivateTime')
+                        .enableFieldValidators('securityActivateTime',false)
 						.enableFieldValidators('securityIndividualBase',false)
 						.revalidateField('securityIndividualBase')
 						.enableFieldValidators('securityOrgBase',false)
@@ -234,6 +321,14 @@
 						break;
 					case 'payProvidentFund':
 						fv
+                        .enableFieldValidators('gongjijinType',false)
+                        .revalidateField('gongjijinType')
+                        .enableFieldValidators('gongjijinCreateType',false)
+                        .revalidateField('gongjijinCreateType')
+                        .enableFieldValidators('gongjijinStartTime',false)
+                        .revalidateField('gongjijinStartTime')
+                        .enableFieldValidators('gongjijinActivateTime',false)
+                        .revalidateField('gongjijinActivateTime')
 						.enableFieldValidators('gongjijinIndividualBase',false)
 						.revalidateField('gongjijinIndividualBase')
 						.enableFieldValidators('gongjijinOrgBase',false)
@@ -242,7 +337,7 @@
 				}
 				getBox.hide()
 			};
-		})
+		})*/
 		.on('success.form.fv',function(e){
 			e.preventDefault();
 			_onSaveProfile();
@@ -326,6 +421,28 @@
 		$gongjijinSwitch.on('click',_onSwitchGongjijin);
 		$inputHelperSwitch.on('click',_onSwitchInputHelper);
 
+        //新增社保公积金账户及参保地信息
+        $('#zy-ss-base_account_selector').on('change', function () {
+            var accountId = $(this).val();
+            if (accountId && accountId != '') {
+                securityProfile.accountId = parseInt(accountId);
+            }
+        });
+        $('#zy-ss-base_province_selector').on('change', function () {
+            var accountProvince = $(this).val();
+            if (accountProvince && accountProvince != '') {
+                securityProfile.accountProvince = accountProvince;
+            }
+        });
+        $('#zy-ss-base_city_selector').on('change', function () {
+            var accountCity = $(this).val();
+            if (accountCity && accountCity != '') {
+                securityProfile.accountCity = accountCity;
+                securityProfile.gongjijinCity = accountCity;
+                securityProfile.securityCity = accountCity;
+            }
+        });
+
 		// 选中社保企业账号
 		$securityOrgAccountSeletor.on('change',function(){
 			var account = $(this).val();
@@ -335,12 +452,10 @@
 			_updateSecurityAccountList(account,undefined);
 		});
 
-		$securityTypeSelector.on('change:once',_onSelectSecurityType);
+		$securityTypeSelector.on('change',_onSelectSecurityType);
 		$gongjijinOrgAccountSeletor.on('change',function(){
 			var account = $(this).val();
 			securityProfile.gongjijinOrgAccount = account;
-
-
 
 			// 刷新公积金企业账号，并更新政策包,未设置政策包默认值
 			_updateGongjijinAccountList(account,undefined);
@@ -383,7 +498,7 @@
 		$('.input-group.date').on('changeDate', function(e) {
 		// $securityActivateTime.on('change',function(){
 			// var activateTime = $(this).val();
-			var activateTime = $(e.target).find(':text').val()
+			var activateTime = $(e.target).find(':text').val();
 			var startTime = $securityStartTime.val();
 			var endTime = $securityEndTime.val();
 
@@ -715,7 +830,7 @@
 				if(result.status == 0){
 					var data = result.data;
 
-					$securityOrgAccountSeletor.empty();
+					/*$securityOrgAccountSeletor.empty();
 					$securityOrgAccountSeletor.append("<option  value='-1'>请选择</option>");
 					$.each(data.security,function(idx,item){
 						var $item = $('<option>'+item.socialSecurityAccountName+'</option>');
@@ -730,7 +845,7 @@
 						var $item = $('<option>'+item.accumulationFundAccountName+'</option>');
 						$item.attr("value",item.accumulationFundAccountId);
 						$gongjijinOrgAccountSeletor.append($item);
-					});
+					});*/
 					
 					//--------------------------myself----------------------------------------
 					//批量导入部分-社保账户初始化
@@ -764,7 +879,10 @@
 	 * @param  {[type]} accountId 社保账号代码
 	 */
 	function _updateSecurityAccountList(accountId,securityType){
-		if(accountId<0){
+        $securityTypeSelector.empty();
+        $securityTypeSelector.append("<option  value=''>请选择</option>");
+		if(!accountId || accountId == ''){
+            //$securityTypeSelector.trigger('change:once');
 			return false;
 		}
 		$.ajax({
@@ -774,27 +892,28 @@
 			dataType: "json",
 			success : function(result, textStatus, jqXHR) {
 				if(result.status == 0){
-					$securityTypeSelector.empty();
-					$securityTypeSelector.append("<option  value='-1'>请选择</option>");
 					var items = result.data;
 					for(var idx = 0; idx < items.length; idx ++){
 						var item = items[idx];
 						var $item = $('<option>'+item.sbGroupName+'</option>');
 						$item.attr("value",item.id);
+                        if (securityType == item.id) {
+                            $item.attr("selected", "selected");
+                        }
 						$securityTypeSelector.append($item);
 					}
 
 					// 未设置社保方案的情况下，使用第一项
-					if(securityType === undefined){
-						$securityTypeSelector.val(items[0].id);
-						$securityTypeSelector.trigger('change:once');
-					}
+                    //$securityTypeSelector.trigger('change:once');
 				}
 			}
 		});
 	}
 
 	function _getGongjijinRules(ruleId){
+	    if (!ruleId || ruleId == '') {
+	        return;
+        }
 		$.ajax({
 			type : 'GET',
 			url : "employee/getSecurityGroupDetail/"+ruleId+'/'+SECURITY_CATEGORY_GONGJIJIN,
@@ -837,6 +956,9 @@
 	 * @param  {[type]} ruleId 参保规则代码
 	 */
 	function _getSecutityRules(ruleId){
+	    if (!ruleId || ruleId == '') {
+	        return;
+        }
 		$.ajax({
 			type : 'GET',
 			url : "employee/getSecurityGroupDetail/"+ruleId+'/'+SECURITY_CATEGORY_SECURITY,
@@ -919,7 +1041,10 @@
 	}
 
 	function _updateGongjijinAccountList(accountId,gongjijinType){
-		if(accountId<0){
+        $gongjijinTypeSelector.empty();
+        $gongjijinTypeSelector.append("<option value=''>请选择</option>");
+		if(!accountId || accountId == ''){
+            //$securityTypeSelector.trigger('change:once');
 			return false;
 		}
 		$.ajax({
@@ -930,7 +1055,7 @@
 			success : function(result, textStatus, jqXHR) {
 				if(result.status == 0){
 					var solutions = result.data;
-					if(solutions.length <= 0){
+					if(solutions == null || solutions.length <= 0){
 						swal("该企业账号下未设置公积金参保方案，请重新选择！", undefined, "error");
 					}else{
 						// 复制到公共领域
@@ -938,22 +1063,16 @@
 							validSocialSecurityRules.gongjijinDetail = solutions;
 						}
 
-						$gongjijinTypeSelector.empty();
-						$gongjijinTypeSelector.append("<option  value='-1'>请选择</option>");
 						for(var idx = 0; idx < solutions.length; idx ++){
 							var item = solutions[idx];
 							var $item = $('<option>'+item.sbGroupName+'</option>');
 							$item.attr('value',item.id);
-
+                            if (gongjijinType == item.id) {
+                                $item.attr('selected', 'selected');
+                            }
 							$gongjijinTypeSelector.append($item);
 						}
-						
-						if(gongjijinType === undefined){
-							$gongjijinTypeSelector.val(solutions[0].id);
-							$gongjijinTypeSelector.trigger('change');
-						}else{
-							$gongjijinTypeSelector.val(gongjijinType);
-						}
+                        //$gongjijinTypeSelector.trigger('change');
 					}
 				}else{
 					swal("取得社保规则明细失败!","","error");
@@ -966,9 +1085,6 @@
 	 * 选择社保类型
 	 */
 	function _onSelectSecurityType(){
-		var securityType = $(this).val();
-		securityProfile.securityType = securityType;
-
 		var securityType = $(this).val();
 		securityProfile.securityType = securityType;
 
@@ -1119,30 +1235,237 @@
 		}
 	}
 
+	//渲染账户下拉列表
+	function renderAccount(accounts, defaultAccount) {
+	    var _sel = $('#zy-ss-base_account_selector');
+        _sel.empty().append('<option value="">请选择</option>');
+        $.each(accounts, function (index, account) {
+            var item = $('<option value="' + account.accountId + '">' + account.accountName + '</option>');
+            if (defaultAccount == account.accountId) {
+                item.attr("selected", "selected");
+            }
+            item.appendTo(_sel);
+        });
+    }
+
+	/*//渲染省份下拉列表
+	function renderProvince(provinceList, provinceCity, defaultProvince) {
+	    var cityList;
+        var _sel = $('#zy-ss-base_province_selector');
+        _sel.empty().append('<option value="">请选择</option>');
+        $.each(provinceList, function (index, province) {
+            $.each(province, function (key, value) {
+                var item = $('<option value="'+ key +'">'+ value +'</option>');
+                if (defaultProvince == key) {
+                    item.attr('selected', 'selected');
+                    cityList = provinceCity[key];
+                }
+                item.appendTo(_sel);
+            });
+        });
+        return cityList;
+    }
+    //渲染城市下拉列表
+    function renderCity(cityList, defaultCity) {
+        var _sel = $('#zy-ss-base_city_selector');
+        _sel.empty().append('<option value="">请选择</option>');
+        $.each(cityList, function (index, city) {
+            $.each(city, function (key, value) {
+                var item = $('<option value="'+ key +'">'+ value +'</option>');
+                if (defaultCity == key) {
+                    item.attr('selected', 'selected');
+                }
+                item.appendTo(_sel);
+            });
+        });
+    }*/
+
+	//渲染省份(可选择全国省份)
+	function renderProvince(provinceList) {
+	    var _sel = $('#zy-ss-base_province_selector');
+        _sel.empty().append('<option value="" selected="selected">请选择</option>');
+        if (!provinceList) {
+            return;
+        }
+        var _html = '';
+        $.each(provinceList, function (index, province) {
+            _html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
+        });
+        _sel.append(_html);
+        //绑定省份变动事件
+        _sel.on('change', function () {
+            var _provinceId = $(this).val();
+            if (!_provinceId || _provinceId == '') {
+                return;
+            }
+			getCityList(_provinceId);
+        });
+    }
+    //请求加载省份下的城市列表
+    function getCityList(provinceId) {
+		$.ajax({
+			async : false,
+			type: "POST",
+			url: "socialsecurityaccount/getCityByProvinceId",
+			data: {provinceId: provinceId},
+			dataType: "json",
+			success : function (data) {
+				renderCity(data);
+			}
+		});
+	}
+    //渲染城市(首次没有数据，仅选择省份后才有)
+    function renderCity(cityList) {
+        var _sel = $('#zy-ss-base_city_selector');
+        _sel.empty().append('<option value="" selected="selected">请选择</option>');
+        if (!cityList) {
+            return;
+        }
+        var _html = '';
+        $.each(cityList, function (index, city) {
+            _html += '<option value="' + city.cityId + '">' + city.cityName + '</option>';
+        });
+        _sel.append(_html);
+    }
+
+    //渲染原社保公积金企业账户
+    function renderOrgAccount(list, _obj) {
+        //_obj.empty().append('<option value="">请选择</option>');
+        _obj.empty();
+        $.each(list, function (index, account) {
+            $.each(account, function (key, value) {
+                var item = $('<option value="' + key + '">' + value + '</option>');
+                item.appendTo(_obj);
+            });
+        });
+    }
+
+    //添加全局变量
+    var ssOrgAccType, afOrgAccType, personId, photoTplStatus, operType;
+
 	/**
 	 * 编辑用户社保档案
 	 * @return {[type]} [description]
 	 */
 	function _onEdit(){
-		$('.nav-tabs').children().removeClass('active');
-		$('.nav-tabs').find('li:first').addClass('active');
-		$('.tab-pane').removeClass('active');
-		$('#profileEdit').addClass('active');
-
+		$('.splash').show();
 		$('#zy-ss-profile-list').hide();
 		$('#zy-ss-profile-editor').show();
-
-		var personId = $(this).data('personid');
+	    //按钮操作类型
+	    var dataType = $(this).attr("data-type");
+        operType = dataType;
+        $('.nav-tabs').children().removeClass('active');
+        $('.tab-pane').removeClass('active');
+        //判断操作类型进入不同的TAB页
+        if (dataType == 'modify' || dataType == 'open' || dataType == 'stop') {
+            $('.nav-tabs').find('li:first').addClass('active');
+            $('#profileEdit').addClass('active');
+        } else if (dataType == 'add') {
+            $('.nav-tabs').find('li:eq(1)').addClass('active');
+            $('#supplementPayment').addClass('active');
+        }
+		//员工id
+		personId = $(this).data('personid');
 		securityProfile.personid = personId;
 		$('#personIdForPaymentList').val(personId);
-
 		var obj = dataBuff[personId];
+
+        //加载全国省份
+        $.ajax({
+            type : 'GET',
+            async : false,
+            dataType: 'json',
+            contentType:'application/json',
+            url : 'socialsecurityaccount/getProvinceInfo',
+            success : function (data) {
+                renderProvince(data);
+            }
+        });
+        renderCity();
+
+        //加载企业社保账户列表
+        $.ajax({
+        	type : 'GET',
+			async : false,
+			dataType: 'json',
+			contentType:'application/json',
+			url : 'socialAccumulationAccount/getAccountByCompanyId',
+			success : function (data) {
+				var accounts = data.result.accountList;
+				if (!accounts) {
+					return;
+				}
+                renderAccount(accounts, obj.accountId);
+
+				//加载可用社保城市
+				/*var provinceList = data.result.provinceList;
+				var provinceCity = data.result.provinceCityMap;
+                var accountProvince = data.result.accountProvinceMap;*/
+                var accountProvinceId = obj.accountProvince;
+                var accountCityId = obj.accountCity;
+                $('#zy-ss-base_province_selector').val(accountProvinceId);
+				getCityList(accountProvinceId);
+                $('#zy-ss-base_city_selector').val(accountCityId);
+
+                /*renderCity(renderProvince(provinceList, provinceCity, accountProvinceId), accountCityId);
+                
+                $('#zy-ss-base_account_selector').on('change', function () {
+                    var accountId = $(this).val();
+                    renderCity(renderProvince(accountProvince[accountId], provinceCity, accountProvinceId), accountCityId);
+                });
+                $('#zy-ss-base_province_selector').change(function () {
+                    var provinceId = $(this).val();
+                    renderCity(provinceCity[provinceId], accountCityId);
+                });*/
+			}
+		});
+
+        //加载企业社保公积金账户信息
+        $.ajax({
+            type : 'GET',
+            async : false,
+            dataType: 'json',
+            contentType : 'application/json',
+            url : 'socialAccumulationAccount/getOrgAccountByCompanyId',
+            success : function (data) {
+                var rslt = data.result;
+                if (!rslt) {
+                    return;
+                }
+                var accountSSMap = rslt.accountSSMap;
+                var accountAFMap = rslt.accountAFMap;
+                var accountId = $('#zy-ss-base_account_selector').val();
+                var cityId = $('#zy-ss-base_city_selector').val();
+                if ((accountId && accountId) != '' && (cityId && cityId != '')) {
+                    renderOrgAccount(accountSSMap[accountId][cityId], $securityOrgAccountSeletor);
+                    renderOrgAccount(accountAFMap[accountId][cityId], $gongjijinOrgAccountSeletor);
+                }
+                $('#zy-ss-base_city_selector,#zy-ss-base_account_selector,#zy-ss-base_province_selector').change(function () {
+                    var accountId = $('#zy-ss-base_account_selector').val();
+                    var cityId = $('#zy-ss-base_city_selector').val();
+                    var listAcc, listAfAcc;
+                    if ((accountId && accountId) != '' && (cityId && cityId != '')) {
+                        listAcc = accountSSMap[accountId][cityId];
+                        listAfAcc = accountAFMap[accountId][cityId];
+                    }
+                    renderOrgAccount(listAcc, $securityOrgAccountSeletor);
+                    renderOrgAccount(listAfAcc, $gongjijinOrgAccountSeletor);
+                    //社保规则变化
+                    var orgAccountId = $securityOrgAccountSeletor.val();
+                    _updateSecurityAccountList(orgAccountId, ssOrgAccType);
+                    var orgAfAccountId = $gongjijinOrgAccountSeletor.val();
+                    _updateGongjijinAccountList(orgAfAccountId, afOrgAccType);
+                });
+            }
+        });
+
 	//	$('#zy-ss-base-job-number').text(obj.jobNumber);
 		$('#zy-ss-base-name').text(obj.employeeName);
 	//	$('#zy-ss-base-organization').text(obj.organizationName);
 		$('#zy-ss-base-cert-id').text(obj.certId);
 		$('#zy-ss-base-register-type').text(obj.registerType);
 		$('#zy-ss-base-entry-date').text(obj.entryDate);
+
 
 		// 设置补缴信息上的参数数据
 		$('#zy-ss-security-rule-name').text(obj.securityOrgAccount);
@@ -1177,14 +1500,18 @@
 				$('#zy-ss-base-organization').text(securityProfile.department);
 
 				// 更新社保账号下参保曾策包
-				if(securityProfile.securityOrgAccount !== null){
-					$securityOrgAccountSeletor.val(securityProfile.securityOrgAccount);
-					_updateSecurityAccountList(securityProfile.securityOrgAccount,securityProfile.securityType);
+                var ssOrgAccId = securityProfile.securityOrgAccount;
+                ssOrgAccType = securityProfile.securityType;
+				if(ssOrgAccId != null){
+					$securityOrgAccountSeletor.val(ssOrgAccId);
+					_updateSecurityAccountList(ssOrgAccId, ssOrgAccType);
 				}
 
-				if(securityProfile.gongjijinOrgAccount !== null){
-					$gongjijinOrgAccountSeletor.val(securityProfile.gongjijinOrgAccount);
-					_updateGongjijinAccountList(securityProfile.gongjijinOrgAccount,securityProfile.gongjijinType);
+                var afOrgAccId = securityProfile.gongjijinOrgAccount;
+                afOrgAccType = securityProfile.gongjijinType;
+				if(afOrgAccId != null){
+					$gongjijinOrgAccountSeletor.val(afOrgAccId);
+					_updateGongjijinAccountList(afOrgAccId, afOrgAccType);
 				}
 
 				// 更新社保规则,并获取当前可用的社保规则明细
@@ -1245,7 +1572,7 @@
 				// 更新公积金规则，并获取当前可用公积金明细
 				if(securityProfile.gongjijinType !== null){
 					$gongjijinTypeSelector.val(securityProfile.gongjijinType);
-					_getGongjijinRules(securityProfile.gongjijinType)
+					_getGongjijinRules(securityProfile.gongjijinType);
 				}
 
 				// 填写实际的业务数据
@@ -1300,16 +1627,40 @@
 				//////////////////////////////////////////////
 			}
 		});
+
+        if (!photoTplStatus) {
+            createPicArea(securityProfile.personid);
+        }
+
+        //禁用非当前操作项
+		if (dataType == 'open') {
+			$gongjijinEndTime.val('');
+			$securityEndTime.val('');
+		}
+        //禁用日历插件
+        $('.date[edit-role]:not([edit-role*="'+ dataType +'"])').each(function () {
+            $(this).datepicker('remove');
+            $(this).find('input,select').attr('disabled', 'disabled');
+        });
+        //禁用文本、下拉控件
+        $('input[edit-role],select[edit-role]').attr("disabled", "disabled");
+        $('input[edit-role*="'+ dataType +'"],select[edit-role*="'+ dataType +'"]').removeAttr("disabled");
+        //禁用自编写上传控件
+        $('[data-toggle="upload:file"]').not('[edit-role*="'+ dataType +'"]').each(function () {
+            $(this).unbind('click');
+            $(this).find('input,.btn').attr('disabled', 'disabled');
+        });
+		$('.splash').hide();
 	}
 
 	/**
 	 * 返回社保档案列表页面
 	 */
 	function _toProfileList(){
-		$('#zy-ss-profile-list').show();
-		$('#zy-ss-profile-editor').hide();
-
-		loadTable();
+		//$('#zy-ss-profile-list').show();
+		//$('#zy-ss-profile-editor').hide();
+		document.location.reload();
+		//loadTable();
 	}
 
 	/**
@@ -1391,7 +1742,6 @@
 		// 	console.log("表单字段校验失败");
 		// 	return;
 		// }
-
 		var obj = {
 			profileId: securityProfile.profileId,
 			hospitals: []
@@ -1466,6 +1816,9 @@
 
 		// 多余的项目的不能留着，否则会有反序列化的问题的
 		delete securityProfile['ehrSecurityItems'];
+        securityProfile.dataType = operType;
+		//解决因多个change事件导致的数据不准去问题
+		_createSecurityProfile();
 		$.ajax({
 			type : 'POST',
 			url : "employee/securityProfile",
@@ -1522,41 +1875,54 @@
 				{ "data": "jobNumber" },
 				{ "data": "employeeName" },
 				{ "data": "organizationName" },
-				{ "data": "securityOrgAccount" },
-				{ "data": "gongjijinOrgAccount" },
+                { "data": "entryDate" },
 				{ "data": "certId" },
-				{ "data": "registerType" },
-				{ "data": "entryDate" },
+                { "data": "cityName" },
+                { "data": "accountName" },
+				/*{ "data": "registerType" },*/
 				//{ "data": "baseSalary"},
-				// { "data": "securityStatus" },
 				{"render":function(data, type, row, meta){
 					var map = {
-						'0':'草稿',
+						'0':'未开通',
 						'1':'在缴',
 						'2':'停缴'
 					}
-
-					return map[row.securityStatus];
+					var sStatus = row.securityStatus;
+                    if (!sStatus || sStatus == '') {
+                        sStatus = '0';
+                    }
+					return map[sStatus];
 				}},
-				{ "data": "securityAccount" },
-				{ "data": "securityType" },
-				{ "data": "securityCity" },
 				{"render":function(data, type, row, meta){
 					var map = {
-						'0':'草稿',
+						'0':'未开通',
 						'1':'在缴',
 						'2':'停缴'
 					};
-					return map[row.gongjijinStatus];
+					var gStatus = row.gongjijinStatus;
+                    if (!gStatus || gStatus == '') {
+                        gStatus = '0';
+                    }
+					return map[gStatus];
 				}},
-				{ "data": "gongjijinAccount" },
-				{ "data": "gongjijinType" },
-				{ "data": "gongjinCity" },
 				{ "render": function(data, type, row, meta){
 					var _OPERATION_BUTTON = '';
 					if(power.securityprofile_mp){
-						_OPERATION_BUTTON = '<a class="btn btn-success btn-xs zy-ss-edit-button" \ ' +
-						'type="button" data-personid="'+row.person_id+'" href="javascript:void(0)">修改</a>&nbsp;';
+						/*_OPERATION_BUTTON = '<a class="btn btn-success btn-xs zy-ss-edit-button" \ ' +
+						'type="button" data-personid="'+row.person_id+'" href="javascript:void(0)">修改</a>&nbsp;';*/
+						_OPERATION_BUTTON = '';
+						var gStatus = row.gongjijinStatus, sStatus = row.securityStatus;
+						if (gStatus == 1 || sStatus == 1) {
+							_OPERATION_BUTTON += '<a class="btn btn-link text-info zy-ss-edit-button" data-type="modify" data-personid="'+row.person_id+'">调整</a>';
+						}
+						if (((gStatus == 2 || gStatus == 0 || !gStatus) && (sStatus == 2 || sStatus == 0 || !sStatus)) ||
+							((gStatus == 2 && sStatus == 1) || (gStatus == 1 && sStatus == 2))) {
+							_OPERATION_BUTTON += '<a class="btn btn-link text-info zy-ss-edit-button" data-type="open" data-personid="'+row.person_id+'">开通</a>';
+						}
+						//_OPERATION_BUTTON += '<a class="btn btn-link text-info zy-ss-edit-button" data-type="add" data-personid="'+row.person_id+'">补缴</a>';
+						if (gStatus == 1 || sStatus == 1) {
+							_OPERATION_BUTTON += '<a class="btn btn-link text-info zy-ss-edit-button" data-type="stop" data-personid="'+row.person_id+'">停缴</a>';
+						}
 					}
 
 					dataBuff[row.person_id] = row;
@@ -1589,7 +1955,14 @@
 		if(power.securityprofile_ex){
 			strHtml += ' <button id="zy-ss-export-sheet" class="btn btn-warning btn-sm">导 出</button>';
 		}
-		$(".toolbar").html(strHtml);
+
+
+		//$(".toolbar").html(strHtml);
+		$(".toolbar-l").html('<a class="btn btn-link text-info">未开通</a><a class="btn btn-link text-info">在缴</a>' +
+			'<a class="btn btn-link text-info">停缴</a><a class="btn btn-link text-info">全部</a>');
+		$(".toolbar-l").children().on('click', function () {
+			loadTable({'status' : $(this).index()});
+		});
 		//--------------------------myself----------------------------------------end
 		$(".toolbar").on('click','#zy-ss-export-sheet',function(){
 			window.open('employee/exportSecurityProfile');
@@ -1759,9 +2132,104 @@
 			}); 
 		
 	});
+
+	//导出社保档案
+	$('#exportAccount').click(function () {
+		window.open('employee/exportSecurityProfile');
+	});
 	
 	//--------------------------myself----------------------------------------end
 
+    var uploadCompent = function(){
+        $('[data-toggle="upload:file"] :file').on('change.file:selected', function(event){
+            var oEventTarget = $(this),
+                oFile = $(this).val(),
+                getFileType = $(this).attr('data-file-type'),
+                fileExt = oFile.substr(oFile.lastIndexOf(".")).toLowerCase(),
+                $getThumbZone = $(this).parents('[data-toggle="upload:file"]').prev('a'),
+                getTitle = $getThumbZone.attr('title'),
+                $getMsgCover = $(this).parents('[data-toggle="upload:file"]').next();
+
+            oEventTarget.parents('[data-toggle="upload:file"]')
+                .find(':text').val( oFile );
+
+            $getMsgCover.css({
+                height: $getMsgCover.parent().height(),
+                lineHeight: $getMsgCover.parent().height()+'px',
+                width: $getMsgCover.parent().width(),
+                zIndex: 100
+            }).text(getTitle+'上传中...').show();
+            // upload file
+            var formData=new FormData();
+            formData.append('uploadFiles', $(this)[0].files[0]);
+            formData.append('personId', personId);
+            //上传文件类型  需要将值设置在指定的上传文件表单中
+            formData.append("fileType", getFileType);
+            $.ajax({
+                url:  "employee/uploadSecurityFiles",
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false
+
+            })
+                .done(function(d){
+                    if(d.success){
+                        $getThumbZone.attr('href', d.imgUrl)
+                            .children('img').attr('src', d.imgUrl);
+                        $getMsgCover.text(getTitle+'上传成功。');
+                        setTimeout(function(){ $getMsgCover.hide(); }, 1500);
+                    }else{
+                        $getMsgCover.text(getTitle+'上传失败。');
+                        setTimeout(function(){ $getMsgCover.hide(); }, 1500);
+                    }
+
+                });
+
+        });
+
+        $('[data-toggle="upload:file"]').on('click', function(event){
+            $(this).find(':file').trigger('click.file:selected');
+        });
+    };
+
+    //组织图片区域
+    function createPicArea(personId) {
+        $.ajax({
+            url : 'employee/getSercurityFiles/' + personId,
+            type: 'GET',
+            dataType : 'json',
+            async : false,
+            success : function (data) {
+                if (!data.success) {
+                    return;
+                }
+                var rslt = data.result;
+                $('#securityPhotoPanel').prepend(template('socialSecurityPhoto', rslt));
+                uploadCompent();
+                photoTplStatus = true;
+            }
+        });
+    }
+
+    //更新实体
+    function _createSecurityProfile() {
+		securityProfile.accountId = $('#zy-ss-base_account_selector').val();
+		securityProfile.accountProvince = $('#zy-ss-base_province_selector').val();
+		var _city = $('#zy-ss-base_city_selector').val();
+		securityProfile.accountCity = _city;
+		securityProfile.securityCity = _city;
+		securityProfile.gongjijinCity = _city;
+		securityProfile.securityOrgAccount = $('#zy-ss-security-org-account-selector').val();
+		securityProfile.securityType = $('#zy-ss-security_type_selector').val();
+		securityProfile.gongjijinOrgAccount = $('#zy-ss-gongjijin-org-account-selector').val();
+		securityProfile.gongjijinType = $('#zy-ss-gongjijin_type_selector').val();
+		securityProfile.securityEndtime = $('#zy-ss-security-end-time').val();
+		securityProfile.gongjijinEndtime = $('#zy-ss-gongjijin-end-time').val();
+		securityProfile.securityActivatetime = $('#zy-ss-security-activate-time').val();
+	}
 })(window.power);
 
 

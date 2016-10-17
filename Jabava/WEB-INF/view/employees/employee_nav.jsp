@@ -6,9 +6,9 @@
     </div>  
      <div class="col-sm-10 col-md-10 col-lg-10 font-normal m-t fonts-sizes">
       <p>姓名：<span id="navEmployeeName"></span>
-        <% if(RequestUtil.hasPower("roster_navi_iv")){ %>
+      <% if(RequestUtil.hasPower("roster_navi_iv")){ %>
         <a href="javascript://" class="btn btn-warning btn-xs m-l-xs hidden pull-right" id="perfectInfoLink" data-send-notify="${personId}">邀请用户完善信息</a>
-        <% } %>
+      <% } %>
       </p>
       <p>手机：<span id="navEmployeePhone"></span></p>
      </div>
@@ -286,9 +286,9 @@ function toEmployeeList(){
 			
 			$('#navEmployeeName').text(pinfo.person.employeeName);
 			$('#navEmployeePhone').text(pinfo.person.mobile);
-			if(!pinfo.userType || pinfo.userType == 3){
+			//if(!pinfo.userType || pinfo.userType == 3){
 				$('#perfectInfoLink').removeClass('hidden');
-			}
+			//}
 			
 			/*$('#navEmployeePhoto').on('click',function(e){
 				alert("=> Opps!尚不支持自定义的头像!!");

@@ -99,7 +99,7 @@
                                 </div>   
                             </div>
                             <div class="text-right">
-                                <button type="button" class="btn btn-info btn-sm">下一步</button>
+                                <button type="button" class="btn btn-info btn-sm bg34495e">下一步</button>
                             </div>
                         </form>
                     </div>

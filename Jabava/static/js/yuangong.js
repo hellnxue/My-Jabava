@@ -75,6 +75,8 @@ $(function(){
 						$(strHtml)[0].scrollIntoView();
 					});
 	
+	 
+	 
 
 	/**
 	 * 新增信息---页面待添加信息的表单添加
@@ -893,6 +895,42 @@ $.fn.extend({
 	
 	 
  }    
-     
+  
+  /**
+	  * 入职审核-通过
+	  */
+	
+	 function approved(personId){
+		 $('[data-approved="approved"]').on('click', function(event) {
+			  
+			 var object={
+					 personId:personId,
+					 approvedStatus:3
+			 };
+			   
+		      var json = {'personData': JSON.stringify(object) };
+		      $.ajax({
+		       type: "post",
+		       url: "employee/updateApprovedStatus",
+		       data: json,
+		       dataType: "json",
+		       async: false,
+		       success:function(data){
+		    				if(data.success == true){
+		    					 
+		    					swal({
+		    		                title:"审核成功",
+		    		                type: "success"
+		    		                }, 
+		    		                function(){
+		    		    			 location.href="employees/audit_employee_todo";
+		    		              });   
+		    				}else{
+		    					swal("审核失败！", "", "error"); 
+		    				}
+		    			}
+		    		});   
+		 });
+	 }
  
      

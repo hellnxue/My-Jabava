@@ -46,6 +46,13 @@
      	   "</div>";
      _ComponentMap.put("AccumulationFundAccountSelect", str);
      
+     //SsAfSelect
+     str = "<div class='form-group'>" + 
+		 	   "<label class='control-label col-xs-2' for='comp_%englishName%'>%chineseName%</label>" + 
+	     	   "<div class='col-xs-10'><select class='form-control' id='comp_%englishName%' name='%englishName%' fetchUrl='socialAccumulationAccount/findAccountList' valueProperty='accountId' textProperty='accountName'></select></div>" +
+     	   "</div>";
+     _ComponentMap.put("SsAfSelect", str);
+     
      //Date
      str = "<div class='form-group'>" + 
 	           "<label class='control-label col-xs-2' for='comp_%englishName%'>%chineseName%</label>" + 
@@ -89,7 +96,7 @@
             url : ele.attr('fetchUrl'),
             data : {},
             dataType:'json',
-            type : 'post',
+            //type : 'post',
             success : function(message) {
                 if(message){
                 	$.each(message,function(){console.log(this[ele.attr("textProperty")]);
@@ -134,6 +141,8 @@
 			return 'SocialSecurityAccountSelect';
 		case '008':
 			return 'AccumulationFundAccountSelect';
+		case '009':
+			return 'SsAfSelect';
 	}
  }
  
@@ -155,5 +164,7 @@
 			return 'SocialSecurityAccountSelect-社保账户选择框';
 		case '008':
 			return 'AccumulationFundAccountSelect-公积金账户选择框';
+		case '009':
+			return 'SsAfSelect-社保公积金账户选择框';
 	}
  }

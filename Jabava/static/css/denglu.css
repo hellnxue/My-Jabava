@@ -5,13 +5,19 @@ ul,dl,dd,li,dt,input{ margin:0; padding:0;}
 table{ width:100% !important;}
 /*th{ width: auto !important; }*/
 .register-containerss{ margin:auto;}
+.register-container {
+    padding-top: 0;
+}
 .hpanel{ margin-bottom:0;}
 .hpanel .panel-body {
     background: #fff none repeat scroll 0 0;
 	border:0;
     border-radius: 2px;
-    padding: 20px;
+    padding: 0;
     position: relative;
+}
+.control-label {
+    padding: 0;
 }
 .form-control {
     background-color: #fff;
@@ -139,6 +145,66 @@ table{ width:100% !important;}
 .shangchuans .fujians{float:left; width:70%; margin-left:15px; }
 .shangchuans .fujians img{ margin-left:60px;}
 
+.board {
+    padding: 0;
+}
+.slick-slide{
+    display: none;
+    float: left;
+    height: 100%;
+    min-height: 1px;
+}
+.slick-initialized .slick-slide {
+    display: block;
+    width: calc( 100%/4 )
+}
+.board .slicks .slick-slide a {
+    border-radius: 100%;
+    display: block;
+    height: 55px;
+    margin: 0 0 20px;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    cursor: default;
+}
+.board .slicks .slick-slide.active .register-round-tabs {
+    background: #fafafa none repeat scroll 0 0;
+}
+.board .slicks .slick-slide.active .register-round-tabs {
+    background: #f7f9fa none repeat scroll 0 0 !important;
+    color: rgb(43, 151, 222);
+}
+.board .slicks .register-round-tabs {
+    background: #f7f9fa none repeat scroll 0 0;
+    color: rgb(220, 220, 220);
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    height: 60px;
+    left: 0;
+    line-height: 60px;
+    position: absolute;
+    text-align: center;
+    width: 80%;
+    margin-left: 10%;
+    z-index: 3;
+}
+/*.board .slicks .badge {
+    width: 80%;
+}*/
+.slick-slide-right{
+    float: right;
+}
+.slick-slide-left a{
+    margin-left:0 !important;
+}
+.slick-slide-right a{
+    margin-right:0 !important;
+}
+.board > .liner {
+    margin: -10px auto 0;
+}
 
 
 
@@ -214,6 +280,71 @@ transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; 
 
 
 
+/*每个页面的导航部分*/
+
+li {
+	list-style: none;
+}
+
+.custom-head-line {
+	width: 100%;
+	background-color: #fff;
+	position: relative;
+	padding: 10px 0;
+}
+
+.custom-head-line .custom-line {
+	width: 80%;
+	height: 2px;
+	background: #ccc;
+	position: absolute;
+	top: 30%;
+	left: 10%;
+	z-index: 1;
+}
+
+.custom-head-line ul {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: 10;
+}
+
+.custom-head-line ul li {
+	flex-grow: 1;
+}
+
+.custom-head-line ul li a {
+	width: 70%;
+	display: block;
+	color: #000;
+	font-size: 20px;
+	text-align: center;
+	background: #fff;
+	margin: 0 auto;
+	cursor: default;
+}
+.custom-head-line ul li a:focus {
+	outline: none;
+}
+
+.custom-head-line ul li a span {
+	display: block;
+}
+
+.custom-head-line ul li a span:last-child {
+	font-size: 14px;
+	margin-top: 10px;
+}
+
+.custom-head-line ul li a.active {
+	color: #0066ff;
+}
 
 
 

@@ -198,7 +198,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                       <div class="input-group-static">
                           <p class="form-control-static">
                             {{each degree as b i}}
-                            {{if (b.baseDataCode == person.degree)}}
+                            {{if (b.baseDataCode == person.education)}}
                               {{b.baseDataName}}
                             {{/if}}
                             {{/each}}
@@ -207,7 +207,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                        	<div class="form-required">
                         <select class="form-control" name="degree">
                           {{each degree as b i}}
-                          <option {{if (b.baseDataCode == person.degree)}}selected="true"{{/if}} value="{{b.baseDataCode}}">{{b.baseDataName}}</option>
+                          <option {{if (b.baseDataCode == person.education)}}selected="true"{{/if}} value="{{b.baseDataCode}}">{{b.baseDataName}}</option>
                           {{/each}}
                         </select>
 						</div>
@@ -244,7 +244,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                         <div class="input-group-static">
                           <p class="form-control-static">
                             {{each education as b i}}
-                            {{if (b.baseDataCode == person.education)}}
+                            {{if (b.baseDataCode == person.degree)}}
                               {{b.baseDataName}}
                             {{/if}}
                             {{/each}}
@@ -253,7 +253,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
 						 <div class="form-required">
                           <select class="form-control" name="education">
                             {{each education as b i}}
-                            <option {{if (b.baseDataCode == person.education)}}selected="true"{{/if}} value="{{b.baseDataCode}}">{{b.baseDataName}}</option>
+                            <option {{if (b.baseDataCode == person.degree)}}selected="true"{{/if}} value="{{b.baseDataCode}}">{{b.baseDataName}}</option>
                             {{/each}}
                           </select>
                         </div>
@@ -664,7 +664,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                   {{if customFieldList}}
                   <div class="row">
                   {{each customFieldList as $field}}
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6{{if $field.isUsing!==1}} sr-only{{/if}}">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6{{if $field.isUsing!==1}} hidden{{/if}}">
                       <div class="form-group">
                         <label for="" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 control-label">{{$field.displayName}}：</label>
                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">

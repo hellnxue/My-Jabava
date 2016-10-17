@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" %>
-<%
-    System.out.println("OK");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,13 +32,21 @@
                     <div class="panel-heading text-center">
                         各地BP上传
                     </div>
+                    <div class="panel-heading m-b">
+					<h4>
+						<a href="static/xls/Jabava_BP_template1.0.0.xlsx" class="pull-right small"><span class="text-info">下载BP上传模板</span></a>
+					</h4>
+				    </div>
                     <div class="panel-body">
                         <div class="col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <form class="form-horizontal" id="" action="">
+                                <input type="hidden" id="bpaddress1" value="${sessionScope.BP_address1 }"> 
+                                  <input type="hidden" id="bpaddress2" value="${sessionScope.BP_address2 }"> 
+                                    <input type="hidden" id="bpaddress3" value="${sessionScope.BP_address3 }"> 
                                 <div class="form-group">
                                     <label class="control-label col-xs-4 col-sm-4 col-md-4 col-lg-3">总名单批次：</label>
                                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-9 ">
-                                        <select class="form-control select2" data-toggle="select2" id="" name="">
+                                        <select class="form-control select2" data-toggle="select2" id="rosterbatch" name="">
                                             <option value="">请选择总名单批次</option>
                                         </select>
                                     </div>
@@ -57,10 +63,11 @@
                                             </div>
                                         </div>
                                         <input type="file" class="sr-only" name='' accept=".xls" data-action="file">
+                                        <div class="msg-cover"></div>
                                     </div>
                                 </div>
                                 <div class="form-group text-center m-t-xxxl">
-                                    <button type="button" class="btn btn-success" data-id="download">　下载　</button>
+                                    <button type="button" class="btn btn-success" data-id="download" data-address="download">　下载　</button>
                                 </div>
                             </form>
                         </div>
@@ -88,96 +95,12 @@
 <!-- alert -->
 <script src="static/bootstrap/vendor/sweetalert/lib/sweet-alert.min.js"></script>
 <script src="static/bootstrap/vendor/select2-3.5.2/select2.min.js"></script>
+<script type="text/javascript">
+var individualType="${type}";//BP文件类型
+
+ 
+</script>
 <script src="static/js/individual/downloadSetTable.js"></script>
-
-<!-- <script>
-    (function($){
-        function upload(){
-            $('[data-toggle="attachments"]').on('click', function(event){
-                var getTarget = $(this).attr('data-target');
-                var $modal = $(getTarget);
-                var $uploadCompent = $modal.find('[data-toggle="upload:file"]');
-                var $listAttachment = $('[data-list="attachments"] tbody');
-
-                // init attachments list
-                // init upload compent
-                $uploadCompent.find(':file').on('change.file:selected', function(event){
-                    var oEventTarget = $(this),
-                    oFile = $(this).val(),
-                    getFileType = $(this).attr('data-file-type'),
-                    fileExt = oFile.substr(oFile.lastIndexOf(".")).toLowerCase(),
-                    // $getThumbZone = $(this).parents('[data-toggle="upload:file"]').prev('a'),
-                    // getTitle = $getThumbZone.attr('title'),
-                    getTitle = '附件资料',
-                    $getMsgCover = $(this).parents('[data-toggle="upload:file"]').next();
-
-                    oEventTarget.parents('[data-toggle="upload:file"]')
-                    .find(':text').val( oFile );
-
-                    $getMsgCover.css({
-                        height: $getMsgCover.parent().height(),
-                        lineHeight: $getMsgCover.parent().height()+'px',
-                        width: $getMsgCover.parent().width(),
-                        zIndex: 100
-                    }).text(getTitle+'上传中...').show();
-                    // upload file
-                    var formData=new FormData();
-                        formData.append('uploadFiles', $(this)[0].files[0]);
-                        formData.append('personId', '${personId}');
-                        //上传文件类型  需要将值设置在指定的上传文件表单中
-                        formData.append("fileType", getFileType);
-                    
-                    var tmpl = [];
-                    tmpl.push('<tr>');
-                    tmpl.push('<td><a href="@imgUrl">@originName</a></td>');
-                    tmpl.push('<td>@uploadDate</td>');
-                    tmpl.push('<td>@uploader</td>');
-                    tmpl.push('</tr>');
-                    tmpl = tmpl.join('');
-                    $.ajax({
-                        url:  "employee/uploadSecurityFiles",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data: formData,
-                        processData: false,
-                        contentType: false
-
-                    })
-                    .done(function(d){
-                        if(d.success){
-                            tmpl = tmpl.replace('@imgUrl', d.imgUrl)
-                                .replace('@originName', oFile)
-                                .replace('@uploadDate', 'Thornton')
-                                .replace('@uploader', '@fat');
-                            $listAttachment.append(tmpl);
-                            
-                            $getMsgCover.text(getTitle+'上传成功。');
-                            setTimeout(function(){ $getMsgCover.hide(); }, 1500);
-                        }else{
-                            $getMsgCover.text(getTitle+'上传失败。');
-                            setTimeout(function(){ $getMsgCover.hide(); }, 1500);
-                        }
-
-                    });
-
-                });
-
-                $uploadCompent.on('click', function(event){
-                    $(this).find(':file').trigger('click.file:selected');
-                });
-                
-                
-                $modal.modal('show');
-
-            });
-        }
-        function init(){
-            upload();
-            $('[data-toggle="select2"]').select2();
-        };
-        init();
-    })(jQuery)
-</script> -->
+ 
 </body>
 </html>

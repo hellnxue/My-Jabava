@@ -105,7 +105,7 @@
                                      <button class="btn btn-info btn-sm" type="submit" data-motive="clear">清空</button>
                                      <% } %>
                                      <% if(RequestUtil.hasPower("outerdataimport_ex")){ %>
-                                     <button class="btn btn-info btn-sm" type="submit" data-motive="export">导出</button>
+                                     <button class="btn btn-warning btn-sm" type="submit" data-motive="export">导出</button>
                                      <% } %>
                                 </div>
                             </form>

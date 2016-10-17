@@ -78,11 +78,11 @@
                     </div>
                     <!--右边-->
             <div class="panel-body">
-                  <center>  
-        	       <span class="nosg">社保与公积金缴费明细</span>
-                  </center>
                   <!--结束-->
            <div class="lr">
+           <div class="col-lg-offset-6 col-lg-6 m-b-sm nosg text-center">
+           	社保与公积金缴费明细
+           </div>
           <div class="col-lg-6">
      <form role="form" class="form-horizontal left" id="myForm">
      <!--选择城市-->
@@ -213,6 +213,9 @@
     </div>
     <!--left-->   
     <div class="col-lg-6">
+       <%-- <center>  
+          <span class="nosg">社保与公积金缴费明细</span>
+        </center> --%>
     	<table class="table calculator_result_table" border="1" style="height: 200px; margin-bottom:20px;">
             <thead class="thead">
                 <tr>

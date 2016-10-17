@@ -91,6 +91,7 @@
                                         </div>
                                         <center style=" margin-top:10px;">
                                             <button class="btn btn-info" type="button" onclick="search()" id="show">查询</button>
+                                            <button class="btn btn-default m-l" type="reset">重置</button>
                                         </center>
                                     </form>
                                 </div>

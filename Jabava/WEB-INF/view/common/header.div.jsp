@@ -33,8 +33,8 @@
         </span>
     </div>
     <nav role="navigation">
-        <div class="header-link hide-menu m-n"><i class="fa fa-bars text-info"></i></div>
-        <div class="header-link m-n header-link-home"><a href="#"><i class="pe-7s-home text-info"></i></a></div>
+        <div class="header-link hide-menu m-n"><i class="fa fa-bars text-info1"></i></div>
+        <div class="header-link m-n header-link-home"><a href="#"><i class="pe-7s-home text-info1"></i></a></div>
         <!-- 小屏时出现-->
         <div class="small-logo">
             <span class="text-primary">Jabava</span>
@@ -65,6 +65,18 @@
         </div>
         <div class="navbar-right">
             <ul class="nav navbar-nav no-borders label-menu-corner">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="javascript://" data-toggle="dropdown">
+                        <i class="pe-7s-stopwatch"></i>
+                         <span class="label label-danger"> </span>
+                    </a>
+                    <ul class="dropdown-menu hdropdown notification animated flipInX">
+                        <li class='summary'>
+                            <a href='employees/audit_employee_todo'><span class="text-alarm m-r-md" data-id="allInfo"></span>入职信息审核</a>
+                        </li>
+                        
+                    </ul>
+                </li>
                 <li>
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <i class="pe-7s-comment"></i>
@@ -223,6 +235,12 @@
                                     if(RequestUtil.hasPower("index_bd")){
                                 %>
                                 <td>
+                                    <a href="system/toListBasicType">
+                                        <i class="pe pe-7s-help2 text-info"></i>
+                                        <h5>基础数据类型</h5>
+                                    </a>
+                                </td>
+                                <td>
                                     <a href="system/searchBaseData">
                                         <i class="pe pe-7s-server text-info"></i>
                                         <h5>基础数据</h5>
@@ -253,6 +271,12 @@
                                     <a href="system/to_mailConfig">
                                         <i class="pe pe-7s-mail text-info"></i>
                                         <h5>企业邮箱配置</h5>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/system/to_companyConfig">
+                                        <i class="pe pe-7s-display2 text-info"></i>
+                                        <h5>企业信息</h5>
                                     </a>
                                 </td>
                             </tr>
@@ -342,6 +366,16 @@
 <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
+    /*查看所有信息提醒*/
+    $.ajax({
+        url: 'employee/auditDataCount',
+        type: 'POST',
+        dataType: 'json'
+    })
+    .done(function(d) {
+        $('[data-id="allInfo"]').text(d.auditData);
+    })
+
 	$.ajaxSetup({
         dataFilter : function(data, type){
             //console.log("data:" + data);
@@ -377,7 +411,7 @@ $(function(){
 					<%
 						if(RequestUtil.hasPower("index_ia")){
 					%>
-						$("#informationList").append("<li class='summary'><a href='announcement/announcement_list'>查看所有消息</a></li>");
+						$("#informationList").append("<li class='summary'><a href='announcement/announcementMain'>查看所有消息</a></li>");
 					<%
 						}
 					%>

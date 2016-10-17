@@ -15,12 +15,12 @@
 	<div id="navigation">
 
 		<div class="profile-picture">
-			<img id="_ShowCompanyLogo" src="static/bootstrap/images/touxiang.png" class="img-circle m-b" alt="avatar">
+			<img id="_ShowCompanyLogo" src="static/bootstrap/images/touxiang.png" class="img-circle m-b-md" alt="avatar">
 
 			<div class="stats-label text-color">
-				<span id="_ShowCompanyName" class="font-extra-bold font-uppercase">智阳网络技术（上海） 有限公司</span>
+				<span id="_ShowCompanyName" class="font-extra-bold">智阳 · 第一人力</span>
 				<!-- <div id="sparkline1" class="small-chart m-t-sm"></div> -->
-				<p class="text-center m-t-xs"><i id="auth-status" class="icon-vip"></i> <span>已认证</span></p>
+				<p class="text-center m-t-sm"><i id="auth-status" class="icon-vip"></i> <span>已认证</span></p>
 				<!-- <p class="text-center m-t-md m-b-sm">余额积分：<span>0</span></p>
 				<div class="text-center">
 					<button type="button" class="btn btn-info btn-xs">充值</button>
@@ -118,6 +118,7 @@
 		<%
 			}
 		%>
+
 	})
 	
 	function tonclick(url) {

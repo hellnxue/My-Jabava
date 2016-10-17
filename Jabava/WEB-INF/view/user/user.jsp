@@ -61,8 +61,64 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                 <% } %>
               </div>
             </div>
+      <!-- 高级搜索开始 -->
+          <div class="collapse out" id="collapseExample" aria-expanded="false">
+            <div class="well well-lg" >
+              <div class="row">
+                  <form class="form-horizontal" action="user/userDataTableSearch.do" id="userForm">
+                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                          <div class="form-group">
+                              <label for="userCode" class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">用户名：</label>
+                              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+                                  <input type="text" class="form-control" name="userCode" value="${userInfo.userCode}" />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                          <div class="form-group">
+                              <label for="userName" class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">姓名：</label>
+                              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+                                  <input type="text" class="form-control" name="userName" value="${userInfo.userName }" />
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                          <div class="form-group">
+                              <label for="userType" class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">用户类型：</label>
+                              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+                                  <select class="form-control" name="userType">
+                                    <option value="" <c:if test="${empty userInfo.userType }">selected="selected"</c:if>>全部</option>
+                                    <option value="2" <c:if test="${userInfo.userType == 2 }">selected="selected"</c:if>>公司系统管理员</option>
+                                    <option value="3" <c:if test="${userInfo.userType == 3 }">selected="selected"</c:if>>普通用户</option>
+                                    <option value="4" <c:if test="${userInfo.userType == 4 }">selected="selected"</c:if>>HR</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                          <div class="form-group">
+                              <label for="isValid" class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-5">是否有效：</label>
+                              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+                                  <select class="form-control" name="isValid">
+                                      <option value="" <c:if test="${empty userInfo.isValid }">selected="selected"</c:if>>全部</option>
+                                      <option value="1" <c:if test="${userInfo.isValid == 1 }">selected="selected"</c:if>>有效</option>
+                                      <option value="0" <c:if test="${userInfo.isValid == 0 }">selected="selected"</c:if>>无效</option>
+                                  </select>
+                              </div>   
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                          <button class="btn btn-info" type="button" id="show" onclick="search()">高级搜索</button>
+                          <button class="btn btn-default m-l" type="reset">重置</button>
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+          <!-- 高级搜索结束 -->
+
             <!-- 高级搜索开始 -->
-            <div class="collapse out" id="collapseExample" aria-expanded="false" >
+            <!-- <div class="collapse out" id="collapseExample" aria-expanded="false" >
               <div class="well well-lg " >
                 <div class="row">
                   <div class="col-sm-11">
@@ -96,12 +152,13 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                       </div>
                       <center>
                         <button class="btn btn-info" type="button" id="show" onclick="search()">高级搜索</button>
+                        <button class="btn btn-default m-l" type="reset">重置</button>
                       </center>
                     </form>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- 高级搜索结束 -->
 
             <!--新增hr弹框-->    

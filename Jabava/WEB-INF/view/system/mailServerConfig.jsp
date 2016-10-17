@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" %>
-<%
-    System.out.println("OK");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,7 +99,7 @@
                                 </div>
                                 <div class="form-group text-center">
                                     <button class="btn btn-info m-r" type="submit">连接测试并保存</button>
-                                    <button class="btn btn-success" type="button" data-action="reset">重置</button>
+                                    <button class="btn btn-success" type="reset">重置</button>
                                 </div>
                             </form>
                         </div>
@@ -134,125 +132,6 @@
 <script src="static/js/plugins/form.validation/js/formValidation.js"></script>
 <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
 <script src="static/js/plugins/form.validation/js/language/zh_CN.js"></script> 
-
-<script>
-	(function($){
-        function init(){
-            var validateOptions = {
-                    err: {
-                        container: 'tooltip'
-                    },
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    locale: 'zh_CN',
-
-                    fields: {
-                    	sendTo: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写必填项目'
-                                },
-                                regexp: {
-                                    message: '请输入有效的邮箱',
-                                    regexp: /^([a-zA-Z0-9_\-\.])+@(\w)+((\.\w+)+)$/
-                                }
-                            }
-                        },
-                        mailPassword: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写必填项目'
-                                }
-                            }
-                        },
-                        mailServer: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写必填项目'
-                                }
-                            }
-                        },
-                        mailPort:{
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写必填项目'
-                                }
-                            }
-                        }
-                    }
-                };
-
-            $('[data-id="validate"]').formValidation(validateOptions).on('success.form.fv', function(event) {
-                event.preventDefault();
-                saveMail();
-            });
-
-            $('[data-action="reset"]').on('click', function(e) {
-                var getForm = $('[data-id="validate"]');
-                getForm.formValidation('resetForm');
-                getForm[0].reset();
-            });
-            
-            initMailMsg();
-        };
-        init();
-    })(jQuery);
-    
-	function initMailMsg(){
-		$.ajax({
-            url : "system/loadMailConfig",
-            dataType:'json',
-            type : 'post',
-            success : function(data) {
-            	if(data.success){
-            		var result=data.result;
-            		var checked=data.safeFlag;
-            		$("input[name='sendTo']").val(result.sendTo);
-            		$("input[name='mailPassword']").val(result.mailPassword);
-            		$("input[name='mailServer']").val(result.mailServer);
-            		$("input[name='safeFlag'][value="+checked+"]").attr("checked",true); 
-            		$("input[name='mailPort']").val(result.mailPort);
-            	}
-            	
-            }
-        });
-	}
-	
-     function saveMail(){
-            var resetForm = function(){
-                var getForm = $('[data-id="validate"]');
-                getForm.formValidation('resetForm');
-            }
-            $.ajax({
-                url : "system/saveMailConfig",
-                data : $("#mailConfigId").serialize(),
-                dataType:'json',
-                type : 'post',
-                async : false
-            })
-            .done(function(data){
-                if (data.success) {
-                    swal({
-                        title: '',
-                        text: data.msg,
-                        type: "success"
-                    },function(d){
-                        resetForm();
-                    })
-                }else{
-                    swal({
-                        title: '',
-                        text: data.msg,
-                        type: "error"
-                    },function(d){
-                        resetForm();
-                    })
-                }
-            })
-        };
-</script>
+<script src="static/js/system/mailServerConfig.js"></script>
 </body>
 </html>

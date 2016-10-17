@@ -110,6 +110,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                                         <a class="btn btn-info btn-sm" onclick="doSearch();">查　询</a>
+                                        <button class="btn btn-default m-l" type="reset">重置</button>
                                     </div>
                                 </form>
                             </div>
@@ -257,13 +258,145 @@
             </div>
         </div>
         <!--全部导入弹框 end-->
+
+        <!-- 批量新增modal -->
+        <div class="modal fade hmodal-success form-row" data-modal="batchAdd" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="color-line"></div>
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <form class="form-horizontal" data-id="batchAdd" action="">
+                                    <input type="hidden" name="personIds">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">工资模板：</label>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required">
+                                                <select class="form-control" id="batchSalaryTemplateId" name="salaryTemplateId">
+	                                                <option value="">----------</option>
+	                                                <c:forEach var="template" items="${requestScope.templateList }" varStatus="status">
+	                                                	<option value="${template.salaryTemplateId }">${template.templateName }</option>
+	                                                </c:forEach>
+	                                            </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-6 col-sm-6 col-md-6 col-lg-4">用途：</label>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8 form-required">
+                                                <select class="form-control" id="batchUsageFlag" name="usageFlag">
+	                                                <option value="">请选择</option>
+	                                                <c:forEach var="salaryType" items="${requestScope.salaryTypeList }" varStatus="status">
+	                                                	<option value="${salaryType.baseDataId }">${salaryType.baseDataName }</option>
+	                                                </c:forEach>
+	                                            </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                                        <button type="submit" class="btn btn-success">确 定</button>
+                                        <button class="btn btn-default m-l" type="reset">重置</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table id="batchAddTable" class="table table-striped table-condensed table-hover table-bordered dataTable" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selAll" data-check="checkAll"></th>
+                                        <th>工号</th>
+                                        <th>姓名</th>
+                                        <th>所属部门</th>
+                                        <th>职位</th>
+                                        <th>在职状态</th>
+                                        <th>入职时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 批量新增modal end -->
+        <!-- 高级搜索 -->
+        <form role="form" class="form-horizontal hidden" data-template="advanced-search" id="highSearch">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <div id="adv-search" class="input-group">
+                        <input type="text" placeholder="输入关键字，按回车搜索，点下拉按钮显示高级搜索" class="form-control" id="highInput">
+                        <div class="input-group-btn dropdown dropdown-lg dropdownself" >
+                            <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle dropdownselfbtn" type="button">筛选 <span class="caret"></span></button>
+                            <div role="menu" class="dropdown-menu dropdown-menu-right">
+                                <div class="col-sm-7 col-md-7 col-lg-7 m-t">
+                                    <div class="form-group">
+                                        <label class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label" for="">入职时间</label>
+                                        <div class="col-sm-9 col-md-9 col-lg-9 form-dash">
+                                            <div class="input-group date" data-date-format="yyyy-mm-dd">
+                                                <input type="text" value="" name="entryDateStart" class="form-control">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-md-5 col-lg-5 m-t">
+                                    <div class="form-group">
+                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                            <div class="input-group date" data-date-format="yyyy-mm-dd">
+                                                <input type="text" value="" name="entryDateEnd" class="form-control">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12" id="sopstatus">
+                                    <div class="form-group">
+                                        <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label" for="">在职状态</label>
+                                        <div class="col-sm-10 col-md-10 col-lg-10 form-control-static"  >
+                                            <label class="checkbox-inline ">                            
+                                                <input type="checkbox"   value="1" name="status"> 在职                        
+                                            </label>                                   
+                                            <label class="checkbox-inline ">                            
+                                                <input type="checkbox"   value="2" name="status"> 离职
+                                            </label>                                   
+                                            <label class="checkbox-inline ">
+                                                <input type="checkbox"   value="3" name="status"> 停职
+                                            </label>
+                                            <label class="checkbox-inline ">                            
+                                                <input type="checkbox"   value="4" name="status"> 退休                            
+                                            </label>                                   
+                                            <label class="checkbox-inline ">                            
+                                                <input type="checkbox"   value="5" name="status"> 再入职                           
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 m-b text-right btn-myself">
+                                    <button class="btn btn-success " type="submit">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <div style="display:none;">
     	<form id="detailForm" action="" method="post">
     		<input type="hidden" id="salaryId" name="salaryId">
     	</form>
     </div>
-    
     <!-- Vendor scripts -->
     <script src="static/bootstrap/vendor/jquery/dist/jquery.min.js"></script>
     <script src="static/bootstrap/vendor/jquery-ui/jquery-ui.min.js"></script>
@@ -279,6 +412,7 @@
     <script src="static/bootstrap/vendor/iCheck/icheck.min.js"></script>
     <script src="static/bootstrap/vendor/peity/jquery.peity.min.js"></script>
     <script src="static/bootstrap/vendor/sparkline/index.js"></script>
+    <script src="static/bootstrap/vendor/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js"></script>
     <script src="static/bootstrap/vendor/toastr/build/toastr.min.js"></script>
 
     <!-- for datatable -->
@@ -300,7 +434,7 @@
     <script src="static/js/common/hashMap.js"></script>
     
 <script type="text/javascript">
-	var table, salaryTypeMap = new HashMap();
+	var table, batchTable, salaryTypeMap = new HashMap();
 	jQuery.prototype.serializeObject=function(){  
         var obj=new Object();  
         $.each(this.serializeArray(),function(index,param){  
@@ -449,11 +583,6 @@
             });
 
         });
-        
-
-
-
-
     });
 
 
@@ -468,7 +597,7 @@
         }
     	table = $('#salaryTable').DataTable({
             "dom": 
-                "<'row'<'col-sm-6'l><'col-sm-4'f><'col-sm-2'<'toolbar text-right'>>>" +
+                "<'row'<'col-sm-5'l><'col-sm-4'f><'col-sm-3'<'toolbar text-right'>>>" +
                 "<'row'<'col-sm-12 table-responsive'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
             
@@ -538,8 +667,10 @@
         <% if(RequestUtil.hasPower("salary_as")){ %>
         strHtml += '<button class="btn btn-info btn-sm" type="button" data-target="[data-modal=addSalary]" data-toggle="modal">新增</button>&nbsp';
         <% } %>
+        strHtml += '<button class="btn btn-success btn-sm" type="button" data-target="[data-modal=batchAdd]" data-modal-toggle="batchAdd"><i class="fa">批量新增</i></button>&nbsp';
         strHtml += '<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="[data-toggle=search]" aria-expanded="false" aria-controls="collapseExample"><i class="fa">高级搜索</i></button>';
         $(".toolbar").html(strHtml);
+        batchAdd();
     }
     
     function changeStatus(id,status){
@@ -761,8 +892,207 @@
 	    $(this).find(':file').trigger('click.file:selected')
 	});
 
+    //批量新增
+	var params = {};
+    var batchAdd = function(){
+        $('[data-modal-toggle="batchAdd"]').on('click', function(event) {
+            var $modal = $($(this).attr('data-target'));
+            $modal.modal('show');
+            $('#highSearch')[0].reset();
+            $('[data-id="batchAdd"]')[0].reset();
+			params.searchValue=$("#highInput").val();
+            params.searchData=JSON.stringify($('#highSearch').serializeObject()); 
+            loadPersonForBatch(params);
+        })
+    };
 
+    var fv;
+    var batchAddFormvalidate = function(){
+        $('[data-id="batchAdd"]').formValidation({
+                err: {
+                    container: 'tooltip'
+                },
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    usageFlag: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写必填项'
+                            }
+                        }
+                    },
+                    salaryTemplateId: {
+                        validators: {
+                            notEmpty:{
+                                message: '请填写必填项'
+                            }
+                        }
+                    }
+                }
+            })
+            .on('success.form.fv', function(e) {
+                e.preventDefault();
+                var len = $(":checked[name='checkAll']").length;
+                    if(len == 0){
+                        alert("请选择一个清单！");
+                        return false;
+                    }
 
+                var formData = $(e.target).serializeObject();
+                $.ajax({
+                    url: 'salary/batchEditSalary',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData
+                })
+                .done(function(d) {
+                    if(d.success){
+                        swal({
+                            type: 'success',
+                            title: d.msg
+                        }, function(){
+                        	window.location.reload();
+                        })
+                    }else{
+                       swal({
+                            type: 'error',
+                            title: d.msg
+                        }) 
+                    }
+                    
+                })
+            });
+
+        $('[data-modal="batchAdd"]').on('hide.bs.modal', function(event) {
+            $('[data-id="batchAdd"]').formValidation('resetForm');
+        });
+        fv = $('[data-id="batchAdd"]').data('formValidation');
+    }();
+    
+    function loadPersonForBatch(params){
+        var getAdvancedSearchTemplate = $('[data-template=advanced-search]');
+    	if(batchTable){
+    		batchTable.destroy();
+    	}
+    	batchTable = $('#batchAddTable').DataTable({
+            "dom": 
+                "<'row'<'col-sm-4'l><'col-sm-8 advanced-search'f>>"+
+                "<'row'<'col-sm-12 table-responsive'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "processing": true,
+            "serverSide": true,
+            "bDestroy": true,
+            "ordering": false,
+            "ajax": {
+                "url": "employee/empdataTableSearch",
+                "type": "post",
+                "data": params ? params : {}
+            },
+            "columns": [
+                {"data": "person_id" ,
+                    render: function(data, type, row, meta){
+                        var strHtml = '<input type="checkbox" name="checkAll" data-check="item" value="'+data+'">';
+                        return strHtml;
+                    },
+                    createdCell: function (td, cellData, rowData, row, col){
+                        var ueSelected = function($o, bSelectLast){
+                            var getAllVal = [];
+                            $.each($('[data-check="item"]:checked'), function(index, item) {
+                                var val = Number($(this).val())
+                                getAllVal.push( val );
+                            });
+                            return getAllVal;
+                        };
+                        $('[data-check="checkAll"]').on('click', function(event) {
+                            var getState = $(this).prop('checked'),
+                                $getCheckItem = $(this),
+                                $getCheckItems = $('[data-check="item"]');
+                            $getCheckItems.prop('checked', getState);
+                            checked($getCheckItem,$getCheckItems,ueSelected);
+                        });
+                        $(td).on('click', '[data-check="item"]', function(event) {
+                            var $getCheckItem = $(this),
+                                $getCheckItems = $getCheckItem;
+                            checked($getCheckItem,$getCheckItems,ueSelected);
+                        });
+                    }
+                },
+                {"data": "job_number"},
+                {"data": "employee_name"},
+                {"data": "org"},
+                {"data": "post"},
+                {"data": "hstatus"},
+                {"data": "entry_date"}
+            ],
+            "columnDefs": [
+                {defaultContent: '', targets: '_all'}
+            ],
+            "language": {
+                "search": "过滤:",
+                "processing":"数据加载中",
+                "lengthMenu": "每页显示 _MENU_ 条记录",
+                "zeroRecords": "暂无数据 - 报歉啦〜",
+                "info": "显示 第 _PAGE_ 页 共 _PAGES_ 页",
+                "infoEmpty": "暂无数据",
+                "infoFiltered": "(筛选自 _MAX_ 条记录)",
+                "paginate":{
+                    "first":"首页",
+                    "previous":"前一页",
+                    "next":"后一页",
+                    "last":"尾页"
+                }
+             }
+        });
+        highSearch(getAdvancedSearchTemplate);
+    }
+
+    function checked($getCheckItem,$getCheckItems,ueSelected){
+        var getSubmitButton = fv.getSubmitButton();
+        if( $getCheckItem.prop('checked') ){
+            var getIDs = ueSelected($getCheckItems);
+            $('[data-id="batchAdd"]').find('[name="personIds"]').val(getIDs);
+        }else{
+            $('[data-id="batchAdd"]').find('[name="personIds"]').val('');
+        }
+        if(getSubmitButton && getSubmitButton.hasClass('disabled')) {
+            fv.disableSubmitButtons(false);
+        }
+    }
+
+    var highSearchSubmit = function(){
+        $("#highSearch").on("submit",function(event){
+            event.preventDefault();
+            $('.dropdownself').removeClass('open');
+    		params.searchValue=$("#highInput").val();
+            params.searchData=JSON.stringify($('#highSearch').serializeObject());
+            loadPersonForBatch(params);
+        });
+    }();
+    
+    function highSearch(getAdvancedSearchTemplate){
+        $('.advanced-search').html( getAdvancedSearchTemplate ); 
+        $('.input-group.date').datepicker({
+            autoclose: true
+        }); 
+        $('[data-template=advanced-search]').removeClass('hidden'); 
+    }
+    //筛选按钮点击事件
+    var dropdownselfbtnClick = function(){
+        $('.dropdown').on('click', '.dropdownselfbtn', function(event) {
+            event.preventDefault();
+            var getParent = $(this).parents('.dropdown');
+            //var getSibling = $(this).siblings();
+            !getParent.hasClass('open') ? getParent.addClass('open'): getParent.removeClass('open');
+            //getSibling.find('input:text').val('');
+            //getSibling.find('input:checkbox').prop('checked',false);
+        });  
+    }();
+
+    
 </script>
 
 </body>

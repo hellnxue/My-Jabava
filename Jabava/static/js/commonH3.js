@@ -163,6 +163,7 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
                             });
                         break;
                     case 'edit':
+                    	 
                         var oCancelPicture = $('[data-action-motive="hideOrshow"]').find('i');
                         if(oCancelPicture.hasClass('pe-7s-angle-up-circle')){
                             oCancelPicture
@@ -175,8 +176,10 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
                         $getDomFormAction.show();
                         $getDomStaticTarget.hide();
                         $getDomLabel.show();
+                        $('[data-approved="approved"]').hide();
                         break;
                     case 'hideOrshow':
+                    	 
                         var oCancelPicture = $(this).find('i');
                         //$form.formValidation('resetForm');
                        // $form.formValidation('destroy');
@@ -250,6 +253,7 @@ var templateFillData = function(templateID, containerID, dataUrl, delUrl, metaKe
                         $getDomStaticTarget.show();
                         $getDomTarget.hide();
                         $getDomFormAction.hide();
+                        $('[data-approved="approved"]').show();
                         break;
                     case 'submit':
                     	var getActionCB = $(this).data('actionCallback');

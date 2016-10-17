@@ -207,6 +207,68 @@ transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; 
 
 
 
+/*每个页面的导航部分*/
+
+li {
+	list-style: none;
+}
+
+.custom-head-line {
+	width: 100%;
+	background-color: #fff;
+	position: relative;
+	padding: 10px 0;
+}
+
+.custom-head-line .custom-line {
+	width: 80%;
+	height: 2px;
+	background: #ccc;
+	position: absolute;
+	top: 30%;
+	left: 10%;
+	z-index: 1;
+}
+
+.custom-head-line ul {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: 10;
+}
+
+.custom-head-line ul li {
+	flex-grow: 1;
+}
+
+.custom-head-line ul li a {
+	width: 70%;
+	display: block;
+	color: #000;
+	font-size: 20px;
+	text-align: center;
+	background: #fff;
+	margin: 0 auto;
+}
+
+.custom-head-line ul li a span {
+	display: block;
+}
+
+.custom-head-line ul li a span:last-child {
+	font-size: 14px;
+	margin-top: 10px;
+}
+
+.custom-head-line ul li a.active {
+	color: #0066ff;
+}
+
 
 
 

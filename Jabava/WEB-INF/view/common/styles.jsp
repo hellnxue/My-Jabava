@@ -12,6 +12,9 @@
 <!-- for data table -->
 <link rel="stylesheet" href="static/bootstrap/vendor/datatables_plugins/integration/bootstrap/3/dataTables.bootstrap.css" />
 
+<!-- for fileUpload -->
+<link rel="stylesheet" href="static/css/fileinput.css" media="all">
+
 <!-- for alert -->
 <link rel="stylesheet" href="static/bootstrap/vendor/sweetalert/lib/sweet-alert.css" />
 <link rel="stylesheet" href="static/bootstrap/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
@@ -20,3 +23,4 @@
 <link rel="stylesheet" href="static/bootstrap/styles/static_custom.css">
 <link rel="stylesheet" href="static/bootstrap/styles/style.css">
 <link rel="stylesheet" href="static/css/jabava.css">
+<link rel="stylesheet" href="static/css/addUpload.css">

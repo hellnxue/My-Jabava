@@ -309,6 +309,7 @@ String basePath = "//"+request.getServerName()+":"+request.getServerPort()+path+
                                        <option value="006">SalaryUsageSelect-工资用途选择框</option>
                                        <option value="007">SocialSecurityAccountSelect-社保账户选择框</option>
                                        <option value="008">AccumulationFundAccountSelect-公积金账户选择框</option>
+                                       <option value="009">SsAfSelect-社保公积金账户选择框</option>
                                    </select>
                                </div>   
                        </div>

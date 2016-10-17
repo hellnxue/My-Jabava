@@ -91,6 +91,7 @@
                                     </div>
                                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                                         <button class="btn btn-info btn-sm btn-pb-search" type="button">查询</button>
+                                        <button class="btn btn-default m-l" type="reset">重置</button>
                                     </div>
                                 </form>
                             </div>

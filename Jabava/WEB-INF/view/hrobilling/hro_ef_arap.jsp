@@ -63,6 +63,9 @@
         <th>账套名称</th>
         <th>状态</th>
         <th>出账时间</th>
+        <th>社保总额</th>
+        <th>服务总额</th>
+        <th>其他</th>
         <th>应付总额</th>
         <th>约定付款日期</th>
         <th>付款状态</th>
@@ -192,6 +195,7 @@
 <script src="static/js/plugins/form.validation/js/framework/bootstrap.js"></script>
 <!-- App scripts -->
 <script src="static/bootstrap/scripts/homer.js"></script>
+<script src="static/js/common/ajaxSetup.js"></script>
 <script>
 	var currentYear = ${requestScope.year};
 	var table, detailTable;
@@ -286,6 +290,9 @@
 					}
 					return data;
 				} },			//操作时间
+				{ "data": "sbAmount" },			//社保总额
+				{ "data": "serviceAmount" },	//服务总额
+				{ "data": "otherAmount" },		//其他
 				{ "data": "AMOUNT" },			//应付总额
 				{ "data": "PAY_DAY" ,"render": function render( data, type, row, meta ){
 						if(data){
@@ -391,7 +398,7 @@
             table.ajax.url( 'efArap/billListPage?billYm='+getDate ).load();
         });*/
         var strHtml = '';
-            strHtml += '<button class="btn btn-info btn-sm" type="button" data-toggle="export"><i class=""></i> <span class="bold">导&nbsp;&nbsp;出</span></button>';
+            strHtml += '<button class="btn btn-warning btn-sm" type="button" data-toggle="export"><i class=""></i> <span class="bold">导&nbsp;&nbsp;出</span></button>';
         $("div.toolbar").html(strHtml);
         $('[data-check="checkAll"]').on('click', function(event) {
             var getState = $(this).prop('checked');
@@ -468,9 +475,6 @@
 			type : "POST",
 			dataType:'json',
 			data: {"billId": billId},
-			error: function(XMLHttpRequest, textStatus, errorThrown){
-				alert(textStatus);
-			},
 			success: function(data){
 				if(data){
 			    	if(detailTable){
@@ -664,9 +668,6 @@
 			type : "POST",
 			dataType:'json',
 			data: params,
-			error: function(XMLHttpRequest, textStatus, errorThrown){
-				alert(textStatus);
-			},
 			success: function(data){
 				if(data.success){
 					swal({
@@ -695,9 +696,6 @@
 			type : "POST",
 			dataType:'json',
 			data: {"billId": billId},
-			error: function(XMLHttpRequest, textStatus, errorThrown){
-				alert(textStatus);
-			},
 			success: function(data){
 				if(data.success){
 					//弹出层
